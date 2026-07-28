@@ -21,13 +21,13 @@ To be updated
 
 ## Token-level Scheduling
 
-### 1.Orca（OSDI 2022）
+### 1.[OSDI'22](https://www.proceedings.com/content/075/075280-2859open.pdf) Orca
 To be updated
 
-### 2.DeepSpeed-FastGen（Microsoft DeepSpeed / arXiv，2024）
+### 2.[arXiv'24](https://www.proceedings.com/content/075/075280-2859open.pdf) DeepSpeed-FastGen
 To be updated
 
-### 3.Sarathi-Serve（OSDI 2024）
+### 3.[OSDI'24](https://www.proceedings.com/content/075/075280-2859open.pdf) Sarathi-Serve
 To be updated
 
 ## Resource-level Scheduling
