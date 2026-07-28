@@ -6,11 +6,11 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 
 ### 1.Response Length Perception and Sequence Scheduling（NeurIPS 2023）
 
-  keywords: 
-  
-  Motivation:
-  
-  Design:
+    keywords: 
+    
+    Motivation:
+    
+    Design:
 
 To be updated
 
@@ -19,13 +19,13 @@ To be updated
 
 ## Token-level Scheduling
 
-### Orca（OSDI 2022）
+### 1.Orca（OSDI 2022）
 To be updated
 
-### DeepSpeed-FastGen（Microsoft DeepSpeed / arXiv，2024）
+### 2.DeepSpeed-FastGen（Microsoft DeepSpeed / arXiv，2024）
 To be updated
 
-### Sarathi-Serve（OSDI 2024）
+### 3.Sarathi-Serve（OSDI 2024）
 To be updated
 
 ## Resource-level Scheduling
