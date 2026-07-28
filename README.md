@@ -11,3 +11,10 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 ## Token-level Scheduling
 
 ### Orca（OSDI 2022）
+
+### DeepSpeed-FastGen（Microsoft DeepSpeed 技术报告 / arXiv，2024）
+
+### Sarathi-Serve（OSDI 2024）
+
+## Resource-level Scheduling
+
