@@ -4,7 +4,7 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 
 ## Request-level Scheduling
 
-## 1.Response Length Perception and Sequence Scheduling（NeurIPS 2023）
+### 1.Response Length Perception and Sequence Scheduling（NeurIPS 2023）
 
 &emsp; keywords: 
 
