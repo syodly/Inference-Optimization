@@ -12,7 +12,7 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 
    Design: 1) Fine-tune Vicuna-7B with LoRA to predict the maximum response-length interval. 2) Sort requests by predicted lengths and group similar requests into micro-batches. 3) Use Failure Collection and Recomputation (FCR) to isolate and reprocess underestimated requests. 4) Use Variable Batch Size (VBS) to assign larger batches to shorter responses.
 
-   Result: Improves throughput from 1.22 to 2.27 samples/s on Alpaca, achieving an 86% improvement over conventional batching.
+   Result: 1) Improves Alpaca throughput from 1.22 to 2.27 samples/s, achieving an 86% improvement. 2) Reduces the average processed tokens per batch from 377 to 208. 3) Achieves 1.24 samples/s on Instruction-in-the-Wild, compared with 0.78 samples/s for conventional batching.
 
 
 ### More++....
