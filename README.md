@@ -8,9 +8,9 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 
    keywords: Response Length Prediction, Sequence Scheduling, Static Batching
 
-   Motivation: Unknown response lengths cause severe padding and redundant computation when requests with different generation lengths are placed in the same static batch.
+   Motivation: 1) Static batches must wait for the longest response, causing padding and redundant computation. 2) Response lengths are unknown before generation, making length-aware batching difficult. 3) Prediction errors may leave unfinished requests and delay the entire batch.
 
-   Design: Fine-tune Vicuna-7B to predict response lengths, group requests with similar predicted lengths, and use failure collection and variable batch sizes to handle prediction errors.
+   Design: 1) Fine-tune Vicuna-7B with LoRA to predict the maximum response-length interval. 2) Sort requests by predicted lengths and group similar requests into micro-batches. 3) Use Failure Collection and Recomputation (FCR) to isolate and reprocess underestimated requests. 4) Use Variable Batch Size (VBS) to assign larger batches to shorter responses.
 
    Result: Improves throughput from 1.22 to 2.27 samples/s on Alpaca, achieving an 86% improvement over conventional batching.
 
