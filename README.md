@@ -19,14 +19,35 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 
 ## Token-level Scheduling
 
-1.[OSDI'22](https://www.usenix.org/conference/osdi22/presentation/yu) Orca
-To be updated
+1. [OSDI'22](https://www.usenix.org/conference/osdi22/presentation/yu) Orca: A Distributed Serving System for Transformer-Based Generative Models
 
-2.[arXiv'24](https://www.proceedings.com/content/075/075280-2859open.pdf) DeepSpeed-FastGen
-To be updated
+   keywords: Iteration-level Scheduling, Selective Batching, Continuous Batching
 
-3.[OSDI'24](https://www.proceedings.com/content/075/075280-2859open.pdf) Sarathi-Serve
-To be updated
+   Motivation: 1) Request-level batching prevents completed requests from leaving until the entire batch finishes. 2) Newly arrived requests cannot use batch slots released during generation. 3) Different input lengths and generation stages make dynamically selected requests difficult to batch efficiently.
+
+   Design: 1) Introduce iteration-level scheduling to reconstruct the batch after every generation iteration. 2) Use selective batching to batch Linear and normalization operators while separately processing request-specific Attention. 3) Apply iteration-level FCFS to avoid starvation of early requests. 4) Reserve KV Cache according to the maximum generation length to prevent runtime OOM.
+
+   Result: 1) Supports dynamic request joining and leaving during generation. 2) Achieves up to 36.9× higher throughput than FasterTransformer at comparable normalized latency for the 175B model. 3) Scales inference from a single GPU to 32 GPUs for models up to 341B parameters.
+
+2. [arXiv'24](https://arxiv.org/abs/2401.08671) DeepSpeed-FastGen: High-Throughput Text Generation for LLMs via MII and DeepSpeed-Inference
+
+   keywords: Dynamic SplitFuse, Chunked Prefill, Token Budget
+
+   Motivation: 1) Decode-only batches contain too few tokens to fully utilize GPU computation. 2) Processing an entire long Prompt in one iteration significantly delays ongoing Decode requests. 3) Prefill- and Decode-dominated forwards cause unstable workloads and poor throughput-latency trade-offs.
+
+   Design: 1) Split long Prompts into smaller Prefill chunks distributed across multiple iterations. 2) Fuse Prefill chunks, short Prompts, and Decode tokens into the same forward pass. 3) Control the total tokens in each forward with a fixed token budget. 4) Integrate Dynamic SplitFuse with DeepSpeed-Inference and MII for distributed serving and replica scaling.
+
+   Result: 1) Achieves up to 2.3× higher effective throughput than the evaluated vLLM version. 2) Reduces average latency by up to 2×. 3) Reduces P95 per-token generation latency by up to 3.7×.
+
+3. [OSDI'24](https://www.usenix.org/conference/osdi24/presentation/agrawal) Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve
+
+   keywords: Chunked Prefill, Stall-free Batching, TBT SLO, Pipeline Parallelism
+
+   Motivation: 1) Full Prefill requests interrupt ongoing generation and cause long generation stalls. 2) Average latency cannot reflect severe tail time-between-tokens experienced by users. 3) Unstable iteration workloads create pipeline bubbles in pipeline-parallel deployments. 4) Small Prefill chunks reduce stalls but introduce additional execution overhead.
+
+   Design: 1) Divide long Prompts into fixed-size Prefill chunks. 2) Apply Decode-first scheduling to guarantee one token for each active Decode request before scheduling Prefill. 3) Fill the remaining token budget with Prefill chunks to construct stall-free hybrid batches. 4) Select the token budget through offline profiling according to the P99 TBT SLO. 5) Construct uniform-compute batches to reduce pipeline bubbles across pipeline stages.
+
+   Result: 1) Improves serving capacity by up to 2.6× for Mistral-7B and 3.7× for Yi-34B over vLLM. 2) Achieves up to 6.31× higher serving capacity than Orca under pipeline parallelism. 3) Maintains lower P99 TBT under both chat and long-document summarization workloads.
 
 ## Resource-level Scheduling
 
