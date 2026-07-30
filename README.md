@@ -51,3 +51,12 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 
 ## Resource-level Scheduling
 
+1. [TACO'25](https://dl.acm.org/doi/10.1145/3732941) ShuffleInfer: Disaggregate LLM Inference for Mixed Downstream Workloads
+
+   keywords: Prefill-Decode Disaggregation, Resource Interference, Two-level Scheduling
+
+   Motivation: 1) Prefill and Decode have different computation, memory-capacity, and memory-bandwidth requirements. 2) Mixing heterogeneous downstream workloads causes severe Prefill-Prefill, Prefill-Decode, and Decode-Decode interference. 3) Naive request placement may create Decode hotspots and head-of-line blocking. 4) Existing serving systems do not jointly consider request characteristics and predicted resource usage.
+
+   Design: 1) Partition Prompts into fixed-size chunks to keep Prefill instances near computation saturation. 2) Disaggregate Prefill and Decode into independent instances to isolate phase interference. 3) Group requests according to Prompt and Decode characteristics to reduce intra-instance interference. 4) Use a two-level scheduler with predicted resource usage to select instances and avoid Decode hotspots. 5) Dynamically coordinate requests across disaggregated resources for mixed downstream workloads.
+
+   Result: 1) Uses 38% fewer resources than the evaluated baselines. 2) Reduces average TTFT by 97%. 3) Reduces average job completion time by 47% while improving performance per dollar.
