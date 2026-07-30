@@ -3,8 +3,8 @@
 Investigation on LLM inference scheduling optimization for complex multi-agent tasks with multi-dimensional optimizations: request, token, GPU memory, prefill-decode interleaving and speculative decoding.
 
 ## Request-level Scheduling
-
-  1.[NeurIPS'23](https://www.proceedings.com/content/075/075280-2859open.pdf) Response Length Perception and Sequence Scheduling
+  
+  1. [NeurIPS'23](https://www.proceedings.com/content/075/075280-2859open.pdf) Response Length Perception and Sequence Scheduling
   
   keywords: Response Length Prediction, Sequence Scheduling, Static Batching
   
