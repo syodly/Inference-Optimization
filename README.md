@@ -6,22 +6,20 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 
 ### 1.[NeurIPS'23](https://www.proceedings.com/content/075/075280-2859open.pdf) Response Length Perception and Sequence Scheduling
 
-&emsp; keywords: 
+&emsp; keywords: Response Length Prediction, Sequence Scheduling, Static Batching
 
-&emsp; Motivation:
+&emsp; Motivation: Unknown response lengths cause severe padding and redundant computation when requests with different generation lengths are placed in the same static batch.
 
-&emsp; Design:
+&emsp; Design: Fine-tune Vicuna-7B to predict response lengths, group requests with similar predicted lengths, and use failure collection and variable batch sizes to handle prediction errors.
 
-&emsp; Result：
-
-To be updated
+&emsp; Result: Improves throughput from 1.22 to 2.27 samples/s on Alpaca, achieving an 86% improvement over conventional batching.
 
 
 ### More++....
 
 ## Token-level Scheduling
 
-### 1.[OSDI'22](https://www.proceedings.com/content/075/075280-2859open.pdf) Orca
+### 1.[OSDI'22](https://www.usenix.org/conference/osdi22/presentation/yu) Orca
 To be updated
 
 ### 2.[arXiv'24](https://www.proceedings.com/content/075/075280-2859open.pdf) DeepSpeed-FastGen
