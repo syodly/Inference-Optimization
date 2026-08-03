@@ -49,6 +49,10 @@ Investigation on LLM inference scheduling optimization for complex multi-agent t
 
    Result: 1) Improves serving capacity by up to 2.6× for Mistral-7B and 3.7× for Yi-34B over vLLM. 2) Achieves up to 6.31× higher serving capacity than Orca under pipeline parallelism. 3) Maintains lower P99 TBT under both chat and long-document summarization workloads.
 
+### How Does Chunked Prefill Preserve Token Dependencies?
+
+Chunked Prefill does not divide a Prompt into independent requests. It first tokenizes the complete Prompt and divides the resulting Token sequence into consecutive chunks. When processing the first chunk, the system stores its Key and Value tensors in the KV Cache at every Transformer layer. For each subsequent chunk, it computes Q, K, and V only for the new Tokens, while their Queries can still attend to the cached Keys and Values of all preceding chunks. A causal mask preserves dependencies within the current chunk, and the original positional indices continue across chunk boundaries. Therefore, Chunked Prefill changes only when different parts of the Prompt are computed, without breaking causal Attention dependencies. It allows long Prefill requests to be interleaved with Decode requests, although smaller chunks introduce additional forward and scheduling overhead. Orca does not split Prompt Prefill; DeepSpeed-FastGen and Sarathi-Serve implement different forms of token-budget-controlled Chunked Prefill.
+
 ## Resource-level Scheduling
 
 1. [TACO'25](https://dl.acm.org/doi/10.1145/3732941) ShuffleInfer: Disaggregate LLM Inference for Mixed Downstream Workloads
