@@ -64,3 +64,55 @@ Chunked Prefill does not divide a Prompt into independent requests. It first tok
    Design: 1) Partition Prompts into fixed-size chunks to keep Prefill instances near computation saturation. 2) Disaggregate Prefill and Decode into independent instances to isolate phase interference. 3) Group requests according to Prompt and Decode characteristics to reduce intra-instance interference. 4) Use a two-level scheduler with predicted resource usage to select instances and avoid Decode hotspots. 5) Dynamically coordinate requests across disaggregated resources for mixed downstream workloads.
 
    Result: 1) Uses 38% fewer resources than the evaluated baselines. 2) Reduces average TTFT by 97%. 3) Reduces average job completion time by 47% while improving performance per dollar.
+
+## DAG-aware and Agentic Workflow Scheduling
+
+1. [OSDI'24](https://www.usenix.org/conference/osdi24/presentation/lin-chaofan) Parrot: Efficient Serving of LLM-based Applications with Semantic Variable
+
+   keywords: Semantic Variable, Dataflow Analysis, Application-level Scheduling, Prefix Sharing
+
+   Motivation: LLM applications contain dependent calls, but request-level serving cannot see their semantic dependencies or exploit parallelism, prefix sharing, and application-level objectives.
+
+   Design: 1) Use Semantic Variables to expose dependencies and construct a dataflow graph. 2) Derive performance objectives from application semantics. 3) Apply application-centric scheduling and reuse shared prompt prefixes across calls.
+
+   Result: Reduces end-to-end latency for dependent and multi-agent workflows through semantic analysis, prefix sharing, and application-centric scheduling.
+
+2. [ICML'24](https://proceedings.mlr.press/v235/duan24a.html) MuxServe: Flexible Spatial-Temporal Multiplexing for Multiple LLM Serving
+
+   keywords: Multi-model Serving, Spatial-Temporal Multiplexing, Adaptive Batching, GPU Resource Sharing
+
+   Motivation: Multi-model serving has heterogeneous, time-varying demand. Static GPU allocation wastes resources, while co-located models and dissimilar Prefill/Decode phases cause interference.
+
+   Design: 1) Use LLM Units and popularity-aware model placement. 2) Split Prefill and Decode jobs and apply Adaptive Batch Size Scheduling. 3) Partition GPU compute and memory through a Unified Resource Manager. 4) Combine spatial and temporal multiplexing.
+
+   Result: Improves utilization and throughput while reducing interference, outperforming static placement and conventional temporal multiplexing.
+
+3. [ASPLOS'25](https://dl.acm.org/doi/10.1145/3676641.3716278) Towards End-to-End Optimization of LLM-based Applications with Ayo
+
+   keywords: Primitive-level DAG, Graph Optimization, Pipeline Parallelism, Topology-aware Batching
+
+   Motivation: LLM applications combine dependent LLM, retrieval, embedding, and reranking operations. Coarse sequential execution hides parallelism and prevents end-to-end graph optimization.
+
+   Design: 1) Represent applications as primitive-level graphs. 2) Apply dependency pruning, stage decomposition, partial prefilling, and partial decoding to expose parallelism and pipelines. 3) Use a two-tier runtime and depth-based topology-aware batching.
+
+   Result: 1) Achieves up to 1.79x, 1.67x, 2.09x, and 1.59x speedups for search-augmented generation, Naive RAG, Advanced RAG, and Contextual Retrieval. 2) Topology-aware batching lowers multi-query latency by up to 19.2%.
+
+4. [NSDI'26](https://www.usenix.org/conference/nsdi26/presentation/luo) Agentix: An Efficient Serving Engine for LLM Agents as General Programs
+
+   keywords: Dynamic Agent Programs, Program-level Scheduling, Online Critical Path, KV Locality
+
+   Motivation: Dynamic agents generate calls through branches, loops, tools, and parallel control flow, so their complete DAG is unknown. Request-level scheduling causes head-of-line blocking and does not minimize program completion time.
+
+   Design: 1) Track requests by program ID in a Process Table. 2) Use PLAS to prioritize serial programs by accumulated GPU service and ATLAS to estimate online critical paths for parallel programs. 3) Add preemption and anti-starvation with multi-level queues. 4) Balance engine load while preserving KV locality for long calls.
+
+   Result: Reduces completion time for dynamic serial and parallel agents while balancing fairness, online critical-path progress, engine load, and KV reuse.
+
+5. [NeurIPS'25](https://arxiv.org/abs/2507.07400) KVFlow: Efficient Prefix Caching for Accelerating LLM-Based Multi-Agent Workflows
+
+   keywords: Workflow-aware Prefix Caching, Agent Step Graph, KV-Cache Eviction, Proactive Prefetching
+
+   Motivation: LRU uses past access rather than future workflow order, so it may evict the next agent's reusable role prompt. Reactive CPU-to-GPU loading then exposes transfer latency on the critical path.
+
+   Design: 1) Compute steps-to-execution from an Agent Step Graph with AND/OR semantics. 2) Propagate priorities to shared KV-tree nodes and evict caches farther from execution. 3) Back up fixed prefixes in CPU memory and proactively prefetch likely next agents. 4) Schedule other ready requests while KV is loading. 5) Implement the design in SGLang.
+
+   Result: 1) Achieves up to 2.91x over GPU-only SGLang and 1.83x over HiCache for a single workflow. 2) Reaches 1.25x and 2.19x under concurrency, but only 1.12x and 1.08x on shorter-prefix PEER-style loads. 3) Evaluation is single-GPU and excludes cross-GPU KV communication.
