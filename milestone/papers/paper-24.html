@@ -1,0 +1,27 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentix: An Efficient Serving Engine for LLM Agents as General Programs - Paper Reading Note</title>
+  <link rel="stylesheet" href="../milestone.css">
+  <link rel="stylesheet" href="../source-paper.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>Paper reading note - copied from Markdown</span></div></div>
+      <nav class="toplinks" aria-label="Page navigation"><a href="../8.30_LLM_Optimization_Milestone_论文总表.html#phases">Back to Milestone</a><a href="../../8.11_DAG_scheduling.md">Open source Markdown</a></nav>
+    </header>
+    <main class="source-page">
+      <p class="eyebrow">Paper Reading Note - Source Markdown</p>
+      <h1>Agentix: An Efficient Serving Engine for LLM Agents as General Programs</h1>
+      <div class="source-meta"><span>Paper 24</span><span>Source: 8.11_DAG_scheduling.md</span><span>Original images, formulas and tables preserved</span></div>
+      <p class="source-note">This page is directly converted from the corresponding Markdown section; the original wording and figures are retained.</p>
+      <article class="source-content"><h2 id="agentix-an-efficient-serving-engine-for-llm-agents-as-general-programsnsdi-2026">Agentix: An Efficient Serving Engine for LLM Agents as General Programs（NSDI 2026）</h2><p>论文链接：<a href="https://www.usenix.org/conference/nsdi26/presentation/luo">USENIX NSDI 2026</a> ｜ <a href="https://www.usenix.org/system/files/nsdi26-luo.pdf">PDF</a></p><p><strong>上次分享过了</strong></p><h3 id="background-motivation"><strong>Background / Motivation</strong></h3><p>Agent 程序会在运行时根据模型输出、工具调用和控制流动态产生新的 LLM 请求，完整 DAG 通常无法提前获知。现有 request-level scheduler 将这些调用视为相互独立的请求：长调用会阻塞短调用，而长程序后续不断产生的新调用还会继续阻塞接近完成的短程序，形成 request-level 和 program-level 两层 head-of-line blocking。因此，调度目标应从单次调用延迟转向整个 Agent 程序的端到端完成时间。</p><h3 id="core-design"><strong>Core Design</strong></h3><p>Agentix 不要求开发者提前提交完整 DAG，而是在 Agent 程序运行、不断发出 LLM 调用的过程中记录程序状态，再用这些状态调度后续调用。</p><ol type="1"><li><p><strong>识别同一程序的调用。</strong> 开发者通过 Agentix 提供的 OpenAI/vLLM 兼容接口发起请求；程序启动时建立 session，之后每次 LLM 调用都携带同一个 program ID。后端的 Process Table 因而知道多个看似独立的 request 实际属于同一程序，并记录该程序已经执行了多久、等待了多久、有哪些并行调用以及此前在哪个 engine 上运行。</p></li><li><p><strong>PLAS 调度串行程序。</strong> 对于 <code>A1→A2→A3</code> 这类单线程程序，PLAS 将已完成调用的 GPU 执行时间相加。例如程序 A 已累计执行 10 秒、程序 B 尚未获得服务，两者的新调用同时到达时，B 优先。它优先服务目前获得 GPU 时间较少的程序，使真正较短的程序更可能尽早完成。</p></li><li><p><strong>ATLAS 调度并行程序。</strong> 对多分支动态 DAG，未来结构未知，Agentix 无法提前计算真实关键路径。ATLAS 根据目前已完成的父调用，累计每条已观察依赖链的执行时间，并把其中最长值作为程序关键路径的在线近似。新分支到达后继续更新该值；同一程序的并行调用获得相近优先级并尽量一起推进，避免其中一个分支长期落后。</p></li><li><p><strong>用多级队列实施抢占。</strong> PLAS/ATLAS 得到的优先级被映射到若干队列。调用只运行一个 time quantum；尚未完成时可以降到更低优先级队列，让服务较少的程序先执行。如果某个长程序的等待时间相对已获服务时间过高，anti-starvation（程序累计等待时间 ÷ 已获得服务时间） 机制会把它提升，避免永久得不到执行。</p></li><li><p><strong>在多个 Engine 间兼顾负载与 KV Cache。</strong> 每个 engine 是一个拥有独立队列和 KV Cache 的 vLLM 实例。小于等于 2048 Token 的短调用被送到当前最空闲的 engine；长调用则尽量固定在该程序先前使用的 engine，那里保存了较长的对话前缀 KV Cache，可避免重新 Prefill。</p></li></ol>
+</article>
+    </main>
+    <footer>Source-derived reading page - Agentix: An Efficient Serving Engine for LLM Agents as General Programs</footer>
+  </div>
+</body>
+</html>

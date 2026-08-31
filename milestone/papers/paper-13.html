@@ -1,0 +1,31 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeepSpeed-FastGen - Paper Reading Note</title>
+  <link rel="stylesheet" href="../milestone.css">
+  <link rel="stylesheet" href="../source-paper.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>Paper reading note - copied from Markdown</span></div></div>
+      <nav class="toplinks" aria-label="Page navigation"><a href="../8.30_LLM_Optimization_Milestone_论文总表.html#phases">Back to Milestone</a><a href="../../8.09_推理优化.md">Open source Markdown</a></nav>
+    </header>
+    <main class="source-page">
+      <p class="eyebrow">Paper Reading Note - Source Markdown</p>
+      <h1>DeepSpeed-FastGen</h1>
+      <div class="source-meta"><span>Paper 13</span><span>Source: 8.09_推理优化.md</span><span>Original images, formulas and tables preserved</span></div>
+      <p class="source-note">This page is directly converted from the corresponding Markdown section; the original wording and figures are retained.</p>
+      <article class="source-content"><h2 id="deepspeed-fastgenmicrosoft-deepspeed-技术报告-arxiv2024">DeepSpeed-FastGen（Microsoft DeepSpeed 技术报告 / arXiv，2024）</h2><h3 id="技术报告"><strong>技术报告</strong></h3><ul><li><em>DeepSpeed-FastGen: High-throughput Text Generation for LLMs via MII and DeepSpeed-Inference</em></li><li>Microsoft / DeepSpeed</li><li>arXiv preprint（<code>arXiv:2401.08671</code>，2024）。</li><li>价值在于提出并实现了有影响力的 token composition 机制。它决定每次 forward 中放入多少 Prefill token、多少 Decode token。</li></ul><h3 id="continuous-batching-之后为什么仍会卡顿"><strong>Continuous Batching 之后，为什么仍会卡顿？</strong></h3><p>Orca 的 iteration-level scheduling 解决了请求能否在每轮动态进入、退出的问题，但没有保证每个 iteration 的计算量稳定。</p><p>假设当前有 32 个请求正在 Decode，每个请求本轮只需要生成 1 个 token；此时新到达一个 2,600-token Prompt。如果系统一次执行完整 Prefill；这一轮会显著拉长正在生成请求的 TBT，用户表现为输出突然停顿。如果始终优先执行 Decode，虽然 TBT 稳定，但新 Prompt 会长时间排队，TTFT 增大。</p><p>所以论文要解决的是：</p><blockquote><p>在 continuous batching 中，怎样组合 Prefill 和 Decode，使每个 forward 的 token 工作量较稳定，同时兼顾吞吐、TTFT 和生成阶段的尾延迟？</p></blockquote><h3 id="key-insight"><strong>Key Insight</strong></h3><ol type="1"><li><strong>一次 forward 的 latency 主要由本轮处理的总 token 数决定。</strong> 相比有多少条请求，Linear 等主要算子更关心这一轮一共处理多少 token。</li><li><strong>Forward token 太少时 GPU 没有吃满。</strong> 增加 token 数会提高 GPU 利用率和吞吐；达到饱和区后，再增加 token 只会增加该轮 latency，吞吐不再明显增长。</li><li><strong>每轮 token 数忽大忽小会造成吞吐和延迟波动。</strong> 因此应把每次 forward 控制在接近目标 token budget 的大小。</li></ol><p>Token budget : 一次模型 forward 最多安排多少 token。</p><h3 id="core-designdynamic-splitfuse"><strong>Core design：Dynamic SplitFuse</strong></h3><ul><li><strong>Split</strong>：把长 Prompt 拆成多个较小 Prefill chunk，分散到多个 iteration。</li><li><strong>Fuse</strong>：把 Prefill chunk、短 Prompt 和已有 Decode token 组合到同一个 forward，尽量填满固定 token budget。</li></ul><figure><img src="../../图片/推理优化图/04_DeepSpeed_Dynamic_SplitFuse.png" alt="Dynamic SplitFuse" /><figcaption aria-hidden="true">Dynamic SplitFuse</figcaption></figure><p>图中每个方块表示一次 forward，方块宽度可以理解为本轮 token 工作量：</p><ol type="1"><li><strong>vLLM</strong>：一次 forward 主要执行 generation（decode） 或 prompt processing（prefill）；generation 会优先于 prompt，forward 大小变化明显。</li><li><strong>Orca</strong>：可以把 Prompt 与 Decode 放在一起，但使用完整 Prompt；长 Prompt 会让某个 iteration 特别长。</li><li><strong>Dynamic SplitFuse</strong>：将 Prompt 切块，并与 Decode 组合，短prompt就自行组合，使橙色 forward 大小更加稳定。</li></ol><h4 id="分析">分析</h4><ul><li>Forward token 数接近 GPU 高吞吐区，减少小 batch 造成的低利用率。</li><li>长 Prompt 不再形成一个极慢 iteration，正在 Decode 的请求更稳定地收到 token。</li><li>Prompt 不会因 Decode 永久优先而完全饿死，每轮都可以逐块推进。</li></ul><h3 id="experiment"><strong>Experiment</strong></h3><table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><thead><tr class="header"><th>项目</th><th>设置</th></tr></thead><tbody><tr class="odd"><td>主要模型</td><td>Llama-2 70B</td></tr><tr class="even"><td>主要硬件</td><td>4×NVIDIA A100 80GB，Tensor Parallel=4</td></tr><tr class="odd"><td>其他模型/硬件</td><td>Llama-2 13B/单 A100 80GB；Llama-2 70B/8×H100；Llama-2 7B/A6000</td></tr><tr class="even"><td>Baseline</td><td>论文实验时的 vLLM 版本</td></tr><tr class="odd"><td>Prompt 长度</td><td>均值 1,200 或 2,600 token</td></tr><tr class="even"><td>Output 长度</td><td>均值 60 或 128 token</td></tr><tr class="odd"><td>长度分布</td><td>正态分布</td></tr><tr class="even"><td>负载变化</td><td>改变并发客户端数量，绘制 throughput-latency 曲线</td></tr><tr class="odd"><td>主要指标</td><td>Request throughput、端到端 latency、effective throughput、P50/P90/P95 per-token generation latency</td></tr></tbody></table><h3 id="结果"><strong>结果</strong></h3><figure><img src="../../图片/推理优化图/13_DeepSpeed吞吐延迟结果.png" alt="DeepSpeed-FastGen吞吐延迟结果" /><figcaption aria-hidden="true">DeepSpeed-FastGen吞吐延迟结果</figcaption></figure><p>图的横轴是 throughput（queries/s）；纵轴是 latency。</p><p>在Prompt 均值 2,600、Output 均值 60 的配置中：</p><table><colgroup><col style="width: 21%" /><col style="width: 28%" /><col style="width: 28%" /><col style="width: 21%" /></colgroup><thead><tr class="header"><th>点</th><th style="text-align: right;">vLLM</th><th style="text-align: right;">DeepSpeed-FastGen</th><th>结论</th></tr></thead><tbody><tr class="odd"><td>吞吐约 1.2 req/s 时</td><td style="text-align: right;">latency 14 s</td><td style="text-align: right;">latency 7 s</td><td>同吞吐下 latency 约降低 50%</td></tr><tr class="even"><td>latency 约 9 s 时</td><td style="text-align: right;">throughput 0.67 req/s</td><td style="text-align: right;">throughput 1.36 req/s</td><td>同延迟下 throughput 约 2×</td></tr></tbody></table><p>整体报告：</p><ul><li>最高约 <strong>2.3× effective throughput</strong>；</li><li>平均 latency 最多约降低 2×；</li><li>P95 per-token generation latency 最多降低 <strong>3.7×</strong>；</li><li>16 个 replica 从单 replica 约 1.46 queries/s 扩展到约 23.7 queries/s，接近线性扩展。</li></ul><p><code>Effective throughput</code> 不是不考虑延迟的原始吞吐，而是同时满足首 token latency 和 generation rate SLA 的有效请求吞吐。</p><h3 id="一些点"><strong>一些点</strong></h3><p>可以保留 Dynamic SplitFuse 的 token composition，把固定 token budget 扩展为 DAG/SLO-aware 动态预算调度：</p><pre class="text"><code>关键路径 Decode 接近 TBT deadline → 减小本轮 Prefill chunk，优先稳定 Decode
+
+GPU 当前低并发、没有紧急 Decode → 增大 Prefill chunk，尽快完成关键 Agent 的 Prompt
+
+某个 Prefill 完成后会解锁多个下游 Agent → 在相同预算内提高其优先级</code></pre>
+</article>
+    </main>
+    <footer>Source-derived reading page - DeepSpeed-FastGen</footer>
+  </div>
+</body>
+</html>

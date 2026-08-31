@@ -1,0 +1,27 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models - Paper Reading Note</title>
+  <link rel="stylesheet" href="../milestone.css">
+  <link rel="stylesheet" href="../source-paper.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>Paper reading note - copied from Markdown</span></div></div>
+      <nav class="toplinks" aria-label="Page navigation"><a href="../8.30_LLM_Optimization_Milestone_论文总表.html#phases">Back to Milestone</a><a href="../../8.11_Continuum_引用与相关会议论文.md">Open source Markdown</a></nav>
+    </header>
+    <main class="source-page">
+      <p class="eyebrow">Paper Reading Note - Source Markdown</p>
+      <h1>Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models</h1>
+      <div class="source-meta"><span>Paper 32</span><span>Source: 8.11_Continuum_引用与相关会议论文.md</span><span>Original images, formulas and tables preserved</span></div>
+      <p class="source-note">This page is directly converted from the corresponding Markdown section; the original wording and figures are retained.</p>
+      <article class="source-content"><h2 id="agentic-context-engineering-evolving-contexts-for-self-improving-language-models">1. Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models</h2><ul><li><strong>会议</strong>：The Fourteenth International Conference on Learning Representations（ICLR 2026）主会</li><li><strong>时间</strong>：2026 年 4 月 23-25 日；ICLR 2026 完整活动为 4 月 23-27 日</li><li><strong>地点</strong>：Rio de Janeiro, Brazil</li><li><strong>作者</strong>：Qizheng Zhang, Changran Hu, Shubhangi Upasani, Boyuan Ma, Fenglu Hong, Vamsidhar Kamanuru, Jay Rainton, Chen Wu, Mengmeng Ji, Hanchen Li, Urmish Thakker, James Y. Zou, Kunle Olukotun</li><li><strong>论文链接</strong>：<a href="https://proceedings.iclr.cc/paper_files/paper/2026/hash/8a94ff6f922d995d7d3f4ebf4143e442-Abstract-Conference.html">ICLR Proceedings</a></li></ul><h3 id="大概内容">大概内容</h3><p>论文提出 <strong>ACE（Agentic Context Engineering）</strong>，把 Agent 的上下文看成能够持续演化的结构化“操作手册”，而不是一次性提示词或不断被整体重写的摘要。ACE 使用 Generator、Reflector 和 Curator 三个角色，分别负责生成轨迹、从成功与失败中提取经验，以及把经验增量写入上下文。</p><p>其关键设计是增量更新与 grow-and-refine：新经验以细粒度条目加入，旧条目可以局部修改、去重和整理，从而缓解反复重写导致的信息丢失和 context collapse。论文在 AppWorld Agent 任务以及金融、医疗、Text-to-SQL 等任务上进行实验，报告了准确率提升以及适应延迟、rollout 成本下降。</p><h3 id="与-continuum-的关系">与 Continuum 的关系</h3><p>论文将 KV cache 复用视为长上下文和上下文适应能够实用部署的重要系统基础，并在参考文献中明确收录 Continuum。但 Continuum 不是 ACE 的实验基线，属于背景性引用。</p>
+</article>
+    </main>
+    <footer>Source-derived reading page - Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models</footer>
+  </div>
+</body>
+</html>

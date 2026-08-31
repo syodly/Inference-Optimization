@@ -1,0 +1,27 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UniCache: Unifying Prefix Cache Eviction for Heterogeneous LLM Serving Workloads - Paper Reading Note</title>
+  <link rel="stylesheet" href="../milestone.css">
+  <link rel="stylesheet" href="../source-paper.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>Paper reading note - copied from Markdown</span></div></div>
+      <nav class="toplinks" aria-label="Page navigation"><a href="../8.30_LLM_Optimization_Milestone_论文总表.html#phases">Back to Milestone</a><a href="../../8.11_Continuum_引用与相关会议论文.md">Open source Markdown</a></nav>
+    </header>
+    <main class="source-page">
+      <p class="eyebrow">Paper Reading Note - Source Markdown</p>
+      <h1>UniCache: Unifying Prefix Cache Eviction for Heterogeneous LLM Serving Workloads</h1>
+      <div class="source-meta"><span>Paper 34</span><span>Source: 8.11_Continuum_引用与相关会议论文.md</span><span>Original images, formulas and tables preserved</span></div>
+      <p class="source-note">This page is directly converted from the corresponding Markdown section; the original wording and figures are retained.</p>
+      <article class="source-content"><h2 id="unicache-unifying-prefix-cache-eviction-for-heterogeneous-llm-serving-workloads">4. UniCache: Unifying Prefix Cache Eviction for Heterogeneous LLM Serving Workloads</h2><ul><li><strong>会议</strong>：ACM SIGMETRICS 2026（ACM International Conference on Measurement and Modeling of Computer Systems）</li><li><strong>时间</strong>：2026 年 6 月 8-12 日</li><li><strong>地点</strong>：Ann Arbor, Michigan, USA</li><li><strong>作者</strong>：Bei Ouyang, Yifan Qiao, Jiarong Xing</li><li><strong>论文链接</strong>：<a href="https://jxing.me/pdf/unicache-sigmetrics26.pdf">论文 PDF</a></li></ul><h3 id="大概内容">大概内容</h3><p>UniCache 研究异构 LLM serving 负载下的 prefix KV cache 淘汰。不同请求的复用规律并不相同：多轮会话主要具有 session 内的时间局部性，模板化请求则可能在不同任务之间共享结构前缀，因此一个统一的 LRU 或单一优先级信号难以兼顾所有负载。</p><p>UniCache 使用两阶段策略：先将缓存按照任务类型组织到具有不同局部优先级规则的队列中，再使用全局 hit-efficiency 指标协调各队列之间的淘汰。系统实现在 vLLM 中；论文报告在混合 trace 下，prefix-cache hit ratio 提升 3.86%-17.32%，QTTFT 改善 1.10-3.63 倍。</p><h3 id="与-continuum-的关系">与 Continuum 的关系</h3><p>UniCache 明确讨论并引用 Continuum：Continuum 根据外部调用的预测时长为 KV block 分配 TTL，适合 Agent 工具调用场景；UniCache 认为它针对特定工作流结构，难以直接覆盖任意异构 serving 负载，因此提出更加通用的多队列淘汰策略。</p>
+</article>
+    </main>
+    <footer>Source-derived reading page - UniCache: Unifying Prefix Cache Eviction for Heterogeneous LLM Serving Workloads</footer>
+  </div>
+</body>
+</html>
