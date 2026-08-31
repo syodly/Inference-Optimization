@@ -15,7 +15,7 @@ const $ = (id) => document.getElementById(id);
 const dateValue = (value) => value.length === 4 ? `${value}-01-01` : value.length === 7 ? `${value}-01` : value;
 const paperById = new Map(PAPERS.map((paper) => [paper[0], paper]));
 const milestoneById = new Map(MILESTONES.map((milestone) => [milestone.id, milestone]));
-const pdfPath = (path) => `../${path}`;
+const pdfPath = (path) => path;
 const paperHref = (paper) => paper[5] !== "todo" ? `papers/paper-${paper[0]}.html` : pdfPath(paper[7]);
 
 function phasePaper(paper) {
