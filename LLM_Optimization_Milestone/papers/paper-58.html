@@ -1,0 +1,28 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Nuska</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Nuska</h1><article class="source-content"><h1>Nuska: Stage-Aware Communication Scheduling for Disaggregated LLM Serving</h1>
+<p>论文：<a href="https://arxiv.org/abs/2603.17456">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/Nuska.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>Nuska 将 disaggregated LLM serving 中的网络流量视为带阶段依赖的 multi-stage flow，而不是互不相关的传输；它用 Reverse Multi-Level Queue 近似 Least-Laxity-First，以提高端到端 TTFT SLO 达成率。</p>
+<h2>为什么 request deadline 不能直接用于每一条流</h2>
+<p>在 prefill-decode disaggregation 或 KV reuse 场景，一个请求的 TTFT 包含跨层重复出现的通信：KV block retrieval、MoE/parallelism 的 collective communication、prefill 结果向 decode worker 的 P2D transfer。这些 flow 在共享链路上彼此竞争，但重要性不同：有些是当前 layer 计算的前置条件，有些可与计算重叠，有些直到最后才决定首 token 是否能发出。</p>
+<p>请求只有一个 TTFT deadline，早期流却没有明确的局部 deadline。若将所有流同等 FCFS 或只按请求 deadline 排序，可能让松弛请求的早期流过早占满链路，使真正接近 deadline 的 P2D 或 collective flow 违约。</p>
+<h2>MsFlow 形式化</h2>
+<p>论文将每层通信抽象为时间依赖的 Multi-stage Flow：</p>
+<ol>
+<li><strong>Initialization：</strong> 获取可复用 KV，通常可与前层计算重叠；</li>
+<li><strong>Execution：</strong> collective communication，例如 all-to-all，严格阻塞后续计算；</li>
+<li><strong>Completion：</strong> 把 prefill 结果 P2D 传给 decode worker，当前层计算未必等它，但它决定首 token 最终能否到达。</li>
+</ol>
+<p>层与层、请求与请求的这些 flow 共享链路，因此 scheduler 的对象应是 stage-aware flow/cflow，不只是 request。</p>
+<h2>Defer-and-Promote 与 RMLQ</h2>
+<p>理想策略是 Least-Laxity-First，但精确剩余 slack 难以在线获得。Nuska 采用 <strong>先延迟、再提升</strong>：新 flow 先进入低优先级队列，只有有效 slack 缩小时才晋升。Reverse Multi-Level Queue 与传统 MLFQ 相反，传统 MLFQ 随运行时间降级，RMLQ 随紧急性升高升级。</p>
+<ul>
+<li>对 Completion 这类有明确 deadline 的 flow，用 Minimal Link Utilization 计算何时必须提升，避免太早抢占带宽；</li>
+<li>对 Initialization/Execution 这类隐式 deadline flow，用 Relative Layer Index 推断其距离阻塞点的紧急程度；</li>
+<li>多阶段规则在同一 RMLQ substrate 上执行，避免每类通信各自局部最优却互相冲突。</li>
+</ul>
+<p>这个设计实际是在网络层实现“deadline 随 workflow 执行逐步显化”的调度。</p>
+<h2>实现和评估</h2>
+<p>论文将 Nuska 作为可插拔模块集成到 vLLM，在 8 server、32 GPU testbed 和大规模仿真中评估，报告 TTFT SLO attainment 提升 1.2x–2.4x。实验应重点分解：不同 stage 的带宽占用、排队时延、TTFT deadline miss、链路利用率和 RMLQ promotion 次数。若只看平均网络吞吐，无法体现它避免错过 deadline 的价值。</p>
+<h2>与 codesign 的关系与边界</h2>
+<p>Nuska 不知道 Agent 的业务 DAG 或下一工具调用，因而不是完整 application/frontend codesign；它解决的是下层 data movement。它与 TOPAS/PBKV 的组合方式是：上层决定哪个 workflow state/request 有价值，下层将其 KV retrieval、collective、P2D 转成带阶段语义的 flow，并在共享网络中按 TTFT 风险排序。</p>
+<p>它不属于云边协同：关注的是同一 serving 系统的内部 GPU/网络 disaggregation。需要注意其剩余 slack 是近似的；模型预测、实际链路带宽或 layer execution 偏离时，RMLQ 的 promotion 参数需要重新校准。</p></article></main></div></body></html>

@@ -1,0 +1,19 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>NALAR: An Agent Serving Framework</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>NALAR: An Agent Serving Framework</h1><article class="source-content"><h1>Nalar: An Agent Serving Framework</h1>
+<p>论文：<a href="https://arxiv.org/abs/2601.05109">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/Nalar.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>Nalar 的重点是定义 Agent serving 的编程与控制接口：开发者保留普通 Python 的动态性，runtime 则从 futures、state 和 directives 中获得依赖、上下文与资源控制权。</p>
+<h2>为什么普通 RPC/任务框架不够</h2>
+<p>Agent workflow 的子任务由模型输出动态产生，包含 LLM、工具、CPU 工作和外部服务；调用可能长时间等待或失败重试。若每次调用只是一次 API/RPC，serving 系统看不到父子关系、后续消费者、可迁移状态或优先级。若要求开发者手写调度和通信，又破坏 Python Agent 框架的易用性。</p>
+<p>Nalar 要解决的矛盾是：<strong>不限制语言表达能力，但把运行时需要的结构性信息显式化。</strong></p>
+<h2>前端编程模型</h2>
+<p>开发者按普通 Python 调用 agent/tool。初始化时可提供可选 directive，例如是否可抢占、是否可 batch、GPU/CPU 最大资源。调用不会立即阻塞，而是返回 future。future 携带调用依赖、上下文、状态引用和完成事件；因此多个 developer agent 可以先被发射，后由某个 aggregation future 等待。</p>
+<p>managed state 层将逻辑状态从物理位置剥离。状态不等于某一 worker 内存对象：runtime 可以复用、迁移、重试，并维持一致的恢复语义。这是处理 tool failure、worker preemption 和长生命周期会话的基础。</p>
+<h2>两级控制面</h2>
+<p><strong>全局控制层</strong>维护系统范围的资源、agent instances、future graph 与策略；可根据排队、SLO、优先级和状态位置决定路由、迁移和资源管理。<strong>本地事件驱动层</strong>紧贴 worker/agent instance，在 future 创建、完成、失败等事件上快速执行策略，避免所有细粒度事件都同步询问中心控制器。</p>
+<p>这种分层避免两种极端：只有全局控制会成为瓶颈；只有本地最短队列策略会看不到跨 agent 的阻塞和状态搬运。论文用“高优先级 future 被长请求堵住”的例子说明：全局层可识别空闲实例，本地层负责把对应 future 迁移过去。</p>
+<h2>评估说明</h2>
+<p>论文在三种 Agent workload 上报告 p99 延迟降低 34%–74%、最高 2.9x speedup，在基线失败时维持 80 RPS，并展示约 130K futures 下控制面开销低于 500 ms。这些结果首先证明的是 runtime abstraction 和控制架构的可扩展性；不能直接与只优化单模型 token throughput 的系统做一对一比较。</p>
+<p>复现时应记录 future 数量、graph fan-out、状态大小、迁移频率、控制消息、失败/重试比例和不同策略插件，否则很难解释端到端 tail latency。</p>
+<h2>对 codesign 的启示</h2>
+<p>Nalar 可直接转化为项目 API 设计：<code>future_id</code>、<code>parent/dependency</code>、<code>context/state handle</code>、<code>preemptable/batchable</code>、<code>resource envelope</code>、<code>deadline/priority</code>。上层不用绑定 vLLM/SGLang；下层可插入 Helium 的图优化、TOPAS 的 KV/关键路径调度或 Strata 的数据面。</p>
+<p>它不提供最优具体调度算法，反而是优点：论文解决了“算法能拿到哪些语义、如何执行策略”的系统前提，具体性能仍取决于所接入的 scheduler、KV manager 和状态存储。</p></article></main></div></body></html>

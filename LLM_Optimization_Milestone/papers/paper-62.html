@@ -1,0 +1,46 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TokenRouter: Efficient Serving System for Token-Level LLM Routing</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>TokenRouter: Efficient Serving System for Token-Level LLM Routing</h1><article class="source-content"><h2>二、TokenRouter</h2>
+<p><em>TokenRouter: Efficient Serving System for Token-Level LLM Routing</em>。Tianyu Fu、Tengxuan Liu 等，清华大学、卡内基梅隆大学。<strong>NeurIPS 2026</strong>；<a href="https://arxiv.org/abs/2610.12242v1">arXiv:2610.12242v1</a>，2026-10-08 提交。<a href="https://github.com/thu-nics/TokenRouter">代码</a>。</p>
+<h3>解决问题</h3>
+<p>场景是 <strong>同一段回答的生成过程中，按 token 或短片段切换大小模型或不同专家模型</strong>。简单位置交给小模型，困难位置调用大模型，再返回继续生成；不同于每次请求只选择一个模型，也不同于固定的 speculative decoding 。</p>
+<p><strong>相关工作与 insight：</strong> R2R、CITER 等算法利用生成难度的变化减少大模型调用，但标准 serving 系统主要按单模型持续生成组织执行，无法自然承接频繁的模型切换。</p>
+<p>少调用大模型不一定带来更快的服务，同步等待、零散入批和重复 KV 管理可能吞掉计算收益。</p>
+<p>TokenRouter 将路由逻辑与模型执行解耦，让请求切换时保留各模型已有状态，并按模型重新组批；</p>
+<p><img alt="TokenRouter Figure 2：路由粒度与系统架构" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/TokenRouter_Figure2_verified.png" /></p>
+<p>左图从 session、query 到 token 逐步细化路由粒度；右图为每个模型设置独立 subserver。token 级决策把算法收益转化为三类系统开销：<strong>同步执行时小模型必须等大模型；异步执行时切换请求到达不规则，容易错过当前 batch；每次返回若被当作新请求，还会反复做前缀匹配和 KV 管理。</strong> 路由算法同时与连续 batching、缓存和调度耦合，开发者难以直接接入标准 serving 系统。</p>
+<h3>解决方案</h3>
+<p><strong>按请求描述算法，按模型组织执行</strong>。设计 <code>route / send / receive</code> 接口指定何时切换、传递什么状态、如何接收结果；</p>
+<p>1、避免跨模型逐步同步，如果要跨模型再同步时间消耗大，取消同步屏障，自己做自己的。</p>
+<p>请求离开本模型时标为 <strong>pending</strong>，保留其服务与 KV 状态；返回时追加对端生成的 tokens 并恢复执行，减少重复前缀匹配和 KV 分配。</p>
+<p><img alt="TokenRouter Figure 4：同步、异步与延迟组批" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/TokenRouter_Figure4_verified.png" /></p>
+<p>2、模型立即异步执行会产生零散 batch。</p>
+<p>TokenRouter 对大模型到达请求先缓冲，达到阈值再组批，摊薄执行与入批开销。</p>
+<p>阈值由并发数、路由概率和模型单步延迟构成的吞吐模型选择；</p>
+<h3>实验数据集、场景与效果</h3>
+<table>
+<thead>
+<tr>
+<th>workload</th>
+<th>数据与输入输出规模</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low-effort reasoning</td>
+<td>AIME2024，输入约 100 tokens，最大输出 2,048</td>
+</tr>
+<tr>
+<td>High-effort reasoning</td>
+<td>AIME2024 中较长推理题，最大输出 8,192</td>
+</tr>
+<tr>
+<td>Agentic tasks</td>
+<td>SWE-Smith 多轮轨迹，输入约 8,192，最大输出 1,024</td>
+</tr>
+</tbody>
+</table>
+<p>测试平台为 <strong>8 张 A100 80 GB 的服务器</strong>。主要双模型比较使用 Qwen3-0.6B、Qwen3-32B，通过 CUDA MPS 共用两张 GPU，小模型 TP1、大模型 TP2；三模型 ME 使用 0.6B、8B、32B。支持 CITER、R2R、R-Stitch、Co-LLM、ME 五种路由算法,路由调度策略非创新，也在原算法的模型与数据配置上补充测试。</p>
+<p>基线包括算法官方实现，以及作者构建的 <strong>Std. Serving</strong>：每个模型部署标准 SGLang server，外部 dispatcher 逐 token 路由。</p>
+<p><img alt="TokenRouter Figure 5：并发 4 时的生成吞吐" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/TokenRouter_Figure5_verified.png" /></p>
+<p><img alt="TokenRouter Figure 6：并发 4 时的请求完成延迟" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/TokenRouter_Figure6_verified.png" /></p>
+<p>三个 workload、五个路由算法的 15 种组合中，相对较强基线，吞吐提高 <strong>2.01–64.15 倍</strong>；相对 Std. Serving，请求完成延迟降低 <strong>2.03–63.64 倍</strong>。纵轴吞吐是生成 token/s，延迟是请求完成时</p>
+<p>消融显示收益包含 CUDA Graph、异步执行和延迟组批。R2R、并发 8 下，基础实现约 <strong>132.8 token/s</strong>，扩展 Graph 后 <strong>230.8</strong>，加异步执行后 <strong>296.9</strong>，加延迟组批后 <strong>372.5</strong>。TokenRouter 的重点是把已有 token 路由算法高效部署。</p></article></main></div></body></html>

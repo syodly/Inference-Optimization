@@ -1,0 +1,63 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Akashic: A Low-Overhead LLM Inference Service with MemAttention</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Akashic: A Low-Overhead LLM Inference Service with MemAttention</h1><article class="source-content"><h2>二、Akashic</h2>
+<p><em>Akashic: A Low-Overhead LLM Inference Service with MemAttention</em>。Yang Liu 等，小红书、上海交通大学、北京大学。<a href="https://arxiv.org/abs/2607.05708">arXiv:2607.05708v1</a>，2026-07-07 提交。</p>
+<h3>解决问题</h3>
+<p>场景是<strong>长期对话和多步骤 Agent 不断积累历史</strong>：多轮交互、工具调用和跨会话工作流会把上下文持续推长。每轮携带完整历史会增加 prefill、超过模型窗口，并把真正相关的证据埋在无关内容中；即使模型支持很长上下文，读取和处理这些 token 仍然昂贵。</p>
+<p>现有记忆方案有两种的风险。<br />
+<strong>整段总结</strong> 需要反复处理越来越长的历史，更新成本随历史规模增长，而且不同主题容易混在同一个 memory object 中，带来噪音。  </p>
+<p><strong>独立按段</strong> 总结虽然把单次维护成本限制住，却可能把一个事实或事件拆到多个段里，后续检索只取到其中一段，丢失跨段依赖。同时分散的存储也会带来存储检索和 IO 的问题</p>
+<p><img alt="Akashic Figure 2：不同任务与交互阶段的信息密度差异" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/Akashic_Figure2_motivation.png" /></p>
+<p>图 2 展示了为什么不能对所有历史采用固定的压缩比例。不同数据集的数据密度不一样，左图中，LoCoMo 对话有较多可压缩内容，而 SWE-bench 软件工程轨迹需要保留的内容明显更多；右图中，BrowseComp 和 WebArena 在同一条任务轨迹的不同阶段，保留比例也会波动。</p>
+<p><img alt="Akashic Figure 3：引入记忆处理后的推理吞吐开销" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/Akashic_Figure3_motivation.png" /></p>
+<p>图 3 展示另一个问题：<strong>输入变短，不代表整个流程一定更快</strong>。灰色柱是常规推理，黄色柱是加入记忆处理后的推理；在 SWE-bench、BrowseComp 和 WebArena 场景下（压缩比很高的任务），黄色柱明显更低。原因是生成、更新和使用记忆本身也需要处理，可能抵消缩短上下文节省的计算。说明现有记忆流程开销的动机实验。</p>
+<p>存储层的gap：语义上经常一起检索的记忆块，可能因为生成时间不同而散落在不同磁盘页或 block 中。</p>
+<p>一次 cross-chunk 推理即使只需要少数记忆，也可能触发多次分散读取，增加 I/O、读放大和并发下的检索延迟。</p>
+<h3>解决方案</h3>
+<p><strong>MemAttention 增量记忆 + 关联放置</strong>：<br />
+默认按 1024 tokens 分块，达到阈值后压缩当前块；<br />
+模型从旧记忆元数据中选择 top-5 语义相关块进行联合更新（joint compact），修正或删除过时信息。（块交叉信息恢复，更新）</p>
+<p>回答时再按 query 选择top-5语义匹配的块，按时间排列并加入 prompt。<br />
+存储侧将关联块 (上面联合更新的)共置，采用异地写入和垃圾回收减少读取碎片。</p>
+<p><img alt="Akashic Figure 5：增量记忆系统" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/Akashic_Figure5_exact.png" /></p>
+<p>图 5：分块压缩、跨块推理、物理整理与记忆检索构成整体流程。</p>
+<h3>实验数据集、场景与效果</h3>
+<p>论文覆盖四类 workload，质量指标随任务不同而变化：</p>
+<table>
+<thead>
+<tr>
+<th>数据集</th>
+<th>场景</th>
+<th>质量指标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LoCoMo</td>
+<td>长期多会话对话记忆与问答</td>
+<td>QA F1</td>
+</tr>
+<tr>
+<td>SWE-bench</td>
+<td>信息密度较高的软件工程轨迹</td>
+<td>问题解决率（%Resolved）</td>
+</tr>
+<tr>
+<td>BrowseComp</td>
+<td>网页检索与浏览推理</td>
+<td>Accuracy</td>
+</tr>
+<tr>
+<td>WebArena</td>
+<td>多步骤网页交互任务</td>
+<td>任务成功率</td>
+</tr>
+</tbody>
+</table>
+<p>使用 <strong>Qwen-8B、OPT-30B、Llama-70B</strong>：8B/30B 配 1 张 H800 80 GB，70B 配 2 张 H800，服务器配 4 TB NVMe SSD。单请求质量/吞吐图覆盖 LoCoMo、SWE-bench、BrowseComp；并发请求率实验覆盖 LoCoMo、SWE-bench、WebArena，不能把每张图都当作四数据集全覆盖。（表 1、§5.1–5.3）</p>
+<p><img alt="Akashic Figure 8：任务质量与吞吐" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/Akashic_Figure8_exact.png" /></p>
+<p>LoCoMo/BrowseComp 上，相对 MemGAS，正文报告吞吐约 <strong>1.10–1.21 倍</strong>、质量提高 <strong>4.2–7.2 个百分点</strong>。SWE-bench 上，相对 Full-context 的吞吐只有 <strong>90.5%–91.8%</strong>，但解决率提高 <strong>0.6–1.1 个百分点</strong>，记忆维护并非在所有场景都比直接输入全文更快（对应insight）。</p>
+<p>并发实验中，SWE-bench 相对 Mem0 可持续请求率约 <strong>1.53–1.88 倍</strong>，领先所有baseline。
+<img alt="alt text" src="../source-assets/LLM Opt/推理优化LLM/image.png" /></p>
+<p>存储实验
+基线 Append-only，Semantic-only，Akashic<br />
+LoCoMo 相对 Append-only，每请求读取块数由 <strong>6.8 降为 3.4</strong>，冷缓存 p95 检索延迟由 <strong>38 ms 降为 22 ms</strong>。
+<img alt="alt text" src="../source-assets/LLM Opt/推理优化LLM/image-2.png" /></p></article></main></div></body></html>

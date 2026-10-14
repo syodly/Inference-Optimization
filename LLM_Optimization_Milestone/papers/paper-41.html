@@ -1,0 +1,175 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CacheBlend: Fast Large Language Model Serving for RAG with Cached Knowledge Fusion</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>CacheBlend: Fast Large Language Model Serving for RAG with Cached Knowledge Fusion</h1><article class="source-content"><h1>CacheBlend：Fast Large Language Model Serving for RAG with Cached Knowledge Fusion</h1>
+<p>原文：<a href="../source-assets/LLM Opt/推理优化LLM/CacheBlend.pdf">cacheBlend.pdf</a><br />
+作者：Jiayi Yao、Hanchen Li、Yuhan Liu、Siddhant Ray、Yihua Cheng、Qizheng Zhang、Kuntai Du、Shan Lu、Junchen Jiang。<br />
+正式发表于 EuroSys 2025，DOI：<a href="https://doi.org/10.1145/3689031.3696098">10.1145/3689031.3696098</a>。<br />
+对象：同一个模型，多个重复文本块出现在不同输入位置或不同前文之后。<br />
+核心方法：校正位置，逐层筛选并重算高 KV 偏差 token，再将重算与缓存加载重叠。</p>
+<h2>Motivation</h2>
+<h3>RAG 中重复的是文本块，不一定是完整前缀</h3>
+<p>假设两个请求分别检索到如下资料：</p>
+<pre><code class="language-text">请求 1：文档 A + 文档 B + 问题 1
+请求 2：文档 C + 文档 B + 问题 2
+</code></pre>
+<p>文档 B 被重复使用，但前面的内容不同。传统 prefix caching 要求从输入开头开始匹配，因此无法把请求 1 中依赖 A 的 B 的 KV，当作请求 2 中依赖 C 的 B 的精确缓存。把每个文档独立计算一次、按文档保存 KV，可以提高复用机会，却又引入新的误差。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig1.png" alt="CacheBlend 图 1：四种上下文处理方式" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 1（PDF 第 2 页）对比完整重算、前缀缓存、完整复用和 CacheBlend。前缀缓存的复用范围受块顺序限制；块级缓存允许更多位置命中，但需要修复组合后的上下文依赖。</p>
+<h3>直接拼接独立 KV，位置正确也不够</h3>
+<p>设当前输入是 A + B + 问题。B 独立计算时，B 中的 token 只看到 B 内部前文；完整处理 A+B 时，B 中的 token 还能看到 A。这种差异会改变 B 的中间状态，进一步改变后续层的 KV。</p>
+<p>所以两个问题：</p>
+<ol>
+<li><strong>位置变化</strong>：B 原来从自己的起始位置计算，现在被放在 A 后面，需要校正位置编码。</li>
+<li><strong>前文变化</strong>：B 原缓存没有吸收 A 的信息，仅移动位置不能补回这部分计算。</li>
+</ol>
+<p>论文把不同块之间的注意力联系称为 cross-attention。这里指 decoder self-attention 内部跨文本块的联系，不是额外增加一个 encoder-decoder cross-attention 模块。也不能理解成后面的问题完全看不到 B：问题可以读取 B 的缓存，但 B 的缓存缺少与其他块联合处理后应有的表示。</p>
+<p>完整 Prefill 能恢复这些联系，但计算贵；只复用相同前缀，能省掉的部分有限；直接复用全部独立缓存，又会损害多文档推理质量。CacheBlend 要的是如何在保留块级复用能力的同时，只修复对输出重要的上下文误差。（图 1–4）</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig2.png" alt="CacheBlend 图 2：直接复用对回答质量的影响" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 2（PDF 第 4 页）比较不同块数下的 F1。直接复用与完整重算存在明显质量差距，说明提高缓存命中率本身还不足以保证回答质量。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig4.png" alt="CacheBlend 图 4：完整计算与独立块缓存的注意力差异" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 4 给出注意力矩阵。</p>
+<h3>Insights：误差集中在少数 token，且相邻层的高误差位置相关</h3>
+<p>首先，不是所有 token 的 KV 都需要更新。paper 以完整 Prefill 为参照，测量独立缓存与完整缓存之间的差异。图 6–7 显示，少部分 token 的差异明显更大，优先更新这些 token 能带来更大的 attention 误差下降。文中称其为 HKVD（High-KV-Deviation tokens）。在所测设置中，大约 10%–15% 的 token 表现出较大的偏差。</p>
+<p>其次，不需要为了选 token，就把每层所有 KV 先完整算一遍。相邻层中，token 的 KV 偏差排名高度相关（图 8）。因此可以用前面层的结果筛选后面层的候选对象。这是经验观察，不是任意模型、任意输入下的保证。</p>
+<p>这里的重要 token不是词频高、attention 权重一定最高或语义上最关键的词，而是在当前文本组合中，其新旧 KV 差异较大、值得修复的 token。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig6.png" alt="CacheBlend 图 6：不同 token 的 KV deviation" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 6 ，大多数 token 的 KV deviation 较小，只有少部分 token 的差异明显更大。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig7_8.png" alt="CacheBlend 图 7–8：KV 偏差分布与相邻层相关性" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 7–8，优先重新计算高 deviation token 能更快降低 attention 误差；相邻层的偏差排名相关，允许用前层结果缩小后层候选集合。</p>
+<h2>Design</h2>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig11.png" alt="CacheBlend 图 11：系统整体架构" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 11 展示请求的处理路径：检索得到文本块后，Cache Store 按块查找已有 KV；Loading Controller 安排加载与重算；Fusor 将缓存值与重算值融合，交给后续生成使用。未命中的块需要计算并写入缓存。</p>
+<h3>1. 单层怎样只重算部分 token</h3>
+<p>先假设已经选好本层需要重算的 token。以 8 个历史 token 为例，选中第 3、6 个，其余 6 个复用：</p>
+<pre><code class="language-text">本层输入 E：只保留第 3、6 个 token 的状态
+                 ↓
+计算 Q、K、V：只计算这 2 个 token
+                 ↓
+组装完整 K、V：2 个新值 + 6 个缓存值，放回原位置
+                 ↓
+        再执行 attention
+                 ↓
+得到选中 token 的新状态，继续进入下一层
+</code></pre>
+<p>原版并非只看第一层就固定全部后续层的 token。论文 §4.3 提出 gradual filtering（渐进式筛选）：先从全部 token 中筛出候选集合，记录为 <code>HKVD_indices</code>；到检查层时，只在当前候选中重新比较 KV deviation，再删除偏差较小的位置；未检查层沿用上一轮集合做部分 Prefill。候选集合逐层收缩：</p>
+<pre><code class="language-text">全部 token → 保留 25% → 保留 20% → 保留 15%
+</code></pre>
+<p>比例仅为示意；已淘汰 token 不会重新加入。不筛选不等于不计算，当前集合仍会逐层计算并向后传递。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig5.png" alt="CacheBlend 图5：选择性重算保留完整KV" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 5，下半图的 Q 和层间输入只覆盖选中 token，K、V 则由新算值和复用值补成完整历史。</p>
+<h3>2. 选 token策略，从全量候选开始，逐层过滤</h3>
+<p>理论上最理想的选择依据，是每个 token 的缓存与完整 Prefill 的真实 KV 相差多少。</p>
+<p>但如果先把全模型完整算一遍才能知道答案，就没有节省计算。</p>
+<p>因此 CacheBlend 使用渐进过滤：</p>
+<ol>
+<li>图 9 以第一层全 token 重算作为起点，在前部计算中取得可比较的新旧状态，建立初始候选集合。</li>
+<li>初次筛选保留比最终目标（假设总体重算比例不高于20%）稍多的 HKVD token，让它们进入下一层重算。</li>
+<li>在后续筛选层，仅对上一轮仍保留的候选计算新旧 KV 差异，再保留其中偏差更大的子集。</li>
+</ol>
+<p>eg.</p>
+<pre><code class="language-text">初始重算：全部 100 个 token
+第一次：保留 25 个
+下一次：25 个保留 20 个
+再下一次：20 个保留 15 个
+.....
+</code></pre>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig9.png" alt="CacheBlend 图9：逐层过滤HKVD token" style="max-width: 100%; height: auto;">
+</p>
+
+<h3>3. 位置处理：校正 K 的 RoPE，然后修复上下文误差</h3>
+<p>同一个 chunk 放到新位置后，缓存 K 的位置编码需要相应调整。对于 RoPE，论文通过旋转变换修正位置偏移；（推导在附录）</p>
+<p>简单理解为先撤销旧位置的旋转，再应用新位置的旋转，等价于按位置差施加旋转。</p>
+<p>这个处理解决位置因素。<strong>RoPE 校正与选择性重算是两个互补步骤，前者对齐位置，后者近似修复文本块组合造成的状态差异。</strong></p>
+<h3>4. 系统实现：一边修复当前层，一边加载下一层</h3>
+<p>独立 chunk 的 KV 可以存放在 CPU RAM 或 SSD，通过文本 chunk 的 hash 查找。由于缓存需要搬入 GPU，系统必须同时考虑重算量和存储带宽。</p>
+<p>执行层 $i$ 前，先确保这一层的缓存已加载。随后用两个线程重叠层 $i$ 的计算和层 $i+1$ 的缓存加载。</p>
+<p>流水线稳定运行时，每层耗时近似受较慢者控制：</p>
+<p>$$T_{stage}\approx\max(T_{load},T_{recompute}).$$</p>
+<p>论文给出的例子是，Llama-7B、4K 上下文下，15% token 重算约需 3 ms/层，而 SSD 加载约需 16 ms/层，计算可大部分隐藏在加载后面；另一个 Llama-70B 例子中，重算约 7 ms、加载约 4 ms，计算便成为瓶颈。</p>
+<p>Loading Controller 分别估计加载与重算时间。固定存储设备时，先求使两者接近的比例 $r_{balance}$，再取：</p>
+<p>$$r=\max(r_{balance},r^*),$$</p>
+<p>其中 $r^*$ 是经验上维持质量所需的最低比例，论文采用约 15%。因此，不能为了赶上很快的 RAM 而任意降低重算比例。反过来，若比例已固定，则可在加载时间不超过计算时间的设备中选择更便宜的存储。同样的，如果存储加载很慢可以适当提高重算比例来获得更好的准确率。</p>
+<h2>Evaluation</h2>
+<h3>实验设置：同时衡量质量和 TTFT</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>论文设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模型</td>
+<td>Mistral-7B、Yi-34B、Llama-70B；后两者采用 8-bit 模型量化</td>
+</tr>
+<tr>
+<td>硬件</td>
+<td>128 GB RAM、2 张 NVIDIA A40、1 TB NVMe SSD，实测 SSD 吞吐 4.8 GB/s</td>
+</tr>
+<tr>
+<td>GPU 使用</td>
+<td>Mistral-7B、Yi-34B 各用 1 张；Llama-70B 用 2 张</td>
+</tr>
+<tr>
+<td>问答</td>
+<td>2WikiMQA 200 条、MuSiQue 150 条；以答案词重叠的 F1 评价</td>
+</tr>
+<tr>
+<td>摘要</td>
+<td>SAMSum 200 条、MultiNews 60 条；以 ROUGE-L 评价</td>
+</tr>
+<tr>
+<td>切块</td>
+<td>通常 512 token；SAMSum 使用原有约 200–400 token 的块</td>
+</tr>
+<tr>
+<td>主要系统指标</td>
+<td>TTFT，以及相近质量和 TTFT 条件下可支持的请求吞吐</td>
+</tr>
+</tbody>
+</table>
+<p>问答任务额外要求在 5 个词内作答，以减少答案长度对 F1 的影响。在线复用实验另外构造 MuSiQue extended 和 2WikiMQA extended：各选 1,500 个原问题，用 GPT-4 为每题生成 3 个相似问题，形成各 6,000 个请求；每次检索 top-6 chunk，并以随机顺序组合。统计跳过缓存仍为空的前 1,000 个请求，因此报告的是预热后的复用效果。</p>
+<p>基线包括完整重算、Prefix Caching、按 PromptCache 思路实现的 Full KV Reuse，以及 LangChain 的 MapReduce、MapRerank。Prefix Caching 还获得了缓存加载无延迟的理想化优势；Full KV Reuse 处理位置但不修复跨块联系。</p>
+<h3>主结果，少量修复保留质量，同时降低 Prefill 成本</h3>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig12.png" alt="CacheBlend 图12：各模型任务的质量与TTFT比较" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 12 的主实验中，相对完整重算，TTFT 加速 2.2–3.3 倍，7.2 报告 F1/ROUGE-L 下降在 0.02 内。少量修复能让不同前文后的重复块保留大部分质量。</p>
+<p>图 14 的扩展请求流中，相同 TTFT 下，相对完整重算吞吐最高 5 倍，相对前缀缓存最高 3.3 倍；摘要给出对完整重算的 2.8–5 倍范围。这部分收益还包含排队缓解，依赖实验构造的块复用模式。</p>
+<p>图 16 的 Yi-34B 比例实验中，5%–18% 重算已接近完整重算；7.3 另报告 4.1–6.6 倍 TTFT 加速。图 15 进一步改变块数、块长和 batch，</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig14.png" alt="CacheBlend 图 14：请求率与 TTFT" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 14（PDF 第 11 页）横轴为请求率，纵轴为 TTFT。在相同延迟水平上比较可承载的请求率，才能读出吞吐收益；曲线陡升反映排队开始积累。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/cacheblend_fig16.png" alt="CacheBlend 图 16：重算比例对质量的影响" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 16</p>
+<h3>结论边界与值得关注的问题</h3>
+<p>CacheBlend 说明：同一模型中，非前缀块的上下文依赖可以通过 token 级选择性重算近似修复。它没有证明缓存拼接与完整 Prefill 数学等价，也没有直接减少解码所需的全历史 KV 大小。</p>
+<p>从方法上看，渐进过滤依赖层间相关性；被较早排除、到深层才变得重要的 token 可能被漏掉。这是根据筛选机制得到的分析，不是论文已量化的失败率。复现时还需核实筛选层、评分聚合方式以及首层检测边界，不能仅按每层固定重算 15%复刻。</p>
+<hr /></article></main></div></body></html>

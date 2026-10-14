@@ -1,0 +1,17 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>KVP: Learning to Evict from Key-Value Cache</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>KVP: Learning to Evict from Key-Value Cache</h1><article class="source-content"><h1>Learning to Evict from Key-Value Cache (KVP)</h1>
+<p>论文：<a href="https://arxiv.org/abs/2602.10238">arXiv</a>；论文页注明 Accepted to ICML 2026 | <a href="../source-assets/LLM Opt/codesign/papers/KVP_ICML26.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>KVP 不把 token 的重要性手写成 recency 或历史 attention，而把“在任意 cache budget 下该保留哪些 token”学习为一个离线训练、在线只读取 K/V/position 的 per-head 排序策略。</p>
+<h2>问题形式化</h2>
+<p>给定已处理 token 集合和 cache budget <code>b</code>，目标是选出 <code>b</code> 个 KV entry，使后续生成质量尽可能好。若每个 budget 都独立做组合选择，在线代价很高且不同 budget 的集合可能互相矛盾。KVP 先设计具有唯一性和嵌套性的 reward：最优的 <code>b</code> 个保留集合是 <code>b+1</code> 个集合的子集。这样问题转化为学习一个全序 ranking，top-b 即是任意 budget 的解。</p>
+<p>这一步是论文的核心建模选择：它让一个排序策略能覆盖动态 cache 压力，而不是每次重新训练/搜索。</p>
+<h2>策略与训练</h2>
+<p>每个 attention head 对 token <code>i</code> 的特征是 <code>(K_i, V_i, position_i)</code>。一个小 MLP 输出分数；通过基于分数的随机排列策略采样 token 排名，利用 Gumbel-Sort 实现并行采样。策略不读取未来 token、在线 attention score、query embedding 或模型内部额外状态。</p>
+<p>训练阶段使用预先计算的生成 trace 和 RL reward。reward 衡量一个排序在多种 cache budget 下的整体效用，因此不是只为某个固定压缩率过拟合。论文采用 per-head agent：不同 head 可保留不同 token，而不是强迫整个 layer 使用同一个全局稀疏掩码。</p>
+<p>在线阶段只需在 memory refresh 时对已有 K/V 打分、排序和截断；不修改基础 LLM 权重或 attention 结构，也不增加额外模型推理。</p>
+<h2>实验读法</h2>
+<p>主评估使用 Qwen2.5-7B-Chat，并在附录扩展到 Phi-4-14B；覆盖 RULER 长上下文、OASST2-4k 多轮对话，以及 LongBench passage retrieval 等。论文强调 KVP 在不同 budget、到 128K context 的场景中优于启发式基线，即便部分基线可访问更特权的 query-specific 信号。</p>
+<p>复现时应区分三个量：压缩后质量、内存峰值、memory refresh 的额外耗时。KVP 的优势是 quality-aware ranking，不保证其排序/refresh 本身一定比极简 LRU 更便宜。</p>
+<h2>对 codesign 的作用与边界</h2>
+<p>KVP 不知道 workflow、Agent、工具等待或未来调用；它回答的是“已经决定要缩 cache 时，cache 内部哪些 token 该保留”。因此它适合成为分层策略的局部算子：上层 TOPAS/PBKV/SAGA 决定哪个 session/prefix 值得占空间，下层 KVP 在该 prefix 内做 token 压缩。</p>
+<p>局限也由此明确：token future utility 不等于 workflow future reuse；离线 trace 的任务分布、模型层数和上下文长度与线上偏离时，需要重新验证泛化和 refresh 开销。</p></article></main></div></body></html>

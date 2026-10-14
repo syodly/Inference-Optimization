@@ -11,11 +11,11 @@
     <header class="topbar">
       <div class="brand">
         <div class="mark">L</div>
-        <div><strong>LLM OPTIMIZATION</strong><span>Research milestone workspace · 2026.08.31</span></div>
+        <div><strong>LLM OPTIMIZATION</strong><span>Research milestone workspace · 2026.10.14</span></div>
       </div>
       <nav class="toplinks" aria-label="页面导航">
         <a href="#phases">Milestone</a>
-        <a href="#index">Paper Index</a>
+        <a href="#index">Paper Index</a><a href="research-update-20261014.html">实验进展与选题</a>
         <a href="https://github.com/syodly/Inference-Optimization">打开仓库 README</a>
       </nav>
     </header>
@@ -24,36 +24,37 @@
       <section class="intro">
         <div>
           <p class="eyebrow">Research milestones / 2022—2026</p>
-          <h1>LLM 推理优化 Milestones</h1>
-          <p class="lede">研究问题的演化线</p>
+          <h1>LLM 推理优化 <span class="title-word">Milestones</span></h1>
+          <p class="lede">研究问题的演化线：Serving → Workflow → KV 复用 → 状态与上下文协同</p>
           <p class="date-note">日期优先采用 arXiv 首次公开日，只有正式会议版本时标注会议月份。</p>
           <div class="focus-lines">
-            <div class="focus-line"><b>动态图推理优化</b><span>请求依赖可见 → primitive DAG → 动态 Agent program → 工具与 LLM 并行</span></div>
-            <div class="focus-line"><b>Agentic KV</b><span>工具等待保留 → 已知 Step Graph → 工作流预测 → 转移 / Token 级缓存</span></div>
+            <div class="focus-line"><b>动态图推理优化</b><span>应用 DAG → 动态 Agent → 双向契约与执行配置 → 工作流 / KV 协同</span></div>
+            <div class="focus-line"><b>Agentic KV</b><span>前缀与块级复用 → 生命周期竞争 → 上下文编辑 → 版本与安全边界</span></div>
           </div>
         </div>
       </section>
 
       <section class="stats" aria-label="整理进度统计">
-        <div class="stat"><span class="value">40</span><span class="label">去重后的本地论文</span></div>
-        <div class="stat"><span class="value">3</span><span class="label">Research phases</span></div>
-        <div class="stat"><span class="value">8</span><span class="label">Research lines</span></div>
+        <div class="stat"><span class="value" id="paper-total">76</span><span class="label">去重后的论文索引</span></div>
+        <div class="stat"><span class="value" id="phase-total">5</span><span class="label">Research phases</span></div>
+        <div class="stat"><span class="value" id="lane-total">13</span><span class="label">Research lines</span></div>
         <div class="stat"><span class="value">2</span><span class="label">当前核心方向</span></div>
       </section>
 
+<section class="panel current-research"><p class="eyebrow">CURRENT FOCUS · 2026-10-14</p><h2>从复用覆盖率转向上下文变化与执行状态</h2><p>新增 KV 覆盖没有自动带来加速：独立构建和执行路径仍是当前瓶颈。HEAR 与 Leyline 将问题推进到双向契约、编辑语义与 KV 生命周期。</p><div class="focus-lines"><div class="focus-line"><b>HEAR · 双向协同</b><span>工作流信息＋引擎状态 → 控制请求 → 真实结果反馈</span><a href="papers/paper-60.html">打开精读与图表 →</a></div><div class="focus-line"><b>Leyline · 编辑与遗忘</b><span>声明编辑区间与模式；位置校正和消除旧影响分开</span><a href="papers/paper-61.html">打开机制与实验边界 →</a></div></div><p><a href="research-update-20261014.html">查看最新性能／命中率结果及两个候选 topic →</a></p></section>
       <section id="phases">
         <div class="section-head">
           <div><h2>Research Milestone Map</h2><p></p></div>
-          <div class="progress-line">论文归属：40 / 40<div class="progress"><i style="width:100%"></i></div></div>
+          <div class="progress-line">论文归属：76 / 76<div class="progress"><i style="width:100%"></i></div></div>
         </div>
-        <p class="timeline-intro">研究如何从静态 DAG 走向动态 workflow。当前 PHASE 03 收纳动态 Agent 推理方向内部的演进，从运行时程序调度和工具协同，扩展到 workflow 预测，再下沉到 token/block-level KV。</p>
+        <p class="timeline-intro">保留原有三阶段，补入 9–10 月的复用机制与 codesign 调研。新增阶段按研究问题组织，不代表论文严格按时间继承；HEAR 与 Leyline 是当前精读重点。</p>
         <div class="phase-board" id="phase-board"></div>
       </section>
 
       <section id="index" class="secondary-section">
         <div class="section-head">
-          <div><h2>Paper Index</h2><p>全部 40 篇论文的检索入口；论文已经在上方 Phase 和 Research Line 中完成归属。</p></div>
-          <span class="secondary-label">Full collection · 40 papers</span>
+          <div><h2>Paper Index</h2><p>全部 76 篇论文的检索入口；论文已经在上方 Phase 和 Research Line 中完成归属。</p></div>
+          <span class="secondary-label">Full collection · 76 papers</span>
         </div>
         <div class="controls" aria-label="论文筛选器">
           <label class="control"><input id="search" type="search" placeholder="搜索论文、内容或方向" aria-label="搜索论文"></label>
@@ -79,7 +80,7 @@
             <div class="milestone"><b>PHASE 01</b><div><strong>从整条请求到 token / phase</strong><span>Serving engine 开始理解迭代级执行、输出长度和 Prefill / Decode 干扰。</span></div></div>
             <div class="milestone"><b>PHASE 02</b><div><strong>从单请求到静态 application DAG</strong><span>服务端看见跨请求依赖、数据流、应用目标和已知 workflow 的 KV 复用。</span></div></div>
             <div class="milestone"><b>PHASE 03</b><div><strong>动态 Agent 推理优化的展开</strong><span>同一方向内部从运行时程序状态和工具等待出发，逐步扩展到 workflow 预测、主动资源管理以及 token/block 级 KV 控制。</span></div></div>
-          </div>
+          <div class="milestone"><b>PHASE 04</b><div><strong>复用机制与完整执行成本</strong><span>独立块、跨模型状态与 coding 负载；命中不等于节省计算。</span></div></div><div class="milestone"><b>PHASE 05</b><div><strong>上下文变化与状态契约</strong><span>生命周期、版本、编辑意图与引擎反馈共同参与决策。</span></div></div></div>
         </div>
         <div class="panel">
           <h2>Data Notes</h2>
@@ -88,15 +89,16 @@
             <li>Teola → Ayo、Autellix → Agentix：分别是同一工作的预印本名和正式名称。</li>
             <li>Sarathi 与 Sarathi-Serve：相关演化，但按两篇论文统计。</li>
             <li>日期精度以可核验公开时间为准；没有可靠日级日期时保留月份或年份。</li>
-            <li>页面当前统计 40 篇本地论文，已按 3 个 Phase 和 8 条 Research Line 全部归档。</li>
+            <li>当前 76 篇索引按 5 个 Phase、13 条 Research Line 归档；“已整理”与“调研摘要／待精读”分别标注。新增发表状态沿用已核查来源，未确认者标注 arXiv。</li>
           </ul>
         </div>
       </section>
     </main>
-    <footer>Local research index · 40 papers · modular source: milestone-data.js + milestone-app.js + milestone.css</footer>
+    <footer>Local research index · 76 papers · updated 2026-10-14 · modular source: milestone-data.js + milestone-app.js + milestone.css</footer>
   </div>
 
   <script src="milestone-data.js"></script>
+  <script src="milestone-update-20261014.js"></script>
   <script src="milestone-app.js"></script>
 </body>
 </html>

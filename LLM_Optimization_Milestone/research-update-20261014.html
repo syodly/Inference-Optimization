@@ -1,0 +1,128 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>研究进展 · 2026-10-14</title><link rel="stylesheet" href="milestone.css"><link rel="stylesheet" href="source-paper.css"></head><body><div class="shell"><header class="topbar"><a href="LLM_Optimization_Milestone.html">返回 Milestone</a></header><main class="source-page"><h1>研究进展 · 2026-10-14</h1><article class="source-content"><h1>Milestone 更新 · 2026-10-14</h1>
+<h2>当前研究进展</h2>
+<p>研究从动态图调度和工具等待，推进到多轮 coding 的 KV 复用，再转向上下文变化与引擎状态的协同。以下区分已测结果、论文启发和待验证选题。</p>
+<table>
+<thead>
+<tr>
+<th>进展</th>
+<th>已获得的证据</th>
+<th>当前边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CacheBlend 官方场景复现</td>
+<td>Mistral 与 MuSiQue、WikiMQA、SAMSum 的公开实验链路已运行</td>
+<td>不等同于完整 coding workflow 质量</td>
+</tr>
+<tr>
+<td>CacheWise 轨迹构造</td>
+<td>80 会话／11,012 请求；后续取 8 个完整会话／757 请求</td>
+<td>脱敏长度与公开文本组合是合成负载；非原任务正确率数据</td>
+</tr>
+<tr>
+<td>多轮自由生成</td>
+<td>Mistral TP4、32 GiB GPU KV；输出长度固定，内容自然生成</td>
+<td>两组回答进入各自历史，后续输入可能分叉</td>
+</tr>
+<tr>
+<td>KV 双份状态</td>
+<td>GPU 保留会话修复状态；CPU 保留独立块素材</td>
+<td>修复前缀可沿用但非精确；额外存储与构建计入成本</td>
+</tr>
+</tbody>
+</table>
+<h2>最新自由生成结果</h2>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th style="text-align: right;">原生前缀</th>
+<th style="text-align: right;">CacheBlend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>请求数</td>
+<td style="text-align: right;">757</td>
+<td style="text-align: right;">757</td>
+</tr>
+<tr>
+<td>总耗时</td>
+<td style="text-align: right;">135.08 min</td>
+<td style="text-align: right;">156.66 min</td>
+</tr>
+<tr>
+<td>平均／P95 TTFT</td>
+<td style="text-align: right;">34.73／82.83 s</td>
+<td style="text-align: right;">42.97／103.06 s</td>
+</tr>
+<tr>
+<td>连续前缀命中</td>
+<td style="text-align: right;">32.90%</td>
+<td style="text-align: right;">29.92%（精确 12.48%＋修复 17.44%）</td>
+</tr>
+<tr>
+<td>独立后缀命中</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">19.34%</td>
+</tr>
+<tr>
+<td>合计缓存覆盖</td>
+<td style="text-align: right;">32.90%</td>
+<td style="text-align: right;">49.26%</td>
+</tr>
+<tr>
+<td>独立 KV 构建</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">1329.9 s</td>
+</tr>
+</tbody>
+</table>
+<p>两组使用 256K 配置窗口、未缩放 RoPE；这只说明执行长度覆盖，不能证明模型在该长度的任务能力。混合组额外使用 32 GiB CPU 独立块缓存，当前结果不是同总存储预算的比较。</p>
+<p>混合组 prefill 调用减少 436.1 s，但额外构建等成本使总耗时增加 21.58 min。合计覆盖率不是免计算率。相对原生输出的全文 token F1 为 0.8916，完整序列一致率 66.58%；这是输出一致性，不是代码正确率。旧 ForcedTokens 回放结果不用于质量结论。现有结果尚不能区分算法必需成本与适配可避免成本。</p>
+<h2>近期论文带来的方向调整</h2>
+<table>
+<thead>
+<tr>
+<th>工作</th>
+<th>当前吸收的要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEAR</td>
+<td>工作流意图与引擎状态双向反馈；消息类别应落到实际决策回路</td>
+</tr>
+<tr>
+<td>Leyline</td>
+<td>显式编辑区间与语义模式；低成本继续执行与彻底遗忘分开</td>
+</tr>
+<tr>
+<td>KVTether／EfficientAgent</td>
+<td>生命周期与容量竞争决定缓存能否活到下一次使用</td>
+</tr>
+<tr>
+<td>CADOC／SmoothAgent</td>
+<td>上下文转换的时机、版本与构建不能只由后端被动处理</td>
+</tr>
+<tr>
+<td>Request Order Matters／MemTrace</td>
+<td>缓存经历、内容版本和证据有效性需分别核验</td>
+</tr>
+</tbody>
+</table>
+<h2>候选 topic：尚未确认为创新点</h2>
+<h3>1. 面向多轮 Agent 工作流状态的 KV 生命周期协同管理</h3>
+<ol>
+<li>将工具等待、会话继续与任务结束等工作流事件关联到引擎 KV 状态。</li>
+<li>联合评估保留、卸载、恢复和回收，工具进度只作为信号，不单独以预取作为贡献。</li>
+<li>在相同容量下比较有效历史命中、搬运、重算与 workflow 完成时间，核对 HEAR、KVTether、PBKV 等重叠。</li>
+</ol>
+<h3>2. 面向 Agent 上下文编辑的 KV 失效分析与版本感知复用</h3>
+<ol>
+<li>识别追加、替换、删除、压缩和回退，分析编辑位置与 KV 失效及复用机会；长度变化不能代替编辑类型。</li>
+<li>由编排层传递版本与编辑语义，区分精确继承、待修复和失效状态；版本 ID 不证明因果有效性。</li>
+<li>用受控真实文本比较重算量、TTFT 与输出保真度，有任务测试时评价成功率；核对 Leyline、PatchKV 和 Retire 的覆盖。</li>
+</ol>
+<p>下一步先确认真实轨迹能提供哪些编辑与生命周期证据，再选定一种变化和可证伪假设；不把“组合更多机制”作为创新性理由。</p></article></main></div></body></html>

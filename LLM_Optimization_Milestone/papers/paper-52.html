@@ -1,0 +1,19 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Astraea</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Astraea</h1><article class="source-content"><h1>Astraea: A State-Aware Scheduling Engine for LLM-Powered Agents</h1>
+<p>论文：<a href="https://arxiv.org/abs/2512.14142">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/Astraea.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>Astraea 将 Agent 请求视为在 <code>LLM compute -&gt; API/tool wait -&gt; 下一 LLM segment</code> 间循环的长生命周期任务，以整个任务 JCT 而非单段 TTFT 为调度目标。</p>
+<h2>系统模型</h2>
+<p>一个请求由多个 segment 组成，LLM segment 的 prefill 与 decode 消耗 GPU；外部 API segment 消耗不可控的等待时间。请求进入统一 Request Pool，ready segment 才能组成 batch。论文将最小化平均 JCT 的调度形式化为带依赖、服务时间和 I/O 的问题，并指出其为 NP-hard，因此采用在线启发式而不是全局精确求解。</p>
+<h2>需要的前端/运行时元数据</h2>
+<p>Astraea 的 scheduler 不只接收 ready request，还需要每段的预计 compute time 与 API duration。compute 预测由两部分组成：对不同输入长度离线 profile 得到 prefill 函数；decode 长度采用 segment-level oracle 评估。API 时延则按 API 类别统计。论文特意使用较理想的预测设置来隔离 scheduler 效果，因此部署时不能把结果直接视为“真实长度预测已解决”。</p>
+<h2>Stateful-MLFQ 的两级决策</h2>
+<p>架构由 predictor、Stateful-MLFQ scheduler、LLM engine、external API service 和 adaptive KV manager 组成。</p>
+<ul>
+<li><strong>宏观层：多级反馈队列。</strong> 请求在多个严格优先级队列间迁移。它不用 wall-clock quantum，而使用 token cost 作为迁移阈值，因为 continuous batching 下同一时间片对应的工作量会受 batch 组成影响，而 token cost 更稳定。</li>
+<li><strong>微观层：队列内排序。</strong> 调度决策同时用当前 segment 的服务估计、父请求已得到的 compute/I/O 服务、累计等待和未来阶段估计；并用增强 HRRN 平衡短任务效率与长任务公平性。</li>
+<li><strong>I/O 等待期 KV 管理。</strong> API 未返回时，请求不应永久 pin GPU KV；manager 根据内存压力决定继续保留、释放或让出状态，从而在后续恢复代价与当前并发容量间折中。</li>
+</ul>
+<p>这使它“stateful”：优先级不是某个 token batch 的瞬时属性，而是整个 parent request 已服务多少、等了多久、之后还可能做多少工作。</p>
+<h2>评估与边界</h2>
+<p>论文报告相对基线平均 JCT 最多降低 25.5%，并在不同模型规模和高负载下测试。应同时看 JCT、p99、API 等待期间 KV 占用、缓存重建量和公平性，而不能只看 TTFT。</p>
+<p>它的主要风险是预测依赖：decode 使用 oracle、API 采用类别统计都可能在线失准；且 Stateful-MLFQ 的优先级只近似未来关键路径。对项目而言，Astraea 是非常好的动态 workflow scheduling baseline，但应把其预测器替换为可观测的在线预测，或与 PBKV 的多步调用预测结合。</p></article></main></div></body></html>

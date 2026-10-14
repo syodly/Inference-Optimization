@@ -1,0 +1,22 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Back from the Future</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Back from the Future</h1><article class="source-content"><h1>Back from the Future: Key-Value Cache Management by Counter-Causal Surprise</h1>
+<p>论文：<a href="https://arxiv.org/abs/2607.27600">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/Back_from_the_Future.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>这篇论文提出一个无需训练的 token-level KV eviction 原则：若旧 token 已能由其后更近的上下文很好预测，它携带的独特信息较少，可优先从 KV cache 删除；反之应保留“counter-causal surprise”高的 token。</p>
+<h2>与普通重要性分数的不同</h2>
+<p>不少 KV pruning 方法以历史 attention、位置、recent window 或 heavy hitter 作为重要性代理。它们的共同问题是：分数通常只反映过去 attention 行为，未直接回答“删掉该 token 后，后续上下文是否已经包含足够信息替代它”。</p>
+<p>论文从信息冗余提出逆向问题：在当前缓存中，让位置 <code>i</code> 只看到其<strong>之后</strong>的 token；如果模型仍可高概率复原/预测该 token，则该 token 的 K/V 对未来可用信息的增量较小。低 surprise 表示可删，高 surprise 表示应留。</p>
+<h2>Counter-causal pass 如何做</h2>
+<p>作者构造 counter-causal attention mask，使 token 以原始顺序输入，但每个位置只 attention 到后续上下文。这样评分仍使用当前 cache 对应的实际 token 表示，而非训练额外预测器。系统周期性执行 memory refresh：</p>
+<ol>
+<li>正常 prefill 或 decode 推进 token；</li>
+<li>每处理一个 chunk，运行 counter-causal scoring pass；</li>
+<li>依据 surprise 选择受限 memory slots 中保留的 KV；</li>
+<li>继续正常生成，必要时再次 refresh。</li>
+</ol>
+<p>为了降低 refresh 成本，论文还给出只在最后一个 transformer layer 执行近似 scoring 的版本，以较小质量损失换取更快的刷新周期。</p>
+<h2>评估应看什么</h2>
+<p>论文使用 Qwen2.5 3B/7B/14B、Llama 3.1 8B，并在四类 benchmark 上与 Full cache、sliding window、importance/heavy-hitter 类策略比较。关注重点是受限缓存下输出质量相对 Full cache 的保持，而不是某个 serving cluster 的端到端 JCT。因而它是 cache quality 算法论文，不是 workflow scheduling 论文。</p>
+<p>复现需要固定 memory slot 数、refresh chunk 长度、counter-causal pass 的层数、生成长度和对照方法。该方法可提高压缩后质量，但 counter-causal 评分本身消耗计算；在高并发 server 中还必须测量刷新对 batch latency 的干扰。</p>
+<h2>在 codesign 栈中的位置</h2>
+<p>它适合成为 session 内部的最后一级 KV 压缩器：例如 PBKV/SAGA/TOPAS 先决定某 workflow/session 是否仍值得在 GPU 存活，Strata 决定其在 HBM/CPU/SSD 的放置，而 counter-causal surprise 决定该 session 的 token 内部删什么。</p>
+<p>它不能预测 Agent 将调用哪个节点，也不能区分一个 prefix 在多个 workflow 之间是否共享。因此不应替代 workflow-aware retention，而应作为分层 cache policy 的对照或组成部分。</p></article></main></div></body></html>

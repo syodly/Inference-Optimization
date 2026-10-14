@@ -1,0 +1,26 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SAGA</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>SAGA</h1><article class="source-content"><h1>SAGA: Workflow-Atomic Scheduling for AI Agent Inference on GPU Clusters</h1>
+<p>论文：<a href="https://arxiv.org/abs/2605.00528">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/SAGA.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>SAGA 主张将整个 Agent workflow，而不是单个 LLM request，设为 GPU 集群的调度原子；它把 workflow graph 用于 KV TTL/eviction、session affinity 和任务完成时间公平性。</p>
+<h2>Agent Execution Graph (AEG)</h2>
+<p>SAGA 用 <code>G=(V,E,P,phi)</code> 表示 Agent workflow：节点 <code>V</code> 是 LLM inference step，边 <code>E</code> 是执行依赖，<code>P</code> 是转移概率，<code>phi</code> 标注节点相关的 tool type。ReAct 通常近似线链，tree-of-thought 则为带分支概率的树。AEG 的价值不只是依赖顺序，它让系统可以估计工具返回后哪些 session prefix 最可能被再次使用。</p>
+<p>AEG 可来自三种观测等级：框架显式 hint（如 callback/message log）、从请求流和 tool type 中推断的隐式 trace、以及新 agent 的 cold start。论文报告隐式推断设置使用置信阈值 0.7，可达 87% 图推断准确率，但相对显式 hint 有 15.6% TCT 损失；这定量说明前端显式暴露结构的价值。</p>
+<h2>三层系统架构</h2>
+<ol>
+<li><strong>Agent interface layer：</strong> 接收 LangChain/AutoGen 等框架请求，构造/更新 AEG。</li>
+<li><strong>Global scheduler：</strong> 保存 session-to-worker 映射、集群负载和 fairness 状态，优先路由回同一 worker，同时协调 work stealing。</li>
+<li><strong>Worker pool：</strong> 扩展 vLLM，执行请求和本地 workflow-aware KV 管理。</li>
+</ol>
+<p>当公平性触发抢占迁移时，workflow-aware TTL metadata 会随 Llumnix 类迁移元数据携带，使目的 worker 不把 session 当作全新 cache；这是“公平调度”和“KV 重用”真正协同的地方。</p>
+<h2>核心机制</h2>
+<h3>1. Workflow-aware cache</h3>
+<p>WA-LRU 用 AEG 估计未来复用与 tool-call 等待窗口，给 KV 状态定 TTL/eviction 优先级。论文将其与 Belady offline oracle 比较，报告达到其 1.31x 以内；应理解为特定 trace 上的经验竞争比，不是任意 workflow 的理论最优保证。</p>
+<h3>2. Session-affinity batching + work stealing</h3>
+<p>相关请求尽可能路由到已有 session KV 的 worker，减少 re-prefill；当局部负载失衡时才通过 work stealing 打破亲和性。它不是把 affinity 绝对化，而是在 cache hit 和全局负载之间折中。</p>
+<h3>3. Agent Fair Share (AFS)</h3>
+<p>AFS 不以 token 或 request 数公平，而以任务完成时间公平。论文给出 Lyapunov-drift 风格的 bounded-deviation 分析，防止短 workflow 或长 workflow 长期饥饿，并在需要时抢占/迁移。</p>
+<h2>实验和必须保留的 trade-off</h2>
+<p>在 64 GPU 上使用 SWE-bench coding agent 与 WebArena，SAGA 相对 vLLM v0.15.1 + prefix cache/affinity routing 的 TCT 几何均值改善为 1.64x，GPU memory utilization 提升 1.22x，多租户 SLO 达成率 99.2%。但论文也报告相对吞吐最优 batch scheduling 约 30% 峰值吞吐代价。</p>
+<p>因此它适合交互型任务完成，不适合将 tokens/s 作为唯一目标的离线批处理。其限制包括：主要实测 Llama-3-70B；峰值 memory utilization 约 71%–75%，未证明超 95% 过载行为；动态 Agent-to-Agent 框架需要不断重新推断 AEG。</p>
+<h2>对项目的启示</h2>
+<p>SAGA 说明前端至少应提供 <code>program/session ID</code>、<code>tool type</code>、依赖/转移 hint、状态位置和任务级 SLO。项目可把 AEG 未来复用概率同时输出给 KV manager 和 scheduler，但必须明确吞吐、公平、TCT 三者的取舍，而不能只比较平均 TTFT。</p></article></main></div></body></html>

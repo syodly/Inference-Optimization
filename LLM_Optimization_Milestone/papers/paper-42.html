@@ -1,0 +1,182 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DroidSpeak: KV Cache Sharing for Cross-LLM Communication and Multi-LLM Serving</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>DroidSpeak: KV Cache Sharing for Cross-LLM Communication and Multi-LLM Serving</h1><article class="source-content"><h1>DroidSpeak：KV Cache Sharing for Cross-LLM Communication and Multi-LLM Serving</h1>
+<p>原文：<a href="../source-assets/LLM Opt/推理优化LLM/DroidSpeak.pdf">DroidSpeak.pdf</a><br />
+作者：Yuhan Liu、Yuyang Huang、Jiayi Yao、Shaoting Feng、Zhuohan Gu、Kuntai Du、Hanchen Li、Yihua Cheng、Junchen Jiang、Shan Lu、Madan Musuvathi、Esha Choukse。芝加哥大学、微软。<br />
+arXiv:2411.02820v4，2025-07-14，未发表；</p>
+<p>研究对象：同一基础模型的不同微调版本，处理相同公共前缀。<br />
+核心方法：离线测量适合重算的连续层区间，在线复用其余层，并重叠 E/KV 传输与重算。</p>
+<h2>Motivation</h2>
+<h3>多模型协作时，同一段背景被反复 Prefill</h3>
+<ul>
+<li>
+<p>编码模型读取需求与代码，测试模型接着读取相同内容；</p>
+</li>
+<li>
+<p>多个个性化模型查询同一份文档；</p>
+</li>
+<li>
+<p>模型更新后，新模型重新处理旧会话。</p>
+</li>
+</ul>
+<p>这些场景中，重复上下文，模型权重却不同。普通 prefix caching 通常只在同一模型内使用，不能直接把旧模型的缓存当作新模型的精确缓存。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig1.png" alt="DroidSpeak 图 1：跨模型重复处理上下文的应用场景" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 1 列出多智能体协作、多个模型读取公共内容和个性化智能体。复用机会来自相同上下文被不同模型重复处理。</p>
+<p>论文将提供 KV 的模型称为 sender，将使用它的模型称为 receiver。</p>
+<p>研究范围不只是张量尺寸相同，主要假设是<strong>模型来自同一基础模型</strong>。</p>
+<h3>文本相同，KV 仍然不同</h3>
+<p>每层 KV 由该层的输入状态 E 和模型参数共同决定。不同微调版本的参数不同，前面各层产生的 E 也可能不同。因此同一段文字在两个模型中会形成不同的 KV。图 6 显示，receiver 直接使用 sender 的全部 KV，会损失其原本更强的任务能力。</p>
+<p>作者在基准构造中要求 receiver 在所选任务上优于 sender。这样要保留的是 receiver 的专长，而不是简单让两个质量相近的模型互相替代。问题因此变成：能否保留 sender 的大部分缓存，只修复 receiver 真正敏感的部分？</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig6.png" alt="DroidSpeak 图 6：直接跨模型复用 KV 的质量损失" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 6 对比 sender、receiver 和直接复用 KV。receiver 原本的质量优势在直接复用后可能明显缩小，因此加速目标必须同时包含保留接收模型的任务能力。</p>
+<h3>Insights：敏感性集中在少数层，并在输入之间相对稳定</h3>
+<p>做了一个敏感性实验，每次只替换一层的 KV，其余部分重算，再测 receiver 的最终分数。某根柱子代表只复用这一层，不是只重算这一层。实验发现，大部分层单独替换时质量影响较小，少数层下降明显；按图中 F1 下降超过 10% 的标准，平均约 11% 的层被识别为 critical layers。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig7.png" alt="DroidSpeak 图 7：逐层替换 KV 的质量敏感性" style="max-width: 100%; height: auto;">
+</p>
+
+<p>不同模型对的敏感位置不同，因此不能统一指定所有模型都重算固定的前几层或后几层。</p>
+<p>图 8 进一步考察不同样本，发现固定模型对中，非关键层大多持续不敏感。将层敏感性放到多个输入上检验，为离线 profiling 提供依据：如果敏感位置随每个请求剧烈变化，预先选好的重算区间就难以复用。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig8.png" alt="DroidSpeak 图 8：层敏感性在不同输入之间的稳定性" style="max-width: 100%; height: auto;">
+</p>
+
+<h2>Design</h2>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig12.png" alt="DroidSpeak 图 12：离线分析与在线缓存共享的整体架构" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 12 框架图分为两部分：离线 profiler 针对 sender/receiver 模型对评估连续重算区间，记录质量与计算量；在线根据配置传输入口 E 和可复用层的 KV，在 receiver 上完成区间重算。</p>
+<p>先解释 E 和连续区间为何必要，再展开配置搜索与在线执行。</p>
+<h3>1. 从中间层开始重算，必须额外提供 E Cache</h3>
+<p>以 32 层模型为例，假设选择重算第 16–27 层。如果前 15 层对旧前缀的完整计算已被跳过，receiver 就没有第 16 层入口处、覆盖整个前缀的隐藏状态。仅持有前几层的 KV，不能直接代替这份输入。为了获得它而重新跑前 15 层，又会抵消复用收益。</p>
+<p>DroidSpeak 因此要求 sender 在切换到重算的入口层保存并传输 E。receiver 从这个 E 开始，使用自己的参数连续执行所选区间，并建立这些层的新 KV。</p>
+<pre><code class="language-text">旧前缀的第 1–15 层 KV：直接取 sender 缓存
+
+sender 的第 16 层入口 E
+           ↓
+receiver 第 16 层 → 新 KV16 + 下一层 E
+           ↓
+      ……连续计算……
+           ↓
+receiver 第 27 层 → 新 KV27
+
+旧前缀的第 28–32 层 KV：直接取 sender 缓存
+</code></pre>
+<p>最终结果是由 sender KV 和 receiver 重算 KV 组成的混合缓存。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig9.png" alt="DroidSpeak 图9：E缓存启动连续层重算" style="max-width: 100%; height: auto;">
+</p>
+
+<p>原图 9：原图以第 4–5 层重算为例。绿色为复用 KV，蓝色为重算；入口处额外加载 E。</p>
+<h3>2. 为什么挑差异大的算，要连续算</h3>
+<p>如果关键层是 16–18、20、25–27，分别重算需要在第 16、20、25 层三次接入 sender 的 E。每次接入都带来两个成本：多次加载整段前缀的隐藏状态，以及重新引入 sender 与 receiver 的误差（。</p>
+<p>把区间合并成 16–27，虽然多算了一些非关键层，但只需要一次入口 E；后续状态由 receiver 连续传播，不会在中途反复切回 sender 的隐藏状态。图 10 表明，连续重算的 attention 输出误差小于只算零散关键层的方案。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig10.png" alt="DroidSpeak 图 10：连续重算与零散关键层重算的误差" style="max-width: 100%; height: auto;">
+</p>
+
+<p>E 的开销不能忽略。在相同层和相同上下文范围下，论文称 Mistral-7B、Llama-3-8B 的 E 大小可约为该层 KV 合计的 2 倍，Llama-3.1-70B 可约为 4 倍。</p>
+<h3>3. profiling 为每个模型对进行配置搜索（搜索连续区间），形成质量/计算量配置表</h3>
+<p>搜索对象是起点、终点，不只选一个重算比例；重算第 1–12 层和第 16–27 层都是 12 层，但覆盖的敏感位置不同，最终质量可能不同。</p>
+<p>离线 profiling 按以下方式评估：</p>
+<ol>
+<li>固定 sender 与 receiver，准备带参考答案的样本。</li>
+<li>得到 receiver 完整 Prefill 时的质量，作为参照。</li>
+<li>对一个候选连续区间，按 DroidSpeak 方式构造混合 KV，再让 receiver 实际生成答案。</li>
+<li>使用任务指标评分，记录区间位置、重算层数和整体质量。</li>
+<li>比较候选区间，保留同等计算量下质量较好的配置，形成可供在线选择的前沿。</li>
+</ol>
+<p>这里评估的是<strong>最终回答质量</strong>，不是 KV 张量差值。</p>
+<p>论文中的 training dataset 用于配置选择，§5.1 指明实际使用 HotpotQA 的 50 个上下文进行 profiling。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig11.png" alt="DroidSpeak 图11：连续区间配置的质量计算量前沿" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 11，每个蓝点是一个具体连续区间。横轴为重算层数，纵轴为 F1；同一列的不同点说明区间位置重要。红线展示不同计算量下可达到的较好质量，不是真实延迟曲线。</p>
+<p>例如，若算 10 层的一个区间得 30 分，另一个得 39 分，应优先保留后者；若算 12 层仍只有 35 分，也没有理由选它而放弃算 10 层、得 39 分的配置。这样的比较就是 Pareto 选择：排除计算更多而质量不更好的方案。</p>
+<p>原文举出一个重算 11 层的配置，其 F1 下降在 receiver 原始质量的 5% 范围内，并尽量少算层数。</p>
+<p>连续区间的候选数随层数 $L$ 为 $O(L^2)$：完整非空区间空间共有 $L(L+1)/2$ 个，32 层对应 528 个。给出的 profiling 开销是 32 层 Llama-3-8B 在一张 A100 上约 3 小时；按相邻两层分组可减少候选，实测时间约缩短 3 倍，主实验采用两层分组粒度。</p>
+<h3>4. 在线选择与传输，先拿 E 启动重算，再把其余 KV 搬齐</h3>
+<p>使用 profiling 结果控制运行时选择，调度策略：有请求排队时，在达到离线质量目标的配置中选重算层数最少的；
+没有排队时，根据 token 数估计延迟，在满足 SLO 的条件下尽量提高重算比例。</p>
+<p>跨节点时，只传接收端要复用的层的 KV；重算层的旧 KV 不必再搬运。入口 E 优先发送，receiver 一拿到 E 就开始连续重算，同时加载其他层的 KV，进行并行覆盖</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig13.png" alt="DroidSpeak 图 13：传输与重算的执行时间线" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 13 对比串行与流水线执行。入口 E 先到达即可启动重算，其余复用层的 KV 在计算期间继续传输；流水线收益取决于两段工作能重叠多少。</p>
+<h3>5. E、不同前缀长度与后续 decode</h3>
+<p>不同前缀长度不要求重复存整份 E。固定入口层，旧文本 A B C D E 保存五个位置的状态 [h1,h2,h3,h4,h5]。新请求若共享 AB，可使用前两个状态；若共享 ABCD，可使用前四个。每个位置确实要保存一个向量，但不用再分别复制 [h1]、[h1,h2] 等所有前缀。</p>
+<p>旧前缀在 27 层停止重算，不等于新 token 在 27 层停止计算。准备好混合 KV 后，新问题或回答 token 仍经过 receiver 的全部 32 层。它在第 28 层使用自己刚在第 27 层得到的 E，读取第 28 层的历史 KV，再产生新 E 进入第 29 层。只有旧前缀第 28–32 层的 KV 沿用 sender，不传播前面重算对旧前缀表示的进一步修正。这是近似性的一部分。</p>
+<h2>Evaluation</h2>
+<h3>设置：八组同源模型对，长上下文为主</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>论文设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模型范围</td>
+<td>Mistral-7B、Mistral-24B、Llama-3/3.1-8B、Phi-3.5-mini、Llama-3/3.1-70B 的基础或微调版本，共 8 组主要模型对</td>
+</tr>
+<tr>
+<td>量化</td>
+<td>两类 70B 模型使用 AWQ 4-bit，以放入一张 A100</td>
+</tr>
+<tr>
+<td>硬件</td>
+<td>Azure 两台服务器，每台 8 张 A100 80 GB，节点间 InfiniBand</td>
+</tr>
+<tr>
+<td>问答</td>
+<td>HotpotQA 300 条、2WikiMQA 200 条、MultiFieldQA_en 150 条，以 F1 评价</td>
+</tr>
+<tr>
+<td>摘要</td>
+<td>Multi-News 200 条，以 ROUGE-L 评价</td>
+</tr>
+<tr>
+<td>代码补全</td>
+<td>LCC、RepoBench-P 各 200 条，以编辑相似度评价</td>
+</tr>
+<tr>
+<td>输入长度</td>
+<td>附录表 2 的各数据集上下文中位数约 7.5k–14.3k token</td>
+</tr>
+<tr>
+<td>Profiling</td>
+<td>HotpotQA 50 个上下文；每对模型选择 3 个 receiver 优于 sender 的数据集评测</td>
+</tr>
+</tbody>
+</table>
+<p>不是 8 对模型都在 6 个数据集上完整交叉评测。主要基线是 Full Prefill、Full KV Reuse、作者扩展到跨模型场景的 CacheBlend；另有大模型使用 DroidSpeak 与较小模型的对比。</p>
+<h3>结果一，在接近接收模型原有质量时，减少 Prefill 延迟</h3>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig14.png" alt="DroidSpeak 图14：不同模型对任务的质量延迟折中" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 14</p>
+<p>主实验报告 Prefill 加速 <strong>1.7–3.1 倍，平均 2.1 倍</strong>，同时保持接近 Full Prefill 的生成质量。完全复用通常更快，却损失 receiver 的专长；DroidSpeak 用部分重算恢复质量。论文还报告在相似延迟下，质量比其扩展版 CacheBlend 高 5%–33%，平均 16%。</p>
+<p>Profiling 中讨论的是下降在 5% 范围内的配置，在线吞吐实验则选择下降在 1% 范围内的配置。</p>
+<h3>结果二：减少 Prefill 干扰，提高在线可承载吞吐</h3>
+<p>服务实验使用 Kubernetes 与 vLLM Production Stack。每对模型中，sender 和 receiver 各部署 8 个副本，每节点各放 4 个；采用 round-robin 路由，请求按 Poisson 到达。</p>
+<p>图 15 展示 TTFT、TBT（相邻 token 间隔）和 E2E 随到达率的变化。</p>
+<p>相较完整 Prefill，DroidSpeak 更晚出现排队激增，在论文以基线排队拐点附近延迟为约束的比较下，可支持约 <strong>2–4 倍吞吐</strong>。TBT 也变低并非 decode 跳过了模型层，而是 Prefill 工作减少，对其他解码请求的资源干扰更小。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/droidspeak_fig15.png" alt="DroidSpeak 图 15：在线负载下的 TTFT、TBT 和端到端延迟" style="max-width: 100%; height: auto;">
+</p>
+
+<h3>CacheBlend 基线？</h3>
+<p>这个比较的动机是把已有的 token 级修复方法迁移到跨模型场景，再与层级修复比较。</p>
+<p>DroidSpeak 明确说它扩展了 CacheBlend，并描述根据第一层重算 KV 与 sender KV 的差异选择 token；</p>
+<h3>局限</h3>
+<p>论文明确的限制有三项：当前不支持不同基础模型之间的通用共享；运行时重算比例主要随负载变化，尚未联合优化网络带宽；（固定的hotpotQA数据集，如果不是相似任务，短QA,代码生成？）数据漂移可能使离线区间失效，周期性重新 profiling 留作后续工作。</p>
+<hr /></article></main></div></body></html>

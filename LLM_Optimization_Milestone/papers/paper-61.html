@@ -1,0 +1,32 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Leyline: KV Cache Directives for Agentic Inference</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Leyline: KV Cache Directives for Agentic Inference</h1><article class="source-content"><h1>Leyline：KV Cache Directives for Agentic Inference</h1>
+<p>Bole Ma、Jan Eitzinger、Harald Koestler。<a href="https://arxiv.org/abs/2606.01065v1">arXiv:2606.01065v1</a>，2026-05-31；截至 2026-10-14，已核查页面未标注会议接收信息。</p>
+<h2>问题与定位</h2>
+<p>Agent 主动删除失败工具输出、替换旧调查内容或压缩历史时，普通请求接口只得到编辑后的 token 序列，编辑位置后的连续前缀失效。Leyline 提供显式编辑操作，将“编辑什么、要求什么保证”交给 serving；不是让所有移动后的 KV 自动精确有效。</p>
+<h2>编辑契约与执行</h2>
+<p>指令包含起止 token 位置、替换 token 和语义模式。amortize 删除指定区间、计算替换部分，并校正后续位置；保留后续状态已经吸收的旧信息。forget 要求旧内容不继续通过缓存影响生成，沿用截断后重新 prefill。二者保证不同：位置修正不等于对编辑后的文本完整重算，也不等于遗忘。</p>
+<p>主要 kernel 针对 MLA：对位置相关 K 做 RoPE 增量旋转，保留后续位置无关分量与 V；接入 radix 缓存使编辑后的状态可继续匹配。GQA／MHA 扩展讨论边界重算，不能视为 Mistral 的已验证实现。</p>
+<h2>实验证据</h2>
+<table>
+<thead>
+<tr>
+<th>证据</th>
+<th>场景</th>
+<th>结果与边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>splice 机制</td>
+<td>约 17K 输入、SGLang、并发 1／4／8／16</td>
+<td>相比标准 radix，回放命中提升 11.2 个百分点；延迟最高减少 241 ms</td>
+</tr>
+<tr>
+<td>上下文策略</td>
+<td>debug-gym mini_nightmare，8 任务、4 seeds</td>
+<td>截断策略 solve rate 提升 14.3 个百分点；与机制实验是两条证据</td>
+</tr>
+</tbody>
+</table>
+<p>不能将这两个结果写成同一次真实 coding 部署同时获得的收益；bf16 旋转误差、模型敏感性与长期编辑仍需检查。</p>
+<h2>与当前方向的关系</h2>
+<p>HEAR 统一工作流与引擎的交互契约，Leyline 将其中的上下文编辑具体化。对我们的启发是显式记录历史版本与编辑语义，再分别评价精确继承、近似修复和重新计算。版本或内容 ID 负责定位，不证明 KV 因果有效性。</p></article></main></div></body></html>

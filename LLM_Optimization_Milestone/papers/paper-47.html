@@ -1,0 +1,35 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Murakkab</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Murakkab</h1><article class="source-content"><h1>Murakkab: Resource-Efficient Agentic Workflow Orchestration in Cloud Platforms</h1>
+<p>论文：<a href="https://www.usenix.org/conference/osdi26/presentation/chaudhry">OSDI 2026</a> | <a href="https://arxiv.org/abs/2508.18298">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/Murakkab_OSDI26.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>Murakkab 把 Agent workflow 从“开发者硬编码的一串模型和工具调用”改成“声明式任务图 + 用户 SLO + 后端可选执行配置”，再由 optimizer 和 runtime 共同决定模型、硬件和执行方式。它是 application/workflow frontend 与 serving/resource backend 联合设计最完整的代表之一。</p>
+<h2>它要修正的系统边界</h2>
+<p>现有 Agent 开发通常跨 LangChain/LangGraph 等编排框架、模型供应商和云资源管理器：应用代码里已经写死模型型号、GPU 类型、并行度、是否启用某工具以及重试方式。结果是三层各自优化局部目标：workflow 层追求功能完成，模型供应层只服务 API，资源层只看实例利用率。后端因此既看不到任务依赖，也无法用“换模型/换硬件/改执行图”来满足质量、延迟、成本和能耗之间的整体约束。</p>
+<p>论文的关键判断是：<strong>workflow 逻辑相对稳定，执行配置应该是可搜索、可替换、可运行时重配置的变量。</strong> 这与只在请求到达后做 batch 排序不同，它把模型与硬件选择本身纳入调度空间。</p>
+<h2>前后端接口：谁暴露什么</h2>
+<p>开发者提交的是声明式 workflow：节点是模型、工具或传统 ML 算子，边表示数据/控制依赖；不需要在代码里绑定某一具体模型或 GPU 配置。终端用户提交 SLO，例如最低质量、最大延迟或成本上限。系统维护每个节点可替换的模型/硬件候选和 profile。</p>
+<p>因此后端能看到四类信息：</p>
+<ol>
+<li>任务图与可并行/必须等待的关系；</li>
+<li>每个节点可用模型、模型精度和资源形态；</li>
+<li>质量、延迟、成本、能耗等约束；</li>
+<li>集群当前负载与可用资源。</li>
+</ol>
+<p>这份 contract 比“传一个 program_id”更强：它允许后端改变执行配置，但不改变应用语义。</p>
+<h2>系统机制</h2>
+<p>Murakkab 的生命周期可以拆成三步。</p>
+<ol>
+<li><strong>开发期。</strong> workflow 开发者写逻辑图，平台收集可配置旋钮，例如模型版本、tensor parallel 度、GPU 种类、图像帧数、Agent 数量或轮数。论文用视频问答与代码生成展示配置空间：不同模型和 GPU 组合形成质量、时延、成本、能耗的 Pareto frontier。</li>
+<li><strong>优化期。</strong> profile-guided optimizer 根据离线 profiling 构造满足 SLO 的候选配置，而不是把任意一个局部最快节点当成全局最优。它的任务是删掉显然不满足质量/时延约束的配置，并保留可在不同负载下切换的候选。</li>
+<li><strong>运行期。</strong> adaptive runtime 联合 orchestrator 与 resource manager，按当前负载把 workflow 节点映射到模型和硬件；当资源或请求形态变化时，可改映射而无需改应用代码或重新部署 workflow。</li>
+</ol>
+<p>这里的“codesign”不在于某个具体的 cache policy，而在于建立了 <code>workflow specification -&gt; feasible execution configurations -&gt; adaptive mapping</code> 的闭环。</p>
+<h2>实验应怎样读</h2>
+<p>论文评估多个 workflow，并把 GPU 使用量、能耗、成本与 SLO 同时作为结果。相对比较对象，Murakkab 最多减少 2.8x GPU 使用、3.7x 能耗、4.3x 成本，同时保持配置给定的质量与延迟要求。这个结果说明：只要前端允许后端替换模型和资源，优化空间比只做 request scheduling 大得多。</p>
+<p>不过这些数值应理解为配置/资源效率结果，不是某个 LLM kernel 的通用加速比。复现时要固定：候选模型集合、质量测量方法、SLO、profile 的版本以及负载变化轨迹，否则 Pareto frontier 会变化。</p>
+<h2>局限与可接入点</h2>
+<ul>
+<li>论文没有把动态 Agent 分支的在线预测、细粒度 KV eviction、网络数据搬运统一求解；这些需要与 PBKV、TOPAS、Nuska 一类机制组合。</li>
+<li>profile 的覆盖率决定能否安全重配置；新模型、新硬件或新工具会引入冷启动成本。</li>
+<li>它优先适合“workflow 结构可声明、节点配置可替换”的场景；完全黑盒的 ReAct loop 需要先由 Nalar/SAGA 一类接口把结构提取出来。</li>
+</ul>
+<p>对项目而言，可以借鉴其 API：把 <code>workflow DAG</code>、<code>node alternatives</code>、<code>quality constraint</code>、<code>deadline/cost budget</code> 作为控制面输入，再让下层 scheduler 决定批处理、KV 与通信细节。</p></article></main></div></body></html>

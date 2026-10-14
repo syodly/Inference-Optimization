@@ -1,0 +1,96 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>HEAR: Can Agent Harnesses and Inference Engines Hear Each Other?</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>HEAR: Can Agent Harnesses and Inference Engines Hear Each Other?</h1><article class="source-content"><h2>一、HEAR</h2>
+<p><em>Can Agent Harnesses and Inference Engines Hear Each Other? The HEAR Protocol for Agentic LLM Serving</em>。Jiaqi Zhao、Haodong Chen、Jitai Hao、Wei Zhao、Jinghao Pang、Qiang Huang、Jun Yu，哈尔滨工业大学（深圳）。目前为 <strong>arXiv 预印本</strong>，原文未标注录用会议；<a href="https://arxiv.org/abs/2610.06597v1">arXiv:2610.06597v1</a>，2026-10-05 提交。<a href="https://anonymous.4open.science/r/hear-3D1E/">论文所列匿名仓库</a>。</p>
+<h3>问题背景：工作流与推理引擎掌握的信息互不可见</h3>
+<p>Agent 服务分成两层。<strong>Harness 决定执行什么，Engine 决定怎样执行</strong>，但高效执行需要同时知道两侧信息。</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>掌握的信息</th>
+<th>缺少的信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent Harness，如 LangGraph、AutoGen、AgentScope</td>
+<td>角色分工、请求依赖、工具调用进度、上下文生命周期、未来复用意图</td>
+<td>KV 实际驻留、请求队列、资源压力、引擎支持的执行模式</td>
+</tr>
+<tr>
+<td>Inference Engine，如 vLLM、SGLang</td>
+<td>KV 缓存、队列、资源状态、执行模式与成本</td>
+<td>请求所属角色、工作流依赖、上下文何时再次使用</td>
+</tr>
+</tbody>
+</table>
+<p>三类损失：<br />
+<strong>误驱逐</strong>，引擎不知道某段上下文即将复用，提前释放后只能重新 prefill；<br />
+<strong>调度失配</strong>，harness 不知道哪些请求已有缓存，可能先执行冷请求；<br />
+<strong>模式错配</strong>，不同角色的输入输出与并发特征不同，统一执行配置无法同时适配所有角色。</p>
+<p><img alt="HEAR Figure 1：两层信息割裂导致误驱逐与调度失配" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/HEAR_Figure1_verified.png" /></p>
+<p>上半部分是上层知道马上复用，下层却刚驱逐；下半部分是下层已有可用 KV，上层却不知道该先执行谁。HEAR 要解决的是这条信息与控制链路的缺失。</p>
+<h3>相关工作与核心洞察</h3>
+<p><strong>相关工作与 insight：</strong> AutoGen、AgentScope、LangGraph 管理工作流；vLLM、SGLang、LMCache，以及 H₂O、SnapKV、OmniKV 提供引擎内部的执行与 KV 管理机制；KVFlow、PBKV、Continuum、CONCUR、Pythia 等已经利用工作流或运行时信息做跨层优化。</p>
+<p>HEAR 的切入点是这些优化通常依赖特定策略和执行系统，各自定义信号与控制流程，难以移植和组合，耦合性太强。工作流意图与运行时状态具有互补性，但仅交换信息还不够：必须明确消息究竟是描述、偏好、硬约束还是操作结果，否则会把预计复用误当成必须保留，把现在存在误当成资源已预留。</p>
+<p>因此，论文的核心贡献是<strong>统一双向交互协议，将通信语义与具体优化策略解耦</strong>。</p>
+<h3>系统设计：协议规定语义，策略负责决策</h3>
+<p>HEAR（Harness–Engine pAiRing）连接现有 harness 与 engine，它定义消息类别、控制效力和操作生命周期；具体怎样调度、怎样保留缓存、怎样选择执行模式，由接入的策略决定。它保持原工作流的任务选择和依赖关系，不修改模型语义。</p>
+<p><strong>四类消息构成完整的双向反馈。</strong> </p>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>消息类别</th>
+<th>内容与作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Harness → Engine</td>
+<td>执行描述与意图</td>
+<td>角色、阶段、依赖、输入输出规模、上下文生命周期和未来复用预测；提供决策依据</td>
+</tr>
+<tr>
+<td>Harness → Engine</td>
+<td>执行需求与控制</td>
+<td>调度偏好、等待约束、缓存准备／保留／释放请求、执行模式要求；明确希望采取的动作及其约束</td>
+</tr>
+<tr>
+<td>Engine → Harness</td>
+<td>状态与能力</td>
+<td>可复用前缀及存储层、队列、容量压力、支持的操作和配置、执行成本；返回当前观测</td>
+</tr>
+<tr>
+<td>Engine → Harness</td>
+<td>执行结果</td>
+<td>接受、完成、拒绝、不支持或失败，实际配置、回退、缓存复用、延迟与错误；确认实际发生了什么</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="HEAR Figure 2：消息类别与动态工作流中的双向协同" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/HEAR_Figure2_verified.png" /></p>
+<p>左侧是四类消息，右侧是多个 agent 在生成、工具调用和结束之间切换时的交互。蓝色传递工作流信息与控制，橙色返回引擎状态与结果；</p>
+<p>通用决策形式为：</p>
+<p class="formula">d<sub>i</sub> = π(h<sub>i</sub>, s<sub>j</sub>)</p>
+
+<p>其中，h<sub>i</sub> 是当前工作流信息，s<sub>j</sub> 是引擎最新反馈，π 是具体策略，d<sub>i</sub> 是输出的执行决策。两侧更新可以异步发生，因此不能假定状态报告与决策时刻完全同步。下面两类实例用同一套契约，分别处理在线调度和角色级配置。</p>
+<h3>实例一：缓存感知运行时协同及实验</h3>
+<p>Cache-Aware 根据引擎反馈，从请求开头逐块查找连续可复用前缀，并分别统计 GPU、CPU 层的命中。覆盖提示词至少 50% 的请求判为 hot，其余为 cold；cold 保持默认优先级，hot 按 <code>priority</code> 排序，可复用块越多越先执行。调度时看到的缓存可能随后被驱逐，实际执行前引擎仍需重新核验。</p>
+<p>Guard 给这种命中优先策略加等待约束：请求等待超过 <code>W</code> 秒后进入受保护优先级，后续热请求不能再绕过或抢占它，受保护请求按等待先后执行。</p>
+<p>Session-Aware 独立控制驱逐顺序：harness 根据已完成会话的返回行为估计继续概率 <code>p</code>，引擎结合闲置时间计算保留优先级 <code>r = p·exp(−idle/400)</code>。越可能继续、越近期访问的上下文越优先保留。</p>
+<p>三者分别解决<strong>及时使用已有缓存、限制冷请求等待、让缓存留到下一轮</strong>，可以组合。这里仍是连续前缀复用，遇到首个缺失块便停止；HEAR 没有让其后的驻留块独立参与复用，也没有引入 CacheBlend 式修复。决策随缓存事件与调度点在线更新。</p>
+<p><strong>负载与设置。</strong> SCBench（面向长上下文推理的 KV 缓存评测基准） Mooncake ；从同一 15 分钟内开始的会话中回放 50%／75%／100%，保留完整轮序和时间间隔。两者使用 Qwen3-8B，分别部署在单张 RTX PRO 6000、单张 H100，均配置 96 GiB L2 KV 缓存。基线为引擎默认 FCFS，各组模型、负载与缓存容量一致。</p>
+<p><img alt="HEAR Table 3：SCBench 缓存调度结果" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/HEAR_Table3_verified.png" /></p>
+<p>Cache-Aware 将复用率从 <strong>19.2% 提升至 87.6%</strong>，全部会话完成时间从 481 秒降至 224 秒，但最大 TTFT 从 79.0 秒升至 93.9 秒，说明热请求优先会牺牲冷请求等待。</p>
+<p>加入 Guard-40 后，完成时间为 <strong>299 秒，整体加速 1.61 倍</strong>；中位 TTFT 从 63.1 秒降至 28.3 秒，改善 <strong>2.23 倍</strong>；P95 从 74.2 秒降至 51.1 秒，改善 <strong>1.45 倍</strong>；复用率为 <strong>66.1%</strong>。核心结果是复用收益与等待约束的折中，并非命中率越高越好。</p>
+<p><img alt="HEAR Figure 3：Mooncake 不同负载下的复用率与 KV 占用" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/HEAR_Figure3_verified.png" /></p>
+<p>50% 负载下主要损失来自闲置期间驱逐，Session-Aware 将复用率从 19.5% 提升至 31.9%；75% 负载下，会话保留与缓存感知调度组合获得最短会话等待、最高吞吐和最高复用；100% 负载下，Cache-Aware 在中位 TTFT、会话等待与吞吐上更有优势，Session-Aware 则改善尾延迟和复用率。<strong>最优策略取决于负载及优化指标，完整组合不总是最优。</strong></p>
+<h3>实例二：能力感知执行配置及实验</h3>
+<p>harness 提供角色、工作阶段、负载规模、优化目标和质量要求；引擎提供各模式的实测延迟、吞吐、KV 容量与稳定性。</p>
+<p>作者测试 Main <code>{vLLM, OmniKV}</code> × Reader／子 agent <code>{vLLM, H₂O, SnapKV}</code> 六种组合，先按质量和稳定性筛选，再以完成时间选择角色—模式映射。映射在正式实验前冻结，在工作流初始化时加载。</p>
+<p><strong>负载与设置。</strong> BrowseComp-Plus 每组 208 道检索问答，DeepResearchBench 每组 100 个深度研究任务；共同采用 LangGraph 的 Main–Retriever–Reader／子 agent 编排，保留各自检索环境。Main 与 Reader 均使用 GLM-4.7-Flash，部署在独立 H100 上；比较上述六种配置，任务和工具预算一致。</p>
+<p><img alt="HEAR Table 5：六种角色配置的端到端时间与质量" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/HEAR_Table5_verified.png" /></p>
+<p>BrowseComp-Plus 选择 <strong>vLLM／H₂O</strong>，总时间从 5.69 小时降至 4.62 小时，<strong>加速 1.23 倍</strong>，Judge accuracy 为 46.63%，基线为 46.15%；DeepResearchBench 选择 <strong>OmniKV／H₂O</strong>，完成时间从 5.93 小时降至 2.42 小时，<strong>加速 2.45 倍</strong>，RACE 为 41.1%，基线为 40.6%。</p>
+<p><img alt="HEAR Table 6：Main 与 Reader 的收益归因" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/HEAR_Table6_verified.png" /></p>
+<p>主要收益来自 Reader／子 agent 切换到 H₂O，平均延迟分别降低 <strong>5.60 倍、7.22 倍</strong>。BrowseComp-Plus 同时减少 76.2% 的 prefill token，复用率从 6.2% 升至 80.3%。</p>
+<p>Main 的选择随负载变化：约 0.4K 输出的 BrowseComp-Plus 更适合 vLLM，约 4.4K 输出的 DeepResearchBench 更适合 OmniKV。强行统一使用 OmniKV／H₂O，会使前者比所选配置慢 7.8%；统一使用 vLLM／H₂O，会使后者慢 14.0%。</p>
+<p><strong>论文证明的是统一协议能够承接不同优化策略，并让工作流意图与实时状态共同参与决策。</strong> 收益包含接入的缓存与执行模式，不能全归于协议本身。</p></article></main></div></body></html>

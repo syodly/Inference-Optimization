@@ -1,0 +1,20 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TOPAS</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>TOPAS</h1><article class="source-content"><h1>TOPAS: Workflow-Aware Prefix-State Scheduling for Multi-Agent LLM Serving</h1>
+<p>论文：<a href="https://arxiv.org/abs/2608.25523">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/TOPAS.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>TOPAS 将“本轮执行哪些 request”和“GPU 里保留哪些 Agent static prefix”建成同一个 post-decision state 搜索问题，并用 workflow 剩余关键路径而非即时 cache hit 衡量任务进展。</p>
+<h2>它纠正的两种片面策略</h2>
+<p>只追求 prefix locality 会让长 static prefix 长期占 HBM，挤掉 dynamic suffix/decode 的 batch 空间；只追求某任务当前进度又可能切走一个马上要在下游复用的 prefix。在 fork/join DAG 中，推进非瓶颈分支甚至不缩短 task completion time。</p>
+<p>TOPAS 的状态包含 resident prefix set <code>R</code> 和正在服务的 request set <code>Q</code>。scheduler 不让普通 cache eviction 间接决定 <code>R</code>，而是显式枚举/搜索下一状态 <code>S'=(R',Q')</code>，要求 prefix 与 request 的联合 KV 容量满足 GPU budget。</p>
+<h2>决策函数</h2>
+<p>基础 utility 写为：</p>
+<p><code>U_base = J_admit - J_move - J_redo - J_revoke</code></p>
+<p>其中 <code>J_admit</code> 是新接纳请求完成后对其任务<strong>最长剩余 LLM 服务路径</strong>的预计缩短；后三项分别扣除加载/移动 prefix、抢占导致需重做的工作、撤销/切换代价。单位统一为秒，因此算法不是单纯加权 cache hit count。</p>
+<p>对于链式任务，路径缩短接近当前 stage 的剩余服务减少；对于 fork/join，算法基于各 stage 的经验服务分布估计瓶颈分支可能变化。这样一个 request 即使很短，若不在关键路径上也未必优先。</p>
+<h2>短视 lookahead 与公平性</h2>
+<p>当前共享收益已体现在容量约束中；为了估计“此 prefix 下一跳就会用到”的价值，TOPAS 对只有一个未完成前驱的下游 ready stage 做 one-hop lookahead，按该 Agent prefix 的 reload time 和可用 swap 带宽增加 <code>V_reuse</code>。只看一跳是有意的：更远处需求由 ReAct、工具输出和未决分支决定，强行远视会放大预测误差。</p>
+<p>task-level aging 只放大 admission progress，用对数形式随等待时间增长，避免高收益新任务不断越过旧任务。对大 Agent pool，算法不穷举全部 prefix 集，而使用 bounded greedy/hierarchical state search，保留 incumbent 并试探单 Agent 或一对 Agent 的增量。</p>
+<h2>实现与实验</h2>
+<p>TOPAS 实现在 SGLang v0.5.3，单张 A100 80GB；评估三种合成 DAG 与两个 MetaGPT 软件开发 workflow。相对每个 workload/指标的最强 baseline，合成 DAG mean/p99 JCT 最多下降 39.8%/49.4%；MetaGPT-SOP mean JCT 降 9.8%，MetaGPT-TL mean/p99 降 22.0%/26.6%。</p>
+<p>这里的主要证据是<strong>任务层 JCT</strong>，不是 token throughput。复现时必须保存每个 Agent prefix 大小、swap 带宽、stage service profile、抢占重做量和 ready DAG 状态；否则不能验证 score 中哪一项带来收益。</p>
+<h2>边界与项目价值</h2>
+<p>TOPAS 假定 agent identity、stage DAG 和服务分布可获得，且只做短视预测；完全黑盒的动态 workflow 需要 PBKV/Nalar/SAGA 先提供这些信息。它没有解决跨模型 KV 共享或分层 I/O，但可以把 <code>R'</code> 的实际加载交给 Strata。对项目而言，它是联合 critical path、KV residency 和 batch admission 最接近的直接 baseline。</p></article></main></div></body></html>

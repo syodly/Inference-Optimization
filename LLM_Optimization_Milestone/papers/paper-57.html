@@ -1,0 +1,21 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cortex</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Cortex</h1><article class="source-content"><h1>Cortex: Workflow-Aware Resource Pooling and Scheduling for Agentic Serving</h1>
+<p>论文：<a href="https://arxiv.org/abs/2510.14126">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/Cortex.pdf">PDF</a></p>
+<h2>论文性质</h2>
+<p>这是一篇 3 页的短文/原型设计，不应把它与完整系统论文同等看待。它没有给出与 Murakkab、Nalar 或 SAGA 同等级别的完整算法和大规模实证；价值在于提出了一个清楚的资源隔离抽象。</p>
+<h2>一句话定位</h2>
+<p>Cortex 按 Agent workflow 的 stage 建立专用资源池，而不是让 schema retrieval、LLM reasoning、SQL execution、verification/retry 等阶段全部竞争同一组 GPU/CPU/KV 空间。</p>
+<h2>动机：NL2SQL 的闭环工作流</h2>
+<p>论文以 NL2SQL 为例：请求先检索 schema，LLM 生成 SQL，执行 SQL，验证结果；若语法错误或语义失败，继续修复并重试。这里存在不同资源形态：LLM 生成要 GPU/KV，数据库执行要 CPU/数据库并发，重试带来 burst，多个候选 SQL 又可能 fan-out。</p>
+<p>若所有步骤只进入一个共享 serving queue，长 LLM decode、工具 I/O 与重试会相互干扰：即使某阶段没有 GPU 需求，也可能因统一 admission 或 KV 占用拖慢其他阶段。Cortex 因而把“stage”而不是“request”作为 resource pool 边界。</p>
+<h2>设计含义</h2>
+<p>每个 stage 拥有专属或逻辑隔离的 compute/memory resource pool，stage 内再采用符合其特征的调度。这样可以：</p>
+<ul>
+<li>限制工具/重试阶段对 LLM serving memory 的干扰；</li>
+<li>提高同一阶段的 batching 和 KV 利用率；</li>
+<li>让不同 stage 使用不同并发度、模型或资源上限；</li>
+<li>将后续的跨 stage state cache、branch speculation、malleable resource 接入到明确边界。</li>
+</ul>
+<p>论文特别提出两类未来的弹性：资源紧张时可换小模型、减少 retry 或缩短 reasoning；fan-out/straggler 场景可为特定 stage 临时扩充 GPU 或 SQL 并发。其本质是把 workflow 的阶段语义传给资源管理器。</p>
+<h2>如何正确使用这篇论文</h2>
+<p>将它作为“stage isolation 是否有价值”的架构基线，而不是可直接复现的完备 scheduler。研究中需要自行补全：如何识别 dynamic stage、池大小如何自适应、闲置资源如何在池间借用、跨池 KV 如何迁移，以及隔离导致的碎片化是否抵消收益。</p>
+<p>它与 Astraea 的区别是：Astraea 对同一全局队列做状态感知优先级；Cortex 先改变资源拓扑。一个完整项目可以先用 Cortex 划分逻辑池，再在每个池中运行 Astraea/TOPAS 式调度，并允许在 SLO 违约时临时打破隔离。</p></article></main></div></body></html>

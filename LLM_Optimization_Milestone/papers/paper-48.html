@@ -1,0 +1,27 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Strata</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Strata</h1><article class="source-content"><h1>Strata: Hierarchical Context Caching for Long Context Language Model Serving</h1>
+<p>论文：<a href="https://www.usenix.org/conference/osdi26/presentation/xie-zhiqiang">OSDI 2026</a> | <a href="../source-assets/LLM Opt/codesign/papers/Strata_OSDI26.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>Strata 是长上下文服务的“KV 数据面 + cache-aware 调度面”协同设计：它不把 CPU/SSD 中的 KV 当作普通文件搬运，而是让 I/O 布局、GPU 传输和 batch scheduler 相互感知。</p>
+<h2>问题不是“有没有缓存”，而是缓存命中后如何不阻塞</h2>
+<p>在 HBM、CPU DRAM、SSD 的层次缓存中，context KV 往往碎成很多 page。传统做法频繁调用小粒度 <code>cudaMemcpyAsync</code>，带宽利用率低；更严重的是，某个 context 正在从 host 加载时，后续命中同一 context 的请求会成为 delay hit。若 scheduler 不理解这种状态，可能把大量请求放入下一 batch 后一起等待加载，导致 prefill 停顿，吞吐下降。</p>
+<p>因此 Strata 的输入不是只有 token/prompt；scheduler 还维护每个前缀页面的驻留层级、加载状态、预计传输量及可与 I/O 重叠的计算工作。</p>
+<h2>架构与状态</h2>
+<p>系统分为两个部件。</p>
+<ol>
+<li><strong>StrataCache Controller（数据面）。</strong> 管理 HBM、CPU、SSD 之间的 KV page、传输请求和布局转换。</li>
+<li><strong>StrataScheduler（控制面）。</strong> 在执行中的 batch 期间持续估计下一 batch 可用资源及队列请求需求，选择请求、触发 KV 加载，并把 prefill 完成的请求合并到 decode batch。</li>
+</ol>
+<p>两者通过扩展的 <code>HiRadixTree</code> 共享元数据。它既保留 SGLang RadixTree 的前缀索引能力，也承担类似页表的角色，记录 KV page 所属位置、状态和共享关系。</p>
+<h2>关键机制</h2>
+<h3>1. GPU-assisted I/O</h3>
+<p>Strata 不让 CPU 对每个小 KV page 单独发起 memcpy；它启动 CUDA kernel，由大量 GPU threads 并发地从 GPU memory 或注册的 pinned host memory 读取小块、经寄存器写入目的地。这样将大量碎片小传输汇合为 GPU 端高并发操作，减少 CPU 发起开销并提高 PCIe/内存链路利用率。</p>
+<p>这不是简单“异步 copy”：它允许 GPU/host 两端采用适合各自访问模式的布局，避免为了持久化/检索而牺牲 GPU attention 的布局。</p>
+<h3>2. 加载与计算按层重叠</h3>
+<p>请求入选 batch 后，scheduler 发出加载任务。prefill 执行中，GPU executor 只在某层真正要使用 KV 前通过 CUDA event 等待该层数据就绪；cache controller 可继续准备后续层。这个设计把“等待完整 context 先加载完”改成分层流水。</p>
+<h3>3. cache-aware batch formation</h3>
+<p>scheduler 的目标不是贪心塞满 token budget。它同时避免将同一未加载 context 的大量 delay hits 一起推入关键路径，并尝试混入可立即运行、且能覆盖传输等待的互补请求。也就是说，缓存加载时间被视为 batch composition 的约束和机会，而非执行器外部的偶发开销。</p>
+<h2>证据与复现关注点</h2>
+<p>论文在 H200、带 NVMe 的 H20、GH200 等平台上评估，覆盖长上下文 QA、总结和短上下文混合负载；报告相对 vLLM-LMCache 最高 5x 吞吐、相对 TensorRT-LLM 最高 3.75x，同时不牺牲短上下文性能。解释这些结果时应拆开看：GPU-assisted I/O 解决的是碎片传输，scheduler 解决的是 delay-hit 与重叠；两者缺一个都会削弱端到端收益。</p>
+<p>复现实验应记录：KV page 大小、GPU/CPU 布局、pinned memory、PCIe/NVLink/SSD 带宽、host cache 容量、命中率、加载时间以及 delay-hit 队列长度。只比较平均 TTFT 无法判断收益是否来自真实 I/O 改善还是 workload 偶然更易命中。</p>
+<h2>与 codesign 的关系和边界</h2>
+<p>Strata 不显式理解 Agent DAG，因而不能自己判断“哪个未来节点最值得保留”。但它提供了此类上层策略必须依赖的数据面：一旦 TOPAS/PBKV/SAGA 决定某个 prefix 该保留或预取，Strata 负责以低开销搬运，并让 engine scheduler 不因该操作堵塞。项目中可把它视为 <code>workflow-aware cache policy</code> 下方的可替换 cache transport/runtime 层。</p></article></main></div></body></html>

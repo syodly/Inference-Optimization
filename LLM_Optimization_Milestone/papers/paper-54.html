@@ -1,0 +1,20 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FlowMesh</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>FlowMesh</h1><article class="source-content"><h1>FlowMesh: A Service Fabric for Composable LLM Workflows</h1>
+<p>论文：<a href="https://arxiv.org/abs/2510.26913">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/FlowMesh.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>FlowMesh 不把每个 Agent/RLHF pipeline 当作独占 job，而把所有租户的图工作流汇成一个共享服务：以 operator lineage 发现重复工作，以全局 ready queue 进行跨租户 batching 和异构 worker 调度。</p>
+<h2>它处理的工作负载</h2>
+<p>论文覆盖 Agent inference、SFT、RLHF/RLAIF 等多阶段 LLM 工作流。它们共同特点不是 token generation 本身，而是一个 DAG 内有数据转换、模型调用、训练或工具算子，且多个用户可能产生等价的中间工作。传统系统按 pipeline/用户隔离，因此同一个 operator 即使模型、参数和输入 lineage 相同，也会重复执行。</p>
+<h2>前端与中间表示</h2>
+<p>前端提交 DAG。每个 operator 都有由模型、参数和数据 lineage 计算出的确定 identity；论文区分两种 hash：完整的 task identity 用于识别跨 workflow 的完全相同工作，execution signature <code>H_exec</code> 则忽略具体 payload，只保留 executor、模型、超参数和资源类别，用于判断是否能放进同一个常驻 executor/batch。</p>
+<p>这个差别很关键：前者允许去重，后者允许“结果不相同但执行形态相同”的连续 batching。</p>
+<h2>控制面：把 worker 选择和 batch 选择放进同一目标</h2>
+<p>control plane 维护所有 DAG 的 READY/RUNNING/COMPLETED 状态，以及跨 DAG 的 ready-operator pool。对当前 ready operator，先按 <code>H_exec</code> 组成兼容集合，再在同一 utility 内联合决定：选择哪些 operator 形成 batch、发给哪一个异构 worker。目标同时平衡吞吐、成本和数据局部性，而不是先独立 route、后独立 batch。</p>
+<p>新工作可连续插入已加载对应模型的长寿命 executor；因此它复用了权重、adapter、tokenizer，也可复用 KV。对于完全相同的 operator，控制面可合并为一次执行，再把同一结果回填到多个原始 DAG。</p>
+<h2>数据面与容错语义</h2>
+<p>数据面由无状态容器化 workers 和 content-addressable store (CAS) 组成。worker 在逻辑上可丢弃，真正的输入/输出由不可变、内容寻址的数据对象保存。worker 被抢占或失败时，RUNNING operator 原子回到 READY；重试前先查 CAS，若其他合并执行已经产出结果，则直接复用而不再执行。</p>
+<p>这种设计将容错建立在 lineage + 幂等重执行上，而不是为每个 LLM workflow 另写 checkpoint 协议。代价是状态化 Agent session 的细粒度 KV 迁移不是其最强项。</p>
+<h2>实验与解释</h2>
+<p>论文用多种 post-training 与 agent workflow 评估吞吐、成本、能耗、失败恢复和扩展性，报告最高 3.8x 成本降低、2.0x 能耗降低，同时保持相近或更好的延迟。阅读这些结果时需确认收益来源：完全 task dedup、<code>H_exec</code> batching、异构 placement、自动扩缩容和重试可能同时发生。</p>
+<h2>与 codesign 的关系与边界</h2>
+<p>FlowMesh 是 workflow/operator 层与 cluster service fabric 的 codesign，不是以单次 Agent 多轮 KV 为中心的 serving engine。它非常适合研究跨租户、跨 workflow 的共享，但若研究目标严格限定单集群在线 Agent inference，应把它当作“上层 DAG/control plane”参考，并接入 Nalar/Strata/KV manager 来补状态和 token 执行。</p>
+<p>其部署可涉及多云或 GPU marketplace；这不是云边协同，但若项目把跨地域资源也排除，应只借鉴其 lineage、ready pool 和联合 batching 思想。</p></article></main></div></body></html>

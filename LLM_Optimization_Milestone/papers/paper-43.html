@@ -1,0 +1,213 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ContextPilot: Fast Long-Context Inference via Context Reuse</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>ContextPilot: Fast Long-Context Inference via Context Reuse</h1><article class="source-content"><h1>ContextPilot：Fast Long-Context Inference via Context Reuse</h1>
+<p>原文：<a href="https://arxiv.org/abs/2511.03475v4">CONTEXTPILOT.pdf</a><br />
+作者：Yinsicheng Jiang、Yeqi Huang、Liang Cheng、Cheng Deng、Xuan Sun、Luo Mai；爱丁堡大学。<br />
+版本与发表：<a href="https://arxiv.org/abs/2511.03475v4">arXiv:2511.03475v4</a>，2026-05-06；发表于 MLSys 2026。<br />
+代码：<a href="https://github.com/EfficientContext/ContextPilot">EfficientContext/ContextPilot</a>。<br />
+研究对象：同一模型下，多请求、多轮会话反复读取相同文档、记忆或工具输出，但排列和重复位置不同。<br />
+核心方法：在推理引擎之前重排、去重 context blocks，配合请求调度扩大精确前缀复用，并用文本注释保留检索优先级和被去重内容的位置。</p>
+<h2>Motivation</h2>
+<h3>文档大量重复，却没有形成可命中的前缀</h3>
+<p>长上下文应用希望让模型看到更多资料，但 Prefill 随之变贵。</p>
+<p>论文记录的输入常有 20k–130k token，32B 稠密模型在单张 H100 上的 Prefill 可达 3–10 秒。</p>
+<p>减少检索量或把文档切得很碎，可能丢失回答所需的证据，所以怎么减少重复计算（复用）。</p>
+<p>假设两个请求分别取回 B + A + C 和 A + B + D。A、B 都重复了，但传统前缀缓存只能从输入开头连续匹配，无法跨过顺序差异继续复用。</p>
+<p>多轮会话还会出现另一类浪费，A、B 已经在历史中，本轮检索又把全文附加一次，旧位置的缓存并不能免除新位置的计算。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_fig2.png" alt="ContextPilot 图 2：跨会话重叠、多轮重叠和顺序注释" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 2 场景到方案：不同用户取回相同块但排序不同；同一用户的后续轮次重复取回旧块；在重排后用注释告诉模型原来的相关性优先级。<br />
+这种重复在论文数据中有明确支撑。MT-RAG 中，每轮平均约 40% 的检索文档已在此前轮次出现。<br />
+跨会话访问也集中于少量热门文档：按附录 C 的统计口径，最热门的 20% 文档覆盖 MultihopRAG、NarrativeQA、QASPER 中 79.2%、57.4%、49.6% 的访问事件。访问集中不等于前缀命中，但提供了重新组织前缀的空间。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_fig11.png" alt="ContextPilot 图 11：文档访问频率的累积分布" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 11  横轴是按访问频率排序后的文档占比，纵轴是累计访问占比。曲线明显高于均匀分布线，说明文档复用有实际数据基础；它没有直接测量语义相似文本的复用率。</p>
+<h3>Insight：调整文本组织，让精确前缀缓存更容易命中</h3>
+<p>ContextPilot 将文档、文档块、记忆条目和工具结果统一视为 context block（CB）。同一会话中已经出现的正文，可以保留第一次出现的位置，后续用引用代替重复全文。</p>
+<p>因此，上例可以变为 A + B + C 与 A + B + D，先形成相同的 A + B 前缀。后续轮次若再次需要 A，则在当前输入中写明到历史的哪个位置读取 A。。</p>
+<p>顺序注释与位置注释是在提示词层面补偿这种变化，不能使两种输入的隐藏状态数学等价。</p>
+<p>表 1 用分类任务上的排序实验支持模型对顺序变化的容忍度，但这些任务不能替代长上下文 RAG 验证。更直接的证据是后面的消融，仅重排会造成小幅质量变化，加注释后多数设置恢复或提升，部分设置仍有损失。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_table1.png" alt="ContextPilot 表 1：Random 与 DEmO 排序的完整准确率对比" style="max-width: 100%; height: auto;">
+</p>
+
+<p>比较 Random 与 DEmO 排序。GPT-3.5 的平均准确率为 82.9 与 83.0，GPT-5.1 为 86.9 与 86.7；总体差距小，但单项仍有变化，例如 GPT-5.1 的 SST2 为 92.0 与 93.8。因此它支持所测任务中排序影响较小，不支持任意任务下顺序无关。</p>
+<h2>Design</h2>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_fig3.png" alt="ContextPilot 图 3：整体系统架构" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 3，ContextPilot 位于检索系统和推理引擎之间。<br />
+Context Index 记录可共享块及缓存状态；<br />
+Context Ordering 查找共享前缀、重排块并安排请求顺序；<br />
+Context Deduplication 删除重复正文并补充引用。<br />
+更新后的 prompt 交给 SGLang 或 vLLM，仍由引擎完成正常的前缀匹配、Prefill 和 Decode。</p>
+<h3>1. Context Index：用块 ID 组织潜在的共享前缀</h3>
+<p>索引树的叶子表示请求的上下文，内部节点表示子树上下文的公共块。节点保存块 ID、从根出发的搜索路径、访问频率和创建节点时的聚类距离。实际 KV 保存在推理引擎的 prefix cache 中，索引主要保存元数据。</p>
+<p>论文的初始化例子是：</p>
+<pre><code class="language-text">C1 = [2, 1, 3]       C2 = [2, 6, 1]       C3 = [4, 1, 0]
+
+C1 与 C2 共享 [1, 2]，合并出内部节点 C4
+C4 与 C3 共享 [1]，继续合并出内部节点 C5
+
+空根
+└─ [1]
+   ├─ [1, 2]
+   │  ├─ [1, 2, 3]
+   │  └─ [1, 2, 6]
+   └─ [1, 4, 0]
+</code></pre>
+<p>树的作用是找出适合放在前面的公共内容，再让子节点继承父节点顺序。内部节点 [1,2] 刚建立时只是对共享关系的描述；对应请求实际执行后，引擎内才有这段前缀的 KV，相当于用外部逻辑树维护引擎内部的prefix cache树。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_fig4.png" alt="ContextPilot 图 4：上下文索引与引擎前缀缓存的对应关系" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 4 左边按块集合的重叠建立索引，右边是对齐后的前缀路径。</p>
+<p>构建时先计算上下文两两距离，再进行层次聚类，优先合并距离较小的上下文。距离函数为：</p>
+<p>$$
+d_{ij}=1-\frac{|S_{ij}|}{\max(|C_i|,|C_j|)}
++\alpha\frac{\sum_{k\in S_{ij}}|p_i(k)-p_j(k)|}{|S_{ij}|}.
+$$</p>
+<p>其中 $S_{ij}$ 是共享块 ID 的集合，$p_i(k)$ 是块 $k$ 在上下文 $i$ 中的位置。第一项鼓励共享更多块，第二项惩罚共享块原始位置相差过大。实验设置 $\alpha=0.001$，使重叠数量占主导。</p>
+<h3>2. Context Alignment 共享块放到前面，其余块保留原顺序</h3>
+<p>新请求 C6=[2,1,4] 到达时，索引先在 [1] 和 [1,2] 分支中比较重叠，找到可继承的 [1,2]，然后把剩余块 4 接到后面，得到 [1,2,4]。类似地，C8=[1,9,2] 变为 [1,2,9]；完全无重叠的 [5,7,8] 保持原样。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_fig5.png" alt="ContextPilot 图 5：查找共享前缀并对齐上下文" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 5 依次展示搜索、插入树节点、输出对齐后的序列。C6、C8 共享 [1,2]，不共享的块仍由各自请求正常计算。</p>
+<p>树搜索采用逐层贪心选择距离较小的子节点。</p>
+<h3>3. 请求调度</h3>
+<p>改块顺序不足以完善设计，如果中间插入不相关请求并驱逐缓存，后面的请求仍会 miss。论文例子：</p>
+<pre><code class="language-text">对齐后请求：C6=[1,2,4]  C3=[1,4,0]  C7=[5,7,8]  C8=[1,2,9]
+
+原顺序：C6 -&gt; C3 -&gt; C7 -&gt; C8
+        C7 换入无关前缀，C8 到达时 [1,2] 已被驱逐
+
+调度后：C6 -&gt; C8 -&gt; C3 -&gt; C7
+        C8 紧接 C6，及时复用 [1,2]
+</code></pre>
+<p>调度器复用对齐阶段保存的搜索路径：按路径第一项分组，组内按路径长度降序排列，最后依次执行各组。附录 Algorithm 5 还规定较大的组先执行。路径深度是前缀共享结构的代理，并不等同于精确的可复用 token 数。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_fig6.png" alt="ContextPilot 图 6：基于搜索路径的请求分组与排序" style="max-width: 100%; height: auto;">
+</p>
+<p>请求到达怎么预知的？。。。</p>
+<h3>4. Order Annotation：用少量文本保留检索优先级</h3>
+<p>检索器返回 [2,1,4] 通常意味着块 2 更相关。重排成 [1,2,4] 后，这个优先级不再由物理位置表达，因此 ContextPilot 在正文之后补充：</p>
+<pre><code class="language-text">system prompt
+[CB 1] 正文
+[CB 2] 正文
+[CB 4] 正文
+Please read the context in the following priority order:
+[CB 2] &gt; [CB 1] &gt; [CB 4] and answer the question.（注入）
+当前问题
+</code></pre>
+<p>模型从这段普通输入文字读取相关性顺序，没有修改 attention mask、RoPE 或模型权重，也没有把已经缓存的前缀 KV 改回原始块顺序。注释本身及问题要正常 Prefill，其成本来自少量新增 token。</p>
+<h3>5. Context Deduplication：正文保留一次，重复处改为位置引用</h3>
+<p>去重分为两个粒度。</p>
+<p><strong>整块去重</strong>：索引按 conversation ID 记录此前出现的块。本轮 [1,5,2] 中，若 1、2 已在第一轮出现，则只追加块 5 的全文，另外两处改为指向历史块的 location annotation。</p>
+<pre><code class="language-text">第一轮：CB1 + CB2 + CB4 + 问题1 + 回答1
+
+原第二轮新增：CB1全文 + CB5全文 + CB2全文 + 问题2
+去重后：引用第一轮CB1 + CB5全文 + 引用第一轮CB2 + 问题2
+</code></pre>
+<p>旧正文仍处于当前会话历史中，模型读取的仍是这份历史对应的 KV；省掉的是第二次附加正文造成的新增 Prefill。位置注释不是执行磁盘读取的指令。如果历史被裁掉、缓存又没有相应重建，仅保留一句引用不能自动找回正文。</p>
+<p><strong>内容级去重</strong>：两个块不完全相同，也可能共享模板、合同条款或代码段。系统按行检查 $\operatorname{HASH}(\ell)\bmod M=0$，在满足条件的行建立边界，形成可变长子块，再对各子块计算 hash。遇到其他块已出现的相同子块，就替换为指向首次出现位置的注释。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_fig14.png" alt="ContextPilot 图 14：OpenClaw 中的对齐与两级去重流程" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 14 把机制串起来：代理先对齐 tool 输出顺序，再查整块重复，最后查块内重复。示例中 tool B 与其他结果并非整块相同，但约 70% 内容与 tool A 重合，经过子块去重后从约 45 KB 减到 15 KB；</p>
+<h2>Evaluation</h2>
+<h3>实验设置</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>论文设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>引擎</td>
+<td>主实现支持 SGLang 0.4.6、vLLM 0.10.0；OpenClaw 案例使用 SGLang 0.5.9</td>
+</tr>
+<tr>
+<td>主要基线</td>
+<td>LMCache 0.3.8、集成于 LMCache 的 CacheBlend、采用 LPM 调度的 RadixCache</td>
+</tr>
+<tr>
+<td>主硬件平台</td>
+<td>16 张 H100 与 12 张 A6000 的集群</td>
+</tr>
+<tr>
+<td>多会话 RAG</td>
+<td>Qwen3-4B-Instruct-2507、Qwen3-32B、Llama3.3-70B-Instruct；三个数据集，top-k=15，F1 与 Prefill token/s</td>
+</tr>
+<tr>
+<td>多轮 RAG</td>
+<td>MT-RAG，Qwen3-4B、Llama3.1-8B、Qwen3-30B-A3B；单 H100，GPT-5 judge 的准确率与 TTFT</td>
+</tr>
+<tr>
+<td>检索</td>
+<td>MultihopRAG、NarrativeQA 使用 gte-Qwen2-7B-Instruct 和 FAISS；QASPER、MT-RAG 使用 BM25</td>
+</tr>
+<tr>
+<td>切块</td>
+<td>前三个 RAG 数据集使用 1024 的 chunk size；MT-RAG 按文档检索</td>
+</tr>
+<tr>
+<td>执行模式</td>
+<td>多会话实验提前取回全部上下文并建立索引；多轮与 Mem0 实验在线冷启动、逐轮维护索引</td>
+</tr>
+</tbody>
+</table>
+<h3>结果一：多会话吞吐提高，质量收益随任务变化</h3>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_table2.png" alt="ContextPilot 表 2：三个数据集、三个模型与四种方法的完整多会话结果" style="max-width: 100%; height: auto;">
+</p>
+
+<p>表 2（PDF 第 10 页）同时列出全部模型与数据集上的 F1 和 Prefill 吞吐。F1 使用百分制，吞吐单位为 token/s；应在同一行同时比较质量与速度。</p>
+<p>MultihopRAG 上，相对 LMCache、RadixCache、CacheBlend 的吞吐增益分别最高 3.08、2.05、2.13 倍，三个最大值来自不同模型配置。Qwen3-32B 上 ContextPilot 与 CacheBlend 的吞吐接近，优势主要在质量；QASPER 则仍比精确前缀基线低 1.1 个 F1 百分点。</p>
+<h3>结果二：多轮去重降低 TTFT，端到端收益受其他阶段限制</h3>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_table3.png" alt="ContextPilot 表 3：多轮结果、并发结果与索引构建时间三个完整子表" style="max-width: 100%; height: auto;">
+</p>
+
+<p>表 3 三个子表：(a) 多轮准确率与 TTFT，(b) 2–32 会话并发下的 TTFT，(c) 不同规模的索引构建时间。Qwen3-4B 的 TTFT 从 LMCache 的 0.76 s 降到 0.22 s，准确率从 62.56 升至 64.27；Llama3.1-8B 则从 68.46 略降至 68.12。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_table4.png" alt="ContextPilot 表 4：OpenClaw 文档分析与编码的平均及 P99 完整结果" style="max-width: 100%; height: auto;">
+</p>
+
+<p>表 4 同时给出平均值和 P99。文档分析的 Prefill 从 7.2 s 降到 2.6 s，但总耗时只从 26.1 s 降到 20.7 s；编码任务的 P99 总耗时仅下降 1.7%，说明 Prefill 收益不能直接等同于端到端收益。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_table6.png" alt="ContextPilot 表 6：DeepSeek-R1 在 16 与 32 张 H20 上的完整结果" style="max-width: 100%; height: auto;">
+</p>
+
+<p>表 6 保留两个数据集、两种 GPU 规模以及有无注释的全部配置。16 张 H20 上，MultihopRAG 与 NarrativeQA 的 Prefill 吞吐分别提高约 1.81、1.52 倍；注释主要改变质量，表中有无注释的吞吐和命中率相同。</p>
+<h3>结果三：消融</h3>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_fig7.png" alt="ContextPilot 图 7：重排与调度的缓存命中率消融" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 7 正文报告 SGLang / Qwen3-32B 的命中率从 8.49% 升到仅重排时的 20.56%，再升到加入调度后的 33.97%。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_table7.png" alt="ContextPilot 表 7：重排、注释与调度的完整质量消融" style="max-width: 100%; height: auto;">
+</p>
+
+<p>表 7 按模型列出完整质量消融。例如 Qwen3-32B / MultihopRAG 从基线 60.4，经重排变为 60.0，加注释后升到 64.4；调度不再改变该得分。</p>
+<p>在这些设置中，重排单独引入轻微损失，注释恢复并提升质量，调度继续提高复用但不改变表中的质量。 </p>
+<h3>开销</h3>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/contextpilot_table8.png" alt="ContextPilot 表 8：各组件单请求开销" style="max-width: 100%; height: auto;">
+</p>
+
+<p>表 8 测量 2K 请求、k=15、A6000 设置下的单请求开销；大规模初始化的时间则见前面的完整表 3(c)。</p>
+<p><strong>CacheBlend 基线的机制描述需要纠正</strong>。ContextPilot 将其概括为通过 KV 浮点相似度阈值寻找可复用缓存，这与 CacheBlend 原文不完全对应。</p>
+<p>适用范围主要受三个条件约束：<br />
+文档确实重复；外部资料允许重排或引用替代；<br />
+被引用的正文仍在有效上下文中。<br />
+对于顺序本身携带含义的事件链、代码依赖或工具调用序列，需要验证哪些块可移动，优先级注释不能代替任意结构约束。其匹配也未解决语义相近但文字不同的块，更未解决不同模型权重之间的 KV 共享。</p>
+<hr /></article></main></div></body></html>

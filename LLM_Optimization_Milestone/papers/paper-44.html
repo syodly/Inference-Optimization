@@ -1,0 +1,155 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SemShareKV: Efficient KVCache Sharing for Semantically Similar Prompts via Token-Level LSH Matching</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>SemShareKV: Efficient KVCache Sharing for Semantically Similar Prompts via Token-Level LSH Matching</h1><article class="source-content"><h1>SemShareKV：Efficient KVCache Sharing for Semantically Similar Prompts via Token-Level LSH Matching</h1>
+<p>原文：<a href="../source-assets/LLM Opt/推理优化LLM/SemShareKV.pdf">SemShareKV.pdf</a><br />
+作者：Xinye Zhao、Spyridon Mastorakis。University of Notre Dame。<br />
+正式发表于 IJCNLP-AACL 2025，论文集第 432–445 页。<br />
+代码：<a href="https://github.com/JasperZhao666/SemShareKV-public">SemShareKV-public</a>。<br />
+对象：同一个模型，语义相近但文字、长度或 token 位置不同的两个 prompt。<br />
+核心方法：在加入 RoPE 的 token embedding 上用 LSH 模糊匹配，重排参考 prompt 的 KV；逐层重算高偏差 token，并裁剪低注意力 KV。</p>
+<h2>Motivation</h2>
+<h3>重复的是语义，不一定是相同文本</h3>
+<p>两段资料表达相近，但 token 序列不同。精确前缀缓存很难命中；按相同文本块查缓存，也无法直接识别这些改写。SemShareKV 希望用已经处理过的参考资料（Reference Prompt）的 KV，减少当前资料（Target Prompt）的 Prefill。</p>
+<p>它复用的是模型内部的 KV，当前请求仍需生成自己的答案。<br />
+困难在于<strong>语义相近不意味着逐 token 的 KV 相同</strong>。改写会改变分词、长度、位置和上下文依赖，即使找到相近的词，也不能把参考缓存原样当成当前输入的精确结果。<br />
+因此需要先建立 token 对应关系，再修复复用误差。</p>
+<h3>Insights：高偏差位置在层间相关，深层注意力更集中</h3>
+<p>论文在 Mistral-7B、Llama-3.1-8B 和 MPT-7B 上观察到两个有用的规律。</p>
+<ol>
+<li><strong>高 KV 偏差 token 在相邻层较稳定</strong>。分别计算目标与参考 prompt 的 KV，以 L2 距离衡量差异，将偏差最高的 40% 标为 HD（High Deviation）token。相邻层的偏差排名具有较高 Spearman 相关性，因此可以利用前层结果筛选后层重算对象。</li>
+<li><strong>深层注意力通常集中在更少的 token 上</strong>。作者将注意力分数从高到低累加，统计覆盖给定比例注意力所需的 token 数，称为 Attention Recovery（AR）。深层所需 token 比例整体下降，支持在深层缩小重算和缓存保留范围。</li>
+</ol>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/semsharekv_fig2_3.png" alt="SemShareKV 图 2–3：相邻层的高偏差相关性与注意力集中趋势" style="max-width: 100%; height: auto;">
+</p>
+
+<h2>Design</h2>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/semsharekv_fig1.png" alt="SemShareKV 图 1：参考检索、LSH 匹配、KV 重排、选择性重算与驱逐" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 1 给出完整路径，找到相似参考 prompt，按目标 token 顺序组织参考 KV；第一层全量计算，后续层混合重算值与复用值，同时逐步驱逐部分 KV。收益主要来自两个不同动作：跳过计算和减少保留的缓存。</p>
+<h3>1. 先选参考 prompt，再建立逐 token 对应关系</h3>
+<p>系统在 CPU 内存中保存已有 prompt 及其 E cache，用基于 LSH 距离的相似度检索参考 prompt，再加载选中参考的 KV 到 GPU。LSH（Locality-Sensitive Hashing，局部敏感哈希）用于近似近邻查找，使相近向量更容易被检索到，避免逐一精确比较全部高维向量。</p>
+<p>选定参考 prompt 后，分别给两边的 token embedding 加 RoPE，再为每个目标 token 找到最相近的参考 token。设目标位置 $i$ 匹配到参考位置 $m(i)$，则每层按这个映射取缓存：</p>
+<p>$$
+\widetilde K_i^{(\ell)}=K_{m(i),ref}^{(\ell)},\qquad
+\widetilde V_i^{(\ell)}=V_{m(i),ref}^{(\ell)}.
+$$</p>
+<p>例如，参考 prompt 有 6 个 token，目标有 5 个，匹配结果为：</p>
+<pre><code class="language-text">目标位置：     1   2   3   4   5
+匹配参考位置： 1   2   4   4   6
+
+目标候选 KV = [参考 KV1, KV2, KV4, KV4, KV6]
+</code></pre>
+<p>映射不要求一一对应，也不要求参考 token 全被使用，因此能处理长度不同的 prompt；但它只是生成目标长度的候选缓存，不能补回参考中不存在的新信息。</p>
+<p>参考是否足够相似，论文使用经验阈值 0.8。</p>
+<p>$$
+\operatorname{Similarity}=\operatorname{clip}(1-d_{LSH}/30,0,1).
+$$</p>
+<h3>2. RoPE 用在匹配上；缓存 K 的位置处理要另看</h3>
+<p><strong>第一处是 E 上的 RoPE</strong>。只按词向量匹配，同一个词在不同位置可能反复映射到参考中的同一处，丢失顺序线索。给 E 加入位置信息，使匹配同时受到内容和位置影响。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/semsharekv_fig6.png" alt="SemShareKV 图 6：有无位置编码的 token 匹配结果" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 6 中，不加位置编码时，重排结果大量映射到参考的早期位置；加入 RoPE 后，后部 token 能匹配到更靠后的参考位置。它改善的是对应关系，没有重新计算当前上下文的完整表示。</p>
+<p><strong>第二处是已有 KV 中的位置编码</strong>。对比三种设置：保存通常的带 RoPE 的 K；保存施加 RoPE 前的 K；保存未旋转 K，并在重排后重新施加 RoPE。V 沿通常实现不施加 RoPE。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/semsharekv_fig7.png" alt="SemShareKV 图 7：三种缓存位置编码设置的 KV 偏差" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 7（PDF 第 6 页）中，保留原有位置编码的设置偏差最低，重排后重新施加 RoPE 反而最高。<strong>不能把 SemShareKV 写成 CacheBlend 式的撤销旧位置、旋转到新位置</strong>。本文采用的是带位置信息的模糊匹配与后续重算；图 7 是特定实验下的结果，不代表任意位置移动都无需校正。</p>
+<h3>3. 第一层全算，后续逐步缩小重算集合</h3>
+<p>第一层先对目标 prompt 的全部 token 正常计算，将新 KV 与对齐后的参考 KV 比较。每个 token 的偏差为：</p>
+<p>$$
+\sigma_{KV}=|K_{reuse}-K_{new}|<em>2+|V</em>{reuse}-V_{new}|_2.
+$$</p>
+<p>随后优先让高偏差 token 进入后续层重算。</p>
+<p>论文按 AR 将 token 分成 Hot 和 Cold，按注意力从高到低，取累计覆盖 55% 注意力的最小集合为 Hot，其占比为 $r_{dynamic}$；其余为 Cold。设两类 token 数为 $h,c$，初始选择预算写为</p>
+<p>$$
+N_{recomp}=0.5h+0.1c.
+$$</p>
+<p>例如 100 个 token 中，20 个就覆盖了 55% 注意力，则 $h=20,c=80$，得到 18 个 token 的预算。</p>
+<p>从第二层起，只在上一层仍参与重算的集合中继续筛选；其新状态逐层向后传递，其他保留位置使用参考 KV。这样无需先做完整 Prefill，才能知道所有深层的真实误差。</p>
+<pre><code class="language-text">第一层：全部目标 token 计算，测量偏差和注意力
+                    ↓
+下一层：候选中的部分 token 重算，其余保留位置复用 KV
+                    ↓
+更深层：从已有重算集合继续筛选，集合逐步缩小
+</code></pre>
+<h3>4. 那些kv保留</h3>
+<p>不重算一个 token，只是节省计算，它的 KV 仍可能留在缓存中。SemShareKV 另外执行 token retention，浅层保留较多 KV，深层进一步裁剪，使 attention 读取的历史 KV 也变少。</p>
+<p>给出的初始保留比例为 $\max(0.8,r_{dynamic})$，即至少保留 80%；按近期 token 的平均注意力评估候选，并优先保护 Hot token 和标记为重算的 token。驱逐主要发生在未被选中重算的 Cold token 中，避免刚付出计算成本就把修复结果丢掉。</p>
+<p>后续层的保留数量同样按比例递减</p>
+<p>$$
+N_{retain}^{(i)}=T\prod_{j=1}^{i}\alpha_{retain}^{(j)}.
+$$</p>
+<p>因此最终有三类位置：重算并保留、复用并保留、驱逐。与 CacheBlend 保留完整历史 KV 的方式相比，这里还引入了裁剪导致的信息损失。正文在初始保留比例之后又写“只保留 top-$r_{dynamic}$”，与至少 80% 的公式不完全一致；明确的设计细节得看代码</p>
+<h2>Evaluation</h2>
+<h3>实验设置：人工构造相似 prompt 对（有待验证），单卡小批量验证</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>论文设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主评测模型</td>
+<td>Mistral-7B、Llama-3.1-8B；MPT-7B 主要用于前面的规律观察</td>
+</tr>
+<tr>
+<td>硬件与实现</td>
+<td>单张 A100，batch size=1；Transformers monkeypatch，FAISS LSH，standard attention，尚不支持 FlashAttention</td>
+</tr>
+<tr>
+<td>基线</td>
+<td>Full KV / Fully Recompute、SnapKV、PyramidKV、H2O</td>
+</tr>
+<tr>
+<td>数据集</td>
+<td>MultiNews、WikiHow、Qasper、SAMSum、PubMed、BookSum、BigPatent、LCC、MMLU</td>
+</tr>
+<tr>
+<td>样本数</td>
+<td>前八个各 100 对，MMLU 200 对</td>
+</tr>
+<tr>
+<td>相似输入构造</td>
+<td>用 Llama 3 改写原样本的部分文章或连续句段，并人工核验；问答保留问题，MMLU 改写整道题</td>
+</tr>
+<tr>
+<td>主要指标</td>
+<td>输出质量、TTFT、GPU 上的 KV cache 大小；效率主图使用 MultiNews，输入 0.5K–5K token</td>
+</tr>
+</tbody>
+</table>
+<p>这些实验不是从真实在线请求流中自然找到所有相似输入。例如 MultiNews 只改写其中一篇文章，并限制改写段的 token 长度变化在 10% 内；表 B1 中该数据集原文与改写文本的 ROUGE-L 为 84.71、BERTScore 为 95.85，仍有较强文本重叠。因此主要验证的是“已有相近参考时能否复用”，并未量化真实服务中的命中率。</p>
+<h3>主结果：长输入 TTFT 显著下降，质量并非各任务都无损</h3>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/semsharekv_table1.png" alt="SemShareKV 表 1：两种模型、九个数据集上的完整质量结果" style="max-width: 100%; height: auto;">
+</p>
+
+<p>表 1 中，摘要类任务总体接近完整计算，部分分数提高。例如 Mistral 的 MultiNews 从 22.10 到 23.15，SAMSum 从 18.79 到 21.22；但 Qasper 从 17.10 降到 16.52，Llama 的 MMLU 从 55.00 降到 51.00。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/semsharekv_fig8.png" alt="SemShareKV 图 8：输入长度变化下的 TTFT 和 KV cache 大小" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 8 的 5K 输入设置中，论文报告相对完整计算 <strong>TTFT 最高加速 6.25 倍，KV cache 显存减少约 42%</strong>；相对 SnapKV，TTFT 加速 2.23 倍。PyramidKV 的缓存更小，但图中没有同样的 Prefill 加速。这里 42% 指 KV cache 占用，不是包含模型权重等在内的 GPU 总显存。</p>
+<p>收益随输入长度增加更明显；少于约 700 token 时，LSH 匹配与 KV 重排的开销使收益有限。附录表 B2 在 5K、batch=1 下另给出 12.681 到 34.065 token/s，约 2.69 倍；它不能与 TTFT 的 6.25 倍混为端到端或多用户吞吐增益。</p>
+<h3>相似度与消融：错误内容比缺少内容更难处理，缓存也并非越多越好</h3>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/semsharekv_fig9_10.png" alt="SemShareKV 图 9–10：参考内容删改和缓存保留比例对质量的影响" style="max-width: 100%; height: auto;">
+</p>
+
+<p>图 9 分别删除参考中的句子，或用同数据集的其他句子替换。</p>
+<p>图 10 中，约 60% 的缓存保留率达到该实验的最高分；保留全部缓存或裁剪过多都会下降。这支持选择性保留，但不能推广成所有模型和任务统一保留 60%。</p>
+<p align="center">
+  <img src="../source-assets/LLM Opt/推理优化LLM/9.15_KVcache_reuse.assets/semsharekv_table2.png" alt="SemShareKV 表 2：完整方法、保留全部缓存、匹配值置零和随机替换的消融" style="max-width: 100%; height: auto;">
+</p>
+
+<p>表 2 中，MultiNews 的完整方法为 23.15，仅模糊匹配并保留完整缓存为 21.34；匹配 KV 置零后为 17.71，随机替换后为 12.67。说明匹配到的参考 KV 确实提供有用信息，裁剪也有贡献。</p>
+<h3>结论边界与值得关注的问题</h3>
+<p>SemShareKV 将复用范围从相同文本扩展到相似表达，并结合 KV 压缩同时减少计算和缓存。它仍是近似推理，词向量和位置接近，不保证否定词、数字、实体关系或代码语义一致；新增信息必须依靠目标侧重算补充，而早期被排除的位置可能无法在深层重新修复。</p>
+<p>工程上，当前证据来自 standard attention、batch=1 和人工构造的相似样本。大规模参考库检索、CPU/GPU 传输、参考缓存预计算与驻留的总成本，以及 FlashAttention、并发请求下能保留多少收益，都没有充分展开。</p>
+<hr /></article></main></div></body></html>

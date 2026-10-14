@@ -50,7 +50,7 @@ function paperRows(items) {
   return items.sort((a, b) => dateValue(a[3]).localeCompare(dateValue(b[3])) || a[0] - b[0]).map((paper) => `
     <tr>
       <td>${paper[0]}</td>
-      <td><div class="paper-title"><a href="${paperHref(paper)}" target="_blank" rel="noopener">${paper[1]}</a></div><div class="paper-meta">${paper[5] !== "todo" ? "打开 Markdown 精读页面" : "打开本地 PDF"}</div></td>
+      <td><div class="paper-title"><a href="${paperHref(paper)}" target="_blank" rel="noopener">${paper[1]}</a></div><div class="paper-meta">${paper[5] !== "todo" ? (paper[5] === "partial" ? "打开调研摘要（待精读）" : "打开精读页面") : "打开本地 PDF"}</div></td>
       <td><span class="tag ${paper[2]}">${CATEGORY_NAMES[paper[2]]}</span></td>
       <td>${paper[3]}</td>
       <td>${paper[4]}</td>
@@ -65,7 +65,7 @@ function render() {
   const status = $("status").value;
   const priority = $("priority").value;
   const filtered = PAPERS.filter((paper) => {
-    const text = [paper[1], paper[2], CATEGORY_NAMES[paper[2]], paper[3], paper[4], PAPER_NOTES[paper[0]] || ""].join(" ").toLowerCase();
+    const text = [paper[1], paper[2], CATEGORY_NAMES[paper[2]], paper[3], paper[4], PAPER_NOTES[paper[0]] || "", JSON.stringify(MILESTONE_DETAILS[paper[0]] || {})].join(" ").toLowerCase();
     return (!query || text.includes(query)) && (category === "all" || paper[2] === category) && (status === "all" || paper[5] === status) && (priority === "all" || paper[6] === priority);
   });
   const visibleIds = new Set(filtered.map((paper) => paper[0]));

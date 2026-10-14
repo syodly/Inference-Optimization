@@ -1,0 +1,21 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CacheWise: Understanding Workloads and Optimizing KVCache Management for Efficiently Serving LLM Coding Agents</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>CacheWise: Understanding Workloads and Optimizing KVCache Management for Efficiently Serving LLM Coding Agents</h1><article class="source-content"><h2>一、CacheWise</h2>
+<p><em>CacheWise: Understanding Workloads and Optimizing KVCache Management for Efficiently Serving LLM Coding Agents</em>。Shubham Tiwari 等，华盛顿大学、弗吉尼亚大学。<a href="https://arxiv.org/abs/2606.16824">arXiv:2606.16824v1</a>，2026-06-15 提交。</p>
+<h3>解决问题</h3>
+<p>场景是<strong>多个 coding agent 会话并发执行，LLM 推理与读文件、修改代码、运行测试等工具调用交替发生</strong>。一次用户任务不是一个请求，而是“LLM 生成工具调用 - 环境执行 - 把结果送回 LLM”的闭环。每轮请求都会在前一轮结果上继续追加上下文，因此同一 session 的请求通常共享很长的 KV prefix；工具执行期间，这段 prefix 又暂时不参与计算。</p>
+<p><strong>论文指出造成三个具体问题，与前面看过的论文基本一致的思路</strong>**<br />
+一，coding-agent 的上下文增长远快于普通聊天，重复 prefill 的成本会随轮数累积。<br />
+二，多 session 并发时 GPU KV cache 容量有限，系统必须在不同会话之间驱逐 block；但 FCFS 只按到达顺序调度，无法优先安排能复用已有 prefix 的请求。<br />
+三，LRU 只看上一次访问时间，不知道工具什么时候结束、哪个 session 很快会再次请求，因此可能驱逐暂时闲置但即将复用 prefix，随后又重新计算或从 CPU/磁盘搬回。</p>
+<p>结果是 KV cache thrashing</p>
+<p><img alt="CacheWise Figure 1：聊天与 coding-agent 会话对比" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/CacheWise_Figure1_verified.png" /></p>
+<p>图 1 对比了普通聊天和 coding-agent：coding-agent 的每轮请求都可能由工具结果触发，并持续扩展历史前缀，因此系统目标应关注完整 session，而不是单个请求。</p>
+<h3>解决方案</h3>
+<p><strong>前缀感知调度 + 预测性驱逐</strong>：优先执行能复用更多 GPU 驻留前缀的请求（最短优先）；利用工具名称、参数和已过去的时间预测下一次 KV 复用时间，优先驱逐预计更晚才使用的缓存。预测器用了一个TF-IDF向量聚类的思路（和前面工作唯一不一样的点？）。</p>
+<p><img alt="CacheWise Figure 11：前缀调度与预测性驱逐" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/CacheWise_Figure11_exact.png" /></p>
+<h3>实验数据集、场景与效果</h3>
+<p><strong>数据集是 CATraces</strong>：作者采集实验室参与者使用 Claude Code 开展真实开源项目开发的匿名轨迹，包含请求、工具调用及时间等信息。80% 会话训练预测器，<strong>其余用于确定性重放</strong>；与 SWE-bench 区分，人工长时间等待被作为会话边界，主要测试长前缀、多轮工具交互下的服务效率。</p>
+<p>实验以 <strong>Qwen2.5-Coder-32B-Instruct、2 张 H200（TP=2，总显存 282 GB）</strong> 重放 10–50 个并发会话，与 vLLM、InferCept 比较；启用 512-token chunked prefill。</p>
+<p><img alt="CacheWise Figure 13：并发会话完成时间" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/CacheWise_Figure13_exact.png" /></p>
+<p><img alt="CacheWise Figure 14：服务效率主结果" src="../source-assets/LLM Opt/推理优化LLM/paper_figures/CacheWise_Figure14_exact.png" /></p>
+<p>图 14 是论文的主要服务效率结果，比较 token goodput、KV 驱逐、请求延迟和吞吐。</p>
+<p>图 13（PDF 第 8 页）：横轴是并发会话数，纵轴是平均会话完成时间，越低越好。高负载下，论文报告相对基线约 <strong>2.7–3.5 倍加速</strong>；token goodput 为约 <strong>1.64–2 倍</strong>，KV 驱逐次数降至约 <strong>1/2–1/2.6</strong>。低负载、显存充足时收益较小。</p></article></main></div></body></html>

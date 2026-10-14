@@ -30,3 +30,11 @@
   .source-content h3 { font-size: 18px; }
   .source-content img { max-width: 100%; }
 }
+
+/* Reading tables have content columns, unlike the paper index's numeric ID. */
+.source-content td:first-child { width: auto; min-width: 120px; color: #53615a; font-family: inherit; }
+.source-content th { position: static; text-transform: none; letter-spacing: normal; }
+.source-content table { table-layout: auto; }
+.source-content { overflow-x: auto; }
+.source-page > h1 { overflow-wrap: normal; word-break: normal; }
+.source-content > h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }

@@ -1,0 +1,19 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Aragog</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Aragog</h1><article class="source-content"><h1>Aragog: Just-in-Time Model Routing for Scalable Serving of Agentic Workflows</h1>
+<p>论文：<a href="https://arxiv.org/abs/2511.20975">arXiv</a> | <a href="../source-assets/LLM Opt/codesign/papers/Aragog.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>Aragog 的关键不是“找出最便宜模型”，而是把 workflow 中每个阶段的模型选择从启动时的一次性绑定，改成在执行中依据实时队列与可用容量反复选择。</p>
+<h2>为什么静态 routing 不够</h2>
+<p>一个 Agent workflow 有多个 stage，每个 stage 可用多个模型。传统 configuration selection 在请求开始前选择一个完整配置，例如 <code>planner 用 A、coder 用 B、reviewer 用 C</code>。这种选择知道模型价格/FLOPs，却不知道请求执行到第三阶段时 A、B、C 的实际队列和负载。工作流越长，初始决策越容易失效。</p>
+<p>Aragog 观察到两类信息的时间性质不同：<strong>给定输入和模型组合，准确率相对稳定但预测昂贵；运行成本随负载变化但观察便宜。</strong> 所以两者不应在同一个在线优化问题中重新计算。</p>
+<h2>两层机制</h2>
+<h3>1. Configuration Predictor：一次性生成“准确配置集合”</h3>
+<p>请求开始前，predictor 不只输出一个最佳配置，而是找出所有达到质量目标、可替换的 workflow model assignment。论文利用配置质量的近单调性和多个二分类判断减少指数级组合搜索：先沿模型能力链剪枝，再验证可能的候选。这样 runtime 拿到的是“可用且质量达标”的集合，而不是一次性决定。</p>
+<h3>2. Runtime Scheduler：每个 stage 选当前最合适的配置</h3>
+<p>当 stage ready 时，scheduler 读取 serving engines 的队列和利用率，在该请求的准确候选中做 cost-based 选择。它需要同时考虑并发请求，避免把每个请求独立贪心地塞到同一台看似最空的 engine；论文使用 beam search 近似联合 assignment，并用 look-ahead FIFO 暂时跳过资源受限请求，优先调度有更多可行配置的请求，同时保持长期 FIFO 公平性。</p>
+<p>它位于应用与 LLM serving engine 之间：应用输出 workflow stage 和质量需求，底层 engine 仍负责 batch/KV/token 执行。</p>
+<h2>实验与结论应怎样理解</h2>
+<p>论文在多种 workflow 和模型家族上报告，相比基线 serving capacity 增加 42.8%–217.0%；高负载下中位延迟减少 32.5%–86.1%，P95 减少 46.8%–89.0%，并保持与最贵配置相近的准确率。重点不是“某一模型变快”，而是运行时可切换性减少了不同模型队列不均衡带来的容量浪费。</p>
+<p>复现必须明确 accuracy-preserving 的判定方法、候选模型集合、router 误判率及当选模型的服务负载。若把质量门槛放宽，吞吐提升不再是纯调度收益。</p>
+<h2>与项目的关系与边界</h2>
+<p>Aragog 定义了很有价值的前端字段：每个 workflow stage 的模型候选与质量可行集。它可与关键路径调度结合，例如只在不影响剩余路径 deadline 的候选中挑选队列最合适的模型。</p>
+<p>但其状态模型较弱：不同模型之间 KV 是否可迁移、工具调用期间 cache 如何保存、动态分支的下一节点如何预测，均不由 Aragog 解决。它适合与 DroidSpeak/PBKV/Strata 一类状态机制组合。</p></article></main></div></body></html>

@@ -1,0 +1,53 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Helium</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><p class="eyebrow">精读笔记</p><h1>Helium</h1><article class="source-content"><h1>Helium: Efficient LLM Serving for Agentic Workflows: A Data Systems Perspective</h1>
+<p>论文：<a href="https://arxiv.org/abs/2603.16104">arXiv</a> | <a href="https://sigmodconf.hosting.acm.org/2026/sigmod_program_detailed.shtml">SIGMOD 2026 程序</a> | <a href="../source-assets/LLM Opt/codesign/papers/Helium_SIGMOD26.pdf">PDF</a></p>
+<h2>一句话定位</h2>
+<p>Helium 将 Agent serving 解释成数据库查询处理：workflow 是可优化的逻辑 plan，LLM、检索和 transformation 是 operator；系统用图重写、共享计算和 cache-aware physical plan 来优化一批结构相同但输入不同的 workflow。</p>
+<h2>工作负载与抽象</h2>
+<p>Helium 针对的是一批共享 workflow template 的任务实例。前端 DSL 指定 LLM/Agent 调用及依赖；parser 把它转成 DAG。DAG 节点既可以是模型调用，也可以是 retrieval 或自定义 transformation；prompt 中动态部分由 placeholder 表示，运行时由上游 operator 输出填充。</p>
+<p>这个抽象很重要：它避免将 workflow 仅看作 Python 控制流，也避免将 LLM engine 仅看作 token executor。优化器既知道 operator dependency，也知道 prompt 的静态前缀和上游动态输出会如何组成下游输入。</p>
+<h2>优化器：先改逻辑图，再选物理执行</h2>
+<p>Helium 的 query optimizer 分两步处理逻辑 DAG。</p>
+<ol>
+<li><strong>operator pruning。</strong> 从最终输出节点反向遍历，删除不会到达有效输出的节点；这对 speculative workflow 很关键，因为最终未被消费的分支不应继续占用模型资源。</li>
+<li><strong>common subgraph elimination。</strong> 按拓扑和输入节点标识给子图哈希，将结构与输入相同的子图合并。这个操作把跨任务的重复 Agent/LLM 计算从多次执行变成一次物化结果供多个消费者使用。</li>
+</ol>
+<p>后续优化在整个 batch 上寻找从完整子工作流到 token prefix 的共享机会，而不是只做单请求 prefix cache。</p>
+<h2>物理执行：Templated Radix Tree 与 cache-aware schedule</h2>
+<p>Helium 的核心数据结构是 <strong>Templated Radix Tree (TRT)</strong>。标准 radix tree 只能表达已经落地的 token 前缀；TRT 同时记录：</p>
+<ul>
+<li>静态 prompt token；</li>
+<li>由上游 operator 输出填充的 placeholder；</li>
+<li>radix tree 叶子之间对应的 workflow dependency。</li>
+</ul>
+<p>因此 TRT 既表示“哪些请求可复用 KV prefix”，也表示“哪个叶子必须等哪个动态值”。scheduler 依据这个结构选择执行顺序：尽量让共享同一静态 prefix 的 ready operator 接近执行，以提高 KV reuse；又不把尚未满足 dependency 的请求错误地组 batch。论文还允许 cross-operator continuous batching，让上游一就绪就向下游流转，而不是等整个 workflow 批次结束。</p>
+<h2>为什么它是强 codesign</h2>
+<p>Helium 前端贡献不是一组 hint，而是一个可编译 workflow 表示；后端贡献也不只是 cache policy，而是逻辑 plan rewriting 与物理 cache-aware schedule。对应关系如下：</p>
+<table>
+<thead>
+<tr>
+<th>前端语义</th>
+<th>后端决策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operator 与依赖</td>
+<td>ready set、跨 operator continuous batching</td>
+</tr>
+<tr>
+<td>static prompt + placeholder</td>
+<td>TRT、KV prefix reuse</td>
+</tr>
+<tr>
+<td>相同子图/输入</td>
+<td>CSE、结果物化与共享</td>
+</tr>
+<tr>
+<td>workflow template 的批量实例</td>
+<td>跨实例共享和批处理</td>
+</tr>
+</tbody>
+</table>
+<h2>评估与边界</h2>
+<p>论文报告相对现有 Agent serving 系统最高 1.56x 加速。这个幅度不如纯 KV/硬件系统的局部吞吐数字大，但验证的是完整 workflow 的优化收益，应同时看被删掉的 operator、复用的子图、prefix hit 和端到端 JCT。</p>
+<p>它的假设是 batch 中任务的 workflow 结构有足够共性，且 DSL 能获得图；完全动态的 Agent-to-Agent 对话或工具结果决定的新子图，会降低静态 plan 重写的确定性。项目可将 Helium 的 logical optimizer 与 Nalar 的动态 futures 或 PBKV 的预测结合：前者处理确定结构，后者补足运行时才出现的分支。</p></article></main></div></body></html>
