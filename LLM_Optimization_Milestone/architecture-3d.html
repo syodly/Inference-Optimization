@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LLM 推理优化的交互式 3D 分层结构图。">
+  <title>LLM Inference Optimization · 3D Architecture</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2345dfb1'/%3E%3Ctext x='11' y='29' fill='%2307110f' font-size='29'%3EL%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="architecture-3d.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="LLM_Optimization_Milestone.html"><span class="brand-mark">L</span><span><b>LLM OPTIMIZATION</b><small>3D cross-layer architecture · 2026.10</small></span></a>
+      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">Milestone</a><a href="architecture.html">二维结构</a><a href="architecture-3d.html" aria-current="page">3D 结构</a></nav>
+    </header>
+    <main>
+      <section class="hero"><p class="kicker">SPATIAL SYSTEM MAP / 2026</p><h1>推理优化的<em>空间结构。</em></h1><p>从 Agent 的工作流，到引擎、KV 和硬件资源。展开六个优化层次，沿两侧控制面探索跨层协同。</p><div class="hero-meta"><span><i class="green"></i>六层优化对象</span><span><i class="violet"></i>工作流与运行时</span><span><i class="orange"></i>原创立体示意</span></div></section>
+      <section class="workspace" aria-label="LLM 推理优化 3D 结构图">
+        <div class="toolbar"><div><b>3D ARCHITECTURE SPACE</b><span>拖动旋转 · Ctrl / ⌘ + 滚轮缩放 · 点击层次查看论文</span></div><div class="toolbar-actions"><button class="tool-button" type="button" id="auto-orbit" aria-pressed="false">自动巡览</button><button class="tool-button" type="button" id="reset-camera">重置视角</button><button class="tool-button" type="button" id="fullscreen">全屏探索</button><a class="tool-button" href="architecture.html">切回二维</a></div></div>
+        <div class="scene-controls"><div class="view-presets" role="group" aria-label="观察视角"><button type="button" class="view-button active" data-view="perspective" aria-pressed="true">立体透视</button><button type="button" class="view-button" data-view="front" aria-pressed="false">正面结构</button><button type="button" class="view-button" data-view="side" aria-pressed="false">侧面层次</button></div><label class="spread-control" for="spread">层间展开 <input id="spread" type="range" min="0" max="100" value="100"><output for="spread" id="spread-value">100%</output></label><div class="zoom-controls"><button type="button" id="zoom-out" aria-label="缩小">−</button><button type="button" id="zoom-in" aria-label="放大">＋</button></div></div>
+        <div class="viewport" id="viewport">
+          <div class="stars" aria-hidden="true"></div><div class="floor-grid" aria-hidden="true"></div><div class="axis axis-z">Z · 硬件执行</div><div class="axis axis-y">Y · 工作流语义</div>
+          <div class="world" id="world">
+            <div class="stack-beam beam-1" aria-hidden="true"></div><div class="stack-beam beam-2" aria-hidden="true"></div>
+            <button class="layer layer-1" data-layer="application" data-color="violet" type="button"><span class="layer-code">L1</span><strong>应用 / 工作流</strong><small>Agent Harness · DAG · 工具</small><em>Parrot · NALAR · Murakkab</em></button>
+            <button class="layer layer-2" data-layer="schedule" data-color="violet" type="button"><span class="layer-code">L2</span><strong>编排与调度</strong><small>准入 · 关键路径 · 并发</small><em>KVFlow · SAGA · TOPAS</em></button>
+            <button class="layer layer-3" data-layer="engine" data-color="blue" type="button"><span class="layer-code">L3</span><strong>推理引擎</strong><small>Prefill · Decode · Batch</small><em>vLLM · Sarathi · Akashic</em></button>
+            <button class="layer layer-4 is-hot" data-layer="kv" data-color="green" type="button"><span class="layer-code">L4</span><strong>KV Cache 数据面</strong><small>复用 · 修复 · 淘汰 · 搬运</small><em>CacheBlend · PBKV · Leyline</em></button>
+            <button class="layer layer-5" data-layer="compute" data-color="blue" type="button"><span class="layer-code">L5</span><strong>模型计算与算子</strong><small>Attention · 投机 · 量化</small><em>FlashAttention · Medusa</em></button>
+            <button class="layer layer-6" data-layer="system" data-color="orange" type="button"><span class="layer-code">L6</span><strong>集群与硬件</strong><small>GPU · CPU · SSD · 网络</small><em>MuxServe · Cortex · FlowMesh</em></button>
+            <button class="side-node harness" data-layer="harness" data-color="violet" type="button"><span>HARNESS</span><strong>工作流意图</strong><small>会话 · 角色 · 编辑</small></button>
+            <button class="side-node control" data-layer="codesign" data-color="orange" type="button"><span>CODESIGN</span><strong>HEAR 控制面</strong><small>意图 ⇄ 状态 ⇄ 结果</small></button>
+            <div class="control-bus bus-harness" aria-hidden="true"><span>WORKFLOW INTENT</span></div><div class="control-bus bus-codesign" aria-hidden="true"><span>STATE ⇄ CONTROL</span></div>
+            <div class="orbit-ring ring-1" aria-hidden="true"></div><div class="orbit-ring ring-2" aria-hidden="true"></div><div class="data-packet packet-a" aria-hidden="true"></div><div class="data-packet packet-b" aria-hidden="true"></div>
+          </div>
+          <div class="drag-hint"><span>↔</span> 拖动空白或模块旋转 · 点击选择</div>
+        </div>
+        <div class="layer-picker" role="group" aria-label="选择优化层次"><button type="button" data-select="application">L1 工作流</button><button type="button" data-select="schedule">L2 调度</button><button type="button" data-select="engine">L3 引擎</button><button type="button" data-select="kv" aria-pressed="true">L4 KV</button><button type="button" data-select="compute">L5 算子</button><button type="button" data-select="system">L6 硬件</button><button type="button" data-select="harness">Harness</button><button type="button" data-select="codesign">HEAR</button></div>
+        <div class="legend"><span><i class="dot green"></i>KV 数据面</span><span><i class="dot violet"></i>工作流语义</span><span><i class="dot blue"></i>执行与计算</span><span><i class="dot orange"></i>跨层控制</span></div>
+        <p class="scope-note">按优化对象组织，并非严格调用顺序或互斥分类。两侧连线表示语义与状态协同；KV 数据面横跨引擎和存储。</p>
+      <section class="detail" id="detail" aria-live="polite"><div><p class="kicker">SELECTED NODE</p><h2 id="detail-title">L4 · KV Cache 数据面</h2><p id="detail-copy">KV 层管理历史状态的复用、修复、保留、淘汰、压缩与分层存储。它不是孤立的一层：工作流决定未来复用意图，引擎决定执行路径，系统层决定搬运成本。</p></div><div class="detail-links" id="detail-links"></div></section>
+      </section>
+
+    </main>
+    <footer><a href="architecture.html">← 返回二维结构图</a><span>LLM Optimization Research Workspace</span></footer>
+  </div>
+  <script src="architecture-3d.js"></script>
+</body>
+</html>
