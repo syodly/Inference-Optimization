@@ -1,50 +1,313 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="LLM 推理优化的交互式 3D 分层结构图。">
-  <title>LLM Inference Optimization · 3D Architecture</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2345dfb1'/%3E%3Ctext x='11' y='29' fill='%2307110f' font-size='29'%3EL%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="LLM 推理优化的自底向上系统剖面：硬件、计算、推理引擎、KV 数据面、编排与 Agent 工作流。">
+  <title>LLM Inference Optimization · System Cutaway</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23176b52'/%3E%3Ctext x='11' y='29' fill='white' font-size='29'%3EL%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="architecture-3d.css">
 </head>
 <body>
-  <div class="shell">
+  <div class="site-shell">
     <header class="topbar">
-      <a class="brand" href="LLM_Optimization_Milestone.html"><span class="brand-mark">L</span><span><b>LLM OPTIMIZATION</b><small>3D cross-layer architecture · 2026.10</small></span></a>
-      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">Milestone</a><a href="architecture.html">二维结构</a><a href="architecture-3d.html" aria-current="page">3D 结构</a></nav>
+      <a class="brand" href="LLM_Optimization_Milestone.html"><span class="brand-mark">L</span><span><b>LLM OPTIMIZATION</b><small>Research archive · system map</small></span></a>
+      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">Milestone</a><a href="architecture.html">二维结构</a><a href="architecture-3d.html" aria-current="page">系统剖面</a><a href="research-update-20261014.html">研究进展</a></nav>
     </header>
     <main>
-      <section class="hero"><p class="kicker">SPATIAL SYSTEM MAP / 2026</p><h1>推理优化的<em>空间结构。</em></h1><p>从 Agent 的工作流，到引擎、KV 和硬件资源。展开六个优化层次，沿两侧控制面探索跨层协同。</p><div class="hero-meta"><span><i class="green"></i>六层优化对象</span><span><i class="violet"></i>工作流与运行时</span><span><i class="orange"></i>原创立体示意</span></div></section>
-      <section class="workspace" aria-label="LLM 推理优化 3D 结构图">
-        <div class="toolbar"><div><b>3D ARCHITECTURE SPACE</b><span>拖动旋转 · Ctrl / ⌘ + 滚轮缩放 · 点击层次查看论文</span></div><div class="toolbar-actions"><button class="tool-button" type="button" id="auto-orbit" aria-pressed="false">自动巡览</button><button class="tool-button" type="button" id="reset-camera">重置视角</button><button class="tool-button" type="button" id="fullscreen">全屏探索</button><a class="tool-button" href="architecture.html">切回二维</a></div></div>
-        <div class="scene-controls"><div class="view-presets" role="group" aria-label="观察视角"><button type="button" class="view-button active" data-view="perspective" aria-pressed="true">立体透视</button><button type="button" class="view-button" data-view="front" aria-pressed="false">正面结构</button><button type="button" class="view-button" data-view="side" aria-pressed="false">侧面层次</button></div><label class="spread-control" for="spread">层间展开 <input id="spread" type="range" min="0" max="100" value="100"><output for="spread" id="spread-value">100%</output></label><div class="zoom-controls"><button type="button" id="zoom-out" aria-label="缩小">−</button><button type="button" id="zoom-in" aria-label="放大">＋</button></div></div>
-        <div class="viewport" id="viewport">
-          <div class="stars" aria-hidden="true"></div><div class="floor-grid" aria-hidden="true"></div><div class="axis axis-z">Z · 硬件执行</div><div class="axis axis-y">Y · 工作流语义</div>
-          <div class="world" id="world">
-            <div class="stack-beam beam-1" aria-hidden="true"></div><div class="stack-beam beam-2" aria-hidden="true"></div>
-            <button class="layer layer-1" data-layer="application" data-color="violet" type="button"><span class="layer-code">L1</span><strong>应用 / 工作流</strong><small>Agent Harness · DAG · 工具</small><em>Parrot · NALAR · Murakkab</em></button>
-            <button class="layer layer-2" data-layer="schedule" data-color="violet" type="button"><span class="layer-code">L2</span><strong>编排与调度</strong><small>准入 · 关键路径 · 并发</small><em>KVFlow · SAGA · TOPAS</em></button>
-            <button class="layer layer-3" data-layer="engine" data-color="blue" type="button"><span class="layer-code">L3</span><strong>推理引擎</strong><small>Prefill · Decode · Batch</small><em>vLLM · Sarathi · Akashic</em></button>
-            <button class="layer layer-4 is-hot" data-layer="kv" data-color="green" type="button"><span class="layer-code">L4</span><strong>KV Cache 数据面</strong><small>复用 · 修复 · 淘汰 · 搬运</small><em>CacheBlend · PBKV · Leyline</em></button>
-            <button class="layer layer-5" data-layer="compute" data-color="blue" type="button"><span class="layer-code">L5</span><strong>模型计算与算子</strong><small>Attention · 投机 · 量化</small><em>FlashAttention · Medusa</em></button>
-            <button class="layer layer-6" data-layer="system" data-color="orange" type="button"><span class="layer-code">L6</span><strong>集群与硬件</strong><small>GPU · CPU · SSD · 网络</small><em>MuxServe · Cortex · FlowMesh</em></button>
-            <button class="side-node harness" data-layer="harness" data-color="violet" type="button"><span>HARNESS</span><strong>工作流意图</strong><small>会话 · 角色 · 编辑</small></button>
-            <button class="side-node control" data-layer="codesign" data-color="orange" type="button"><span>CODESIGN</span><strong>HEAR 控制面</strong><small>意图 ⇄ 状态 ⇄ 结果</small></button>
-            <div class="control-bus bus-harness" aria-hidden="true"><span>WORKFLOW INTENT</span></div><div class="control-bus bus-codesign" aria-hidden="true"><span>STATE ⇄ CONTROL</span></div>
-            <div class="orbit-ring ring-1" aria-hidden="true"></div><div class="orbit-ring ring-2" aria-hidden="true"></div><div class="data-packet packet-a" aria-hidden="true"></div><div class="data-packet packet-b" aria-hidden="true"></div>
-          </div>
-          <div class="drag-hint"><span>↔</span> 拖动空白或模块旋转 · 点击选择</div>
-        </div>
-        <div class="layer-picker" role="group" aria-label="选择优化层次"><button type="button" data-select="application">L1 工作流</button><button type="button" data-select="schedule">L2 调度</button><button type="button" data-select="engine">L3 引擎</button><button type="button" data-select="kv" aria-pressed="true">L4 KV</button><button type="button" data-select="compute">L5 算子</button><button type="button" data-select="system">L6 硬件</button><button type="button" data-select="harness">Harness</button><button type="button" data-select="codesign">HEAR</button></div>
-        <div class="legend"><span><i class="dot green"></i>KV 数据面</span><span><i class="dot violet"></i>工作流语义</span><span><i class="dot blue"></i>执行与计算</span><span><i class="dot orange"></i>跨层控制</span></div>
-        <p class="scope-note">按优化对象组织，并非严格调用顺序或互斥分类。两侧连线表示语义与状态协同；KV 数据面横跨引擎和存储。</p>
-      <section class="detail" id="detail" aria-live="polite"><div><p class="kicker">SELECTED NODE</p><h2 id="detail-title">L4 · KV Cache 数据面</h2><p id="detail-copy">KV 层管理历史状态的复用、修复、保留、淘汰、压缩与分层存储。它不是孤立的一层：工作流决定未来复用意图，引擎决定执行路径，系统层决定搬运成本。</p></div><div class="detail-links" id="detail-links"></div></section>
+      <section class="intro">
+        <p class="eyebrow">SYSTEM CUTAWAY / INFERENCE OPTIMIZATION</p>
+        <h1>从硬件到 Agent，<em>推理优化落在哪里？</em></h1>
+        <p class="lede">下方是计算、内存与网络资源，中部是模型执行和 KV 状态，上方是调度编排与 Agent 工作流。沿着这个系统剖面，查看每一层改变什么、依赖什么，以及我们调研的论文落在哪里。</p>
+        <div class="intro-meta"><span><i class="swatch green"></i>6 个主要层次</span><span><i class="swatch orange"></i>1 个跨层控制面</span><span><i class="swatch blue"></i>76 篇论文归档</span></div>
       </section>
+      <section class="cutaway" id="cutaway" aria-labelledby="cutaway-title">
+        <div class="cutaway-toolbar"><div><b id="cutaway-title">SYSTEM CUTAWAY</b><span>点击部件查看职责与论文，点击层下方论文名直接阅读。</span></div><div class="toolbar-actions"><button type="button" id="reset-view">重置选择</button><button type="button" id="expand-view">全屏查看</button></div></div>
+        <nav class="component-nav" id="component-nav" aria-label="选择系统层次"></nav>
+        <div class="current-selection"><span>当前查看</span><b id="current-component">03 · KV Cache 数据面</b><a href="#selected-component">职责与全部论文 ↓</a><span class="mobile-hint">横向滑动查看完整剖面</span></div>
+        <div class="figure-wrap">
 
+<svg class="system-figure" viewBox="0 0 1440 1370" role="group" aria-labelledby="figure-title figure-desc">
+<title id="figure-title">从硬件到 Agent：LLM 推理优化的等轴系统剖面</title>
+<desc id="figure-desc">六层可点击结构由下向上展示集群硬件、计算算子、KV 状态、推理引擎、编排调度与 Agent 工作流；每层下方可直接打开代表论文。右侧双向控制面连接工作流意图和引擎反馈。</desc>
+<defs>
+ <filter id="objectShadow" x="-25%" y="-35%" width="160%" height="190%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#355744" flood-opacity=".13"/></filter>
+ <filter id="boardShadow" x="-10%" y="-20%" width="130%" height="180%"><feDropShadow dx="0" dy="12" stdDeviation="9" flood-color="#355744" flood-opacity=".10"/></filter>
+ <marker id="flowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#176b52"/></marker>
+ <marker id="flowOrange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c4652d"/></marker>
+ <marker id="flowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6a568c"/></marker>
+ <pattern id="baseGrid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#b5cbbb" stroke-width=".5" opacity=".4"/></pattern>
+</defs>
+<path d="M310 1315H1126L1250 1253H434Z" fill="url(#baseGrid)"/>
+<path d="M318 151V1275M1065 106V1230" stroke="#d0ddd2" stroke-width="6"/>
+<path d="M318 151V1275M1065 106V1230" stroke="#fbfdf9" stroke-width="2"/>
+
+<g class="zone zone-workflow" data-layer="workflow" role="button" tabindex="0" aria-label="06 Agent 工作流与上下文，查看对应论文" aria-pressed="false">
+<title>06 Agent 工作流与上下文</title><rect class="zone-hit" x="200" y="95" width="850" height="195" rx="14" fill="#ffffff" fill-opacity="0.001"/>
+<text x="52" y="108" class="zone-no">06</text>
+<text x="98" y="108" class="zone-name">Agent 工作流与上下文</text>
+<text x="98" y="133" class="zone-sub">WORKFLOW / CONTEXT</text>
+<text x="98" y="163" class="zone-description">角色与工具 · 任务依赖</text>
+<text x="98" y="185" class="zone-description">上下文编辑 · 语义记忆</text>
+<path d="M278 137H328" fill="none" stroke="#c3d0c5" stroke-width="1" />
+<g class="board" filter="url(#boardShadow)">
+<g class="solid platform"><polygon points="350.0,206.0 1000.0,206.0 1000.0,219.0 350.0,219.0" fill="#e3d8ed"/><polygon points="1000.0,206.0 1085.84,149.76 1085.84,162.76 1000.0,219.0" fill="#d1c3df"/><polygon points="350.0,206.0 1000.0,206.0 1085.84,149.76 435.84,149.76" fill="#f4eff8"/></g>
+</g>
+<g class="solid "><polygon points="406.98,188.22 539.98,188.22 539.98,193.22 406.98,193.22" fill="#a3a6b8"/><polygon points="539.98,188.22 585.22,158.58 585.22,163.58 539.98,193.22" fill="#858c9f"/><polygon points="406.98,188.22 539.98,188.22 585.22,158.58 452.22,158.58" fill="#c6c7d2"/></g>
+<g class="laptop-screen" transform="translate(450.1 159.9)"><path d="M0 0h118v-78H0Z" fill="#e0e1eb" stroke="#9a9eb1"/><path d="M7 -7h104v-62H7Z" fill="#254c40"/><path d="M16 -55h29m-29 11h78m-78 11h54m-54 11h66" stroke="#a3d0b7" stroke-width="3"/></g>
+<text x="407" y="210" class="object-label">USER / SESSION</text>
+<path d="M601.6 168.4L653.6 168.4" fill="none" stroke="#8d76a8" stroke-width="2" />
+<path d="M745.6 168.4L827.0 157.0" fill="none" stroke="#8d76a8" stroke-width="2" />
+<path d="M745.6 168.4L786.4 183.6" fill="none" stroke="#8d76a8" stroke-width="2" />
+<g class="solid "><polygon points="644.36,163.04 726.36,163.04 726.36,189.04 644.36,189.04" fill="#b8a5cc"/><polygon points="726.36,163.04 766.96,136.44 766.96,162.44 726.36,189.04" fill="#9580af"/><polygon points="644.36,163.04 726.36,163.04 766.96,136.44 684.96,136.44" fill="#ddd0ec"/></g>
+<text x="699.28" y="144.92" class="chip-letter" text-anchor="middle">AGENT</text>
+<g class="solid "><polygon points="786.18,185.02 853.18,185.02 853.18,197.02 786.18,197.02" fill="#cab9dd"/><polygon points="853.18,185.02 873.48,171.72 873.48,183.72 853.18,197.02" fill="#aa97c1"/><polygon points="786.18,185.02 853.18,185.02 873.48,171.72 806.48,171.72" fill="#efe7f7"/></g>
+<g class="solid "><polygon points="826.78,158.42 893.78,158.42 893.78,170.42 826.78,170.42" fill="#cab9dd"/><polygon points="893.78,158.42 914.08,145.12 914.08,157.12 893.78,170.42" fill="#aa97c1"/><polygon points="826.78,158.42 893.78,158.42 914.08,145.12 847.08,145.12" fill="#efe7f7"/></g>
+<g class="solid "><polygon points="919.2,180.8 998.2,180.8 998.2,183.8 919.2,183.8" fill="#d8d2c7"/><polygon points="998.2,180.8 1032.42,158.38 1032.42,161.38 998.2,183.8" fill="#c6bdb0"/><polygon points="919.2,180.8 998.2,180.8 1032.42,158.38 953.42,158.38" fill="#fefcfa"/></g>
+<g class="solid "><polygon points="919.2,170.8 998.2,170.8 998.2,173.8 919.2,173.8" fill="#d8d2c7"/><polygon points="998.2,170.8 1032.42,148.38 1032.42,151.38 998.2,173.8" fill="#c6bdb0"/><polygon points="919.2,170.8 998.2,170.8 1032.42,148.38 953.42,148.38" fill="#fefcfa"/></g>
+<g class="solid "><polygon points="919.2,160.8 998.2,160.8 998.2,163.8 919.2,163.8" fill="#d8d2c7"/><polygon points="998.2,160.8 1032.42,138.38 1032.42,141.38 998.2,163.8" fill="#c6bdb0"/><polygon points="919.2,160.8 998.2,160.8 1032.42,138.38 953.42,138.38" fill="#fefcfa"/></g>
+<text x="827" y="210" class="object-label">TOOLS / CONTEXT</text>
+<text x="930" y="119" class="tiny-label">edit / branch</text>
+</g>
+<g class="diagram-papers" data-layer-papers="workflow"></g>
+<g class="zone zone-orchestration" data-layer="orchestration" role="button" tabindex="0" aria-label="05 编排与调度，查看对应论文" aria-pressed="false">
+<title>05 编排与调度</title><rect class="zone-hit" x="200" y="306" width="850" height="195" rx="14" fill="#ffffff" fill-opacity="0.001"/>
+<text x="52" y="319" class="zone-no">05</text>
+<text x="98" y="319" class="zone-name">编排与调度</text>
+<text x="98" y="344" class="zone-sub">ORCHESTRATION</text>
+<text x="98" y="374" class="zone-description">准入与优先级 · 并发控制</text>
+<text x="98" y="396" class="zone-description">工具等待 · 状态恢复</text>
+<path d="M278 348H328" fill="none" stroke="#c3d0c5" stroke-width="1" />
+<g class="board" filter="url(#boardShadow)">
+<g class="solid platform"><polygon points="350.0,417.0 1000.0,417.0 1000.0,430.0 350.0,430.0" fill="#f0ddcc"/><polygon points="1000.0,417.0 1085.84,360.76 1085.84,373.76 1000.0,430.0" fill="#e1c7b1"/><polygon points="350.0,417.0 1000.0,417.0 1085.84,360.76 435.84,360.76" fill="#fdf2e9"/></g>
+</g>
+<g class="solid "><polygon points="415.1,383.9 442.1,383.9 442.1,398.9 415.1,398.9" fill="#d39b70"/><polygon points="442.1,383.9 475.74,361.86 475.74,376.86 442.1,398.9" fill="#b17c56"/><polygon points="415.1,383.9 442.1,383.9 475.74,361.86 448.74,361.86" fill="#efbc94"/></g>
+<g class="solid "><polygon points="454.1,383.9 481.1,383.9 481.1,398.9 454.1,398.9" fill="#d39b70"/><polygon points="481.1,383.9 514.74,361.86 514.74,376.86 481.1,398.9" fill="#b17c56"/><polygon points="454.1,383.9 481.1,383.9 514.74,361.86 487.74,361.86" fill="#efbc94"/></g>
+<g class="solid "><polygon points="493.1,383.9 520.1,383.9 520.1,398.9 493.1,398.9" fill="#d39b70"/><polygon points="520.1,383.9 553.74,361.86 553.74,376.86 520.1,398.9" fill="#b17c56"/><polygon points="493.1,383.9 520.1,383.9 553.74,361.86 526.74,361.86" fill="#efbc94"/></g>
+<g class="solid "><polygon points="532.1,383.9 559.1,383.9 559.1,398.9 532.1,398.9" fill="#d39b70"/><polygon points="559.1,383.9 592.74,361.86 592.74,376.86 559.1,398.9" fill="#b17c56"/><polygon points="532.1,383.9 559.1,383.9 592.74,361.86 565.74,361.86" fill="#efbc94"/></g>
+<text x="402" y="421" class="object-label">READY QUEUE</text>
+<g class="solid "><polygon points="622.62,378.18 713.62,378.18 713.62,401.18 622.62,401.18" fill="#e2c3a6"/><polygon points="713.62,378.18 753.64,351.96 753.64,374.96 713.62,401.18" fill="#c8a484"/><polygon points="622.62,378.18 713.62,378.18 753.64,351.96 662.64,351.96" fill="#fff7ec"/></g>
+<text x="681.12" y="359.68" class="chip-letter" text-anchor="middle">ADMIT</text>
+<path d="M742.76 380.64L802.76 380.64" fill="none" stroke="#c4652d" stroke-width="2" />
+<path d="M842.76 380.64L910.06 367.34" fill="none" stroke="#c4652d" stroke-width="2" />
+<path d="M842.76 380.64L866.56 395.84" fill="none" stroke="#c4652d" stroke-width="2" />
+<g class="solid "><polygon points="795.06,378.34 829.06,378.34 829.06,394.34 795.06,394.34" fill="#d49667"/><polygon points="829.06,378.34 845.88,367.32 845.88,383.32 829.06,394.34" fill="#b57649"/><polygon points="795.06,378.34 829.06,378.34 845.88,367.32 811.88,367.32" fill="#f0bf96"/></g>
+<g class="solid "><polygon points="910.52,364.28 944.52,364.28 944.52,380.28 910.52,380.28" fill="#d49667"/><polygon points="944.52,364.28 961.34,353.26 961.34,369.26 944.52,380.28" fill="#b57649"/><polygon points="910.52,364.28 944.52,364.28 961.34,353.26 927.34,353.26" fill="#f0bf96"/></g>
+<g class="solid "><polygon points="867.02,392.78 901.02,392.78 901.02,408.78 867.02,408.78" fill="#d3c9ba"/><polygon points="901.02,392.78 917.84,381.76 917.84,397.76 901.02,408.78" fill="#b8ad9b"/><polygon points="867.02,392.78 901.02,392.78 917.84,381.76 883.84,381.76" fill="#eee8df"/></g>
+<g class="solid "><polygon points="972.06,378.34 1006.06,378.34 1006.06,394.34 972.06,394.34" fill="#d49667"/><polygon points="1006.06,378.34 1022.88,367.32 1022.88,383.32 1006.06,394.34" fill="#b57649"/><polygon points="972.06,378.34 1006.06,378.34 1022.88,367.32 988.88,367.32" fill="#f0bf96"/></g>
+<text x="808" y="421" class="object-label">PROGRAM / STAGE STATE</text>
+<text x="920" y="330" class="tiny-label">tool wait ↺</text>
+</g>
+<g class="diagram-papers" data-layer-papers="orchestration"></g>
+<g class="zone zone-engine" data-layer="engine" role="button" tabindex="0" aria-label="04 推理引擎执行，查看对应论文" aria-pressed="false">
+<title>04 推理引擎执行</title><rect class="zone-hit" x="200" y="517" width="850" height="195" rx="14" fill="#ffffff" fill-opacity="0.001"/>
+<text x="52" y="530" class="zone-no">04</text>
+<text x="98" y="530" class="zone-name">推理引擎执行</text>
+<text x="98" y="555" class="zone-sub">INFERENCE RUNTIME</text>
+<text x="98" y="585" class="zone-description">连续批处理 · P/D 执行</text>
+<text x="98" y="607" class="zone-description">页表与执行状态</text>
+<path d="M278 559H328" fill="none" stroke="#c3d0c5" stroke-width="1" />
+<g class="board" filter="url(#boardShadow)">
+<g class="solid platform"><polygon points="350.0,628.0 1000.0,628.0 1000.0,641.0 350.0,641.0" fill="#d9e8f1"/><polygon points="1000.0,628.0 1085.84,571.76 1085.84,584.76 1000.0,641.0" fill="#bfd4e2"/><polygon points="350.0,628.0 1000.0,628.0 1085.84,571.76 435.84,571.76" fill="#edf5fa"/></g>
+</g>
+<g class="solid "><polygon points="407.92,607.88 817.92,607.88 817.92,617.88 407.92,617.88" fill="#c4d7e4"/><polygon points="817.92,607.88 877.66,568.74 877.66,578.74 817.92,617.88" fill="#a7c0d3"/><polygon points="407.92,607.88 817.92,607.88 877.66,568.74 467.66,568.74" fill="#fbfcfd"/></g>
+<g class="solid "><polygon points="431.62,589.18 616.62,589.18 616.62,602.18 431.62,602.18" fill="#4c809c"/><polygon points="616.62,589.18 625.9,583.1 625.9,596.1 616.62,602.18" fill="#356681"/><polygon points="431.62,589.18 616.62,589.18 625.9,583.1 440.9,583.1" fill="#6ea4be"/></g>
+<g class="solid "><polygon points="644.62,589.18 670.62,589.18 670.62,602.18 644.62,602.18" fill="#79a6bd"/><polygon points="670.62,589.18 679.9,583.1 679.9,596.1 670.62,602.18" fill="#5e8ba3"/><polygon points="644.62,589.18 670.62,589.18 679.9,583.1 653.9,583.1" fill="#9fc5d5"/></g>
+<g class="solid "><polygon points="687.62,589.18 713.62,589.18 713.62,602.18 687.62,602.18" fill="#79a6bd"/><polygon points="713.62,589.18 722.9,583.1 722.9,596.1 713.62,602.18" fill="#5e8ba3"/><polygon points="687.62,589.18 713.62,589.18 722.9,583.1 696.9,583.1" fill="#9fc5d5"/></g>
+<g class="solid "><polygon points="730.62,589.18 756.62,589.18 756.62,602.18 730.62,602.18" fill="#79a6bd"/><polygon points="756.62,589.18 765.9,583.1 765.9,596.1 756.62,602.18" fill="#5e8ba3"/><polygon points="730.62,589.18 756.62,589.18 765.9,583.1 739.9,583.1" fill="#9fc5d5"/></g>
+<g class="solid "><polygon points="446.12,579.68 592.12,579.68 592.12,592.68 446.12,592.68" fill="#4c809c"/><polygon points="592.12,579.68 601.4,573.6 601.4,586.6 592.12,592.68" fill="#356681"/><polygon points="446.12,579.68 592.12,579.68 601.4,573.6 455.4,573.6" fill="#6ea4be"/></g>
+<g class="solid "><polygon points="659.12,579.68 685.12,579.68 685.12,592.68 659.12,592.68" fill="#79a6bd"/><polygon points="685.12,579.68 694.4,573.6 694.4,586.6 685.12,592.68" fill="#5e8ba3"/><polygon points="659.12,579.68 685.12,579.68 694.4,573.6 668.4,573.6" fill="#9fc5d5"/></g>
+<g class="solid "><polygon points="702.12,579.68 728.12,579.68 728.12,592.68 702.12,592.68" fill="#79a6bd"/><polygon points="728.12,579.68 737.4,573.6 737.4,586.6 728.12,592.68" fill="#5e8ba3"/><polygon points="702.12,579.68 728.12,579.68 737.4,573.6 711.4,573.6" fill="#9fc5d5"/></g>
+<g class="solid "><polygon points="745.12,579.68 771.12,579.68 771.12,592.68 745.12,592.68" fill="#79a6bd"/><polygon points="771.12,579.68 780.4,573.6 780.4,586.6 771.12,592.68" fill="#5e8ba3"/><polygon points="745.12,579.68 771.12,579.68 780.4,573.6 754.4,573.6" fill="#9fc5d5"/></g>
+<g class="solid "><polygon points="460.62,570.18 567.62,570.18 567.62,583.18 460.62,583.18" fill="#4c809c"/><polygon points="567.62,570.18 576.9,564.1 576.9,577.1 567.62,583.18" fill="#356681"/><polygon points="460.62,570.18 567.62,570.18 576.9,564.1 469.9,564.1" fill="#6ea4be"/></g>
+<g class="solid "><polygon points="673.62,570.18 699.62,570.18 699.62,583.18 673.62,583.18" fill="#79a6bd"/><polygon points="699.62,570.18 708.9,564.1 708.9,577.1 699.62,583.18" fill="#5e8ba3"/><polygon points="673.62,570.18 699.62,570.18 708.9,564.1 682.9,564.1" fill="#9fc5d5"/></g>
+<g class="solid "><polygon points="716.62,570.18 742.62,570.18 742.62,583.18 716.62,583.18" fill="#79a6bd"/><polygon points="742.62,570.18 751.9,564.1 751.9,577.1 742.62,583.18" fill="#5e8ba3"/><polygon points="716.62,570.18 742.62,570.18 751.9,564.1 725.9,564.1" fill="#9fc5d5"/></g>
+<g class="solid "><polygon points="759.62,570.18 785.62,570.18 785.62,583.18 759.62,583.18" fill="#79a6bd"/><polygon points="785.62,570.18 794.9,564.1 794.9,577.1 785.62,583.18" fill="#5e8ba3"/><polygon points="759.62,570.18 785.62,570.18 794.9,564.1 768.9,564.1" fill="#9fc5d5"/></g>
+<text x="420" y="630" class="object-label">PREFILL</text>
+<text x="667" y="630" class="object-label">DECODE / BATCH</text>
+<g class="solid "><polygon points="871.66,608.74 992.66,608.74 992.66,616.74 871.66,616.74" fill="#bdcdd3"/><polygon points="992.66,608.74 1050.66,570.74 1050.66,578.74 992.66,616.74" fill="#9fb3bb"/><polygon points="871.66,608.74 992.66,608.74 1050.66,570.74 929.66,570.74" fill="#e1e9ec"/></g>
+<g class="solid "><polygon points="891.2,597.8 914.2,597.8 914.2,603.8 891.2,603.8" fill="#dbe4e8"/><polygon points="914.2,597.8 922.9,592.1 922.9,598.1 914.2,603.8" fill="#bdcdd3"/><polygon points="891.2,597.8 914.2,597.8 922.9,592.1 899.9,592.1" fill="#f8fbfc"/></g>
+<g class="solid "><polygon points="903.96,589.44 926.96,589.44 926.96,595.44 903.96,595.44" fill="#dbe4e8"/><polygon points="926.96,589.44 935.66,583.74 935.66,589.74 926.96,595.44" fill="#bdcdd3"/><polygon points="903.96,589.44 926.96,589.44 935.66,583.74 912.66,583.74" fill="#f8fbfc"/></g>
+<g class="solid "><polygon points="916.72,581.08 939.72,581.08 939.72,587.08 916.72,587.08" fill="#dbe4e8"/><polygon points="939.72,581.08 948.42,575.38 948.42,581.38 939.72,587.08" fill="#bdcdd3"/><polygon points="916.72,581.08 939.72,581.08 948.42,575.38 925.42,575.38" fill="#f8fbfc"/></g>
+<g class="solid "><polygon points="922.2,597.8 945.2,597.8 945.2,603.8 922.2,603.8" fill="#dbe4e8"/><polygon points="945.2,597.8 953.9,592.1 953.9,598.1 945.2,603.8" fill="#bdcdd3"/><polygon points="922.2,597.8 945.2,597.8 953.9,592.1 930.9,592.1" fill="#f8fbfc"/></g>
+<g class="solid "><polygon points="934.96,589.44 957.96,589.44 957.96,595.44 934.96,595.44" fill="#dbe4e8"/><polygon points="957.96,589.44 966.66,583.74 966.66,589.74 957.96,595.44" fill="#bdcdd3"/><polygon points="934.96,589.44 957.96,589.44 966.66,583.74 943.66,583.74" fill="#f8fbfc"/></g>
+<g class="solid "><polygon points="947.72,581.08 970.72,581.08 970.72,587.08 947.72,587.08" fill="#dbe4e8"/><polygon points="970.72,581.08 979.42,575.38 979.42,581.38 970.72,587.08" fill="#bdcdd3"/><polygon points="947.72,581.08 970.72,581.08 979.42,575.38 956.42,575.38" fill="#f8fbfc"/></g>
+<g class="solid "><polygon points="953.2,597.8 976.2,597.8 976.2,603.8 953.2,603.8" fill="#dbe4e8"/><polygon points="976.2,597.8 984.9,592.1 984.9,598.1 976.2,603.8" fill="#bdcdd3"/><polygon points="953.2,597.8 976.2,597.8 984.9,592.1 961.9,592.1" fill="#f8fbfc"/></g>
+<g class="solid "><polygon points="965.96,589.44 988.96,589.44 988.96,595.44 965.96,595.44" fill="#dbe4e8"/><polygon points="988.96,589.44 997.66,583.74 997.66,589.74 988.96,595.44" fill="#bdcdd3"/><polygon points="965.96,589.44 988.96,589.44 997.66,583.74 974.66,583.74" fill="#f8fbfc"/></g>
+<g class="solid "><polygon points="978.72,581.08 1001.72,581.08 1001.72,587.08 978.72,587.08" fill="#dbe4e8"/><polygon points="1001.72,581.08 1010.42,575.38 1010.42,581.38 1001.72,587.08" fill="#bdcdd3"/><polygon points="978.72,581.08 1001.72,581.08 1010.42,575.38 987.42,575.38" fill="#f8fbfc"/></g>
+<text x="892" y="630" class="object-label">PAGE TABLE</text>
+</g>
+<g class="diagram-papers" data-layer-papers="engine"></g>
+<g class="zone zone-kv" data-layer="kv" role="button" tabindex="0" aria-label="03 KV Cache 数据面，查看对应论文" aria-pressed="false">
+<title>03 KV Cache 数据面</title><rect class="zone-hit" x="200" y="728" width="850" height="195" rx="14" fill="#ffffff" fill-opacity="0.001"/>
+<text x="52" y="741" class="zone-no">03</text>
+<text x="98" y="741" class="zone-name">KV Cache 数据面</text>
+<text x="98" y="766" class="zone-sub">KV STATE / REUSE</text>
+<text x="98" y="796" class="zone-description">前缀与独立块 · 修复</text>
+<text x="98" y="818" class="zone-description">保留 / 淘汰 · 分层存储</text>
+<path d="M278 770H328" fill="none" stroke="#c3d0c5" stroke-width="1" />
+<g class="board" filter="url(#boardShadow)">
+<g class="solid platform"><polygon points="350.0,839.0 1000.0,839.0 1000.0,852.0 350.0,852.0" fill="#d6e9dc"/><polygon points="1000.0,839.0 1085.84,782.76 1085.84,795.76 1000.0,852.0" fill="#bad5c5"/><polygon points="350.0,839.0 1000.0,839.0 1085.84,782.76 435.84,782.76" fill="#edf7ef"/></g>
+</g>
+<g class="solid "><polygon points="402.18,821.02 767.18,821.02 767.18,830.02 402.18,830.02" fill="#cbdccd"/><polygon points="767.18,821.02 825.18,783.02 825.18,792.02 767.18,830.02" fill="#b0c9b6"/><polygon points="402.18,821.02 767.18,821.02 825.18,783.02 460.18,783.02" fill="#f9fcf8"/></g>
+<g class="solid "><polygon points="428.3,795.7 479.3,795.7 479.3,815.7 428.3,815.7" fill="#50916e"/><polygon points="479.3,795.7 517.0,771.0 517.0,791.0 479.3,815.7" fill="#3b7555"/><polygon points="428.3,795.7 479.3,795.7 517.0,771.0 466.0,771.0" fill="#77b892"/></g>
+<g class="solid "><polygon points="494.3,795.7 545.3,795.7 545.3,815.7 494.3,815.7" fill="#50916e"/><polygon points="545.3,795.7 583.0,771.0 583.0,791.0 545.3,815.7" fill="#3b7555"/><polygon points="494.3,795.7 545.3,795.7 583.0,771.0 532.0,771.0" fill="#77b892"/></g>
+<g class="solid "><polygon points="560.3,795.7 611.3,795.7 611.3,815.7 560.3,815.7" fill="#cb8d5b"/><polygon points="611.3,795.7 649.0,771.0 649.0,791.0 611.3,815.7" fill="#aa6f43"/><polygon points="560.3,795.7 611.3,795.7 649.0,771.0 598.0,771.0" fill="#e9b488"/></g>
+<g class="solid "><polygon points="626.3,795.7 677.3,795.7 677.3,815.7 626.3,815.7" fill="#b9cdbd"/><polygon points="677.3,795.7 715.0,771.0 715.0,791.0 677.3,815.7" fill="#a2bba8"/><polygon points="626.3,795.7 677.3,795.7 715.0,771.0 664.0,771.0" fill="#d9e4da"/></g>
+<path d="M631.3 798.7l40 -24" fill="none" stroke="#a96f61" stroke-width="1.8" />
+<g class="solid "><polygon points="692.3,795.7 743.3,795.7 743.3,815.7 692.3,815.7" fill="#50916e"/><polygon points="743.3,795.7 781.0,771.0 781.0,791.0 743.3,815.7" fill="#3b7555"/><polygon points="692.3,795.7 743.3,795.7 781.0,771.0 730.0,771.0" fill="#77b892"/></g>
+<text x="410" y="842" class="object-label">GPU : exact / repaired / evicted</text>
+<g class="solid "><polygon points="836.34,820.26 996.34,820.26 996.34,829.26 836.34,829.26" fill="#d8d2e1"/><polygon points="996.34,820.26 1053.18,783.02 1053.18,792.02 996.34,829.26" fill="#bcaece"/><polygon points="836.34,820.26 996.34,820.26 1053.18,783.02 893.18,783.02" fill="#fbfafc"/></g>
+<g class="solid "><polygon points="859.3,800.7 973.3,800.7 973.3,815.7 859.3,815.7" fill="#9580b0"/><polygon points="973.3,800.7 981.42,795.38 981.42,810.38 973.3,815.7" fill="#796493"/><polygon points="859.3,800.7 973.3,800.7 981.42,795.38 867.42,795.38" fill="#b7a3cb"/></g>
+<g class="solid "><polygon points="870.9,793.1 984.9,793.1 984.9,808.1 870.9,808.1" fill="#9580b0"/><polygon points="984.9,793.1 993.02,787.78 993.02,802.78 984.9,808.1" fill="#796493"/><polygon points="870.9,793.1 984.9,793.1 993.02,787.78 879.02,787.78" fill="#b7a3cb"/></g>
+<g class="solid "><polygon points="882.5,785.5 996.5,785.5 996.5,800.5 882.5,800.5" fill="#9580b0"/><polygon points="996.5,785.5 1004.62,780.18 1004.62,795.18 996.5,800.5" fill="#796493"/><polygon points="882.5,785.5 996.5,785.5 1004.62,780.18 890.62,780.18" fill="#b7a3cb"/></g>
+<text x="863" y="842" class="object-label">CPU / SSD : chunks</text>
+<path d="M805.8 805.2h42" fill="none" stroke="#c4652d" stroke-width="2" marker-end="url(#flowOrange)"/>
+<text x="816" y="765" class="tiny-label">load / evict</text>
+</g>
+<g class="diagram-papers" data-layer-papers="kv"></g>
+<g class="zone zone-compute" data-layer="compute" role="button" tabindex="0" aria-label="02 模型计算与算子，查看对应论文" aria-pressed="false">
+<title>02 模型计算与算子</title><rect class="zone-hit" x="200" y="939" width="850" height="195" rx="14" fill="#ffffff" fill-opacity="0.001"/>
+<text x="52" y="952" class="zone-no">02</text>
+<text x="98" y="952" class="zone-name">模型计算与算子</text>
+<text x="98" y="977" class="zone-sub">MODEL / KERNELS</text>
+<text x="98" y="1007" class="zone-description">Attention · 投机解码</text>
+<text x="98" y="1029" class="zone-description">多 token 预测 · IO 优化</text>
+<path d="M278 981H328" fill="none" stroke="#c3d0c5" stroke-width="1" />
+<g class="board" filter="url(#boardShadow)">
+<g class="solid platform"><polygon points="350.0,1050.0 1000.0,1050.0 1000.0,1063.0 350.0,1063.0" fill="#dce8f0"/><polygon points="1000.0,1050.0 1085.84,993.76 1085.84,1006.76 1000.0,1063.0" fill="#c3d7e3"/><polygon points="350.0,1050.0 1000.0,1050.0 1085.84,993.76 435.84,993.76" fill="#eff5f9"/></g>
+</g>
+<g class="solid "><polygon points="411.24,1028.36 581.24,1028.36 581.24,1038.36 411.24,1038.36" fill="#a8c8d6"/><polygon points="581.24,1028.36 636.34,992.26 636.34,1002.26 581.24,1038.36" fill="#8eafc1"/><polygon points="411.24,1028.36 581.24,1028.36 636.34,992.26 466.34,992.26" fill="#dceaf0"/></g>
+<g class="solid "><polygon points="432.62,1015.18 451.62,1015.18 451.62,1024.18 432.62,1024.18" fill="#4d819b"/><polygon points="451.62,1015.18 458.58,1010.62 458.58,1019.62 451.62,1024.18" fill="#396a83"/><polygon points="432.62,1015.18 451.62,1015.18 458.58,1010.62 439.58,1010.62" fill="#7faac1"/></g>
+<g class="solid "><polygon points="443.06,1008.34 462.06,1008.34 462.06,1017.34 443.06,1017.34" fill="#4d819b"/><polygon points="462.06,1008.34 469.02,1003.78 469.02,1012.78 462.06,1017.34" fill="#396a83"/><polygon points="443.06,1008.34 462.06,1008.34 469.02,1003.78 450.02,1003.78" fill="#7faac1"/></g>
+<g class="solid "><polygon points="453.5,1001.5 472.5,1001.5 472.5,1010.5 453.5,1010.5" fill="#4d819b"/><polygon points="472.5,1001.5 479.46,996.94 479.46,1005.94 472.5,1010.5" fill="#396a83"/><polygon points="453.5,1001.5 472.5,1001.5 479.46,996.94 460.46,996.94" fill="#7faac1"/></g>
+<g class="solid "><polygon points="463.94,994.66 482.94,994.66 482.94,1003.66 463.94,1003.66" fill="#4d819b"/><polygon points="482.94,994.66 489.9,990.1 489.9,999.1 482.94,1003.66" fill="#396a83"/><polygon points="463.94,994.66 482.94,994.66 489.9,990.1 470.9,990.1" fill="#7faac1"/></g>
+<g class="solid "><polygon points="460.62,1015.18 479.62,1015.18 479.62,1024.18 460.62,1024.18" fill="#4d819b"/><polygon points="479.62,1015.18 486.58,1010.62 486.58,1019.62 479.62,1024.18" fill="#396a83"/><polygon points="460.62,1015.18 479.62,1015.18 486.58,1010.62 467.58,1010.62" fill="#7faac1"/></g>
+<g class="solid "><polygon points="471.06,1008.34 490.06,1008.34 490.06,1017.34 471.06,1017.34" fill="#4d819b"/><polygon points="490.06,1008.34 497.02,1003.78 497.02,1012.78 490.06,1017.34" fill="#396a83"/><polygon points="471.06,1008.34 490.06,1008.34 497.02,1003.78 478.02,1003.78" fill="#7faac1"/></g>
+<g class="solid "><polygon points="481.5,1001.5 500.5,1001.5 500.5,1010.5 481.5,1010.5" fill="#4d819b"/><polygon points="500.5,1001.5 507.46,996.94 507.46,1005.94 500.5,1010.5" fill="#396a83"/><polygon points="481.5,1001.5 500.5,1001.5 507.46,996.94 488.46,996.94" fill="#7faac1"/></g>
+<g class="solid "><polygon points="491.94,994.66 510.94,994.66 510.94,1003.66 491.94,1003.66" fill="#4d819b"/><polygon points="510.94,994.66 517.9,990.1 517.9,999.1 510.94,1003.66" fill="#396a83"/><polygon points="491.94,994.66 510.94,994.66 517.9,990.1 498.9,990.1" fill="#7faac1"/></g>
+<g class="solid "><polygon points="488.62,1015.18 507.62,1015.18 507.62,1024.18 488.62,1024.18" fill="#4d819b"/><polygon points="507.62,1015.18 514.58,1010.62 514.58,1019.62 507.62,1024.18" fill="#396a83"/><polygon points="488.62,1015.18 507.62,1015.18 514.58,1010.62 495.58,1010.62" fill="#7faac1"/></g>
+<g class="solid "><polygon points="499.06,1008.34 518.06,1008.34 518.06,1017.34 499.06,1017.34" fill="#4d819b"/><polygon points="518.06,1008.34 525.02,1003.78 525.02,1012.78 518.06,1017.34" fill="#396a83"/><polygon points="499.06,1008.34 518.06,1008.34 525.02,1003.78 506.02,1003.78" fill="#7faac1"/></g>
+<g class="solid "><polygon points="509.5,1001.5 528.5,1001.5 528.5,1010.5 509.5,1010.5" fill="#4d819b"/><polygon points="528.5,1001.5 535.46,996.94 535.46,1005.94 528.5,1010.5" fill="#396a83"/><polygon points="509.5,1001.5 528.5,1001.5 535.46,996.94 516.46,996.94" fill="#7faac1"/></g>
+<g class="solid "><polygon points="519.94,994.66 538.94,994.66 538.94,1003.66 519.94,1003.66" fill="#4d819b"/><polygon points="538.94,994.66 545.9,990.1 545.9,999.1 538.94,1003.66" fill="#396a83"/><polygon points="519.94,994.66 538.94,994.66 545.9,990.1 526.9,990.1" fill="#7faac1"/></g>
+<g class="solid "><polygon points="516.62,1015.18 535.62,1015.18 535.62,1024.18 516.62,1024.18" fill="#4d819b"/><polygon points="535.62,1015.18 542.58,1010.62 542.58,1019.62 535.62,1024.18" fill="#396a83"/><polygon points="516.62,1015.18 535.62,1015.18 542.58,1010.62 523.58,1010.62" fill="#7faac1"/></g>
+<g class="solid "><polygon points="527.06,1008.34 546.06,1008.34 546.06,1017.34 527.06,1017.34" fill="#4d819b"/><polygon points="546.06,1008.34 553.02,1003.78 553.02,1012.78 546.06,1017.34" fill="#396a83"/><polygon points="527.06,1008.34 546.06,1008.34 553.02,1003.78 534.02,1003.78" fill="#7faac1"/></g>
+<g class="solid "><polygon points="537.5,1001.5 556.5,1001.5 556.5,1010.5 537.5,1010.5" fill="#4d819b"/><polygon points="556.5,1001.5 563.46,996.94 563.46,1005.94 556.5,1010.5" fill="#396a83"/><polygon points="537.5,1001.5 556.5,1001.5 563.46,996.94 544.46,996.94" fill="#7faac1"/></g>
+<g class="solid "><polygon points="547.94,994.66 566.94,994.66 566.94,1003.66 547.94,1003.66" fill="#4d819b"/><polygon points="566.94,994.66 573.9,990.1 573.9,999.1 566.94,1003.66" fill="#396a83"/><polygon points="547.94,994.66 566.94,994.66 573.9,990.1 554.9,990.1" fill="#7faac1"/></g>
+<g class="solid "><polygon points="544.62,1015.18 563.62,1015.18 563.62,1024.18 544.62,1024.18" fill="#4d819b"/><polygon points="563.62,1015.18 570.58,1010.62 570.58,1019.62 563.62,1024.18" fill="#396a83"/><polygon points="544.62,1015.18 563.62,1015.18 570.58,1010.62 551.58,1010.62" fill="#7faac1"/></g>
+<g class="solid "><polygon points="555.06,1008.34 574.06,1008.34 574.06,1017.34 555.06,1017.34" fill="#4d819b"/><polygon points="574.06,1008.34 581.02,1003.78 581.02,1012.78 574.06,1017.34" fill="#396a83"/><polygon points="555.06,1008.34 574.06,1008.34 581.02,1003.78 562.02,1003.78" fill="#7faac1"/></g>
+<g class="solid "><polygon points="565.5,1001.5 584.5,1001.5 584.5,1010.5 565.5,1010.5" fill="#4d819b"/><polygon points="584.5,1001.5 591.46,996.94 591.46,1005.94 584.5,1010.5" fill="#396a83"/><polygon points="565.5,1001.5 584.5,1001.5 591.46,996.94 572.46,996.94" fill="#7faac1"/></g>
+<g class="solid "><polygon points="575.94,994.66 594.94,994.66 594.94,1003.66 575.94,1003.66" fill="#4d819b"/><polygon points="594.94,994.66 601.9,990.1 601.9,999.1 594.94,1003.66" fill="#396a83"/><polygon points="575.94,994.66 594.94,994.66 601.9,990.1 582.9,990.1" fill="#7faac1"/></g>
+<text x="405" y="1053" class="object-label">ATTENTION TILES</text>
+<g class="solid "><polygon points="651.9,1017.1 682.9,1017.1 682.9,1028.1 651.9,1028.1" fill="#91b8be"/><polygon points="682.9,1017.1 710.74,998.86 710.74,1009.86 682.9,1028.1" fill="#6e989f"/><polygon points="651.9,1017.1 682.9,1017.1 710.74,998.86 679.74,998.86" fill="#d4e5e8"/></g>
+<text x="677.92" y="1000.88" class="chip-letter" text-anchor="middle">Q</text>
+<g class="solid "><polygon points="698.9,1017.1 729.9,1017.1 729.9,1028.1 698.9,1028.1" fill="#91b8be"/><polygon points="729.9,1017.1 757.74,998.86 757.74,1009.86 729.9,1028.1" fill="#6e989f"/><polygon points="698.9,1017.1 729.9,1017.1 757.74,998.86 726.74,998.86" fill="#d4e5e8"/></g>
+<text x="724.92" y="1000.88" class="chip-letter" text-anchor="middle">K</text>
+<g class="solid "><polygon points="745.9,1017.1 776.9,1017.1 776.9,1028.1 745.9,1028.1" fill="#91b8be"/><polygon points="776.9,1017.1 804.74,998.86 804.74,1009.86 776.9,1028.1" fill="#6e989f"/><polygon points="745.9,1017.1 776.9,1017.1 804.74,998.86 773.74,998.86" fill="#d4e5e8"/></g>
+<text x="771.92" y="1000.88" class="chip-letter" text-anchor="middle">V</text>
+<g class="solid "><polygon points="853.0,1012.0 872.0,1012.0 872.0,1030.0 853.0,1030.0" fill="#9c88b8"/><polygon points="872.0,1012.0 890.56,999.84 890.56,1017.84 872.0,1030.0" fill="#7a659a"/><polygon points="853.0,1012.0 872.0,1012.0 890.56,999.84 871.56,999.84" fill="#bfaed5"/></g>
+<g class="solid "><polygon points="881.0,998.0 900.0,998.0 900.0,1030.0 881.0,1030.0" fill="#9c88b8"/><polygon points="900.0,998.0 918.56,985.84 918.56,1017.84 900.0,1030.0" fill="#7a659a"/><polygon points="881.0,998.0 900.0,998.0 918.56,985.84 899.56,985.84" fill="#bfaed5"/></g>
+<g class="solid "><polygon points="909.0,1012.0 928.0,1012.0 928.0,1030.0 909.0,1030.0" fill="#9c88b8"/><polygon points="928.0,1012.0 946.56,999.84 946.56,1017.84 928.0,1030.0" fill="#7a659a"/><polygon points="909.0,1012.0 928.0,1012.0 946.56,999.84 927.56,999.84" fill="#bfaed5"/></g>
+<g class="solid "><polygon points="937.0,998.0 956.0,998.0 956.0,1030.0 937.0,1030.0" fill="#9c88b8"/><polygon points="956.0,998.0 974.56,985.84 974.56,1017.84 956.0,1030.0" fill="#7a659a"/><polygon points="937.0,998.0 956.0,998.0 974.56,985.84 955.56,985.84" fill="#bfaed5"/></g>
+<path d="M908 1012H960" fill="none" stroke="#c4652d" stroke-width="2" marker-end="url(#flowOrange)"/>
+<text x="875" y="1055" class="object-label">DRAFT → VERIFY</text>
+</g>
+<g class="diagram-papers" data-layer-papers="compute"></g>
+<g class="zone zone-infra" data-layer="infra" role="button" tabindex="0" aria-label="01 集群与硬件资源，查看对应论文" aria-pressed="false">
+<title>01 集群与硬件资源</title><rect class="zone-hit" x="200" y="1150" width="850" height="195" rx="14" fill="#ffffff" fill-opacity="0.001"/>
+<text x="52" y="1163" class="zone-no">01</text>
+<text x="98" y="1163" class="zone-name">集群与硬件资源</text>
+<text x="98" y="1188" class="zone-sub">INFRASTRUCTURE</text>
+<text x="98" y="1218" class="zone-description">GPU / HBM · CPU / SSD</text>
+<text x="98" y="1240" class="zone-description">网络 · 资源池与放置</text>
+<path d="M278 1192H328" fill="none" stroke="#c3d0c5" stroke-width="1" />
+<g class="board" filter="url(#boardShadow)">
+<g class="solid platform"><polygon points="350.0,1261.0 1000.0,1261.0 1000.0,1274.0 350.0,1274.0" fill="#e5ddca"/><polygon points="1000.0,1261.0 1085.84,1204.76 1085.84,1217.76 1000.0,1274.0" fill="#cfc5ad"/><polygon points="350.0,1261.0 1000.0,1261.0 1085.84,1204.76 435.84,1204.76" fill="#f5f1e7"/></g>
+</g>
+<g class="solid "><polygon points="402.5,1213.5 762.5,1213.5 762.5,1250.5 402.5,1250.5" fill="#657a6c"/><polygon points="762.5,1213.5 820.5,1175.5 820.5,1212.5 762.5,1250.5" fill="#4e6759"/><polygon points="402.5,1213.5 762.5,1213.5 820.5,1175.5 460.5,1175.5" fill="#849a8b"/></g>
+<g class="solid "><polygon points="425.04,1199.56 494.04,1199.56 494.04,1208.56 425.04,1208.56" fill="#99b79e"/><polygon points="494.04,1199.56 535.8,1172.2 535.8,1181.2 494.04,1208.56" fill="#789a80"/><polygon points="425.04,1199.56 494.04,1199.56 535.8,1172.2 466.8,1172.2" fill="#d9e6da"/></g>
+<g class="solid "><polygon points="454.06,1183.34 487.06,1183.34 487.06,1192.34 454.06,1192.34" fill="#254b37"/><polygon points="487.06,1183.34 505.62,1171.18 505.62,1180.18 487.06,1192.34" fill="#193e2b"/><polygon points="454.06,1183.34 487.06,1183.34 505.62,1171.18 472.62,1171.18" fill="#446854"/></g>
+<ellipse cx="478.76" cy="1176.64" rx="10" ry="6" fill="#273f30" stroke="#adc5b2"/>
+<g class="solid "><polygon points="428.46,1197.94 433.46,1197.94 433.46,1199.94 428.46,1199.94" fill="#d5bb78"/><polygon points="433.46,1197.94 435.78,1196.42 435.78,1198.42 433.46,1199.94" fill="#d5bb78"/><polygon points="428.46,1197.94 433.46,1197.94 435.78,1196.42 430.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="439.46,1197.94 444.46,1197.94 444.46,1199.94 439.46,1199.94" fill="#d5bb78"/><polygon points="444.46,1197.94 446.78,1196.42 446.78,1198.42 444.46,1199.94" fill="#d5bb78"/><polygon points="439.46,1197.94 444.46,1197.94 446.78,1196.42 441.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="450.46,1197.94 455.46,1197.94 455.46,1199.94 450.46,1199.94" fill="#d5bb78"/><polygon points="455.46,1197.94 457.78,1196.42 457.78,1198.42 455.46,1199.94" fill="#d5bb78"/><polygon points="450.46,1197.94 455.46,1197.94 457.78,1196.42 452.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="461.46,1197.94 466.46,1197.94 466.46,1199.94 461.46,1199.94" fill="#d5bb78"/><polygon points="466.46,1197.94 468.78,1196.42 468.78,1198.42 466.46,1199.94" fill="#d5bb78"/><polygon points="461.46,1197.94 466.46,1197.94 468.78,1196.42 463.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="472.46,1197.94 477.46,1197.94 477.46,1199.94 472.46,1199.94" fill="#d5bb78"/><polygon points="477.46,1197.94 479.78,1196.42 479.78,1198.42 477.46,1199.94" fill="#d5bb78"/><polygon points="472.46,1197.94 477.46,1197.94 479.78,1196.42 474.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="509.04,1199.56 578.04,1199.56 578.04,1208.56 509.04,1208.56" fill="#99b79e"/><polygon points="578.04,1199.56 619.8,1172.2 619.8,1181.2 578.04,1208.56" fill="#789a80"/><polygon points="509.04,1199.56 578.04,1199.56 619.8,1172.2 550.8,1172.2" fill="#d9e6da"/></g>
+<g class="solid "><polygon points="538.06,1183.34 571.06,1183.34 571.06,1192.34 538.06,1192.34" fill="#254b37"/><polygon points="571.06,1183.34 589.62,1171.18 589.62,1180.18 571.06,1192.34" fill="#193e2b"/><polygon points="538.06,1183.34 571.06,1183.34 589.62,1171.18 556.62,1171.18" fill="#446854"/></g>
+<ellipse cx="562.76" cy="1176.64" rx="10" ry="6" fill="#273f30" stroke="#adc5b2"/>
+<g class="solid "><polygon points="512.46,1197.94 517.46,1197.94 517.46,1199.94 512.46,1199.94" fill="#d5bb78"/><polygon points="517.46,1197.94 519.78,1196.42 519.78,1198.42 517.46,1199.94" fill="#d5bb78"/><polygon points="512.46,1197.94 517.46,1197.94 519.78,1196.42 514.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="523.46,1197.94 528.46,1197.94 528.46,1199.94 523.46,1199.94" fill="#d5bb78"/><polygon points="528.46,1197.94 530.78,1196.42 530.78,1198.42 528.46,1199.94" fill="#d5bb78"/><polygon points="523.46,1197.94 528.46,1197.94 530.78,1196.42 525.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="534.46,1197.94 539.46,1197.94 539.46,1199.94 534.46,1199.94" fill="#d5bb78"/><polygon points="539.46,1197.94 541.78,1196.42 541.78,1198.42 539.46,1199.94" fill="#d5bb78"/><polygon points="534.46,1197.94 539.46,1197.94 541.78,1196.42 536.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="545.46,1197.94 550.46,1197.94 550.46,1199.94 545.46,1199.94" fill="#d5bb78"/><polygon points="550.46,1197.94 552.78,1196.42 552.78,1198.42 550.46,1199.94" fill="#d5bb78"/><polygon points="545.46,1197.94 550.46,1197.94 552.78,1196.42 547.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="556.46,1197.94 561.46,1197.94 561.46,1199.94 556.46,1199.94" fill="#d5bb78"/><polygon points="561.46,1197.94 563.78,1196.42 563.78,1198.42 561.46,1199.94" fill="#d5bb78"/><polygon points="556.46,1197.94 561.46,1197.94 563.78,1196.42 558.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="593.04,1199.56 662.04,1199.56 662.04,1208.56 593.04,1208.56" fill="#99b79e"/><polygon points="662.04,1199.56 703.8,1172.2 703.8,1181.2 662.04,1208.56" fill="#789a80"/><polygon points="593.04,1199.56 662.04,1199.56 703.8,1172.2 634.8,1172.2" fill="#d9e6da"/></g>
+<g class="solid "><polygon points="622.06,1183.34 655.06,1183.34 655.06,1192.34 622.06,1192.34" fill="#254b37"/><polygon points="655.06,1183.34 673.62,1171.18 673.62,1180.18 655.06,1192.34" fill="#193e2b"/><polygon points="622.06,1183.34 655.06,1183.34 673.62,1171.18 640.62,1171.18" fill="#446854"/></g>
+<ellipse cx="646.76" cy="1176.64" rx="10" ry="6" fill="#273f30" stroke="#adc5b2"/>
+<g class="solid "><polygon points="596.46,1197.94 601.46,1197.94 601.46,1199.94 596.46,1199.94" fill="#d5bb78"/><polygon points="601.46,1197.94 603.78,1196.42 603.78,1198.42 601.46,1199.94" fill="#d5bb78"/><polygon points="596.46,1197.94 601.46,1197.94 603.78,1196.42 598.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="607.46,1197.94 612.46,1197.94 612.46,1199.94 607.46,1199.94" fill="#d5bb78"/><polygon points="612.46,1197.94 614.78,1196.42 614.78,1198.42 612.46,1199.94" fill="#d5bb78"/><polygon points="607.46,1197.94 612.46,1197.94 614.78,1196.42 609.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="618.46,1197.94 623.46,1197.94 623.46,1199.94 618.46,1199.94" fill="#d5bb78"/><polygon points="623.46,1197.94 625.78,1196.42 625.78,1198.42 623.46,1199.94" fill="#d5bb78"/><polygon points="618.46,1197.94 623.46,1197.94 625.78,1196.42 620.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="629.46,1197.94 634.46,1197.94 634.46,1199.94 629.46,1199.94" fill="#d5bb78"/><polygon points="634.46,1197.94 636.78,1196.42 636.78,1198.42 634.46,1199.94" fill="#d5bb78"/><polygon points="629.46,1197.94 634.46,1197.94 636.78,1196.42 631.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="640.46,1197.94 645.46,1197.94 645.46,1199.94 640.46,1199.94" fill="#d5bb78"/><polygon points="645.46,1197.94 647.78,1196.42 647.78,1198.42 645.46,1199.94" fill="#d5bb78"/><polygon points="640.46,1197.94 645.46,1197.94 647.78,1196.42 642.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="677.04,1199.56 746.04,1199.56 746.04,1208.56 677.04,1208.56" fill="#99b79e"/><polygon points="746.04,1199.56 787.8,1172.2 787.8,1181.2 746.04,1208.56" fill="#789a80"/><polygon points="677.04,1199.56 746.04,1199.56 787.8,1172.2 718.8,1172.2" fill="#d9e6da"/></g>
+<g class="solid "><polygon points="706.06,1183.34 739.06,1183.34 739.06,1192.34 706.06,1192.34" fill="#254b37"/><polygon points="739.06,1183.34 757.62,1171.18 757.62,1180.18 739.06,1192.34" fill="#193e2b"/><polygon points="706.06,1183.34 739.06,1183.34 757.62,1171.18 724.62,1171.18" fill="#446854"/></g>
+<ellipse cx="730.76" cy="1176.64" rx="10" ry="6" fill="#273f30" stroke="#adc5b2"/>
+<g class="solid "><polygon points="680.46,1197.94 685.46,1197.94 685.46,1199.94 680.46,1199.94" fill="#d5bb78"/><polygon points="685.46,1197.94 687.78,1196.42 687.78,1198.42 685.46,1199.94" fill="#d5bb78"/><polygon points="680.46,1197.94 685.46,1197.94 687.78,1196.42 682.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="691.46,1197.94 696.46,1197.94 696.46,1199.94 691.46,1199.94" fill="#d5bb78"/><polygon points="696.46,1197.94 698.78,1196.42 698.78,1198.42 696.46,1199.94" fill="#d5bb78"/><polygon points="691.46,1197.94 696.46,1197.94 698.78,1196.42 693.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="702.46,1197.94 707.46,1197.94 707.46,1199.94 702.46,1199.94" fill="#d5bb78"/><polygon points="707.46,1197.94 709.78,1196.42 709.78,1198.42 707.46,1199.94" fill="#d5bb78"/><polygon points="702.46,1197.94 707.46,1197.94 709.78,1196.42 704.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="713.46,1197.94 718.46,1197.94 718.46,1199.94 713.46,1199.94" fill="#d5bb78"/><polygon points="718.46,1197.94 720.78,1196.42 720.78,1198.42 718.46,1199.94" fill="#d5bb78"/><polygon points="713.46,1197.94 718.46,1197.94 720.78,1196.42 715.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="724.46,1197.94 729.46,1197.94 729.46,1199.94 724.46,1199.94" fill="#d5bb78"/><polygon points="729.46,1197.94 731.78,1196.42 731.78,1198.42 729.46,1199.94" fill="#d5bb78"/><polygon points="724.46,1197.94 729.46,1197.94 731.78,1196.42 726.78,1196.42" fill="#d5bb78"/></g>
+<g class="solid "><polygon points="807.14,1231.46 907.14,1231.46 907.14,1247.46 807.14,1247.46" fill="#5b9775"/><polygon points="907.14,1231.46 919.32,1223.48 919.32,1239.48 907.14,1247.46" fill="#3c795c"/><polygon points="807.14,1231.46 907.14,1231.46 919.32,1223.48 819.32,1223.48" fill="#9fc6b0"/></g>
+<g class="solid "><polygon points="823.96,1220.44 923.96,1220.44 923.96,1236.44 823.96,1236.44" fill="#5b9775"/><polygon points="923.96,1220.44 936.14,1212.46 936.14,1228.46 923.96,1236.44" fill="#3c795c"/><polygon points="823.96,1220.44 923.96,1220.44 936.14,1212.46 836.14,1212.46" fill="#9fc6b0"/></g>
+<g class="solid "><polygon points="840.78,1209.42 940.78,1209.42 940.78,1225.42 840.78,1225.42" fill="#5b9775"/><polygon points="940.78,1209.42 952.96,1201.44 952.96,1217.44 940.78,1225.42" fill="#3c795c"/><polygon points="840.78,1209.42 940.78,1209.42 952.96,1201.44 852.96,1201.44" fill="#9fc6b0"/></g>
+<g class="solid "><polygon points="931.56,1230.84 992.56,1230.84 992.56,1247.84 931.56,1247.84" fill="#bcbcb0"/><polygon points="992.56,1230.84 1032.0,1205.0 1032.0,1222.0 992.56,1247.84" fill="#a5a697"/><polygon points="931.56,1230.84 992.56,1230.84 1032.0,1205.0 971.0,1205.0" fill="#dad9ce"/></g>
+<g class="solid "><polygon points="950.1,1218.9 989.1,1218.9 989.1,1225.9 950.1,1225.9" fill="#4b6375"/><polygon points="989.1,1218.9 1011.72,1204.08 1011.72,1211.08 989.1,1225.9" fill="#354e62"/><polygon points="950.1,1218.9 989.1,1218.9 1011.72,1204.08 972.72,1204.08" fill="#6d8293"/></g>
+<text x="413" y="1263" class="object-label">GPU × 8 / HBM</text>
+<text x="813" y="1255" class="object-label">CPU / SSD</text>
+<path d="M955.1 1223.9L1055.1 1223.9" fill="none" stroke="#c4652d" stroke-width="2" />
+<path d="M959.74 1220.86L1059.74 1220.86" fill="none" stroke="#c4652d" stroke-width="2" />
+<path d="M964.38 1217.82L1064.38 1217.82" fill="none" stroke="#c4652d" stroke-width="2" />
+<text x="930" y="1199" class="tiny-label">NVLINK</text>
+<text x="930" y="1217" class="tiny-label">RDMA</text>
+</g>
+<g class="diagram-papers" data-layer-papers="infra"></g>
+<g class="control-zone" data-layer="control" role="button" tabindex="0" aria-label="HEAR 跨层控制面" aria-pressed="false">
+<rect x="1198" y="110" width="190" height="625" rx="18" fill="#faf7fc" stroke="#d2c5dd"/>
+<text x="1220" y="143" class="control-kicker">CROSS-LAYER</text>
+<text x="1220" y="173" class="control-title">Codesign</text>
+<text x="1220" y="200" class="control-copy">HEAR 双向契约</text>
+<rect x="1220" y="224" width="145" height="57" rx="7" fill="#ffffff" stroke="#b7a4c9"/>
+<text x="1292" y="258" class="control-node" text-anchor="middle">HARNESS</text>
+<rect x="1220" y="621" width="145" height="57" rx="7" fill="#ffffff" stroke="#b7a4c9"/>
+<text x="1292" y="655" class="control-node" text-anchor="middle">ENGINE</text>
+<path d="M1237 291V598" fill="none" stroke="#c4652d" stroke-width="2" marker-end="url(#flowOrange)"/>
+<path d="M1347 602V294" fill="none" stroke="#6a568c" stroke-width="2" marker-end="url(#flowPurple)"/>
+<text x="1251" y="344" class="control-message">工作流意图</text>
+<text x="1251" y="369" class="control-message">状态与能力</text>
+<text x="1251" y="486" class="control-message">执行控制</text>
+<text x="1251" y="511" class="control-message">结果与反馈</text>
+<text x="1220" y="706" class="control-copy">协议承接策略，连接两侧</text>
+<path d="M1198 255H1140V143H1076" fill="none" stroke="#8b72a4" stroke-width="1.6" stroke-dasharray="5 4"/>
+<path d="M1198 652H1140V565H1076" fill="none" stroke="#c4652d" stroke-width="1.6" stroke-dasharray="5 4"/>
+</g><g class="diagram-papers" data-layer-papers="control"></g>
+<text x="1216" y="841" class="read-label">如何阅读</text>
+<text x="1216" y="876" class="read-copy">下 → 上：资源与能力支撑</text>
+<text x="1216" y="903" class="read-copy">上 → 下：任务与控制需求</text>
+<text x="1216" y="930" class="read-copy">右侧环：意图 / 状态互通</text>
+<text x="1216" y="1010" class="read-copy">KV 是数据面，</text>
+<text x="1216" y="1036" class="read-copy">跨越执行和存储。</text>
+<text x="1216" y="1091" class="read-copy">Codesign 是决策路径，</text>
+<text x="1216" y="1117" class="read-copy">贯穿多个层次。</text>
+</svg>
+        </div>
+        <div class="figure-footer"><span><i class="legend-line green"></i>数据 / 执行流</span><span><i class="legend-line violet"></i>工作流语义</span><span><i class="legend-line orange"></i>控制与搬运</span><span class="footer-note">层次按主要优化对象组织；KV 是数据面，HEAR 是横向控制面。</span></div>
+      </section>
+      <section class="selection-panel" id="selected-component" aria-live="polite"><div><p class="eyebrow">SELECTED COMPONENT</p><h2 id="detail-title">从剖面中的任意层开始</h2><p id="detail-copy">点击结构层，下面会显示它在系统中的职责、研究边界和论文入口。</p></div><div class="selection-links" id="detail-links"></div></section>
+      <section class="paper-library" id="paper-library" aria-labelledby="library-title"><div class="library-heading"><div><p class="eyebrow">PAPER INDEX / 01—76</p><h2 id="library-title">按系统位置归档</h2></div><p>每篇论文只放在一个主要层次；跨层论文在说明中保留其控制或协同关系。</p></div><div id="library-groups"></div></section>
+      <p class="classification-note">分层定位职责，不代表六个串行执行阶段。现有 76 篇索引包含待读与摘要条目，状态沿用 Milestone；上下文工程和语义记忆归于工作流层，目前不单设缺少调研支撑的数据治理层。<a href="系统分层_论文归属.md">查看完整归类记录 ↗</a></p>
     </main>
-    <footer><a href="architecture.html">← 返回二维结构图</a><span>LLM Optimization Research Workspace</span></footer>
+    <footer><a href="LLM_Optimization_Milestone.html">← 返回 Milestone</a><span>LLM Optimization Research Workspace</span></footer>
   </div>
-  <script src="architecture-3d.js"></script>
+  <script src="milestone-data.js"></script><script src="milestone-update-20261014.js"></script><script src="architecture-catalog.js"></script><script src="architecture-3d.js"></script>
 </body>
 </html>
