@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LLM 推理优化的跨层结构：Agent 工作流、推理引擎、KV Cache、集群系统与 Codesign 控制面。">
+  <title>LLM Inference Optimization · Cross-layer Map</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2345dfb1'/%3E%3Ctext x='11' y='29' fill='%2307110f' font-size='29'%3EL%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="architecture.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="LLM_Optimization_Milestone.html"><span class="brand-mark">L</span><span><b>LLM OPTIMIZATION</b><small>Research architecture map · 2026.10</small></span></a>
+      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">Milestone</a><a href="architecture.html" aria-current="page">分层结构图</a><a href="research-update-20261014.html">研究进展</a></nav>
+    </header>
+    <main>
+      <section class="hero"><p class="kicker">CROSS-LAYER INFERENCE ARCHITECTURE</p><h1>大模型推理优化，<em>发生在哪一层？</em></h1><p class="hero-copy">从 Agent 的工作流意图，到引擎中的 batch 与 KV，再到 GPU、CPU、SSD 和网络。点击任意节点，查看它解决的问题、代表论文，以及它与其他层之间的关系。</p><div class="hero-meta"><span><i></i> 6 个研究层次</span><span><i></i> 76 篇论文索引</span><span><i></i> 1 个跨层控制面</span></div></section>
+      <section class="map-wrap" aria-label="LLM 推理优化跨层结构图">
+        <div class="map-toolbar"><div><b>交互视图</b><span>切换研究主线，或直接点击层次</span></div><div class="filters" role="group" aria-label="研究主线筛选"><button class="filter is-active" type="button" aria-pressed="true" data-filter="all">全部结构</button><button class="filter" type="button" aria-pressed="false" data-filter="workflow">Agent 工作流</button><button class="filter" type="button" aria-pressed="false" data-filter="kv">KV 复用</button><button class="filter" type="button" aria-pressed="false" data-filter="engine">推理引擎</button><button class="filter" type="button" aria-pressed="false" data-filter="codesign">HEAR / Codesign</button><button class="expand-view" type="button" id="expand-view">全屏探索</button></div></div>
+        <div class="map-stage" id="map-stage"><div class="grid-glow"></div><div class="axis-label axis-up">应用语义 ↑</div><div class="axis-label axis-down">硬件执行 ↓</div>
+          <div class="workflow-rail rail-panel" data-group="workflow"><div class="rail-label"><span class="rail-dot"></span><b>AGENT HARNESS</b><small>应用 / 工作流接口</small></div>
+            <button class="map-node workflow-node" type="button" data-node="harness" data-groups="workflow,codesign"><span class="node-index">01</span><strong>Agent 工作流</strong><small>DAG · 工具 · 会话 · 编辑语义</small><span class="node-papers">Parrot · NALAR · Murakkab · Helium</span></button>
+            <button class="map-node workflow-node" type="button" data-node="scheduler" data-groups="workflow,engine,codesign"><span class="node-index">02</span><strong>工作流调度</strong><small>依赖 · 阶段 · admission · 关键路径</small><span class="node-papers">KVFlow · Astraea · SAGA · TOPAS</span></button><span class="rail-arrow">↓</span>
+          </div>
+          <div class="core-stack" data-group="engine"><div class="stack-caption"><span>VERTICAL EXECUTION STACK</span><b>一条请求如何落到硬件</b></div>
+            <button class="layer-card layer-app" type="button" data-node="application" data-groups="workflow,codesign"><span class="layer-num">L1</span><span class="layer-title">应用 / 工作流层</span><span class="layer-en">APPLICATION &amp; WORKFLOW</span><span class="layer-desc">表达任务依赖、工具调用、上下文生命周期与质量目标</span><span class="layer-pills"><i>Parrot</i><i>NALAR</i><i>Murakkab</i><i>Helium</i></span></button>
+            <div class="stack-arrow"><span>WORKFLOW STATE</span><b>↓</b></div>
+            <button class="layer-card layer-schedule" type="button" data-node="schedule" data-groups="workflow,engine,codesign"><span class="layer-num">L2</span><span class="layer-title">编排与调度层</span><span class="layer-en">ORCHESTRATION &amp; SCHEDULING</span><span class="layer-desc">决定哪个请求、哪个阶段、何时推进，以及允许多少并发</span><span class="layer-pills"><i>Orca</i><i>KVFlow</i><i>SAGA</i><i>TOPAS</i><i>CONCUR</i></span></button>
+            <div class="stack-arrow"><span>REQUEST / BATCH</span><b>↓</b></div>
+            <button class="layer-card layer-engine" type="button" data-node="engine" data-groups="engine"><span class="layer-num">L3</span><span class="layer-title">推理引擎执行层</span><span class="layer-en">INFERENCE ENGINE</span><span class="layer-desc">管理 Prefill、Decode、Batch、PagedAttention 与请求执行</span><span class="layer-pills"><i>vLLM</i><i>Sarathi</i><i>DistServe</i><i>Akashic</i></span></button>
+            <div class="stack-arrow"><span>KV STATE</span><b>↓</b></div>
+            <button class="layer-card layer-kv" type="button" data-node="kv" data-groups="kv,engine,codesign"><span class="layer-num">L4</span><span class="layer-title">KV Cache 数据层</span><span class="layer-en">KV CACHE DATA PLANE</span><span class="layer-desc">复用、修复、保留、淘汰、压缩、分层存储与搬运</span><span class="layer-pills"><i>CacheBlend</i><i>PBKV</i><i>Strata</i><i>Leyline</i></span></button>
+            <div class="stack-arrow"><span>DATA MOVEMENT</span><b>↓</b></div>
+            <button class="layer-card layer-compute" type="button" data-node="compute" data-groups="engine"><span class="layer-num">L5</span><span class="layer-title">模型计算与算子层</span><span class="layer-en">MODEL COMPUTATION &amp; KERNELS</span><span class="layer-desc">投机解码、多 token 预测、量化、Attention 算子与访存优化</span><span class="layer-pills"><i>FlashAttention</i><i>Speculative Decoding</i><i>Medusa</i><i>SpecInfer</i></span></button>
+            <div class="stack-arrow"><span>COMPUTE / COMMUNICATION</span><b>↓</b></div>
+            <button class="layer-card layer-system" type="button" data-node="system" data-groups="engine,codesign"><span class="layer-num">L6</span><span class="layer-title">集群与硬件系统层</span><span class="layer-en">CLUSTER / IO / HARDWARE</span><span class="layer-desc">GPU、CPU、SSD、网络、模型放置、通信与资源隔离</span><span class="layer-pills"><i>MuxServe</i><i>Cortex</i><i>Nuska</i><i>FlowMesh</i></span></button>
+          </div>
+          <div class="control-rail rail-panel" data-group="codesign"><div class="control-orbit orbit-one"></div><div class="control-orbit orbit-two"></div><div class="rail-label"><span class="rail-dot"></span><b>CODESIGN CONTROL PLANE</b><small>横向信息与控制</small></div>
+            <button class="map-node control-node" type="button" data-node="hear" data-groups="codesign,workflow,engine,kv"><span class="node-index">↔</span><strong>HEAR</strong><small>意图 · 控制 · 状态 · 结果</small><span class="node-papers">Harness ⇄ Engine</span></button>
+            <button class="map-node control-node" type="button" data-node="context" data-groups="codesign,kv,workflow"><span class="node-index">↻</span><strong>上下文状态</strong><small>版本 · 编辑区 · 精确 / 修复 / 失效</small><span class="node-papers">Leyline · PatchKV · Retire</span></button><div class="control-loop"><span>状态反馈</span><b>↗</b><span>执行决策</span></div>
+          </div>
+          <svg class="map-lines" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="line-flow" x1="0" x2="1"><stop offset="0" stop-color="#8c6de2"/><stop offset="1" stop-color="#35d6b0"/></linearGradient><filter id="line-glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g id="connection-paths"></g></svg>
+        </div>
+        <div class="map-footer"><span><b class="legend-dot green"></b>执行依赖</span><span><b class="legend-dot purple"></b>工作流语义</span><span><b class="legend-dot orange"></b>跨层控制</span><button class="reset-view" type="button" id="reset-view">重置视图</button></div>
+        <p class="map-note">按主要优化对象分层，并非互斥分类或逐级调用顺序；KV 数据面横跨执行与存储，Codesign 协调多层决策。同一论文可出现在多个层次。</p>
+        <div class="selection-dock"><span class="dock-label">当前选择</span><span id="dock-title">HEAR · Codesign 控制面</span><a href="#detail-panel">查看职责与论文 ↗</a></div>
+      </section>
+      <section class="detail-grid" aria-live="polite"><article class="detail-panel" id="detail-panel"><p class="kicker">SELECT A NODE</p><h2 id="detail-title">从任意层开始探索</h2><p id="selection-summary" class="selection-summary">点击上方节点开始探索</p><p id="detail-copy">点击上方的层次、工作流节点或控制面节点，这里会显示它在整个推理栈中的职责，以及与哪些论文相连。</p><div class="detail-links" id="detail-links"></div></article><aside class="principle-panel"><p class="kicker">THE CENTRAL IDEA</p><h3>KV 不是孤立的缓存问题</h3><p>工作流决定哪些状态可能再次出现；调度决定它们何时需要；引擎决定如何执行；数据面决定能否在预算内保留；系统层决定搬运是否值得。HEAR 把这些信息接成可执行的控制回路。</p><div class="principle-flow"><span>意图</span><b>→</b><span>决策</span><b>→</b><span>状态</span><b>→</b><span>结果</span></div></aside></section>
+    </main>
+    <footer><a href="LLM_Optimization_Milestone.html">← 返回 Milestone</a><span>LLM Optimization Research Workspace</span></footer>
+  </div>
+  <script src="architecture.js"></script>
+</body>
+</html>
