@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Self-GC: Self-Governing Context for Long-Horizon LLM Agents</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head>
+<body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>精读更新 · 2026-10-19</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a><a href="https://arxiv.org/abs/2607.00692v1" target="_blank" rel="noopener">论文原文</a></nav></header><main class="source-page"><p class="eyebrow">PAPER NOTES · Self-GC · 图文精读</p><h1>Self-GC: Self-Governing Context for Long-Horizon LLM Agents</h1><article class="source-content"><p><em>Self-GC: Self-Governing Context for Long-Horizon LLM Agents</em>。Xubin Hao、Hongjin Meng、Xin Yin、Jiawei Zhu、Chenpeng Cao，小红书。<strong>arXiv 预印本</strong>，<a href="https://arxiv.org/abs/2607.00692v1">arXiv:2607.00692v1</a>，2026-07-01 提交；截至 2026-10-19，所核查 arXiv 元数据未列会议录用信息。</p>
+<h3>解决问题</h3>
+<p>场景覆盖<strong>办公、浏览、Shell、代码与数据分析等长轮工具工作流</strong>。上下文不仅是可以概括的聊天记录，还包含后续要继续使用的精确 URL、路径、表格值、用户约束、工具句柄和可编辑产物。按时间删除旧轮次、按类型清理工具结果，容易删除短小但不可替代的依赖；最终摘要即使保留了任务叙述，也可能丢掉原文或恢复入口。</p>
+<p><a href="../source-assets/LLM Opt/codesign/paper_figures/SelfGC_Figure1_verified.png" target="_blank" rel="noopener"><img src="../source-assets/LLM Opt/codesign/paper_figures/SelfGC_Figure1_verified.png" alt="Self-GC Figure 1：同一轨迹上的信息丢失与对象级保留" loading="lazy"></a></p>
+<p>图 1 在同一条历史上对比两类操作：文本清理删掉后续需要的命令、路径等锚点；对象级操作保留必要边界和恢复指针，使下一轮仍能找到原始证据。</p>
+<p><strong>相关工作与 insight。</strong> 固定裁剪便宜，但不知道未来依赖；自由摘要可以理解语义，却难以保证精确证据仍可访问。Self-GC 将两者职责拆开：LLM 判断对象的后续价值并提出操作，harness 验证对象、保存恢复副本、控制提交边界。上下文压缩因此变成可寻址对象的生命周期管理，而不是让模型直接重写整段历史。</p>
+<h3>解决方案</h3>
+<p><strong>稳定对象与三种操作。</strong> 用户请求及其执行片段、独立工具结果分别获得 session 内稳定 ID；planner 只能引用已有 ID。完整 transcript 保留在 active view 之外，运行时另外维护供下一次模型调用使用的可见视图。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>对 active view 的修改</th>
+<th>恢复语义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fold</td>
+<td>原文移到 sidecar，只留下短恢复指针</td>
+<td>对应 payload 可精确恢复</td>
+</tr>
+<tr>
+<td>Mask</td>
+<td>保留对象边界，省略重复或低信息的中间内容</td>
+<td>不提供 Fold 式恢复保证</td>
+</tr>
+<tr>
+<td>Prune</td>
+<td>从当前可见视图移除过时对象</td>
+<td>不保证后续可通过该操作恢复</td>
+</tr>
+</tbody>
+</table>
+<p><strong>旁路规划、预演、延迟提交。</strong> 触发治理时，系统复制当前前缀给旁路 planner；它输出对象操作计划，不直接生成最终 prompt。harness 先检查 ID，拒绝最新用户轮次等受保护对象的编辑，合并重叠操作，在本地生成候选视图并估算节省。计划通过后仍可等待，到安全轮次边界再保存 sidecar、修复 lineage、整理消息并提交；被拒绝的计划不修改主执行流。</p>
+<p><a href="../source-assets/LLM Opt/codesign/paper_figures/SelfGC_Figure2_verified.png" target="_blank" rel="noopener"><img src="../source-assets/LLM Opt/codesign/paper_figures/SelfGC_Figure2_verified.png" alt="Self-GC Figure 2：旁路规划与主执行流的提交关系" loading="lazy"></a></p>
+<p>图 2 下方是独立规划和预演通路，上方主 Agent 继续执行；只有跨过安全边界后，pending plan 才改变 active view。</p>
+<p><strong>缓存感知提交。</strong> 系统估算“预计未来复用次数 × 每轮节省 − 缓存破坏成本 − GC 成本”，其中 GC 成本包括 planner 调用。收益不足时可等缓存过期或下一任务边界；部署校准采用约 30% 的压缩阈值，这是运行策略，不是通用常数。它管理的是输入视图与恢复路径，没有让被编辑后缀的旧 KV 自动精确有效。</p>
+<h3>实验数据集、场景与效果</h3>
+<p>离线数据来自生产轨迹，经筛选得到 <strong>332 会话 Production Suite</strong>，其中选出 <strong>33 会话 Hard Set</strong>，后者偏向高 token 压力、BI／表格及网页抓取依赖。对比按时间折叠、工具删除、工具 mask 后删除及混合规则；默认 planner 为 Qwen3.6-Plus，另测 Qwen3.7-Max 和 GLM-5.1。</p>
+<p><a href="../source-assets/LLM Opt/codesign/paper_figures/SelfGC_Figure4_verified.png" target="_blank" rel="noopener"><img src="../source-assets/LLM Opt/codesign/paper_figures/SelfGC_Figure4_verified.png" alt="Self-GC Figure 4：压缩比例与未来依赖保留的权衡" loading="lazy"></a></p>
+<p>图 4 横轴越右删得越多，纵轴越高保留越可靠。Self-GC 选择较保守的压缩比例，以减少对后续依赖的破坏。</p>
+<table>
+<thead>
+<tr>
+<th>数据／设置</th>
+<th>Self-GC 结果</th>
+<th>启发式对照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hard Set，33 会话</td>
+<td>删除 43.95% token；no-impact 84.85%</td>
+<td>删除 61.90%–69.87%；no-impact 54.55%–69.70%</td>
+</tr>
+<tr>
+<td>Production Suite，332 会话</td>
+<td>三个 planner 删除 31.04%–33.98%；no-impact 91.27%–94.58%</td>
+<td>no-impact 77.71%–87.46%</td>
+</tr>
+<tr>
+<td>在线生产流量，5 月 25–30 日白天</td>
+<td>平均主 Agent 输入 token 减少 10%–15%，峰值约 20%</td>
+<td>按账号邮箱首字符分组的对照流量</td>
+</tr>
+</tbody>
+</table>
+<p><strong>no-impact 是 GPT-5.5 根据保留视图、修改差异与真实后续轮次，判断未来依赖是否仍可获得；不是完整任务重新执行的成功率。</strong> 在线分组也不是随机试验，未给出包含全部旁路费用的匹配计费审计。原始生产轨迹不公开，论文提供了规划契约和评估说明，但公开可复现性仍受数据限制。</p></article></main></div></body></html>

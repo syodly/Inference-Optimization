@@ -1,9 +1,49 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SmoothAgent</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>更新于 2026-10-14</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a><a href="https://arxiv.org/abs/2607.00151">原文</a></nav></header><main class="source-page"><p class="eyebrow">调研摘要 · 待精读</p><h1>SmoothAgent</h1><article class="source-content"><h1>SmoothAgent</h1>
-<p><a href="https://arxiv.org/abs/2607.00151">原文</a>。状态：arXiv；此前调研版本，未新增核实会议。</p>
-<h2>机制与场景</h2>
-<p>可提前确定的上下文转换在后台执行并准备目标 KV。</p>
-<h2>实验证据</h2>
-<p>长轮 agent、Qwen3、H100。</p>
-<h2>研究边界</h2>
-<p>隐藏成本不等于减少总计算。</p>
-<p>来源：2026-10-11 场景评估、2026-10-12 广域及补充调研；此页为索引摘要，不标作完整精读。</p></article></main></div></body></html>
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SmoothAgent: Efficient Long-Horizon LLM-Based Agent Serving with Lookahead Context Engineering</title><link rel="stylesheet" href="../milestone.css"><link rel="stylesheet" href="../source-paper.css"></head>
+<body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>精读更新 · 2026-10-19</span></div></div><nav class="toplinks"><a href="../LLM_Optimization_Milestone.html">返回 Milestone</a><a href="https://arxiv.org/abs/2607.00151v1" target="_blank" rel="noopener">论文原文</a></nav></header><main class="source-page"><p class="eyebrow">PAPER NOTES · SmoothAgent · 图文精读</p><h1>SmoothAgent: Efficient Long-Horizon LLM-Based Agent Serving with Lookahead Context Engineering</h1><article class="source-content"><p><em>SmoothAgent: Efficient Long-Horizon LLM-Based Agent Serving with Lookahead Context Engineering</em>。Zaifeng Pan、Qianxu Wang、Zhengding Hu、Chang Chen、Yue Guan、Yanbo Zhou、Steven Swanson、Yufei Ding，加州大学圣迭戈分校。<a href="https://arxiv.org/abs/2607.00151v1">arXiv:2607.00151v1</a>，2026-06-30 提交。<a href="https://github.com/PanZaifeng/SmoothAgent">代码</a>。<strong>目前按 arXiv 预印本记录</strong>；PDF 的 PVLDB 20(X)、2027 及 DOI 是占位格式，截至 2026-10-19 所核查元数据未给出正式发表记录。</p>
+<h3>解决问题</h3>
+<p>场景是<strong>长轮 Agent 使用 offloading、历史截断、摘要或子 Agent 隔离来控制上下文增长</strong>。同步实现通常等达到阈值才转换：既要生成摘要或准备新上下文，又要对新前缀重新 prefill，下一次生成因此被阻塞。即使转换后输入更短，转换轮仍会出现明显 TTFT 尖峰。</p>
+<p><a href="../source-assets/LLM Opt/codesign/paper_figures/SmoothAgent_Figure3_verified.png" target="_blank" rel="noopener"><img src="../source-assets/LLM Opt/codesign/paper_figures/SmoothAgent_Figure3_verified.png" alt="SmoothAgent Figure 3：上下文转换破坏前缀并引起延迟尖峰" loading="lazy"></a></p>
+<p>图 3 前几轮只计算新追加内容；加入摘要后，历史 token 前缀发生变化，旧缓存不能直接继续命中。额外转换和重建工作集中在同一轮。</p>
+<p><strong>相关工作与 insight。</strong> 前缀缓存改善未变化历史的执行，工作流感知驱逐改善状态驻留，两者都没有消除上下文转换的同步成本。SmoothAgent 观察到，一部分转换可以按已完成片段逐步计算，不依赖未来 token。于是下一版本可以提前构造并 prefill，真正切换时只补齐尚未准备的部分；同时必须限制后台工作，避免用下一次请求的加速换来当前请求变慢。</p>
+<h3>解决方案</h3>
+<p><strong>Lookahead 编程模型。</strong> Runtime 同时维护 main state 和 lookahead state。策略声明何时启动提前转换、如何转换片段、何时正式 commit，以及提前结果何时可以 promote 为有效状态。主流程继续执行，后台对稳定片段准备转换后的文本与 KV；到切换边界再衔接剩余片段。该方式适用于论文规定的可分段转换，不能据此复用任意编辑后仍带旧因果依赖的 KV。</p>
+<p><a href="../source-assets/LLM Opt/codesign/paper_figures/SmoothAgent_Figure4_verified.png" target="_blank" rel="noopener"><img src="../source-assets/LLM Opt/codesign/paper_figures/SmoothAgent_Figure4_verified.png" alt="SmoothAgent Figure 4：主执行与提前准备的时间线" loading="lazy"></a></p>
+<p>图 4 中 <code>T(S1)</code>、<code>T(S2)</code> 提前在旁路完成，提交时只处理未覆盖部分。实现覆盖工具结果外置、keep-recent-K、摘要和子 Agent 隔离，并通过 hook 接入 MiniAgent、LangChain、LlamaIndex、AutoGen 和 OpenClaw。</p>
+<p><strong>引擎侧干扰控制。</strong> 普通请求标记为 latency-critical（LC），lookahead 请求为 best-effort（BE），后台 prefill 切成小 chunk。PD 分离时，调度器根据前台排队请求的 TTFT deadline 计算剩余时间，仅在 slack 内加入 BE；PD 混部时按 decode → LC prefill → BE prefill 的顺序组批，预测 batch 延迟不能超过 TBT 预算。</p>
+<p>预测模型同时考虑本轮 forward token 数、decode 已有 KV 长度及 prefill attention 工作量。相同 chunk token 数面对不同历史长度，执行时间仍可能不同，因此仅限制 token budget 不足以控制干扰。上述预算依赖成本预测，实际效果由负载下的 SLO 实验检验。</p>
+<h3>实验数据集、场景与效果</h3>
+<p>主负载是<strong>MiniAgent 代码库分析工作流</strong>：每个 Agent 通过 shell 读取代码并生成分析，28 步、每步增加约 600–650 token。它不是 SWE-bench 解题测试；各会话使用不同 prompt，避免跨会话 radix 共享掩盖上下文增长。实验用 SGLang 0.5.9、32K 窗口，基线执行相同转换策略但同步触发。</p>
+<p><a href="../source-assets/LLM Opt/codesign/paper_figures/SmoothAgent_Figure10_verified.png" target="_blank" rel="noopener"><img src="../source-assets/LLM Opt/codesign/paper_figures/SmoothAgent_Figure10_verified.png" alt="SmoothAgent Figure 10：Qwen3-8B 上转换点的 TTFT" loading="lazy"></a></p>
+<table>
+<thead>
+<tr>
+<th>设置／场景</th>
+<th>主要结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen3-8B，单 H100，1–16 并发 Agent</td>
+<td>四种策略的转换点 tail TTFT 平均减少 62.0%</td>
+</tr>
+<tr>
+<td>Qwen3-32B，4 张 H100、TP4，1–16 并发</td>
+<td>平均减少 61.5%</td>
+</tr>
+<tr>
+<td>摘要策略</td>
+<td>转换点 TTFT 最高改善 11.9 倍，包含提前生成摘要与新上下文 prefill</td>
+</tr>
+<tr>
+<td>Qwen3-8B，4 prefill＋4 decode H100，最高 64 并发</td>
+<td>转换点 TTFT 平均减少 64.5%</td>
+</tr>
+<tr>
+<td>接入不同 Agent 框架</td>
+<td>转换点 TTFT 减少 26.8%–80.5%</td>
+</tr>
+</tbody>
+</table>
+<p><a href="../source-assets/LLM Opt/codesign/paper_figures/SmoothAgent_Figure14_verified.png" target="_blank" rel="noopener"><img src="../source-assets/LLM Opt/codesign/paper_figures/SmoothAgent_Figure14_verified.png" alt="SmoothAgent Figure 14：后台流量增加时的前台延迟" loading="lazy"></a></p>
+<p>图 14 单独考察干扰：普通 SGLang 调度随 lookahead 流量增长越过前台延迟目标，lookahead-aware 调度更接近预算。<strong>11.9 倍是转换点 TTFT 收益，不是完整任务加速或总计算减少。</strong> 本文主要验证转换和服务效率，没有据此给出 coding 任务解决率；其适用条件是存在可提前准备的片段，以及足够的计算和缓存资源容纳新旧状态。</p></article></main></div></body></html>

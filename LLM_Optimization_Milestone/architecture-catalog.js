@@ -686,7 +686,7 @@ const ARCHITECTURE_CATALOG = [
     "id": 65,
     "short": "CADOC",
     "home": "workflow",
-    "mechanism": "利用结构化任务复用并合并编辑，减少前缀失效",
+    "mechanism": "不可变对象与 Card 外置；按等待成本合并提交编辑，共享后缀重建",
     "cross": [
       "kv"
     ],
@@ -696,7 +696,7 @@ const ARCHITECTURE_CATALOG = [
     "id": 66,
     "short": "SmoothAgent",
     "home": "orchestration",
-    "mechanism": "在暂停前确定上下文转换，并在后台准备目标 KV",
+    "mechanism": "提前转换稳定片段并准备新 KV；按前台延迟预算调度后台工作",
     "cross": [
       "workflow",
       "kv"
@@ -809,5 +809,15 @@ const ARCHITECTURE_CATALOG = [
       "orchestration"
     ],
     "href": "papers/paper-76.html"
+  },
+  {
+    "id": 77,
+    "short": "Self-GC",
+    "home": "workflow",
+    "mechanism": "对象 ID、Fold/Mask/Prune、旁路规划和缓存感知提交",
+    "cross": [
+      "kv"
+    ],
+    "href": "papers/paper-77.html"
   }
 ];
