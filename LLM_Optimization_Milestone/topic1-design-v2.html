@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic1 · 组件化协同框架与数据计划</title>
+  <link rel="stylesheet" href="milestone.css">
+  <link rel="stylesheet" href="source-paper.css">
+  <style>
+    .topic-lead { max-width: 900px; padding: 18px 20px; border-left: 4px solid var(--green); background: var(--green-soft); color: var(--ink); font-size: 16px; line-height: 1.8; }
+    .component-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0 26px; }
+    .component { padding: 16px; border: 1px solid var(--line); border-top: 4px solid var(--green); border-radius: 6px; background: #fff; }
+    .component:nth-child(2) { border-top-color: var(--blue); }
+    .component:nth-child(3) { border-top-color: var(--orange); }
+    .component h3 { margin: 0 0 8px; font-size: 17px; }
+    .component p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .topic-flow { display: grid; gap: 9px; margin: 20px 0 28px; padding: 16px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.72); }
+    .flow-node { display: flex; flex-direction: column; gap: 3px; padding: 11px 14px; border: 1px solid var(--line); border-left: 4px solid var(--green); border-radius: 5px; background: #fff; }
+    .flow-node b { font-size: 14px; }
+    .flow-node span { color: var(--muted); font-size: 12px; }
+    .flow-harness { border-left-color: var(--violet); }
+    .flow-kv { border-left-color: var(--blue); }
+    .flow-future { border-left-color: var(--orange); }
+    .flow-plan { border-left-color: var(--green); background: var(--green-soft); }
+    .flow-engine { border-left-color: var(--ink); }
+    .flow-components { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+    .flow-caption { text-align: center; color: var(--muted); font-size: 12px; }
+    .dataset-note { margin: 12px 0; padding: 12px 15px; border-left: 4px solid var(--orange); background: var(--orange-soft); color: #64452f; font-size: 13px; line-height: 1.75; }
+    .source-content table { min-width: 720px; }
+    .source-content td:first-child { min-width: 150px; }
+    .next-steps { padding-left: 21px; }
+    .next-steps li { margin: 7px 0; }
+    @media (max-width: 760px) {
+      .component-grid, .flow-components { grid-template-columns: 1fr; }
+      .topic-lead { font-size: 14px; }
+      .topic-flow { padding: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>Topic1 · design and workload plan</span></div></div>
+      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">返回 Milestone</a><a href="papers/paper-60.html">HEAR 精读</a><a href="topic-boundary-review.html">Topic 边界复审</a></nav>
+    </header>
+    <main class="source-page">
+      <h1>Topic1：Harness–Engine 协同框架</h1>
+      <p class="source-note">组件化候选方案与数据使用计划 · 2026-10-19 · 尚待实验验证</p>
+      <article class="source-content">
+        <p class="topic-lead">目标：让 Agent Harness 对工作流的了解，与推理引擎对 KV、队列和资源压力的观测共同影响任务推进。候选框架由三个功能组件组成，共用一个计划选择器；HEAR 是双向协同的关键参照。</p>
+
+        <h2>三个组件</h2>
+        <div class="component-grid">
+          <section class="component"><h3>① 工作流推进</h3><p>决定哪些已获准调用现在启动、继续或分波执行；考虑依赖、等待和任务阶段。</p></section>
+          <section class="component"><h3>② 跨轮 KV 状态管理</h3><p>为候选调用安排精确历史的保留、换出、恢复或重算，并把恢复时机与准入安排关联。</p></section>
+          <section class="component"><h3>③ 预期执行</h3><p>管理尚未正式就绪的未来候选：能提前做多少、何时采用或作废；输入未知时只估计需求。</p></section>
+        </div>
+
+        <h2>如何协同</h2>
+        <p>每个候选计划包含“下一波正式工作、对应 KV 路径、可选未来动作”。选择器在 GPU/CPU KV、计算、传输和工具并发等独立资源约束下比较计划；引擎保留实际 batch 与 token 调度权，并反馈执行结果。</p>
+        <div class="topic-flow" role="img" aria-label="Harness 与三个协同组件将候选交给共同计划选择器，再由推理引擎执行并反馈">
+          <div class="flow-node flow-harness"><b>Agent Harness</b><span>任务阶段、依赖、正式工作与操作授权</span></div>
+          <div class="flow-caption">工作流事件与候选动作</div>
+          <div class="flow-components">
+            <div class="flow-node"><b>工作流推进</b><span>当前推进哪些正式工作</span></div>
+            <div class="flow-node flow-kv"><b>KV 状态管理</b><span>为工作安排历史状态路径</span></div>
+            <div class="flow-node flow-future"><b>预期执行</b><span>选择可撤销的未来投入</span></div>
+          </div>
+          <div class="flow-caption">正式工作 + KV 路径 + 可选未来动作</div>
+          <div class="flow-node flow-plan"><b>共同计划选择器</b><span>按任务目标和多类资源约束比较候选</span></div>
+          <div class="flow-caption">准入安排与资源复核 ↓　　执行状态与成本反馈 ↑</div>
+          <div class="flow-node flow-engine"><b>Inference Engine</b><span>核验容量和硬依赖，执行连续 batching 与逐 token 调度</span></div>
+        </div>
+
+        <h2>数据集与用途</h2>
+        <table>
+          <thead><tr><th>数据 / 基准</th><th>包含什么</th><th>后续怎么用</th><th>边界</th></tr></thead>
+          <tbody>
+            <tr><td><a href="https://github.com/cachewise-project/cachewise-coding-traces">CacheWise Coding Traces</a></td><td>94 个脱敏会话；原始轨迹共 35,127 条记录。公开解析结果含 20,634 次 LLM call、11,617 次 tool call。</td><td>先做机会审计和 trace-driven 系统回放：保留完整会话顺序、工具等待与请求长度，分析缓存竞争，再比较调度和 KV 路径。</td><td>原始记录有对话文本；解析事件主要保留 token/cache 用量、工具类型与时序。工具参数已脱敏，没有可加载的模型 KV。不同模型要用目标 tokenizer 重算长度。</td></tr>
+            <tr><td><a href="https://github.com/SWE-bench/SWE-bench">SWE-bench</a> + <a href="https://github.com/OpenHands/OpenHands">OpenHands</a></td><td>代码仓库 issue 修复任务与测试环境，形成多轮读写、运行测试和继续修改的编码工作流。</td><td>作为主要端到端验证：运行真实 Agent，自由生成并按测试评估任务解决率，同时测完成时间、P95、吞吐与 KV 成本。</td><td>任务执行成本高，先用完整任务做小规模机制验证；不可把 trace 回放指标当作代码正确率。</td></tr>
+            <tr><td>SCBench</td><td>长上下文、多轮请求的缓存评测负载。</td><td>单独检验长前缀和跨轮请求的状态管理；与工具型工作流结果分开报告。</td><td>覆盖长上下文服务，不代表 coding agent 的工具依赖与分支执行。</td></tr>
+            <tr><td><a href="https://github.com/RDI-Foundation/browsecomp-plus">BrowseComp-Plus</a> / DeepResearchBench + Open Deep Research</td><td>多步检索与研究任务，包含 Main/Reader 等多角色协作。</td><td>作为第二类工作流，检验并行任务分波、依赖汇合与跨会话资源竞争，并用原基准质量指标评估。</td><td>运行成本较高，放在核心 coding 机制成立后做通用性验证。</td></tr>
+            <tr><td><a href="https://github.com/sierra-research/tau2-bench">τ²-bench</a></td><td>多轮用户交互和带业务状态的工具任务。</td><td>可选的交互型泛化验证，重点检查调用授权与工作流状态。</td><td>不是首轮必须跑的负载；有副作用的未来操作不应提前执行。</td></tr>
+          </tbody>
+        </table>
+
+        <div class="dataset-note"><b>CacheWise 时间戳注意：</b>轨迹时间字段落在 2020 年，但记录中的模型 ID 属于 2025 年；仓库没有说明日期归一化规则。先只使用单会话内事件顺序和相对间隔，不将绝对日期用于到达率或现实日历结论。</div>
+
+        <h2>实验使用顺序</h2>
+        <ol class="next-steps">
+          <li><b>审计 workload：</b>按完整会话抽取请求长度、工具种类、等待时间、上下文增长和可观察的未来工作，判断三个组件分别有没有真实机会。</li>
+          <li><b>系统回放：</b>按原会话顺序保留事件；需要并发时从完整会话构造并发组合，不截断历史、不拼接成伪任务。用回放比较原生调度、独立策略与共同计划，测 TTFT/JCT、goodput、命中、淘汰、搬运和重算。回放只验证系统行为，不评价任务答案。</li>
+          <li><b>端到端任务：</b>在 SWE-bench/OpenHands 上运行真实任务并使用测试结果评价质量；再用 SCBench 和研究工作流检查不同 workload 下是否仍成立。</li>
+        </ol>
+        <p>CacheWise 的对话记录可帮助构造输入，但其工具参数已脱敏、时间戳含义未确认，且没有可复用 KV 文件；因此它适合做负载审计和受控系统回放，任务质量结论应来自实际 benchmark。</p>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

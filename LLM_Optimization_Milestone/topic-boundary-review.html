@@ -1,0 +1,43 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Topic1 / Topic2 边界复审</title><link rel="stylesheet" href="milestone.css"><link rel="stylesheet" href="source-paper.css"></head><body><div class="shell"><header class="topbar"><div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>Research topic review · 2026-10-19</span></div></div><nav class="toplinks"><a href="LLM_Optimization_Milestone.html">返回 Milestone</a></nav></header><main class="source-page"><article class="source-content"><h1>Topic1 / Topic2 边界复审</h1>
+<p>2026-10-19。复核 Topic1 的近期方案和三篇新整理论文后，确认此前把上下文转换与推理执行联合规划放进 Topic1，造成了方向混线。</p>
+<h2>方向归属</h2>
+<p><strong>Topic1 是 Harness–Inference Engine 的跨层协同。</strong> 起点是 HEAR：Harness 掌握任务目标、工作流依赖和阶段语义，Engine 掌握队列、KV 驻留与硬件压力。研究问题应落在双方共同做出、单侧信息无法做好的具体系统决策上。协议本身、增加消息字段，或把已有策略接进统一接口，都不能单独构成贡献。</p>
+<p><strong>Topic2 是 Agent 上下文演化及 KV 状态的安全管理。</strong> 核心对象是上下文追加、替换、删除、压缩、分支回退后，哪些历史仍有效、哪些 KV 能继承或修复，以及编辑和转换成本如何核算。</p>
+<table>
+<thead>
+<tr>
+<th>论文</th>
+<th>主归属</th>
+<th>与另一方向的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CADOC</td>
+<td>Topic2：把可恢复对象外置，并按缓存重建成本决定何时合并提交上下文替换</td>
+<td>其缓存成本模型可作 Topic1 相关工作，但不是跨层协议论文</td>
+</tr>
+<tr>
+<td>Self-GC</td>
+<td>Topic2：管理对象级 Fold、Mask、Prune、恢复路径和安全提交</td>
+<td>Harness 参与规划，说明工作流侧语义重要；研究中心仍是上下文生命周期</td>
+</tr>
+<tr>
+<td>SmoothAgent</td>
+<td>Topic2：提前转换上下文、准备新 KV，并限制后台工作对前台请求的干扰</td>
+<td>涉及引擎调度，但核心问题是上下文转换及其执行成本</td>
+</tr>
+</tbody>
+</table>
+<p>三篇可在 Topic1 的相关工作里引用，用来说明已有系统已处理上下文提交、恢复和提前准备；不能再把它们当成 Topic1 的方案支柱或将它们的改进包装成 HEAR 扩展。</p>
+<h2>对近期 Topic1 方案的重审</h2>
+<p>旧方案 A“上下文管理与推理执行联合规划”实质上研究 Topic2，应从 Topic1 候选中移出。它讨论的转换选择、KV 继承、构建及提交，正是三篇论文所在的问题面。</p>
+<p>旧方案 B“工具执行与 KV 容量联合流控”形式上属于跨层协同，但 CONCUR、ThunderAgent、Coda、MARS 等已覆盖相邻的会话准入、工具生命周期及 KV 管理。现有描述还没有证明多控制器组合后存在稳定且重要的剩余损失，因此只能作为待检验假设，不能定为 Topic1。</p>
+<p>旧方案 C–G 也没有形成可立题的缺口：动态模式选择、状态共享、任务隔离、流式准备和策略协调，分别与既有路由、状态共享、公平、增量 prefill 和运行时策略工作有明显重叠。</p>
+<p><strong>结论：Topic1 目前仍是研究方向，不是已经选定的具体选题。</strong> HEAR 是需要审查和比较的基准，不是默认要在其上增加一个新协议。此前以“上下文变化”为中心的方案偏离了最初的 Harness–Engine codesign 方向，应归回 Topic2；不能靠扩大为“通用双向协同”来掩盖 Topic1 尚未找到明确问题。</p>
+<h2>Topic1 下一步应回答的问题</h2>
+<p>先找出真实工作流中一个反复发生、可度量的跨层决策：Harness 提供什么必要语义，Engine 提供什么瞬时状态，二者共同改变了什么执行结果；再核实 HEAR、Pie、Policy Runtime、Murakkab 及现有调度/缓存系统是否已能表达并执行该决策。比较单侧策略、现有跨层接口和最简单的专用适配，只有发现可复现的能力缺口及端到端损失后，才设计扩展。</p>
+<p>当前不应沿旧方案 A 继续做 Topic1 原型或实验。B 可留作线索，但先核对 MARS 等强基线；在找到具体缺口前，不宣称 Topic1 已有可行方案。</p><h2>后续候选：组件化 V2</h2>
+<p>在这次边界复审之后，Topic1 形成了一个待验证候选：用工作流推进、跨轮精确 KV 状态管理和预期执行三个组件，共同安排已获准工作、历史状态准备与有限的未来投入。这里的 KV 组件只处理有效精确状态的保留、换出、恢复和重算；上下文编辑后的 KV 继承、修复与正确性仍属于 Topic2。</p>
+<p>该框架尚未通过实验验证，也不代表已确认相对现有系统存在足够大的收益。<a href="topic1-design-v2.html">查看 V2 方案与验证设计 →</a></p>
+</article></main></div></body></html>
