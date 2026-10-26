@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="LLM 推理优化的自底向上系统剖面：硬件、计算、推理引擎、KV 数据面、编排与 Agent 工作流。">
-  <title>LLM Inference Optimization · System Cutaway</title>
+  <title>系统剖面｜论文按层次整理</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23176b52'/%3E%3Ctext x='11' y='29' fill='white' font-size='29'%3EL%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="architecture-3d.css">
 </head>
@@ -17,7 +17,7 @@
     <main>
       <section class="intro">
         <p class="eyebrow">SYSTEM CUTAWAY / INFERENCE OPTIMIZATION</p>
-        <h1>从硬件到 Agent，<em>推理优化落在哪里？</em></h1>
+        <h1>系统剖面<em>论文按层次整理</em></h1>
         <p class="lede">下方是计算、内存与网络资源，中部是模型执行和 KV 状态，上方是调度编排与 Agent 工作流。沿着这个系统剖面，查看每一层改变什么、依赖什么，以及我们调研的论文落在哪里。</p>
         <div class="intro-meta"><span><i class="swatch green"></i>6 个主要层次</span><span><i class="swatch orange"></i>1 个跨层控制面</span><span><i class="swatch blue"></i>77 篇论文归档</span></div>
       </section>
@@ -28,7 +28,7 @@
         <div class="figure-wrap">
 
 <svg class="system-figure" viewBox="0 0 1440 1370" role="group" aria-labelledby="figure-title figure-desc">
-<title id="figure-title">从硬件到 Agent：LLM 推理优化的等轴系统剖面</title>
+<title id="figure-title">系统剖面：LLM 推理优化论文按层次整理</title>
 <desc id="figure-desc">六层可点击结构由下向上展示集群硬件、计算算子、KV 状态、推理引擎、编排调度与 Agent 工作流；每层下方可直接打开代表论文。右侧双向控制面连接工作流意图和引擎反馈。</desc>
 <defs>
  <filter id="objectShadow" x="-25%" y="-35%" width="160%" height="190%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#355744" flood-opacity=".13"/></filter>
