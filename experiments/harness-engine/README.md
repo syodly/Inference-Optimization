@@ -4,6 +4,10 @@
 
 ## 当前应用
 
+当前服务为 Qwen3.8-27B BF16、双 A800、图执行、64K 上下文、48 条引擎序列上限、8192 batched tokens，启用前缀缓存、分块 prefill、阶段优先级和逐请求遥测。最新工作是 `verified`：三个持久子 Session 各执行 query → BM25 → draft → 来源核验 → evidence，父 Session 等待全部分支，每个根任务十次必做调用。长文来自固定版本 LongBench-v2，原始全文未截断或补字。来源核验仅判断引句出处，答案由隐藏标签离线评分；两者分别报告。
+
+最新状态见 [CONTINUE.md](CONTINUE.md)，网页见 [真实流程与原始调用](../../LLM_Optimization_Milestone/topic1-experiments.html)。v012 自然八题观察到 evidence 零命中和22次抢占；v014正在比较固定调用上限、回流优先、跨工具Session窗口与后端阶段优先。单轮结果不代表稳定收益或新颖性结论。
+
 这是自行实现、与 DSH 动作相似的 Harness，**不声称复现完整 DSH**。公开 HotpotQA 上下文被固定分为三个文档分片。每个任务创建三个持久子 Session，依次执行真实模型生成检索词、真实 BM25 工具、真实模型证据整理；父 Session 等待全部子任务，调用模型给出带来源的答案。默认每任务七次模型调用，全部为必做工作。该受控 DAG 用于隔离派发行为；更复杂的动态图和质量驱动展开放在独立实验。
 
 每次调用保存完整历史、采样参数、响应、usage 和首 token 时间。另存任务、Session、activation、工具、汇合事件与真实 Prometheus 指标。`frontend_wait` 是 Harness 等待；API 首 token 时间包含后端队列、prefill 和网络开销，不直接称为服务内部排队时间。指标缺失保存为空，不能编造。父任务时延包括全部等待、工具与汇总过程。
@@ -21,9 +25,20 @@ python3 serve.py
 .venv-engine/bin/python analyze.py runs/calibration-native
 ```
 
-服务默认双卡 BF16、16K 上下文、48 活跃序列上限、8192 批 token、前缀缓存和分块 prefill，先使用 eager 模式；完整参数及启动资源证据保存到 `state/server.json`。后续需要在相同配置下单独比较图执行模式，不能把 eager 校准结论当作引擎最高性能。
+服务参数、启动资源证据及实际引擎容量保存在 `state/server.json` 和逐轮 `config.json`。早期 eager、16K 与当前图模式64K的实验分别保留，不跨引擎配置直接声称机制收益。该模型是混合注意力架构，当前对齐缓存块为784 token，不能用普通 Transformer 的每 token KV 假设代替实际计量。
 
 四个初始基线：`native` 直接派发；`fixed --cap N` 固定在途调用数；`pressure` 根据真实引擎等待与缓存占用收缩；`progress` 同 cap 下优先汇总和接近完成的任务，保留老化。后三者均需与静态 cap 扫描比较。新机制须以测得的痛点为依据。
+
+新增基线 `return_priority` 同 cap 优先回流与汇总；`session_window --session-cap N --cap M` 在工具等待期间继续对持久子 Session 计账，全部等待计入根任务。`backend_priority` 将阶段优先级交给真实引擎；它不是具有相同展开权限的完整后端实现。
+
+```bash
+.venv-engine/bin/python batch.py configs/verified-quality-v012.json
+.venv-engine/bin/python batch.py configs/session-window-v014.json
+.venv-engine/bin/python replay_batch.py configs/replay-verified-v015.json
+.venv-engine/bin/python token_audit.py runs/v012-verified-long-native8
+```
+
+这些命令应顺序运行，每条独立轮次通常数分钟。回放执行真实模型、工具和依赖，但冻结上游文本与逐调用解码配额，不能证明自主闭环质量；结果单列在 `results/replays`，不混入网页的答案质量表。`token_audit.py` 通过实际聊天模板核对公共前缀，建议在计时实验之间运行。
 
 ## 数据和结果
 

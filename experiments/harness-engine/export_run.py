@@ -10,14 +10,15 @@ def export(run: Path, root: Path):
     destination = root / 'results' / run.name
     destination.mkdir(parents=True, exist_ok=True)
     for name in ['config.json', 'summary.json', 'audit.json', 'scored.jsonl', 'research_record.md',
-                 'workload_fingerprints.json', 'batch_entry.json']:
+                 'workload_fingerprints.json', 'batch_entry.json', 'token_audit.json']:
         if (run / name).exists():
             shutil.copy2(run / name, destination / name)
     config = json.loads((run / 'config.json').read_text())
     example_id = config['task_ids'][0]
+    task_path = root / config['tasks']
     sample = {'run_id': run.name, 'root_id': example_id,
-              'source': json.loads((root / 'datasets/hotpot/manifest.json').read_text()),
-              'task': next(r for r in read(root / 'datasets/hotpot/tasks.jsonl') if r['task_id'] == example_id),
+              'source': config.get('data_manifest') or json.loads((task_path.parent / 'manifest.json').read_text()),
+              'task': next(r for r in read(task_path) if r['task_id'] == example_id),
               'notice': 'Real requests/responses. Gold scoring is offline; controller did not receive answers.',
               'remote_full_trace_directory': str(run),
               'streams': {}}

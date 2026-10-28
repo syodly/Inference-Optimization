@@ -1,0 +1,173 @@
+{
+  "run_id": "v009-long-budget-cal4",
+  "policy": "native",
+  "cap": 12,
+  "expected_roots": 4,
+  "completed_root_records": 4,
+  "engine_errors": 0,
+  "root_errors": 0,
+  "parse_errors": 0,
+  "model_calls": 28,
+  "expected_model_calls": 28,
+  "length_finishes": 0,
+  "empty_content_completions": 0,
+  "quality": {
+    "em": 0.25,
+    "f1": 0.25,
+    "support_title_recall": null
+  },
+  "root_latency_seconds": {
+    "n": 4,
+    "mean": 25.807546009746147,
+    "p50": 25.78792610997334,
+    "p95": 26.62764723341679,
+    "min": 24.933947406010702,
+    "max": 26.720384413027205
+  },
+  "valid_json_root_latency_seconds": {
+    "n": 4,
+    "mean": 25.807546009746147,
+    "p50": 25.78792610997334,
+    "p95": 26.62764723341679,
+    "min": 24.933947406010702,
+    "max": 26.720384413027205
+  },
+  "exact_correct_root_latency_seconds": {
+    "n": 1,
+    "mean": 25.473715670988895,
+    "p50": 25.473715670988895,
+    "p95": 25.473715670988895,
+    "min": 25.473715670988895,
+    "max": 25.473715670988895
+  },
+  "batch_makespan_seconds": 26.720782976946793,
+  "frontend_wait_seconds": {
+    "n": 28,
+    "mean": 0.001167874180412452,
+    "p50": 0.0004596585058607161,
+    "p95": 0.003419936477439477,
+    "min": 8.663104381412268e-05,
+    "max": 0.0068480250192806125
+  },
+  "model_ttft_seconds": {
+    "n": 28,
+    "mean": 4.321726438581079,
+    "p50": 0.9695829270058312,
+    "p95": 12.190635626151924,
+    "min": 0.26181009400170296,
+    "max": 13.576694704010151
+  },
+  "stage": {
+    "query": {
+      "calls": 12,
+      "latency": {
+        "n": 12,
+        "mean": 2.4813885713519994,
+        "p50": 1.3743993645184673,
+        "p95": 5.91478609831538,
+        "min": 1.2300450110342354,
+        "max": 5.917777848080732
+      },
+      "ttft": {
+        "n": 12,
+        "mean": 0.910515338589903,
+        "p50": 0.9691712704952806,
+        "p95": 0.9697489186713938,
+        "min": 0.26718185702338815,
+        "max": 0.9698302840115502
+      }
+    },
+    "evidence": {
+      "calls": 12,
+      "latency": {
+        "n": 12,
+        "mean": 20.584262695755267,
+        "p50": 20.940320311579853,
+        "p95": 22.996853148192166,
+        "min": 17.478811583016068,
+        "max": 23.29533788189292
+      },
+      "ttft": {
+        "n": 12,
+        "mean": 9.07480108726304,
+        "p50": 10.325456569553353,
+        "p95": 13.00994204718154,
+        "min": 2.615827491041273,
+        "max": 13.576694704010151
+      }
+    },
+    "synthesis": {
+      "calls": 4,
+      "latency": {
+        "n": 4,
+        "mean": 1.5514247395040002,
+        "p50": 1.4936392449890263,
+        "p95": 1.8040017570077906,
+        "min": 1.373712623026222,
+        "max": 1.844707845011726
+      },
+      "ttft": {
+        "n": 4,
+        "mean": 0.29613579250872135,
+        "p50": 0.2945197955123149,
+        "p95": 0.3289681149588432,
+        "min": 0.26181009400170296,
+        "max": 0.33369348500855267
+      }
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 129795,
+    "completion_tokens": 2997,
+    "total_tokens": 132792
+  },
+  "engine": {
+    "running": {
+      "n": 99,
+      "mean": 7.494949494949495,
+      "p50": 7.0,
+      "p95": 12.0,
+      "min": 0.0,
+      "max": 12.0
+    },
+    "waiting": {
+      "n": 99,
+      "mean": 2.0303030303030303,
+      "p50": 0.0,
+      "p95": 6.0,
+      "min": 0.0,
+      "max": 7.0
+    },
+    "kv_usage": {
+      "n": 99,
+      "mean": 0.37716087044946106,
+      "p50": 0.3926174496644296,
+      "p95": 0.6644295302013423,
+      "min": 0.0,
+      "max": 0.6879194630872483
+    }
+  },
+  "preemptions_delta": 0.0,
+  "prefix_queries_delta": 129795.0,
+  "prefix_hits_delta": 0.0,
+  "max_frontend_inflight_calls": 12,
+  "max_frontend_pending": 12,
+  "max_tools_inflight": 2,
+  "limitation": "Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.",
+  "quality_protocol": "Strict option-label accuracy; hidden labels used only by offline analysis.",
+  "trace_audit": {
+    "run_id": "v009-long-budget-cal4",
+    "passed": true,
+    "violations": [],
+    "request_count": 28,
+    "response_count": 28,
+    "root_count": 4,
+    "tool_count": 12,
+    "call_stages": {
+      "query": 12,
+      "evidence": 12,
+      "synthesis": 4
+    },
+    "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "run_id": "v009-long-budget-cal4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--count",
+    "4",
+    "--source-format",
+    "text",
+    "--evidence-tokens",
+    "768"
+  ],
+  "purpose": "证据输出预算单因素校准",
+  "interpretation": "长文上原来的短问答预算截断了多数证据摘要。本轮保持非思考与贪心配置，只提高证据输出预算，检查截断和质量，避免把不足的应用预算误当作调度或模型能力问题。"
+}

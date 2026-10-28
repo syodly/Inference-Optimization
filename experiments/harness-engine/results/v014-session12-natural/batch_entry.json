@@ -1,0 +1,13 @@
+{
+  "run_id": "v014-session12-natural",
+  "args": [
+    "--policy",
+    "session_window",
+    "--cap",
+    "24",
+    "--session-cap",
+    "12"
+  ],
+  "purpose": "跨工具阶段计账的十二 Session 窗口",
+  "interpretation": "最多让十二个必做子 Session 从查询推进到证据完成；工具等待期间继续占窗口，完成后释放，再启动后续必做分支。与限制模型调用数分开，前端和 Session 等待全部计入根任务耗时；不删除分支或提前看到工具返回时间。"
+}

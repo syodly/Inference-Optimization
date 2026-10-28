@@ -1,0 +1,13 @@
+{
+  "run_id": "v008-long-text-sharded4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--count",
+    "4",
+    "--source-format",
+    "text"
+  ],
+  "purpose": "分片阅读中的原文格式校准",
+  "interpretation": "子 Session 读取原文段落，完整工具返回仍独立保存 JSON。调用图与预算保持固定，验证易读格式是否改善证据抽取，同时核对实际 prompt token，不能把格式节省归因于调度。"
+}

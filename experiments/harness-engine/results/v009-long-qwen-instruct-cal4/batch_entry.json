@@ -1,0 +1,17 @@
+{
+  "run_id": "v009-long-qwen-instruct-cal4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--count",
+    "4",
+    "--source-format",
+    "text",
+    "--evidence-tokens",
+    "768",
+    "--sampling-profile",
+    "qwen"
+  ],
+  "purpose": "官方非思考采样配置校准",
+  "interpretation": "同权重、同图和同预算，采用模型 README 推荐的非思考温度、top-p、top-k 与 presence penalty。保留固定 seed，参数逐次写入请求；该轮是采样因素对照，不能称为调度收益。"
+}

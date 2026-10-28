@@ -1,0 +1,293 @@
+{
+  "reference": "v012-verified-long-native8",
+  "runs": [
+    {
+      "run_id": "v014-backend-priority-natural",
+      "policy": "backend_priority",
+      "cap": 12,
+      "mean_seconds": 168.7164016593597,
+      "p95_seconds": 198.01844661905778,
+      "makespan_seconds": 198.58146586094517,
+      "mean_change_percent": -0.4110202360284476,
+      "f1": 0.625,
+      "calls": 80,
+      "completion_tokens": 47675,
+      "engine_wait_max": 13.0,
+      "kv_max": 1.0,
+      "preemptions": 13.0,
+      "trace_audit_passed": true,
+      "same_call_ids": 80,
+      "same_prompt_count": 49,
+      "same_output_count": 29,
+      "stage_fingerprint_comparison": {
+        "query": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 22
+        },
+        "draft": {
+          "calls": 24,
+          "same_input": 22,
+          "same_output": 4
+        },
+        "evidence": {
+          "calls": 24,
+          "same_input": 3,
+          "same_output": 1
+        },
+        "synthesis": {
+          "calls": 8,
+          "same_input": 0,
+          "same_output": 2
+        }
+      }
+    },
+    {
+      "run_id": "v014-fixed12-natural",
+      "policy": "fixed",
+      "cap": 12,
+      "mean_seconds": 181.48804015963105,
+      "p95_seconds": 199.48420958651695,
+      "makespan_seconds": 202.48140865692403,
+      "mean_change_percent": 7.127751546956196,
+      "f1": 0.625,
+      "calls": 80,
+      "completion_tokens": 45819,
+      "engine_wait_max": 3.0,
+      "kv_max": 0.5607235142118863,
+      "preemptions": 0.0,
+      "trace_audit_passed": true,
+      "same_call_ids": 80,
+      "same_prompt_count": 49,
+      "same_output_count": 28,
+      "stage_fingerprint_comparison": {
+        "query": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 23
+        },
+        "draft": {
+          "calls": 24,
+          "same_input": 23,
+          "same_output": 2
+        },
+        "evidence": {
+          "calls": 24,
+          "same_input": 2,
+          "same_output": 0
+        },
+        "synthesis": {
+          "calls": 8,
+          "same_input": 0,
+          "same_output": 3
+        }
+      }
+    },
+    {
+      "run_id": "v014-fixed18-natural",
+      "policy": "fixed",
+      "cap": 18,
+      "mean_seconds": 162.84389528159227,
+      "p95_seconds": 189.16282673492097,
+      "makespan_seconds": 191.4621797199361,
+      "mean_change_percent": -3.8774106584609225,
+      "f1": 0.625,
+      "calls": 80,
+      "completion_tokens": 46810,
+      "engine_wait_max": 9.0,
+      "kv_max": 0.8113695090439277,
+      "preemptions": 0.0,
+      "trace_audit_passed": true,
+      "same_call_ids": 80,
+      "same_prompt_count": 50,
+      "same_output_count": 30,
+      "stage_fingerprint_comparison": {
+        "query": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 24
+        },
+        "draft": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 3
+        },
+        "evidence": {
+          "calls": 24,
+          "same_input": 2,
+          "same_output": 1
+        },
+        "synthesis": {
+          "calls": 8,
+          "same_input": 0,
+          "same_output": 2
+        }
+      }
+    },
+    {
+      "run_id": "v014-native-repeat",
+      "policy": "native",
+      "cap": 12,
+      "mean_seconds": 171.20502127401414,
+      "p95_seconds": 197.24624143565887,
+      "makespan_seconds": 200.41251423105132,
+      "mean_change_percent": 1.0579483171560433,
+      "f1": 0.75,
+      "calls": 80,
+      "completion_tokens": 49546,
+      "engine_wait_max": 15.0,
+      "kv_max": 1.0,
+      "preemptions": 12.0,
+      "trace_audit_passed": true,
+      "same_call_ids": 80,
+      "same_prompt_count": 56,
+      "same_output_count": 38,
+      "stage_fingerprint_comparison": {
+        "query": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 24
+        },
+        "draft": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 9
+        },
+        "evidence": {
+          "calls": 24,
+          "same_input": 8,
+          "same_output": 3
+        },
+        "synthesis": {
+          "calls": 8,
+          "same_input": 0,
+          "same_output": 2
+        }
+      }
+    },
+    {
+      "run_id": "v014-return12-natural",
+      "policy": "return_priority",
+      "cap": 12,
+      "mean_seconds": 166.6422121891519,
+      "p95_seconds": 202.263058174646,
+      "makespan_seconds": 202.7507014729781,
+      "mean_change_percent": -1.6353612671525353,
+      "f1": 0.75,
+      "calls": 80,
+      "completion_tokens": 48240,
+      "engine_wait_max": 3.0,
+      "kv_max": 0.5400516795865633,
+      "preemptions": 0.0,
+      "trace_audit_passed": true,
+      "same_call_ids": 80,
+      "same_prompt_count": 49,
+      "same_output_count": 26,
+      "stage_fingerprint_comparison": {
+        "query": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 23
+        },
+        "draft": {
+          "calls": 24,
+          "same_input": 23,
+          "same_output": 2
+        },
+        "evidence": {
+          "calls": 24,
+          "same_input": 2,
+          "same_output": 1
+        },
+        "synthesis": {
+          "calls": 8,
+          "same_input": 0,
+          "same_output": 0
+        }
+      }
+    },
+    {
+      "run_id": "v014-session12-natural",
+      "policy": "session_window",
+      "cap": 24,
+      "mean_seconds": 157.14861238309823,
+      "p95_seconds": 207.94975359943928,
+      "makespan_seconds": 215.66224295308348,
+      "mean_change_percent": -7.239190590641876,
+      "f1": 0.625,
+      "calls": 80,
+      "completion_tokens": 49770,
+      "engine_wait_max": 8.0,
+      "kv_max": 0.5813953488372092,
+      "preemptions": 0.0,
+      "trace_audit_passed": true,
+      "same_call_ids": 80,
+      "same_prompt_count": 51,
+      "same_output_count": 28,
+      "stage_fingerprint_comparison": {
+        "query": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 24
+        },
+        "draft": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 3
+        },
+        "evidence": {
+          "calls": 24,
+          "same_input": 3,
+          "same_output": 0
+        },
+        "synthesis": {
+          "calls": 8,
+          "same_input": 0,
+          "same_output": 1
+        }
+      }
+    },
+    {
+      "run_id": "v014-session18-natural",
+      "policy": "session_window",
+      "cap": 24,
+      "mean_seconds": 151.34626062550524,
+      "p95_seconds": 183.06715004789294,
+      "makespan_seconds": 183.8335563549772,
+      "mean_change_percent": -10.664170533831141,
+      "f1": 0.625,
+      "calls": 80,
+      "completion_tokens": 49176,
+      "engine_wait_max": 12.0,
+      "kv_max": 0.8113695090439277,
+      "preemptions": 0.0,
+      "trace_audit_passed": true,
+      "same_call_ids": 80,
+      "same_prompt_count": 49,
+      "same_output_count": 26,
+      "stage_fingerprint_comparison": {
+        "query": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 24
+        },
+        "draft": {
+          "calls": 24,
+          "same_input": 24,
+          "same_output": 1
+        },
+        "evidence": {
+          "calls": 24,
+          "same_input": 1,
+          "same_output": 0
+        },
+        "synthesis": {
+          "calls": 8,
+          "same_input": 0,
+          "same_output": 1
+        }
+      }
+    }
+  ],
+  "uncertainty": "One shared batch contains correlated roots; batch repeats are needed for inferential CI."
+}

@@ -1,0 +1,22 @@
+{
+  "run_id": "v009-long-qwen-low-sharded4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--count",
+    "4",
+    "--source-format",
+    "text",
+    "--thinking",
+    "--sampling-profile",
+    "qwen",
+    "--reasoning-effort",
+    "low",
+    "--evidence-tokens",
+    "4096",
+    "--answer-tokens",
+    "4096"
+  ],
+  "purpose": "推荐模型配置与分片汇合的交互",
+  "interpretation": "查询仍使用非思考，证据和汇总使用 low 思考，完整保留 reasoning、输出和实际 token。根据该独立校准选择后续固定的应用配置，资源策略比较时保持模型设置一致。"
+}

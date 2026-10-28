@@ -1,0 +1,6 @@
+{
+  "run_id": "v011-verified-hotpot8-natural",
+  "args": [],
+  "purpose": "自然工具耗时的多次 activation 闭环",
+  "interpretation": "八个根任务各有三个持久子 Session、十次模型调用与六次真实工具操作，先测质量、有效引用、缓存命中和完整因果顺序。没有人为延迟，本轮为后续回流竞争提供真实应用参考。"
+}

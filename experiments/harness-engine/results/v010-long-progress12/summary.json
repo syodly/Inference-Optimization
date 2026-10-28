@@ -1,0 +1,173 @@
+{
+  "run_id": "v010-long-progress12",
+  "policy": "progress",
+  "cap": 12,
+  "expected_roots": 8,
+  "completed_root_records": 8,
+  "engine_errors": 0,
+  "root_errors": 0,
+  "parse_errors": 0,
+  "model_calls": 56,
+  "expected_model_calls": 56,
+  "length_finishes": 0,
+  "empty_content_completions": 0,
+  "quality": {
+    "em": 0.625,
+    "f1": 0.625,
+    "support_title_recall": null
+  },
+  "root_latency_seconds": {
+    "n": 8,
+    "mean": 109.53482240701851,
+    "p50": 112.0121374684968,
+    "p95": 135.64156735528957,
+    "min": 75.68563963810448,
+    "max": 141.2338590550935
+  },
+  "valid_json_root_latency_seconds": {
+    "n": 8,
+    "mean": 109.53482240701851,
+    "p50": 112.0121374684968,
+    "p95": 135.64156735528957,
+    "min": 75.68563963810448,
+    "max": 141.2338590550935
+  },
+  "exact_correct_root_latency_seconds": {
+    "n": 5,
+    "mean": 98.4235498348251,
+    "p50": 96.29942814598326,
+    "p95": 113.49211464978289,
+    "min": 75.68563963810448,
+    "max": 114.47876610397361
+  },
+  "batch_makespan_seconds": 141.23421315092128,
+  "frontend_wait_seconds": {
+    "n": 56,
+    "mean": 11.610082040324674,
+    "p50": 1.029740058525931,
+    "p95": 59.78948810871225,
+    "min": 0.00037009501829743385,
+    "max": 63.481952260946855
+  },
+  "model_ttft_seconds": {
+    "n": 56,
+    "mean": 1.6026652481523342,
+    "p50": 0.6146342884749174,
+    "p95": 5.947006726259133,
+    "min": 0.1493308279896155,
+    "max": 8.176843623979948
+  },
+  "stage": {
+    "query": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 2.764766622087336,
+        "p50": 1.0198496645316482,
+        "p95": 10.515703242347808,
+        "min": 0.8271369700087234,
+        "max": 10.905751798069105
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 0.44239169836995035,
+        "p50": 0.376754681521561,
+        "p95": 0.6148934688477311,
+        "min": 0.1493308279896155,
+        "max": 0.6150436019524932
+      }
+    },
+    "evidence": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 40.448737369297305,
+        "p50": 37.51191793300677,
+        "p95": 67.2990127948229,
+        "min": 18.832595973974094,
+        "max": 77.28557980095502
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 3.1912543169843652,
+        "p50": 1.7206481854664162,
+        "p95": 6.748077612998894,
+        "min": 1.029604319948703,
+        "max": 8.176843623979948
+      }
+    },
+    "synthesis": {
+      "calls": 8,
+      "latency": {
+        "n": 8,
+        "mean": 28.39761553988501,
+        "p50": 18.574777422996704,
+        "p95": 55.468117146950675,
+        "min": 14.750983995036222,
+        "max": 58.77912445005495
+      },
+      "ttft": {
+        "n": 8,
+        "mean": 0.31771869100339245,
+        "p50": 0.3111921189702116,
+        "p95": 0.3569753130956087,
+        "min": 0.27631828002631664,
+        "max": 0.35839718009810895
+      }
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 240454,
+    "completion_tokens": 30615,
+    "total_tokens": 271069
+  },
+  "engine": {
+    "running": {
+      "n": 514,
+      "mean": 8.678988326848248,
+      "p50": 11.0,
+      "p95": 12.0,
+      "min": 0.0,
+      "max": 12.0
+    },
+    "waiting": {
+      "n": 514,
+      "mean": 0.07198443579766536,
+      "p50": 0.0,
+      "p95": 1.0,
+      "min": 0.0,
+      "max": 3.0
+    },
+    "kv_usage": {
+      "n": 514,
+      "mean": 0.3844044603452328,
+      "p50": 0.4731543624161074,
+      "p95": 0.6275167785234899,
+      "min": 0.0,
+      "max": 0.651006711409396
+    }
+  },
+  "preemptions_delta": 0.0,
+  "prefix_queries_delta": 240454.0,
+  "prefix_hits_delta": 0.0,
+  "max_frontend_inflight_calls": 12,
+  "max_frontend_pending": 24,
+  "max_tools_inflight": 2,
+  "limitation": "Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.",
+  "quality_protocol": "Strict option-label accuracy; hidden labels used only by offline analysis.",
+  "trace_audit": {
+    "run_id": "v010-long-progress12",
+    "passed": true,
+    "violations": [],
+    "request_count": 56,
+    "response_count": 56,
+    "root_count": 8,
+    "tool_count": 24,
+    "call_stages": {
+      "query": 24,
+      "evidence": 24,
+      "synthesis": 8
+    },
+    "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+  }
+}

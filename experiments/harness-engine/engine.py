@@ -32,9 +32,11 @@ class Journal:
 
 
 class Engine:
-    def __init__(self, url: str, model: str, journal: Journal, thinking: bool = False):
+    def __init__(self, url: str, model: str, journal: Journal, thinking: bool = False,
+                 sampling_profile='greedy', reasoning_effort=None):
         self.url = url.rstrip("/")
         self.model, self.journal, self.thinking = model, journal, thinking
+        self.sampling_profile, self.reasoning_effort = sampling_profile, reasoning_effort
         self.client = httpx.AsyncClient(timeout=httpx.Timeout(240, connect=15),
                                        limits=httpx.Limits(max_connections=128, max_keepalive_connections=64))
         self.latest = {}
@@ -95,13 +97,23 @@ class Engine:
                 pass
 
     async def generate(self, *, call_id: str, root_id: str, node_id: str, stage: str,
-                       messages: list, max_tokens: int, seed: int, priority=0):
+                       messages: list, max_tokens: int, seed: int, priority=0, thinking=None,
+                       generation_overrides=None):
         payload = {"model": self.model, "messages": messages, "max_tokens": max_tokens,
                    "temperature": 0.0, "seed": seed, "stream": True,
                    "stream_options": {"include_usage": True},
-                   "chat_template_kwargs": {"enable_thinking": self.thinking}}
+                   "chat_template_kwargs": {"enable_thinking": self.thinking if thinking is None else thinking}}
+        active_thinking = payload['chat_template_kwargs']['enable_thinking']
+        if self.sampling_profile == 'qwen':
+            payload.update(temperature=1.0 if active_thinking else .7, top_p=.95 if active_thinking else .8,
+                           top_k=20, min_p=0.0, presence_penalty=0.0 if active_thinking else 1.5,
+                           repetition_penalty=1.0)
+        if active_thinking and self.reasoning_effort:
+            payload['reasoning_effort'] = self.reasoning_effort
         if priority:
             payload["priority"] = priority
+        if generation_overrides:
+            payload.update(generation_overrides)
         start = time.monotonic()
         self.journal.write("requests", call_id=call_id, root_id=root_id, node_id=node_id,
                            stage=stage, payload=payload)
@@ -109,7 +121,7 @@ class Engine:
                            root_id=root_id, node_id=node_id, stage=stage)
         pieces, reasoning, usage = [], [], {}
         first_token = None
-        finish_reason, server_id = None, None
+        finish_reason, server_id, server_metrics = None, None, None
         try:
             async with self.client.stream("POST", self.url + "/v1/chat/completions", json=payload,
                                           headers={"X-Request-Id": call_id}) as response:
@@ -126,6 +138,8 @@ class Engine:
                         raise RuntimeError(data["error"])
                     if data.get("usage"):
                         usage = data["usage"]
+                    if data.get('metrics'):
+                        server_metrics = data['metrics']
                     for choice in data.get("choices", []):
                         delta = choice.get("delta", {})
                         text = delta.get("content") or ""
@@ -145,7 +159,8 @@ class Engine:
         end = time.monotonic()
         result = {"text": "".join(pieces), "reasoning": "".join(reasoning), "usage": usage,
                   "duration": end - start, "ttft": first_token - start if first_token else None,
-                  "finish_reason": finish_reason, "server_request_id": server_id}
+                  "finish_reason": finish_reason, "server_request_id": server_id,
+                  "server_metrics": server_metrics}
         self.journal.write("responses", call_id=call_id, root_id=root_id, node_id=node_id,
                            stage=stage, **result)
         self.journal.write("events", event="model_complete", call_id=call_id,

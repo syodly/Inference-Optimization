@@ -1,0 +1,13 @@
+{
+  "run_id": "v007-long-direct-cal4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--workflow",
+    "direct",
+    "--count",
+    "4"
+  ],
+  "purpose": "长文集中阅读质量参照",
+  "interpretation": "引擎上下文上限提高到六万五千五百三十六，允许同一模型完整阅读原文，避免人为限制单 Agent 的可用上下文。该轮只作质量和整体配置参照，不当作等工作量调度对照。"
+}

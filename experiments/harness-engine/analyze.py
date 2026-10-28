@@ -20,7 +20,10 @@ def normalize(answer):
     return ' '.join(re.sub(r'\b(a|an|the)\b', ' ', text).split())
 
 
-def quality(pred, gold):
+def quality(pred, gold, answer_format=None):
+    if answer_format == 'multiple_choice':
+        score = float(pred.strip().upper() in 'ABCD' and len(pred.strip()) == 1 and pred.strip().upper() == gold.strip().upper())
+        return score, score
     a, b = normalize(pred), normalize(gold)
     if (a in ['yes', 'no', 'noanswer'] or b in ['yes', 'no', 'noanswer']) and a != b:
         return 0., 0.
@@ -46,12 +49,13 @@ def analyze(run, gold_path, tasks_path):
     answers = {r['task_id']: r for r in read(gold_path)}
     tasks = {r['task_id']: r for r in read(tasks_path)}
     roots, responses, events, metrics = [read(run / f'{n}.jsonl') for n in ['roots', 'responses', 'events', 'metrics']]
+    tools = read(run / 'tools.jsonl')
     scored = []
     for row in roots:
         gold = answers[row['root_id']]
         parsed = row.get('parsed') or {}
         pred = parsed.get('answer', '')
-        em, f1 = quality(pred, gold['answer'])
+        em, f1 = quality(pred, gold['answer'], gold.get('format'))
         if row.get('error') or row.get('parse_error'):
             em = f1 = 0.
         source_titles = {d['doc_id']: d['title'] for d in tasks[row['root_id']]['documents']}
@@ -60,7 +64,7 @@ def analyze(run, gold_path, tasks_path):
             citations = []
         predicted_titles = {source_titles[c] for c in citations if isinstance(c, str) and c in source_titles}
         support = set(gold['supporting_facts']['title'])
-        recall = len(predicted_titles & support) / len(support) if support else 0.
+        recall = len(predicted_titles & support) / len(support) if support else None
         scored.append({**row, 'gold_answer': gold['answer'], 'predicted_answer': pred, 'em': em,
                        'f1': f1, 'support_title_recall': recall,
                        'valid_citations': len(predicted_titles), 'support_titles': sorted(support)})
@@ -82,8 +86,8 @@ def analyze(run, gold_path, tasks_path):
         'parse_errors': sum(bool(r.get('parse_error')) for r in roots),
         'model_calls': len(responses), 'expected_model_calls': config['expected_model_calls'],
         'length_finishes': sum(r.get('finish_reason') == 'length' for r in responses),
-        'quality': {k: sum(r[k] for r in scored) / len(config['task_ids'])
-                    for k in ['em', 'f1', 'support_title_recall']},
+        'empty_content_completions': sum(not r.get('text', '').strip() and not r.get('error') for r in responses),
+        'quality': {k: sum(r[k] for r in scored) / len(config['task_ids']) for k in ['em', 'f1']},
         'root_latency_seconds': distribution([r['duration'] for r in roots]),
         'valid_json_root_latency_seconds': distribution([r['duration'] for r in roots
                                                         if not r.get('error') and not r.get('parse_error')]),
@@ -100,7 +104,48 @@ def analyze(run, gold_path, tasks_path):
         'max_frontend_inflight_calls': max([e['inflight_calls'] for e in releases], default=0),
         'max_frontend_pending': max([e['pending'] for e in events if 'pending' in e], default=0),
         'max_tools_inflight': max([e['tools_inflight'] for e in events if 'tools_inflight' in e], default=0),
+        'control_observations': {
+            'admissions_by_target': dict(Counter(str(e['target']) for e in releases)),
+            'admissions_with_nonzero_wait': sum(e['frontend_wait'] > .01 for e in releases),
+            'max_active_child_sessions': max([e.get('active_sessions', 0) for e in events], default=0),
+            'session_wait_seconds': distribution([e['session_wait'] for e in events if e['event'] == 'session_admitted']),
+        },
         'limitation': 'Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.'}
+    support_scores = [r['support_title_recall'] for r in scored if r['support_title_recall'] is not None]
+    summary['quality']['support_title_recall'] = statistics.mean(support_scores) if support_scores else None
+    # A missing per-request counter is unknown, rather than a measured zero.
+    cached_tokens = lambda row: (row.get('usage', {}).get('prompt_tokens_details') or {}).get('cached_tokens')
+    summary['cache_by_stage'] = {}
+    for stage, rows in response_groups.items():
+        measured = [r for r in rows if cached_tokens(r) is not None]
+        prompt = sum(r['usage'].get('prompt_tokens', 0) for r in measured)
+        hits = sum(cached_tokens(r) for r in measured)
+        summary['cache_by_stage'][stage] = {
+            'calls': len(rows), 'calls_with_cache_accounting': len(measured),
+            'cached_prompt_tokens': hits if measured else None,
+            'accounted_prompt_tokens': prompt if measured else None,
+            'cached_fraction': hits / prompt if prompt else None,
+            'cached_tokens_per_call': distribution([cached_tokens(r) for r in measured]),
+            'created_cache_tokens': sum((r.get('usage', {}).get('prompt_tokens_details') or {}).get('created_cache_tokens', 0) or 0
+                                       for r in measured) if measured else None,
+        }
+    source_checks = [t for t in tools if t.get('tool_kind') == 'source_check']
+    if source_checks:
+        checks = [c for t in source_checks for c in t['results'].get('checks', [])]
+        valid = sum(bool(c.get('valid')) for c in checks)
+        summary['source_verification'] = {
+            'tool_calls': len(source_checks), 'draft_parse_errors': sum(bool(t['results'].get('parse_error')) for t in source_checks),
+            'quote_checks': len(checks), 'valid_quotes': valid,
+            'valid_quote_fraction': valid / len(checks) if checks else None,
+            'actual_cpu_seconds': distribution([t['actual_cpu_seconds'] for t in source_checks]),
+            'elapsed_seconds': distribution([t['elapsed'] for t in source_checks]),
+            'injected_delay_seconds': distribution([t['injected_delay_seconds'] for t in source_checks]),
+            'scope': 'Source provenance only; answer correctness is scored separately.',
+        }
+    summary['quality_protocol'] = config.get('data_manifest', {}).get('quality_protocol', 'HotpotQA normalized EM/F1')
+    measured_queue = [r['server_metrics']['queue_time_ms'] / 1000 for r in responses
+                      if r.get('server_metrics') and r['server_metrics'].get('queue_time_ms') is not None]
+    summary['measured_engine_queue_seconds'] = distribution(measured_queue)
     fingerprints = {r['call_id']: {'stage': r['stage'],
                     'messages_sha256': hashlib.sha256(json.dumps(r['payload']['messages'], sort_keys=True).encode()).hexdigest()}
                     for r in read(run / 'requests.jsonl')}

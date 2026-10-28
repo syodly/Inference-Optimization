@@ -1,0 +1,9 @@
+{
+  "batch_id":"long-capability-v008",
+  "runs":[
+    {"run_id":"v008-long-text-direct4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--workflow","direct","--count","4","--source-format","text"],"purpose":"来源文本格式的单因素校准","interpretation":"上一轮把 PDF 文本嵌入工具 JSON，换行和公式被额外转义，实际 token 明显增加。本轮仅改为带来源标记的原文文本，保留全部内容与相同非思考预算，区分格式影响和模型能力。"},
+    {"run_id":"v008-long-text-sharded4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--count","4","--source-format","text"],"purpose":"分片阅读中的原文格式校准","interpretation":"子 Session 读取原文段落，完整工具返回仍独立保存 JSON。调用图与预算保持固定，验证易读格式是否改善证据抽取，同时核对实际 prompt token，不能把格式节省归因于调度。"},
+    {"run_id":"v008-long-think-direct4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--workflow","direct","--count","4","--source-format","text","--thinking","--answer-tokens","4096"],"purpose":"同权重开启思考的集中阅读能力对照","interpretation":"在相同原文格式下开启官方思考模式，单独增加推理预算，保存完整 reasoning 和 usage。它改变模型计算量，仅用于能力与编排的交互，不作为 E1 的调度收益。"},
+    {"run_id":"v008-long-think-sharded4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--count","4","--source-format","text","--thinking","--evidence-tokens","3072","--answer-tokens","4096"],"purpose":"思考能力与多 Agent 汇合的交互校准","interpretation":"检索词仍采用非思考模式，证据整理和父任务汇合开启思考，避免四十 token 的查询预算截断内部推理。实际分阶段设置全部保存在 API 参数中，后续资源比较固定同一能力配置。"}
+  ]
+}

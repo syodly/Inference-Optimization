@@ -1,0 +1,15 @@
+{
+  "run_id": "v008-long-text-direct4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--workflow",
+    "direct",
+    "--count",
+    "4",
+    "--source-format",
+    "text"
+  ],
+  "purpose": "来源文本格式的单因素校准",
+  "interpretation": "上一轮把 PDF 文本嵌入工具 JSON，换行和公式被额外转义，实际 token 明显增加。本轮仅改为带来源标记的原文文本，保留全部内容与相同非思考预算，区分格式影响和模型能力。"
+}

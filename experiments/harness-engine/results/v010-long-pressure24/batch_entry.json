@@ -1,0 +1,11 @@
+{
+  "run_id": "v010-long-pressure24",
+  "args": [
+    "--policy",
+    "pressure",
+    "--cap",
+    "24"
+  ],
+  "purpose": "长文实时引擎压力反馈",
+  "interpretation": "读取真实等待和缓存指标，记录每次收缩目标与在途调用。该策略是透明的简单阈值基线，未宣称复现 CONCUR 等论文机制，也可能过度退让导致退化。"
+}

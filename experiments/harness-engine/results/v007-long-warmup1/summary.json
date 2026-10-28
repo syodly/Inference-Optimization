@@ -1,0 +1,172 @@
+{
+  "run_id": "v007-long-warmup1",
+  "policy": "native",
+  "cap": 12,
+  "expected_roots": 1,
+  "completed_root_records": 1,
+  "engine_errors": 0,
+  "root_errors": 0,
+  "parse_errors": 0,
+  "model_calls": 7,
+  "expected_model_calls": 7,
+  "length_finishes": 3,
+  "quality": {
+    "em": 1.0,
+    "f1": 1.0,
+    "support_title_recall": null
+  },
+  "root_latency_seconds": {
+    "n": 1,
+    "mean": 10.975981735973619,
+    "p50": 10.975981735973619,
+    "p95": 10.975981735973619,
+    "min": 10.975981735973619,
+    "max": 10.975981735973619
+  },
+  "valid_json_root_latency_seconds": {
+    "n": 1,
+    "mean": 10.975981735973619,
+    "p50": 10.975981735973619,
+    "p95": 10.975981735973619,
+    "min": 10.975981735973619,
+    "max": 10.975981735973619
+  },
+  "exact_correct_root_latency_seconds": {
+    "n": 1,
+    "mean": 10.975981735973619,
+    "p50": 10.975981735973619,
+    "p95": 10.975981735973619,
+    "min": 10.975981735973619,
+    "max": 10.975981735973619
+  },
+  "batch_makespan_seconds": 10.97639090300072,
+  "frontend_wait_seconds": {
+    "n": 7,
+    "mean": 0.00025808861080024926,
+    "p50": 0.00021748605649918318,
+    "p95": 0.000525835761800408,
+    "min": 0.000135340029373765,
+    "max": 0.000650912057608366
+  },
+  "model_ttft_seconds": {
+    "n": 7,
+    "mean": 1.7919044103140809,
+    "p50": 0.4430603620130569,
+    "p95": 4.380564242508262,
+    "min": 0.2095340620726347,
+    "max": 4.41598096000962
+  },
+  "stage": {
+    "query": {
+      "calls": 3,
+      "latency": {
+        "n": 3,
+        "mean": 0.7230596489971504,
+        "p50": 0.7361769819399342,
+        "p95": 0.7452798655140214,
+        "min": 0.6867106680292636,
+        "max": 0.7462912970222533
+      },
+      "ttft": {
+        "n": 3,
+        "mean": 0.3651345086982474,
+        "p50": 0.44280910200905055,
+        "p95": 0.44303523601265626,
+        "min": 0.2095340620726347,
+        "max": 0.4430603620130569
+      }
+    },
+    "evidence": {
+      "calls": 3,
+      "latency": {
+        "n": 3,
+        "mean": 9.259056129997285,
+        "p50": 9.255718535976484,
+        "p95": 9.267152317857835,
+        "min": 9.253027115948498,
+        "max": 9.268422738066874
+      },
+      "ttft": {
+        "n": 3,
+        "mean": 3.7286623590237773,
+        "p50": 4.297925235005096,
+        "p95": 4.404175387509167,
+        "min": 2.4720808820566162,
+        "max": 4.41598096000962
+      }
+    },
+    "synthesis": {
+      "calls": 1,
+      "latency": {
+        "n": 1,
+        "mean": 0.9490493290359154,
+        "p50": 0.9490493290359154,
+        "p95": 0.9490493290359154,
+        "min": 0.9490493290359154,
+        "max": 0.9490493290359154
+      },
+      "ttft": {
+        "n": 1,
+        "mean": 0.26194026903249323,
+        "p50": 0.26194026903249323,
+        "p95": 0.26194026903249323,
+        "min": 0.26194026903249323,
+        "max": 0.26194026903249323
+      }
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 37338,
+    "completion_tokens": 645,
+    "total_tokens": 37983
+  },
+  "engine": {
+    "running": {
+      "n": 43,
+      "mean": 2.13953488372093,
+      "p50": 3.0,
+      "p95": 3.0,
+      "min": 0.0,
+      "max": 3.0
+    },
+    "waiting": {
+      "n": 43,
+      "mean": 0.06976744186046512,
+      "p50": 0.0,
+      "p95": 0.8999999999999986,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "kv_usage": {
+      "n": 43,
+      "mean": 0.11971281410956766,
+      "p50": 0.16442953020134232,
+      "p95": 0.20302013422818788,
+      "min": 0.0,
+      "max": 0.2046979865771812
+    }
+  },
+  "preemptions_delta": 0.0,
+  "prefix_queries_delta": 37338.0,
+  "prefix_hits_delta": 0.0,
+  "max_frontend_inflight_calls": 3,
+  "max_frontend_pending": 3,
+  "max_tools_inflight": 0,
+  "limitation": "Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.",
+  "quality_protocol": "Strict option-label accuracy; hidden labels used only by offline analysis.",
+  "trace_audit": {
+    "run_id": "v007-long-warmup1",
+    "passed": true,
+    "violations": [],
+    "request_count": 7,
+    "response_count": 7,
+    "root_count": 1,
+    "tool_count": 3,
+    "call_stages": {
+      "query": 3,
+      "evidence": 3,
+      "synthesis": 1
+    },
+    "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+  }
+}

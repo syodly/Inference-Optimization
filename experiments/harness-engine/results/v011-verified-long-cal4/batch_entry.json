@@ -1,0 +1,22 @@
+{
+  "run_id": "v011-verified-long-cal4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--count",
+    "4",
+    "--thinking",
+    "--sampling-profile",
+    "qwen",
+    "--reasoning-effort",
+    "low",
+    "--draft-tokens",
+    "4096",
+    "--evidence-tokens",
+    "4096",
+    "--answer-tokens",
+    "4096"
+  ],
+  "purpose": "长文来源验证与历史状态复用校准",
+  "interpretation": "使用与此前相同的四个全文校准任务，保持三个子 Session，在两次长文 activation 之间执行真实来源检查。保留模型历史 reasoning，检查质量和有效前缀复用，不将新增工作的开销直接与七调用流程当成调度对照。"
+}

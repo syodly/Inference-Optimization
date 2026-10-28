@@ -1,0 +1,11 @@
+{
+  "run_id": "v014-fixed18-natural",
+  "args": [
+    "--policy",
+    "fixed",
+    "--cap",
+    "18"
+  ],
+  "purpose": "与十八 Session 相邻的调用级强对照",
+  "interpretation": "模型调用上限十八，Session 总量保持二十四，检查 Session 窗口的改善是否仅来自较低模型并发，而不是跨工具计账。所有必做调用、工具和来源保持一致，生成 token 的差异单独报告。"
+}

@@ -1,0 +1,11 @@
+{
+  "run_id": "v007-long-warmup1",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--count",
+    "1"
+  ],
+  "purpose": "真实全文研究任务预热与审计",
+  "interpretation": "使用 LongBench-v2 的原始学术长文任务，全文按九个连续片段划分给三个子 Session，没有补字或丢弃来源。首次长 prefill 独立预热，不进入主要策略计时。"
+}

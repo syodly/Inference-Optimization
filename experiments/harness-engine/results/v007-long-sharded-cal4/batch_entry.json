@@ -1,0 +1,11 @@
+{
+  "run_id": "v007-long-sharded-cal4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--count",
+    "4"
+  ],
+  "purpose": "真实长文分片调查质量校准",
+  "interpretation": "四个校准任务涵盖学术、政府、法律与新闻来源，全文约二万二千至三万四千实际 Qwen token。每个任务仍为七次必做调用，答案标签只交离线评分，先判断信息压缩是否可用再开始资源策略比较。"
+}

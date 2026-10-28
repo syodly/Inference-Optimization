@@ -1,0 +1,8 @@
+{
+  "batch_id":"long-quality-v007",
+  "runs":[
+    {"run_id":"v007-long-warmup1","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--count","1"],"purpose":"真实全文研究任务预热与审计","interpretation":"使用 LongBench-v2 的原始学术长文任务，全文按九个连续片段划分给三个子 Session，没有补字或丢弃来源。首次长 prefill 独立预热，不进入主要策略计时。"},
+    {"run_id":"v007-long-direct-cal4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--workflow","direct","--count","4"],"purpose":"长文集中阅读质量参照","interpretation":"引擎上下文上限提高到六万五千五百三十六，允许同一模型完整阅读原文，避免人为限制单 Agent 的可用上下文。该轮只作质量和整体配置参照，不当作等工作量调度对照。"},
+    {"run_id":"v007-long-sharded-cal4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--count","4"],"purpose":"真实长文分片调查质量校准","interpretation":"四个校准任务涵盖学术、政府、法律与新闻来源，全文约二万二千至三万四千实际 Qwen token。每个任务仍为七次必做调用，答案标签只交离线评分，先判断信息压缩是否可用再开始资源策略比较。"}
+  ]
+}

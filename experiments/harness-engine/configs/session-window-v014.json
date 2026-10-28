@@ -1,0 +1,13 @@
+{
+  "batch_id":"session-window-v014",
+  "base_args":["--workflow","verified","--tasks","datasets/longbench-v2/tasks.jsonl","--split","evaluation","--count","8","--source-format","text","--thinking","--sampling-profile","qwen","--reasoning-effort","low","--draft-tokens","4096","--evidence-tokens","4096","--answer-tokens","4096"],
+  "runs":[
+    {"run_id":"v014-fixed12-natural","args":["--policy","fixed","--cap","12"],"purpose":"来源核验工作图的调用级背压","interpretation":"v012 自然八题出现二十二次抢占且所有 evidence 前缀命中为零。本轮固定相同任务、十调用工作图、模型设置和真实工具，只限制在途模型调用数；尚在工具等待的 Session 不占这个调用上限。它是简单且必须击败的基线。"},
+    {"run_id":"v014-return12-natural","args":["--policy","return_priority","--cap","12"],"purpose":"相同调用上限的回流优先","interpretation":"仍只使用十二个模型调用名额，优先已就绪的父汇总和工具回流 evidence，并保留十秒老化，比较是否只要改变冷 draft 与历史续写的次序即可避免缓存损失。它属于请求排序基线，不以策略放在前端作为创新。"},
+    {"run_id":"v014-session12-natural","args":["--policy","session_window","--cap","24","--session-cap","12"],"purpose":"跨工具阶段计账的十二 Session 窗口","interpretation":"最多让十二个必做子 Session 从查询推进到证据完成；工具等待期间继续占窗口，完成后释放，再启动后续必做分支。与限制模型调用数分开，前端和 Session 等待全部计入根任务耗时；不删除分支或提前看到工具返回时间。"},
+    {"run_id":"v014-session18-natural","args":["--policy","session_window","--cap","24","--session-cap","18"],"purpose":"更宽 Session 窗口的吞吐折中","interpretation":"十八个持久子 Session 的窗口增加批处理机会，检查十二窗口是否过度保守。Session 计数是透明的简单工作集基线，并不等同按真实 token 与 recurrent-state 字节准确预留缓存；需要测实际命中、抢占、质量和全部等待。"},
+    {"run_id":"v014-fixed18-natural","args":["--policy","fixed","--cap","18"],"purpose":"与十八 Session 相邻的调用级强对照","interpretation":"模型调用上限十八，Session 总量保持二十四，检查 Session 窗口的改善是否仅来自较低模型并发，而不是跨工具计账。所有必做调用、工具和来源保持一致，生成 token 的差异单独报告。"},
+    {"run_id":"v014-backend-priority-natural","args":["--policy","backend_priority"],"purpose":"相同阶段语义交给后端排序","interpretation":"全部 READY 请求立即提交，引擎得到 query、draft、evidence 与 synthesis 阶段优先级。若后端排序已恢复缓存复用与任务完成，就不主张前端位置具有独立价值；该实现不能动态控制尚未展开的 Session，动作集差异明确标注。"},
+    {"run_id":"v014-native-repeat","args":[],"purpose":"机制比较之后重复直接派发","interpretation":"重复 v012 自然工具八题，确认抢占与缓存损失是否可重现，并测运行顺序漂移。小样本只用于判断机会和排错；需要固定请求回放及更多批次后才判断机制收益。"}
+  ]
+}

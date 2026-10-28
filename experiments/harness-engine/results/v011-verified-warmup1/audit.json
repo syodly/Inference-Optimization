@@ -1,0 +1,16 @@
+{
+  "run_id": "v011-verified-warmup1",
+  "passed": true,
+  "violations": [],
+  "request_count": 10,
+  "response_count": 10,
+  "root_count": 1,
+  "tool_count": 6,
+  "call_stages": {
+    "query": 3,
+    "draft": 3,
+    "evidence": 3,
+    "synthesis": 1
+  },
+  "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+}

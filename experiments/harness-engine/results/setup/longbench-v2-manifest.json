@@ -1,0 +1,226 @@
+{
+  "source": "zai-org/LongBench-v2",
+  "revision": "2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9",
+  "license": "apache-2.0",
+  "download_url": "https://hf-mirror.com/datasets/zai-org/LongBench-v2/resolve/2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9/data.json",
+  "canonical_url": "https://huggingface.co/datasets/zai-org/LongBench-v2/resolve/2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9/data.json",
+  "seed": 2718,
+  "source_rows": 503,
+  "domain": "Multi-Document QA",
+  "candidates": [
+    {
+      "id": "66fcf2f2bb02136c067c9169",
+      "subdomain": "Multi-news",
+      "tokens": 22544,
+      "shard_tokens": [
+        7663,
+        7531,
+        7350
+      ]
+    },
+    {
+      "id": "66eefe85821e116aacb228dc",
+      "subdomain": "Academic",
+      "tokens": 30753,
+      "shard_tokens": [
+        10561,
+        9560,
+        10632
+      ]
+    },
+    {
+      "id": "66f95126bb02136c067c5070",
+      "subdomain": "Academic",
+      "tokens": 29090,
+      "shard_tokens": [
+        9235,
+        9390,
+        10465
+      ]
+    },
+    {
+      "id": "66fb6d71bb02136c067c7c34",
+      "subdomain": "Legal",
+      "tokens": 27352,
+      "shard_tokens": [
+        9196,
+        9213,
+        8943
+      ]
+    },
+    {
+      "id": "66f14c70821e116aacb271ee",
+      "subdomain": "Academic",
+      "tokens": 24950,
+      "shard_tokens": [
+        8214,
+        7769,
+        8967
+      ]
+    },
+    {
+      "id": "66ebee0a5a08c7b9b35e1d05",
+      "subdomain": "Academic",
+      "tokens": 30135,
+      "shard_tokens": [
+        10255,
+        9361,
+        10519
+      ]
+    },
+    {
+      "id": "66f3c1c3821e116aacb2eaf6",
+      "subdomain": "Governmental",
+      "tokens": 33771,
+      "shard_tokens": [
+        11488,
+        11249,
+        11034
+      ]
+    },
+    {
+      "id": "66fa6867bb02136c067c6b3b",
+      "subdomain": "Multi-news",
+      "tokens": 24186,
+      "shard_tokens": [
+        8035,
+        7974,
+        8177
+      ]
+    },
+    {
+      "id": "66f0ed5a821e116aacb265ab",
+      "subdomain": "Academic",
+      "tokens": 27059,
+      "shard_tokens": [
+        8516,
+        9466,
+        9077
+      ]
+    },
+    {
+      "id": "66ee8bab821e116aacb21e44",
+      "subdomain": "Academic",
+      "tokens": 32039,
+      "shard_tokens": [
+        10249,
+        10609,
+        11181
+      ]
+    },
+    {
+      "id": "66ee490e821e116aacb2149c",
+      "subdomain": "Academic",
+      "tokens": 20184,
+      "shard_tokens": [
+        6484,
+        6492,
+        7208
+      ]
+    },
+    {
+      "id": "66f3b843821e116aacb2e692",
+      "subdomain": "Governmental",
+      "tokens": 33178,
+      "shard_tokens": [
+        11409,
+        10546,
+        11224
+      ]
+    },
+    {
+      "id": "66ec21e6821e116aacb1b2d2",
+      "subdomain": "Academic",
+      "tokens": 25368,
+      "shard_tokens": [
+        7925,
+        8963,
+        8480
+      ]
+    },
+    {
+      "id": "66fc0152bb02136c067c8826",
+      "subdomain": "Multi-news",
+      "tokens": 28313,
+      "shard_tokens": [
+        8696,
+        9786,
+        9831
+      ]
+    },
+    {
+      "id": "67062fbfbb02136c067cf66a",
+      "subdomain": "Multi-news",
+      "tokens": 21024,
+      "shard_tokens": [
+        6553,
+        6423,
+        8048
+      ]
+    },
+    {
+      "id": "66f96115bb02136c067c541c",
+      "subdomain": "Legal",
+      "tokens": 22328,
+      "shard_tokens": [
+        7194,
+        7565,
+        7569
+      ]
+    },
+    {
+      "id": "66fb5f73bb02136c067c7ae7",
+      "subdomain": "Multi-news",
+      "tokens": 23457,
+      "shard_tokens": [
+        5828,
+        10137,
+        7492
+      ]
+    },
+    {
+      "id": "66f10d67821e116aacb268d0",
+      "subdomain": "Academic",
+      "tokens": 20132,
+      "shard_tokens": [
+        6095,
+        5977,
+        8060
+      ]
+    }
+  ],
+  "selection": "18000–36000 actual Qwen tokens, full original context, no truncation or padding; max shard 14000 tokens",
+  "chunking": "Nine contiguous character segments, paragraph boundaries preferred; concatenate exactly equals original context; three strided shards",
+  "task_ids": [
+    "66ebee0a5a08c7b9b35e1d05",
+    "66f3c1c3821e116aacb2eaf6",
+    "66f96115bb02136c067c541c",
+    "66fa6867bb02136c067c6b3b",
+    "66f10d67821e116aacb268d0",
+    "66f3b843821e116aacb2e692",
+    "66fb6d71bb02136c067c7c34",
+    "66fcf2f2bb02136c067c9169",
+    "66eefe85821e116aacb228dc",
+    "66fb5f73bb02136c067c7ae7",
+    "66f14c70821e116aacb271ee",
+    "66fc0152bb02136c067c8826",
+    "66ee490e821e116aacb2149c",
+    "67062fbfbb02136c067cf66a",
+    "66f95126bb02136c067c5070",
+    "66f0ed5a821e116aacb265ab"
+  ],
+  "calibration": 4,
+  "evaluation": 12,
+  "sha256": {
+    "data.json": "15d61c22d92c96900b3c4948b6aeea218d3214b676a65df48e7b8555604c7fe2",
+    "tasks.jsonl": "2fd081c4b2e49ce6e928bb227fbad34665b0142e6e2d8192feb59ba3eff63937",
+    "answers.jsonl": "b5a3bce25a741b5223ca51eeb0fbbfa349d2a6dda32c0bfff20fd74aa2c1e2e5"
+  },
+  "quality_protocol": "Strict option-label accuracy; hidden labels used only by offline analysis.",
+  "subdomains": {
+    "Academic": 7,
+    "Governmental": 2,
+    "Legal": 2,
+    "Multi-news": 5
+  }
+}

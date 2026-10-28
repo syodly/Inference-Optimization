@@ -14,6 +14,10 @@ def audit(directory: Path):
     tools = read(directory / 'tools.jsonl')
     roots = read(directory / 'roots.jsonl')
     violations = []
+    if len(roots) != len(config['task_ids']) or {r['root_id'] for r in roots} != set(config['task_ids']):
+        violations.append('Root records do not match submitted tasks')
+    if len(requests) != config['expected_model_calls']:
+        violations.append('Mandatory model call count differs from plan')
     by_node = defaultdict(list)
     for event in events:
         if 'node_id' in event:
@@ -34,7 +38,7 @@ def audit(directory: Path):
             if not a <= b <= c:
                 violations.append('Causal ordering invalid for ' + node)
     for r in roots:
-        if r.get('error') or config['workflow'] != 'sharded':
+        if r.get('error') or config['workflow'] == 'direct':
             continue
         completed_children = [e for e in events if e.get('root_id') == r['root_id']
                               and e['event'] == 'model_complete' and e.get('stage') == 'evidence']
@@ -46,10 +50,14 @@ def audit(directory: Path):
             violations.append('Parent submitted before required children for ' + r['root_id'])
     for tool in tools:
         rows = by_node[tool['node_id']]
-        query_end = [e['t'] for e in rows if e['event'] == 'model_complete' and e.get('stage') == 'query']
-        tool_start = [e['t'] for e in rows if e['event'] == 'tool_start']
-        tool_end = [e['t'] for e in rows if e['event'] == 'tool_complete']
-        evidence = [e['t'] for e in rows if e['event'] == 'model_submit' and e.get('stage') == 'evidence']
+        before_stage = 'draft' if tool.get('tool_kind') == 'source_check' else 'query'
+        after_stage = 'draft' if before_stage == 'query' and config['workflow'] == 'verified' else 'evidence'
+        query_end = [e['t'] for e in rows if e['event'] == 'model_complete' and e.get('stage') == before_stage]
+        tool_start = [e['t'] for e in rows if e['event'] == 'tool_start' and e.get('tool_id') == tool['tool_id']]
+        tool_end = [e['t'] for e in rows if e['event'] == 'tool_complete' and e.get('tool_id') == tool['tool_id']]
+        evidence = [e['t'] for e in rows if e['event'] == 'model_submit' and e.get('stage') == after_stage]
+        if not all([query_end, tool_start, tool_end, evidence]):
+            violations.append('Required tool boundary event missing for ' + tool['tool_id'])
         if query_end and tool_start and tool_end and evidence and not query_end[0] <= tool_start[0] <= tool_end[0] <= evidence[0]:
             violations.append('Tool ordering invalid for ' + tool['node_id'])
         if tool['elapsed'] + .001 < tool['actual_cpu_seconds'] + tool['injected_delay_seconds']:
@@ -57,6 +65,13 @@ def audit(directory: Path):
     if config['policy'] not in ['native', 'backend_priority']:
         if any(e['inflight_calls'] > e['target'] for e in events if e['event'] == 'frontend_release'):
             violations.append('New admission exceeded observed target')
+    if config['policy'] == 'session_window':
+        admissions = [e for e in events if e['event'] == 'session_admitted']
+        if any(e['active_sessions'] > config['session_cap'] for e in admissions):
+            violations.append('Session working set exceeded configured window')
+        released = [e for e in events if e['event'] == 'session_released']
+        if {e['node_id'] for e in admissions} != {e['node_id'] for e in released}:
+            violations.append('Session lease accounting incomplete')
     result = {'run_id': directory.name, 'passed': not violations, 'violations': violations,
               'request_count': len(requests), 'response_count': len(responses),
               'root_count': len(roots), 'tool_count': len(tools),

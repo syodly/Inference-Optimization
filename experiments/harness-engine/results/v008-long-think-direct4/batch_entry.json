@@ -1,0 +1,18 @@
+{
+  "run_id": "v008-long-think-direct4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--workflow",
+    "direct",
+    "--count",
+    "4",
+    "--source-format",
+    "text",
+    "--thinking",
+    "--answer-tokens",
+    "4096"
+  ],
+  "purpose": "同权重开启思考的集中阅读能力对照",
+  "interpretation": "在相同原文格式下开启官方思考模式，单独增加推理预算，保存完整 reasoning 和 usage。它改变模型计算量，仅用于能力与编排的交互，不作为 E1 的调度收益。"
+}

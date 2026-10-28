@@ -1,0 +1,13 @@
+{
+  "batch_id":"replay-v013",
+  "trace":"runs/v010-long-native-a",
+  "purpose":"固定输入和逐调用解码 token 数，判断 v010 小幅时延差异能否归因于派发",
+  "runs":[
+    {"run_id":"v013-replay-native-a","args":[]},
+    {"run_id":"v013-replay-pressure24-a","args":["--policy","pressure","--cap","24"]},
+    {"run_id":"v013-replay-fixed16","args":["--policy","fixed","--cap","16"]},
+    {"run_id":"v013-replay-fixed12","args":["--policy","fixed","--cap","12"]},
+    {"run_id":"v013-replay-pressure24-b","args":["--policy","pressure","--cap","24"]},
+    {"run_id":"v013-replay-native-b","args":[]}
+  ]
+}

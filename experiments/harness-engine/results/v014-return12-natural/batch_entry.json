@@ -1,0 +1,11 @@
+{
+  "run_id": "v014-return12-natural",
+  "args": [
+    "--policy",
+    "return_priority",
+    "--cap",
+    "12"
+  ],
+  "purpose": "相同调用上限的回流优先",
+  "interpretation": "仍只使用十二个模型调用名额，优先已就绪的父汇总和工具回流 evidence，并保留十秒老化，比较是否只要改变冷 draft 与历史续写的次序即可避免缓存损失。它属于请求排序基线，不以策略放在前端作为创新。"
+}

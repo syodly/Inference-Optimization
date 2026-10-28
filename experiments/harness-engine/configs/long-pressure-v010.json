@@ -1,0 +1,14 @@
+{
+  "batch_id":"long-pressure-v010",
+  "base_args":["--tasks","datasets/longbench-v2/tasks.jsonl","--split","evaluation","--count","8","--source-format","text","--thinking","--sampling-profile","qwen","--reasoning-effort","low","--evidence-tokens","4096","--answer-tokens","4096"],
+  "runs":[
+    {"run_id":"v010-long-native-a","args":[],"purpose":"真实长上下文工作集的直接派发","interpretation":"八个不同长文任务固定为五十六次必做调用，使用独立校准选择的官方低思考配置。首先记录真实缓存占用、排队、抢占和质量，验证资源痛点，不预设直接派发一定较差。"},
+    {"run_id":"v010-long-fixed12","args":["--policy","fixed","--cap","12"],"purpose":"长文静态上限十二对照","interpretation":"这是固定在途调用数的简单机制，不利用未来工具信息。与直接派发核对所有前端等待、实际 token 和回答质量，检验常规背压是否已足够。"},
+    {"run_id":"v010-long-backend-priority","args":["--policy","backend_priority"],"purpose":"长文后端阶段优先级对照","interpretation":"就绪调用全部提交，后端获得阶段优先级提示；它不控制未形成的工作，也没有精确未来工具时间。若它已解决损失，后续不能将同类排序声称为独立创新。"},
+    {"run_id":"v010-long-fixed8","args":["--policy","fixed","--cap","8"],"purpose":"长文更小静态工作集","interpretation":"与其他静态上限建立实际时延和吞吐曲线，检查降低缓存竞争是否足以补偿批处理损失。不能用本轮较空的缓存直接宣称优化成立。"},
+    {"run_id":"v010-long-fixed16","args":["--policy","fixed","--cap","16"],"purpose":"长文较宽静态工作集","interpretation":"提供十二和直接派发之间的并发边界，后续机制必须与最好的静态配置比较。若准确率或输出 token 改变，先报告实际差异，再安排固定请求回放隔离系统效应。"},
+    {"run_id":"v010-long-pressure24","args":["--policy","pressure","--cap","24"],"purpose":"长文实时引擎压力反馈","interpretation":"读取真实等待和缓存指标，记录每次收缩目标与在途调用。该策略是透明的简单阈值基线，未宣称复现 CONCUR 等论文机制，也可能过度退让导致退化。"},
+    {"run_id":"v010-long-progress12","args":["--policy","progress","--cap","12"],"purpose":"长文相同上限的任务进度基线","interpretation":"与上限十二的先到先服务比较，优先汇总和接近完成任务并保留老化，检查进度排序是否具有超出并发参数的价值。所有失败与长尾均保留。"},
+    {"run_id":"v010-long-native-b","args":[],"purpose":"长文直接派发顺序重复","interpretation":"同一图执行服务、同一任务和配置重复参考，用于识别采样及运行顺序波动。单批内任务相互依赖，不把八个根任务当作八次独立系统重复。"}
+  ]
+}

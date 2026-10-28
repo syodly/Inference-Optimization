@@ -1,0 +1,132 @@
+{
+  "run_id": "v006-cal-direct8",
+  "policy": "native",
+  "cap": 12,
+  "expected_roots": 8,
+  "completed_root_records": 8,
+  "engine_errors": 0,
+  "root_errors": 0,
+  "parse_errors": 0,
+  "model_calls": 8,
+  "expected_model_calls": 8,
+  "length_finishes": 0,
+  "quality": {
+    "em": 0.625,
+    "f1": 0.9083333333333333,
+    "support_title_recall": 0.9375
+  },
+  "root_latency_seconds": {
+    "n": 8,
+    "mean": 2.746708754246356,
+    "p50": 2.6650472919573076,
+    "p95": 2.9982014270848594,
+    "min": 2.5617048260755837,
+    "max": 3.057922799955122
+  },
+  "valid_json_root_latency_seconds": {
+    "n": 8,
+    "mean": 2.746708754246356,
+    "p50": 2.6650472919573076,
+    "p95": 2.9982014270848594,
+    "min": 2.5617048260755837,
+    "max": 3.057922799955122
+  },
+  "exact_correct_root_latency_seconds": {
+    "n": 5,
+    "mean": 2.766422803606838,
+    "p50": 2.6888062079669908,
+    "p95": 3.0233347667614,
+    "min": 2.5617048260755837,
+    "max": 3.057922799955122
+  },
+  "batch_makespan_seconds": 3.0586204319261014,
+  "frontend_wait_seconds": {
+    "n": 8,
+    "mean": 0.00046310284233186394,
+    "p50": 0.0004568505100905895,
+    "p95": 0.0006537678535096347,
+    "min": 0.00025828194338828325,
+    "max": 0.0006738599622622132
+  },
+  "model_ttft_seconds": {
+    "n": 8,
+    "mean": 1.8933592828689143,
+    "p50": 2.0757771364878863,
+    "p95": 2.101747848285595,
+    "min": 0.5761104909470305,
+    "max": 2.1153086840640754
+  },
+  "stage": {
+    "synthesis": {
+      "calls": 8,
+      "latency": {
+        "n": 8,
+        "mean": 2.7438052821089514,
+        "p50": 2.6615335830138065,
+        "p95": 2.994634565344313,
+        "min": 2.558318411000073,
+        "max": 3.0538819630164653
+      },
+      "ttft": {
+        "n": 8,
+        "mean": 1.8933592828689143,
+        "p50": 2.0757771364878863,
+        "p95": 2.101747848285595,
+        "min": 0.5761104909470305,
+        "max": 2.1153086840640754
+      }
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 15757,
+    "completion_tokens": 212,
+    "total_tokens": 15969
+  },
+  "engine": {
+    "running": {
+      "n": 14,
+      "mean": 4.142857142857143,
+      "p50": 5.0,
+      "p95": 8.0,
+      "min": 0.0,
+      "max": 8.0
+    },
+    "waiting": {
+      "n": 14,
+      "mean": 0.21428571428571427,
+      "p50": 0.0,
+      "p95": 1.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "kv_usage": {
+      "n": 14,
+      "mean": 0.09060402684563758,
+      "p50": 0.09563758389261745,
+      "p95": 0.21812080536912748,
+      "min": 0.0,
+      "max": 0.21812080536912748
+    }
+  },
+  "preemptions_delta": 0.0,
+  "prefix_queries_delta": 15757.0,
+  "prefix_hits_delta": 0.0,
+  "max_frontend_inflight_calls": 8,
+  "max_frontend_pending": 8,
+  "max_tools_inflight": 0,
+  "limitation": "Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.",
+  "quality_protocol": "Gold answers/supporting facts only read by offline analysis, never by runtime/policy.",
+  "trace_audit": {
+    "run_id": "v006-cal-direct8",
+    "passed": true,
+    "violations": [],
+    "request_count": 8,
+    "response_count": 8,
+    "root_count": 8,
+    "tool_count": 0,
+    "call_stages": {
+      "synthesis": 8
+    },
+    "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+  }
+}

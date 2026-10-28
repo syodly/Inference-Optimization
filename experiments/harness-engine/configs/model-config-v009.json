@@ -1,0 +1,9 @@
+{
+  "batch_id":"model-config-v009",
+  "runs":[
+    {"run_id":"v009-long-budget-cal4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--count","4","--source-format","text","--evidence-tokens","768"],"purpose":"证据输出预算单因素校准","interpretation":"长文上原来的短问答预算截断了多数证据摘要。本轮保持非思考与贪心配置，只提高证据输出预算，检查截断和质量，避免把不足的应用预算误当作调度或模型能力问题。"},
+    {"run_id":"v009-long-qwen-instruct-cal4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--count","4","--source-format","text","--evidence-tokens","768","--sampling-profile","qwen"],"purpose":"官方非思考采样配置校准","interpretation":"同权重、同图和同预算，采用模型 README 推荐的非思考温度、top-p、top-k 与 presence penalty。保留固定 seed，参数逐次写入请求；该轮是采样因素对照，不能称为调度收益。"},
+    {"run_id":"v009-long-qwen-low-direct4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--workflow","direct","--count","4","--source-format","text","--thinking","--sampling-profile","qwen","--reasoning-effort","low","--answer-tokens","6144"],"purpose":"官方低思考强度的集中阅读参照","interpretation":"上一轮默认 xhigh 思考被有限预算截断，不能据此判断模型极限。本轮显式使用官方支持的 low 强度和推荐采样，并给足最终推理空间；不删除失败，也不修改隐藏标签。"},
+    {"run_id":"v009-long-qwen-low-sharded4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--count","4","--source-format","text","--thinking","--sampling-profile","qwen","--reasoning-effort","low","--evidence-tokens","4096","--answer-tokens","4096"],"purpose":"推荐模型配置与分片汇合的交互","interpretation":"查询仍使用非思考，证据和汇总使用 low 思考，完整保留 reasoning、输出和实际 token。根据该独立校准选择后续固定的应用配置，资源策略比较时保持模型设置一致。"}
+  ]
+}

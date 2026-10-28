@@ -1,0 +1,9 @@
+{
+  "batch_id":"verified-quality-v012",
+  "base_args":["--workflow","verified","--tasks","datasets/longbench-v2/tasks.jsonl","--source-format","text","--thinking","--sampling-profile","qwen","--reasoning-effort","low","--draft-tokens","4096","--evidence-tokens","4096","--answer-tokens","4096"],
+  "runs":[
+    {"run_id":"v012-verified-long-cal4","args":["--count","4"],"purpose":"修复工具 JSON 包装解析后的长文核验校准","interpretation":"上一版十二份草稿内容均被 Markdown JSON 围栏包裹，工具把有效对象误判为解析失败。本版仅接受完整 JSON 或其完整围栏包装，保留所有原始返回，不修补缺失字段、不读取答案；重新验证工具是否执行实际引用核对及最终质量，不能把解析修复算作调度加速。"},
+    {"run_id":"v012-verified-long-native8","args":["--split","evaluation","--count","8"],"purpose":"长文持久 Session 自然回流压力观测","interpretation":"固定八题、三个子 Session 与十次必做调用，使用自然工具时间，逐调用记录创建缓存及复用缓存的 token。先确认真实重复 prefill、排队、抢占及来源验证质量，不预设回流一定存在损失。"},
+    {"run_id":"v012-verified-long-delay8","args":["--split","evaluation","--count","8","--verify-delay","12","--verify-jitter","3"],"purpose":"显式工具延迟下历史状态复用对照","interpretation":"真实来源核验后注入十二秒附近的工具延迟，八题与图保持一致。控制器看不到注入时长和准确返回时间；该处理仅测试外部工具等待造成的缓存暴露，若命中不降则保留该负结果，不声称是生产工具测量。"}
+  ]
+}

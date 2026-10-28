@@ -22,7 +22,7 @@ def main():
         same_input = sum(f[k]['messages_sha256'] == reference_fingerprints[k]['messages_sha256'] for k in shared)
         same_output = sum(f[k].get('output_sha256') == reference_fingerprints[k].get('output_sha256') for k in shared)
         stages = {}
-        for stage in ['query', 'evidence', 'synthesis']:
+        for stage in ['query', 'draft', 'evidence', 'synthesis']:
             keys = [k for k in shared if f[k]['stage'] == stage]
             stages[stage] = {'calls': len(keys),
                              'same_input': sum(f[k]['messages_sha256'] == reference_fingerprints[k]['messages_sha256'] for k in keys),

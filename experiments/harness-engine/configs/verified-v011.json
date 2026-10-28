@@ -1,0 +1,10 @@
+{
+  "batch_id":"verified-v011",
+  "base_args":["--workflow","verified","--source-format","text","--draft-tokens","1536","--evidence-tokens","512"],
+  "runs":[
+    {"run_id":"v011-verified-warmup1","args":["--count","1"],"purpose":"有来源验证的持久 Session 预热","interpretation":"每个研究子 Session 在读文献后起草带原文引用的事实，真实工具检查引用是否出现在来源中，再携带历史继续生成证据报告。该工具只验证引用来源，不判断隐藏答案正确性；不是为制造负载添加空调用。"},
+    {"run_id":"v011-verified-hotpot8-natural","args":[],"purpose":"自然工具耗时的多次 activation 闭环","interpretation":"八个根任务各有三个持久子 Session、十次模型调用与六次真实工具操作，先测质量、有效引用、缓存命中和完整因果顺序。没有人为延迟，本轮为后续回流竞争提供真实应用参考。"},
+    {"run_id":"v011-verified-hotpot8-delay","args":["--verify-delay","4","--verify-jitter","1"],"purpose":"显式标注的验证回流延迟处理","interpretation":"实际引用检查后增加均匀抖动延迟，模拟外部验证服务的等待；控制器只见开始时间和工具类型，不知道未来完成时间。与自然耗时分开，检验历史上下文在工具等待期间的复用变化，不冒充生产服务测量。"},
+    {"run_id":"v011-verified-long-cal4","args":["--tasks","datasets/longbench-v2/tasks.jsonl","--count","4","--thinking","--sampling-profile","qwen","--reasoning-effort","low","--draft-tokens","4096","--evidence-tokens","4096","--answer-tokens","4096"],"purpose":"长文来源验证与历史状态复用校准","interpretation":"使用与此前相同的四个全文校准任务，保持三个子 Session，在两次长文 activation 之间执行真实来源检查。保留模型历史 reasoning，检查质量和有效前缀复用，不将新增工作的开销直接与七调用流程当成调度对照。"}
+  ]
+}

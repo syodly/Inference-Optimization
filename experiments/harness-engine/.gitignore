@@ -1,5 +1,7 @@
 .venv*/
 datasets/**/*.parquet
+datasets/**/data.json
+datasets/**/*.part
 __pycache__/
 *.pyc
 models/

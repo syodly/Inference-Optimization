@@ -1,0 +1,13 @@
+{
+  "run_id": "v014-session18-natural",
+  "args": [
+    "--policy",
+    "session_window",
+    "--cap",
+    "24",
+    "--session-cap",
+    "18"
+  ],
+  "purpose": "更宽 Session 窗口的吞吐折中",
+  "interpretation": "十八个持久子 Session 的窗口增加批处理机会，检查十二窗口是否过度保守。Session 计数是透明的简单工作集基线，并不等同按真实 token 与 recurrent-state 字节准确预留缓存；需要测实际命中、抢占、质量和全部等待。"
+}

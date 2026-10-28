@@ -26,7 +26,8 @@ def main():
             print('Operator STOP file detected; leaving subsequent rounds unstarted.', flush=True)
             break
         run_id = entry['run_id']
-        command = [sys.executable, 'run.py', '--out', 'runs/' + run_id, *entry['args']]
+        command = [sys.executable, 'run.py', '--out', 'runs/' + run_id,
+                   *specification.get('base_args', []), *entry['args']]
         state = {'batch_id': specification['batch_id'], 'current': run_id, 'command': command,
                  'started': time.time(), 'completed': completed, 'status': 'running'}
         state_path.write_text(json.dumps(state, indent=2))
@@ -41,16 +42,18 @@ def main():
             raise RuntimeError('Round execution failed: ' + run_id)
         run = root / 'runs' / run_id
         (run / 'batch_entry.json').write_text(json.dumps(entry, ensure_ascii=False, indent=2), encoding='utf-8')
-        summary = analyze(run, root / 'datasets/hotpot/answers.jsonl', root / 'datasets/hotpot/tasks.jsonl')
+        config = json.loads((run / 'config.json').read_text())
+        task_path = root / config['tasks']
+        summary = analyze(run, task_path.parent / 'answers.jsonl', task_path)
         summary['trace_audit'] = audit(run)
         (run / 'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
-        config = json.loads((run / 'config.json').read_text())
         latency = summary['root_latency_seconds']
         record = (
             f"\n\n## {run_id} · {entry['purpose']}\n\n"
             f"本轮使用固定 Qwen3.8-27B BF16 双卡引擎，选择 {config['split']} 集 {config['count']} 个任务，"
             f"采用 {config['workflow']} 流程、{config['policy']} 派发策略，在途上限参数 {config['cap']}，"
-            f"工具配置为 {config['tool_profile']}。完成 {summary['completed_root_records']} 个任务记录，"
+            f"检索配置为 {config['tool_profile']}，来源验证附加延迟 {config.get('verify_delay', 0)}"
+            f"±{config.get('verify_jitter', 0)} 秒。完成 {summary['completed_root_records']} 个任务记录，"
             f"实际模型调用 {summary['model_calls']}/{summary['expected_model_calls']}，"
             f"回答 EM={summary['quality']['em']:.3f}、F1={summary['quality']['f1']:.3f}，"
             f"整任务平均耗时 {latency.get('mean', float('nan')):.2f} 秒、P95={latency.get('p95', float('nan')):.2f} 秒。"

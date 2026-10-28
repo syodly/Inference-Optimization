@@ -1,0 +1,22 @@
+{
+  "run_id": "v009-long-qwen-low-direct4",
+  "args": [
+    "--tasks",
+    "datasets/longbench-v2/tasks.jsonl",
+    "--workflow",
+    "direct",
+    "--count",
+    "4",
+    "--source-format",
+    "text",
+    "--thinking",
+    "--sampling-profile",
+    "qwen",
+    "--reasoning-effort",
+    "low",
+    "--answer-tokens",
+    "6144"
+  ],
+  "purpose": "官方低思考强度的集中阅读参照",
+  "interpretation": "上一轮默认 xhigh 思考被有限预算截断，不能据此判断模型极限。本轮显式使用官方支持的 low 强度和推荐采样，并给足最终推理空间；不删除失败，也不修改隐藏标签。"
+}

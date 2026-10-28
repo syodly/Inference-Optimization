@@ -1,0 +1,15 @@
+{
+  "run_id": "v007-long-sharded-cal4",
+  "passed": true,
+  "violations": [],
+  "request_count": 28,
+  "response_count": 28,
+  "root_count": 4,
+  "tool_count": 12,
+  "call_stages": {
+    "query": 12,
+    "evidence": 12,
+    "synthesis": 4
+  },
+  "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+}

@@ -1,0 +1,13 @@
+{
+  "batch_id":"replay-verified-v015",
+  "trace":"runs/v012-verified-long-native8",
+  "purpose":"针对已观察到缓存损失的八题80调用工作图，固定输入和解码配额进行机制归因",
+  "runs":[
+    {"run_id":"v015-replay-native-a","args":[]},
+    {"run_id":"v015-replay-fixed12","args":["--policy","fixed","--cap","12"]},
+    {"run_id":"v015-replay-return12","args":["--policy","return_priority","--cap","12"]},
+    {"run_id":"v015-replay-session18","args":["--policy","session_window","--cap","24","--session-cap","18"]},
+    {"run_id":"v015-replay-backend-priority","args":["--policy","backend_priority"]},
+    {"run_id":"v015-replay-native-b","args":[]}
+  ]
+}

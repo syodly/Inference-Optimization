@@ -11,6 +11,7 @@ import time
 root = Path.home() / 'harness-engine'
 ap = argparse.ArgumentParser()
 ap.add_argument('--mode', choices=['eager', 'graph'], default='graph')
+ap.add_argument('--max-model-len', type=int, default=65536)
 args = ap.parse_args()
 state = json.loads((root / 'state/model.json').read_text())
 if state['status'] != 'complete':
@@ -27,9 +28,11 @@ with socket.socket() as s:
 command = [str(root / '.venv-engine/bin/vllm'), 'serve', model_path,
            '--host', '127.0.0.1', '--port', '18081', '--served-model-name', 'qwen27b',
            '--tensor-parallel-size', '2', '--dtype', 'bfloat16', '--language-model-only',
-           '--max-model-len', '16384', '--max-num-seqs', '48', '--max-num-batched-tokens', '8192',
+           '--max-model-len', str(args.max_model_len), '--max-num-seqs', '48', '--max-num-batched-tokens', '8192',
            '--gpu-memory-utilization', '.9', '--enable-prefix-caching', '--enable-chunked-prefill',
-           '--enable-request-id-headers', '--reasoning-parser', 'qwen3', '--scheduling-policy', 'priority']
+           '--enable-request-id-headers', '--enable-per-request-metrics', '--enable-prompt-tokens-details',
+           '--kv-cache-metrics', '--kv-cache-metrics-sample', '1.0',
+           '--reasoning-parser', 'qwen3', '--scheduling-policy', 'priority']
 if args.mode == 'eager':
     command.append('--enforce-eager')
 overrides = {'CUDA_VISIBLE_DEVICES': '0,1', 'OMP_NUM_THREADS': '1', 'VLLM_SERVER_DEV_MODE': '1',
