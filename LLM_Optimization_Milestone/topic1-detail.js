@@ -32,18 +32,18 @@
       note:'LiveCodeBench 定义题目、场景和评测协议；Writer / Test / Reviewer / Repair 是 harness 工作流。hidden evaluation 只用于离线评测。'
     },
     dsh:{
-      title:'DeepSeek Harness · activation lifecycle',
-      overview:'DeepSeek Harness 描述 Agent activation 的运行时生命周期，不负责 benchmark 质量评分。Parent 先产生 work item；Topic1 gate 根据后端资源决定何时释放；Manager 检查能力并选择 Provider；Child 返回 result / stopReason；父级随后交付结果或取消剩余任务并记录 trace。',
-      intro:{purpose:'这是承载 Agent 调用的运行时生命周期：父级创建 work item，activation API 启动子任务，Manager 负责能力检查与 Provider 路由，完成后把结果或停止原因交回调用者。',flow:'父级任务 → startActivation → Manager / Provider → Child → 结果 / stopReason → 交付或释放',designSpace:'可研究：在 activation 启动边界，结合父级任务反馈与后端容量，对未启动 child 做准入、延后或分批释放，并把结果交付、取消与资源回收纳入状态记录。并发调度只有改变后续创建决策时才影响总调用数；DSH 是承载接口，不是已实现的最优 Agent 数策略。'},
-      sub:'父 Agent → 资源控制门 → activation → Provider / Child → 结果回传 / 释放',
-      meta:[['任务输入','Parent work items'],['运行时','DeepSeek Harness activation lifecycle'],['控制动作','release · skip · expand · stop'],['trace 字段','output · diagnostic · stopReason']],
-      designs:[['释放时机','后端 grant 到达后再启动待执行 work','release timing'],['并行宽度','同时启动多少 ready child activation','active children'],['层级深度','父子 activation 的最大嵌套深度','maxDepth'],['取消与回收','记录 stopReason、dispose 时间和资源成本','cancel / dispose']],
-      calls:['Parent workflow：生成 work item 并读取 backend state','Topic1 gate：决定 release / skip / expand / mode / stop','startActivation：Manager 做 capability check 与 reserve','Provider：把请求交给 local child 或 external DSH execution','Child activation：执行 prompt / work item','result：返回 output、structured、diagnostic、stopReason','delivery / dispose：交付给 parent / caller，或取消并释放资源'],
-      actions:['work item 与 activation 分离：有 work 不代表已经占用资源','release timing：只在 backend grant、queue / KV / CPU 允许时启动','width：ready work 的 child activation 数量','depth：maxDepth / parent-child 层级限制','cancellation：记录 stopReason 和 dispose 成本，不把取消当免费操作'],
-      params:['provider、label、childId、parent','request.prompt、cwd、agentPreset、agentOptions','signal = AbortSignal；delivery = parent / caller','outputSchema、maxDepth、structured result','Topic1 controller prompt 是建议 schema，不是 DSH 内置策略'],
-      prompt:'Given backend state and ready work items, choose one action:\\nrelease(k), skip(ids), expand(template), mode(profile), or stop(reason).\\nNever claim hidden benchmark answers.\\nRecord the observed state and the decision reason.\\n\\n这是 Topic1 控制器的建议 prompt；DSH 提供 activation API，不规定该控制策略。',
-      raw:{provider:'dsh-sdk',label:'research-unit-03',parent:'parent-session-001',request:{cwd:'/workspace',prompt:'research subtask',maxDepth:2},signal:'AbortSignal',delivery:'caller',result:{stopReason:'completed',output:'<child output>',diagnostic:'<optional>'},lifecycle_trace:'API shape example; not a measured runtime trace'},
-      note:'DSH subagent API 提供 activation、parent、provider、result、stopReason、dispose / cancel 等运行时边界；release / expand / stop 是 Topic1 的控制策略设计空间。'
+      title:'DeepSeek Harness · 子 Agent 生命周期',
+      overview:'固定 revision f3803c9：本地子任务选择 spawn / fork，经 Manager 检查身份、能力和 activation 容量后执行。自然结算先清理并归还槽位，再交付通知并结算 result；后续可向持久子 Session 发消息续接。等待实例、模型请求和持久 Session 是不同对象，详细审计见 Harness 专页。',
+      intro:{purpose:'Harness 管理任务怎样变成带历史的在线实例，以及消息、后代、结果和清理。它不规定研究任务如何拆分，也不等同于推理引擎的请求调度。',flow:'spawn / fork → 准入占槽 → 模型 / 工具 / 消息 → 等待或完成 → 清理归还 → 通知与 result；后续追问可续接',designSpace:'当前优先审计 P1：spawn / fork / 续接的上下文交接代价；P2：结果交付是否造成多余父级推理。P3 等待子树驻留与回收仅作为有条件后备。先比较原生机制和简单规则，不将增减 Agent 或通知合并直接视作新贡献。'},
+      sub:'选择上下文 → 准入占槽 → 执行 → 清理归还 → 通知 / result；可继续原有子 Session',
+      meta:[['对象区分','任务 / Session / activation / 模型请求'],['原生容量','每树默认 8；满额拒绝不排队'],['工具委派深度','默认 1，与容量分别控制'],['证据版本','DSH f3803c9 · 2026-10-28']],
+      designs:[['P1 · 上下文交接','先比较原生 spawn / fork / 允许的续接，测实际 usage 与重读','待测：模式选择'],['P2 · 父级唤醒','对比 parent 通知和 caller 程序等待，保留即时澄清','待测：交付边界'],['P3 · 等待驻留','只有真实日志显示等待占槽并造成有害拒绝时继续','条件候选：挂起 / 回收'],['实例与模型分开','activation 占槽不是 GPU 活跃请求或 KV 用量','先记录真实生命周期']],
+      calls:['选择本地 spawn（新对话）或 fork（父级完整轮次快照），也可续接已有子 Session','startActivation 检查身份、能力并预留进程内 activation 槽；满额拒绝','本地 Session 执行多轮模型 / 工具；外部后端是统一接口下的一次执行','消息到运行中目标走步骤边界 Steer；不在线的可继续直接子级会冷恢复','等待后代、未消费输入或停止清理期间仍可占槽；本地 interrupt 不自动停止后代','自然结算：清理 handle，归还槽位，发送 parent 通知（caller 不发送）','随后结算 result；完整持久 Session 可在后续追问中再冷恢复'],
+      actions:['首轮固定逻辑任务和模型，只比较上下文交接与结果交付方式','fork 不含父级当前未完成轮次；当前任务必须显式传入','通知数量不等于父级推理次数；caller 等待是已有强基线','inactive 不等于任务完成；中断确认不等于清理释放','挂起候选必须保护有效后代与已接受消息，不能直接丢工作'],
+      params:['provider、label、可选 childId；request.parent 是真实 Agent 对象','request.prompt 是 ContentBlock[]；cwd、agentPreset、agentOptions 为可选配置','signal 管启动前取消；发布后的执行由 activation handle 管理','delivery = parent / caller；outputSchema、maxDepth 为能力约束选项','maxActiveSubagents 默认 8；工具 maxDepth 默认 1；只表示本轮核对版本'],
+      prompt:'[受控核查任务，非 DSH 官方默认 prompt]\n只读核查固定版本的代码与文档，回答当前明确分派的问题。\n给出结论、文件路径与行号，缺少依据时标为未知。\n当前问题必须明确传入；不要假定 fork 带有父级未完成轮次。\n\n完整八题任务与对照见 Harness 专页的实验准备。',
+      raw:{kind:'illustrative_api_shape_not_executed',source_commit:'f3803c96974ad4a94195fb97e5c637e9c2a3afe3',provider:'spawn',label:'source-audit',request:{parent:'<live Agent object, not a string id>',cwd:'/workspace',prompt:[{type:'text',text:'只读核查指定问题并给出源码依据。'}],maxDepth:1},signal:'<AbortSignal>',delivery:'caller',returned_handle:['childId','messageId','result: Promise','dispose()'],settlement_order:['cleanup','release slot','parent notice if selected','settle result'],measured:false},
+      note:'依据固定 commit f3803c9 的中文 subsystem、package README 和 Manager 实现。P1/P2/P3 是待测假设；本页未运行 DSH 实验，也未取得真实模型 usage。详见 topic1-harness-lifecycle.html。'
     }
   };
   var nodeInfo={
@@ -74,18 +74,18 @@
       hidden:['隐藏评测 / Hidden evaluation','离线计算 pass@1 / pass@5，只提供最终质量信号，不能回流在线调度器。','前接：在线答案','后续：实验统计']
     },
     dsh:{
-      parent:['父 Agent / Parent','创建 work item 并持有上层 policy；生成任务不代表 child activation 已经启动。','前接：用户请求 / 上层 workflow','后续：Topic1 资源控制门'],
-      gate:['Topic1 资源控制门 / Gate','读取 queue、KV、CPU、deadline 和 ready work，决定 release、skip、expand 或 stop，再交给 activation API。','前接：Parent work items + backend state','后续：startActivation'],
-      backend:['后端状态 / Backend state','提供队列、KV、CPU、deadline 与 grant 等观测，供控制门决策；本图将其作为状态输入，而非 Agent。','前接：推理引擎与资源管理器','后续：Topic1 资源控制门'],
-      start:['启动 activation / startActivation','运行时入口，携带 provider、label、request、parent、signal 和 delivery，开始 child 生命周期。','前接：资源控制门的 release 决策','后续：SubagentManager'],
-      manager:['子 Agent 管理器 / Manager','进行 capability check 与资源预留，并维护 parent-child catalog，再将请求路由到 Provider。','前接：startActivation 请求','后续：Local 或 External Provider'],
-      local:['本地 Provider / Local provider','将 activation 路由到本地 child 执行；结果沿用统一的 result / stopReason 边界。','前接：SubagentManager','后续：Child activation'],
-      external:['外部 Provider / External provider','把 activation 交给外部 DSH execution；仍通过统一的结果边界返回。','前接：SubagentManager','后续：Child activation'],
-      child:['子 activation / Child','执行具体 prompt 或 work item，直到完成、报错、取消或达到 maxDepth / token 限制。','前接：Local 或 External Provider','后续：result / stopReason'],
-      result:['结果与停止原因 / Result','把 output、structured、diagnostic 和 stopReason 返回父 workflow，供后续交付或扩展判断。','前接：Child activation','后续：交付给调用者，或 dispose'],
-      delivery:['父级 / 调用者交付 / Delivery','将 child 结果回传给 parent 或 caller，父 workflow 据此继续执行或收束。','前接：result','后续：父 Agent 下一轮决策'],
-      dispose:['释放与取消 / Dispose','停止剩余 activation 并释放资源；取消时间和成本应进入 trace。','前接：超时、停止策略或取消信号','后续：运行时资源回收'],
-      catalog:['Catalog 与 trace','记录 parent-child 关系和状态变化，为后续资源决策与运行分析提供观测。','前接：Manager / activation lifecycle events','后续：后端状态与实验分析']
+      parent:['父 Agent / Parent','提出具体子任务，决定新建或向已有直接子级继续发消息；当前任务需要显式传入。','前接：用户请求 / workflow','后续：新建或续接'],
+      start:['新建上下文 / Spawn or fork','spawn 不带父 transcript；fork 带父级已完成轮次快照，排除当前未完成轮次。两种原生机制构成 P1 的审计基线。','前接：父级任务','后续：startActivation 准入'],
+      manager:['准入与占槽 / Manager','检查身份、能力和 activation 池。顶层 root 不占槽；后代共享默认 8 槽；满额拒绝，没有原生队列。','前接：新建或冷恢复','后续：本地 / 外部执行'],
+      local:['本地 Session / Local','spawn / fork 创建持久子 Session，允许后续消息和冷恢复。一个 Session 最多一个在线 activation。','前接：Manager','后续：多轮模型与工具'],
+      external:['外部一次执行 / External','ACP、Codex、Claude Code、DSH SDK 在此接口下暴露一次执行，统一管理结果与清理；此 DSH 后端不接受 follow-up。','前接：Manager','后续：外部执行'],
+      child:['执行实例 / Activation','本地 activation 交替运行模型、工具和消息；一次 activation 可以有多次模型调用，不能把实例数当 GPU 调用数。','前接：本地或外部执行','后续：可选等待，或清理'],
+      wait:['等待状态 / Waiting','有后代或未消费 inbox 时仍可能驻留占槽；不是所有 inactive 对象都已完成，也不是所有等待实例都在调用模型。','前接：执行产生等待','后续：有新进展再执行，或进入结算'],
+      result:['Result promise 结算','清理、归还槽位和通知之后，result promise 才结算；output / structured / diagnostic / stopReason 不等同于基准任务质量。','前接：清理与通知','后续：程序消费结果或后续任务'],
+      delivery:['结果交付 / Parent or caller','parent 通知可唤醒 idle 父级，busy 父级收到 Steer；caller 不发模型可见的父级完成通知，是整组等待的强基线。','前接：清理与槽位归还','后续：result 结算'],
+      dispose:['清理与归还 / Cleanup','自然完成或显式 dispose / drain 会等待清理后归还槽。interrupt 仅请求停止本地当前轮次，后代继续；不能把中断确认当完整回收。','前接：完成或显式释放','后续：通知及 result 结算'],
+      followup:['后续消息 / SendMessage','已有直接子级驻留时复用槽并在步骤边界接收；未驻留但可继续时冷恢复并重新占槽。外部一次执行不支持这条路径。','前接：父级后续任务','后续：驻留执行，或冷恢复准入'],
+      catalog:['持久目录 / Catalog','目录保留父子成员关系，不携带完整执行状态。list_agents 的 running / inactive 仅描述轮次活动情况，不能据此判定任务成功。','前接：创建时记录成员关系','后续：发现已有子级以供继续']
     }
   };
   function defs(){return '<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#779286"/></marker><marker id="arrow-control" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#c4652d"/></marker><marker id="arrow-runtime" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6a568c"/></marker></defs>'}
@@ -108,10 +108,9 @@
   }
   function graphDsh(){
     var s='<svg viewBox="0 0 1800 700" role="img" aria-labelledby="dsh-title"><title id="dsh-title">DeepSeek Harness activation lifecycle</title>'+defs();
-    s+=group(965,145,280,330,'Provider 路由边界 / PROVIDERS','本地执行或外部 DSH execution');
-    s+=node('parent',25,285,190,88,'父 Agent','Parent · 创建子任务','runtime')+node('gate',250,275,205,108,'资源控制门','Topic1 · 建议策略','control')+node('backend',250,65,205,82,'后端资源状态','队列 · KV · CPU · grant','control')+node('start',500,285,205,88,'启动 activation','startActivation','runtime')+node('manager',750,285,205,88,'子 Agent 管理器','Manager · 检查 / 预留','runtime')+node('local',995,195,220,80,'本地 Provider','Local child','runtime')+node('external',995,355,220,80,'外部 Provider','DSH execution','runtime')+node('child',1280,285,205,88,'子 activation','Child · 执行 prompt','runtime')+node('result',1530,285,220,88,'结果与停止原因','result · stopReason','runtime')+node('delivery',1530,440,220,78,'父级 / 调用者','结果交付','runtime')+node('dispose',1280,545,205,78,'取消与释放','dispose · 记录成本','control')+node('catalog',750,545,205,78,'Catalog 与 trace','父子关系 · 状态记录','control');
-    s+=edge('M215 329 L250 329','work item','runtime',232,316)+edge('M352 147 L352 275','资源观测','control',400,220)+edge('M455 329 L500 329','release','runtime',477,316)+edge('M705 329 L750 329','请求','runtime',728,316)+edge('M955 329 C975 329 970 235 995 235','本地','runtime',973,280)+edge('M955 329 C975 329 970 395 995 395','外部','runtime',973,370)+edge('M1215 235 C1250 235 1245 329 1280 329','执行结果','runtime',1248,268)+edge('M1215 395 C1250 395 1245 329 1280 329','','runtime')+edge('M1485 329 L1530 329','返回状态','runtime',1508,316)+edge('M1640 373 L1640 440','交付','runtime',1670,414)+edge('M1530 485 C1515 540 1460 575 1485 584','取消 / 回收','control',1510,548)+edge('M852 373 L852 545','生命周期事件','control',915,466)+edge('M1640 518 L1640 660 L120 660 L120 373','交付后进入父级下一轮','loop',810,642);
-    return '<div class="dag-scroll">'+s+'</svg></div>'+meta(data.dsh)+designStrip(data.dsh)+caption('点击控制门、activation、Provider 或结果查看生命周期角色','虚线表示资源控制与取消')
+    s+=node('parent',25,300,190,88,'父 Agent','Parent · 具体子任务','runtime')+node('start',255,300,210,88,'新建上下文 · P1','spawn / fork · 审计选择','runtime')+node('manager',510,300,235,88,'准入与占槽','startActivation · 满额拒绝','runtime')+node('local',810,150,210,80,'本地 Session','可多轮 / 冷恢复','runtime')+node('external',810,420,210,80,'外部一次执行','此接口不接受追问','runtime')+node('child',1090,300,200,88,'执行实例','模型 / 工具 / 消息','runtime')+node('dispose',1340,300,190,88,'清理与归还','自然结束 / dispose','runtime')+node('delivery',1580,300,200,88,'结果交付 · P2','parent 通知 / caller','runtime')+node('result',1580,520,200,88,'result 结算','output / stopReason','runtime')+node('followup',270,50,300,90,'给已有本地子级发消息 · P1','驻留接收 / 未驻留冷恢复','runtime')+node('wait',1060,525,250,88,'等待后代或输入 · P3','可选等待 · 仍可能占槽','runtime')+node('catalog',510,525,235,88,'持久目录','成员关系，不是完成状态','runtime');
+    s+=edge('M215 344 L255 344','','runtime')+edge('M465 344 L510 344','','runtime')+edge('M745 344 C780 344 775 190 810 190','本地','runtime',779,255)+edge('M745 344 C780 344 775 460 810 460','外部','runtime',779,417)+edge('M1020 190 C1055 190 1050 344 1090 344','','runtime')+edge('M1020 460 C1055 460 1050 344 1090 344','','runtime')+edge('M1290 344 L1340 344','','runtime')+edge('M1530 344 L1580 344','','runtime')+edge('M1680 388 L1680 520','清理 / 通知之后','runtime',1680,458)+edge('M1180 388 L1180 525','需要等待','runtime',1246,466)+edge('M1060 568 L1035 568 L1035 385 L1090 370','有新进展','runtime',990,526)+edge('M120 300 L120 95 L270 95','','runtime')+edge('M570 95 L1188 95 L1188 300','已驻留：复用槽','runtime',855,76)+edge('M420 140 L420 230 L625 230 L625 300','未驻留：冷恢复需准入','runtime',641,211)+edge('M625 388 L625 525','记录成员','runtime',687,470);
+    return '<div class="dag-scroll">'+s+'</svg></div>'+meta(data.dsh)+designStrip(data.dsh)+caption('先清理并归还槽位，再发送通知并结算 result；P 标记是待测位置','详细动作与实验见 Harness 专页')
   }
   function meta(d){return '<div class="graph-meta">'+d.meta.map(function(x){return '<div><b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span></div>'}).join('')+'</div>'}
   function designStrip(d){return '<div class="design-strip">'+d.designs.map(function(x,i){return '<div class="design-item"><span>设计点 0'+(i+1)+'</span><b>'+esc(x[0])+'</b><p>'+esc(x[1])+'</p><code>'+esc(x[2])+'</code></div>'}).join('')+'</div>'}
@@ -126,7 +125,7 @@
   function renderWorkflowOverview(name){
     var d=data[name],info=d&&d.intro,el=document.getElementById('workflow-overview');
     if(!el||!info)return;
-    el.innerHTML='<div><span class="overview-kicker">WORKFLOW PURPOSE</span><h3>'+esc(d.title)+'</h3><p>'+esc(info.purpose)+'</p></div><div><h3>一次任务流程</h3><p class="overview-flow">'+esc(info.flow)+'</p></div><div><h3>Topic1 可能有的 Design 空间</h3><span class="overview-hypothesis">待验证设想 · 不等同于论文已有结论</span><p>'+esc(info.designSpace)+'</p><details class="overview-paper-boundary"><summary>与 INFRAMIND / Murakkab 的区别</summary><p><strong>INFRAMIND：</strong>任务开始时选择拓扑、Agent 数与角色；执行中调整模型路由、推理深度与队列调度。论文已将运行中按负载 / 部分结果修改拓扑列为未来工作。</p><p><strong>Murakkab：</strong>周期级联合优化模型、资源与工作流配置，支持按请求结合任务难度与系统条件选择配置；动态 coding 流程也支持测试 / 审查反馈驱动的继续或早停。</p><p><strong>Topic1 待验证：</strong>在具体工作流的执行边界，将实时后端状态与中间结果联动，重分配尚未启动的后续工作量。动态配置、增减调用或早停本身不作为独有创新；控制策略、适用边界与相对两篇论文基线的增量收益仍需验证。</p><p>论文依据：<a href="https://arxiv.org/html/2606.11440v1#S6">INFRAMIND §6</a> · <a href="https://www.usenix.org/conference/osdi26/presentation/chaudhry">Murakkab §3 / §4.4</a></p></details></div>';
+    el.innerHTML='<div><span class="overview-kicker">WORKFLOW PURPOSE</span><h3>'+esc(d.title)+'</h3><p>'+esc(info.purpose)+'</p>'+ (name==='dsh'?'<p><a href="topic1-harness-lifecycle.html">查看 Harness 动作、痛点与实验准备 →</a></p>':'')+'</div><div><h3>一次任务流程</h3><p class="overview-flow">'+esc(info.flow)+'</p></div><div><h3>Topic1 可能有的 Design 空间</h3><span class="overview-hypothesis">待验证设想 · 不等同于论文已有结论</span><p>'+esc(info.designSpace)+'</p><details class="overview-paper-boundary"><summary>与 INFRAMIND / Murakkab 的区别</summary><p><strong>INFRAMIND：</strong>任务开始时选择拓扑、Agent 数与角色；执行中调整模型路由、推理深度与队列调度。论文已将运行中按负载 / 部分结果修改拓扑列为未来工作。</p><p><strong>Murakkab：</strong>周期级联合优化模型、资源与工作流配置，支持按请求结合任务难度与系统条件选择配置；动态 coding 流程也支持测试 / 审查反馈驱动的继续或早停。</p><p><strong>Topic1 待验证：</strong>'+esc(name==='dsh'?'固定任务分解，先量出上下文交接、消息唤醒与等待驻留的真实代价。原生 spawn / fork / 续接、caller 等待与简单规则是强基线；尚未确认新贡献。':'在具体工作流的执行边界，将实时后端状态与中间结果联动，重分配尚未启动的后续工作量。动态配置、增减调用或早停本身不作为独有创新；控制策略、适用边界与相对两篇论文基线的增量收益仍需验证。')+'</p><p>论文依据：<a href="https://arxiv.org/html/2606.11440v1#S6">INFRAMIND §6</a> · <a href="https://www.usenix.org/conference/osdi26/presentation/chaudhry">Murakkab §3 / §4.4</a></p></details></div>';
   }
   Object.keys(window.Topic1WorkflowExtras||{}).forEach(function(name){
     var spec=window.Topic1WorkflowExtras[name];

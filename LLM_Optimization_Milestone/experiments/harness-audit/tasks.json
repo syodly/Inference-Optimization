@@ -1,0 +1,20 @@
+{
+  "kind": "controlled_source_audit_workload_not_benchmark_results",
+  "source_repository": "https://github.com/deepseek-ai/deepseek-harness",
+  "source_commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "common_instruction": "只读核查固定版本的代码和文档。用中文给出结论、文件路径与行号，以及必要的限制；没有依据的行为标为未知。不要修改文件，不使用隐藏评分依据。当前问题以本条消息为准，即使从父会话 fork 也须读取本条要求。",
+  "phase_1": [
+    {"id":"context", "prompt":"比较 spawn 和 fork 让子 Agent 看见什么：当前尚未完成的父轮次会被带入吗？fork 后的父级更新是否自动可见？请同时说明 prefix cache 复用成立的条件。", "source_hints":["packages/subagent/subagent-spawn-in-process/README.md","packages/subagent/subagent-fork-in-process/README.md"], "continuation_of":null},
+    {"id":"capacity", "prompt":"核查默认 activation 容量、顶层父级是否占槽、后代是否共享容量，以及满额时排队还是拒绝。将它与模型请求并发数、委派深度区分。", "source_hints":["packages/subagent/subagent/README.md","packages/subagent/subagent/src/activation.ts"], "continuation_of":null},
+    {"id":"delivery", "prompt":"核查 parent 和 caller 两种结果交付方式。完成通知到空闲或运行中的父 Agent 时分别发生什么？可以断言六个子结果一定使父级推理六次吗？", "source_hints":["packages/subagent/subagent/README.md","packages/subagent/subagent/src/manager.ts"], "continuation_of":null},
+    {"id":"interrupt", "prompt":"比较本地 interrupt_agent 与 dispose/drainChildren：中断返回时是否已停止、后代是否跟着停止、未消费 inbox 如何处理、槽位何时释放？", "source_hints":["packages/subagent/tool-subagent-control/README.md","docs/subsystems/subagent.zh.md","packages/subagent/subagent/src/manager.ts"], "continuation_of":null},
+    {"id":"catalog", "prompt":"核查 list_agents 的 running/inactive 是什么状态，是否等同任务完成或消息可送达。目录记录的是成员关系还是完整执行状态，列举大量历史子级有什么限制？", "source_hints":["packages/subagent/tool-subagent-control/README.md","docs/subsystems/subagent.zh.md"], "continuation_of":null},
+    {"id":"resume", "prompt":"核查已结束本地子 Session 的冷恢复条件与恢复流程。什么身份/历史会保留？有哪些外部后端在这个 DSH 接口下不接受 follow-up？是否等同它们产品本身不能多轮？", "source_hints":["packages/subagent/subagent/README.md","packages/subagent/subagent/src/manager.ts"], "continuation_of":null}
+  ],
+  "phase_2": [
+    {"id":"capacity-followup", "prompt":"继续刚才的容量核查：运行中将 maxActiveSubagents 调低，现有 child 会被杀掉吗？给已经驻留的 child 发消息是否另占一个槽？仅用当前版本依据回答。", "source_hints":["packages/subagent/subagent/README.md"], "continuation_of":"capacity", "reuse_allowed":true},
+    {"id":"interrupt-followup", "prompt":"继续刚才的中断核查：中断请求已发出但 Agent 尚未 idle 期间，接受的 follow-up 会立即运行吗？说明文档列出的 wake gap，与中断确认和最终释放分别是什么关系。", "source_hints":["packages/subagent/subagent/README.md","packages/subagent/tool-subagent-control/README.md"], "continuation_of":"interrupt", "reuse_allowed":true}
+  ],
+  "controls": {"same_model":true,"same_preset":true,"same_permissions":true,"same_source_versions":true,"mode_policy_is_only_first_axis":true,"future_answers_visible_to_controller":false},
+  "stage": "prepared_not_executed"
+}

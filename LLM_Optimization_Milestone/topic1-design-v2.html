@@ -41,12 +41,12 @@
   <div class="shell">
     <header class="topbar">
       <div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>Topic1 · design and workload plan</span></div></div>
-      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">返回 Milestone</a><a href="topic1-admission-lab.html">准入实验室</a><a href="papers/paper-60.html">HEAR 精读</a><a href="topic-boundary-review.html">Topic 边界复审</a></nav>
+      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">返回 Milestone</a><a href="topic1-harness-lifecycle.html">当前 Harness 焦点</a><a href="topic1-admission-lab.html">历史排队演示</a><a href="papers/paper-60.html">HEAR 精读</a><a href="topic-boundary-review.html">Topic 边界复审</a></nav>
     </header>
     <main class="source-page">
       <h1>Topic1：Harness–Engine 协同框架</h1>
       <p class="source-note">组件化候选方案与数据使用计划 · 2026-10-19 · 尚待实验验证</p>
-      <div class="dataset-note"><strong>2026-10-28 收敛复审：</strong>下面保留原三组件候选框架。当前先区分 workflow、Harness activation 与 Engine invocation，并验证固定工作集下的跨 root READY 准入机会；尚未确认新的论文贡献。详见 <a href="topic1-design-space-review-20261028.md">方向评估与候选排序</a>，可在 <a href="topic1-admission-lab.html">准入实验室</a> 调整合成场景和检查事件。</div>
+      <div class="dataset-note"><strong>2026-10-28 当前焦点：</strong>转向真实 Harness 生命周期，优先审计上下文交接与父级唤醒，等待实例驻留作为有条件后备。查看 <a href="topic1-harness-lifecycle.html">一般动作、候选痛点与实验准备</a>。下方三组件框架及 <a href="topic1-design-space-review-20261028.md">此前收敛复审</a> 保留为历史候选；<a href="topic1-admission-lab.html">排队演示</a> 不承担当前研究动机。</div>
       <article class="source-content">
         <p class="topic-lead">目标：让 Agent Harness 对工作流的了解，与推理引擎对 KV、队列和资源压力的观测共同影响任务推进。候选框架由三个功能组件组成，共用一个计划选择器；HEAR 是双向协同的关键参照。</p>
 

@@ -2,6 +2,8 @@
 
 日期：2026-10-28
 
+> 当前研究重心已转向 [Harness 生命周期、候选痛点与实验准备](topic1-harness-lifecycle.html)。本文及合成准入演示保留为此前阶段的分析，不承担当前研究动机。
+
 ## 结论
 
 目前没有足够证据支持把“按后端资源动态增减 Agent”作为论文主张。这个表述同时混合了任务拓扑、Harness activation 和 Engine admission，而且直接撞上了多条已有路线：CONCUR 控制活跃 Agent 数；Coda 已做 readiness-informed admission、bounded reordering 和 execution grouping；INFRAMIND 调整拓扑与逐步路由；TOPAS、SAGA、Maestro 已把 workflow 进度、KV 或任务完成时间带进调度。把场景换成在线、多 root 或 ODR，本身不能消除这些重合。
