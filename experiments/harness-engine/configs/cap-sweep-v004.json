@@ -1,0 +1,14 @@
+{
+  "batch_id": "cap-sweep-v004",
+  "runs": [
+    {"run_id":"v004-cal-fixed12","args":["--policy","fixed","--cap","12"],"purpose":"静态上限12校准","interpretation":"保持七次必做模型调用和自然检索，测量限制展开是否改善整任务完成。单轮不选择最终赢家，需与其他上限、直接派发及重复轮次联合判断。"},
+    {"run_id":"v004-cal-fixed4","args":["--policy","fixed","--cap","4"],"purpose":"静态上限4校准","interpretation":"这是较强背压对照，检查降低在途数是否产生额外前端等待或吞吐损失，不能只因缓存更空就认为策略更优。"},
+    {"run_id":"v004-cal-native-a","args":["--policy","native"],"purpose":"无哈希校验重叠的直接派发对照","interpretation":"前一批质量校准与模型文件哈希校验有短时重叠，不能用作严谨计时基线。本轮在校验结束后重新测量，作为静态扫描中的直接派发参考。"},
+    {"run_id":"v004-cal-fixed24","args":["--policy","fixed","--cap","24"],"purpose":"静态上限24校准","interpretation":"初始三个子任务乘八个根任务最多形成二十四个并发调用，上限二十四接近直接派发，提供重复与限制不生效时的边界对照。"},
+    {"run_id":"v004-cal-fixed8","args":["--policy","fixed","--cap","8"],"purpose":"静态上限8校准","interpretation":"与其他静态上限共同建立时延和吞吐折衷；后续自适应机制至少要胜过经该校准选择的静态配置，不能只比较过小上限。"},
+    {"run_id":"v004-cal-progress12","args":["--policy","progress","--cap","12"],"purpose":"相同上限下的任务进度优先","interpretation":"该基线只改释放顺序，优先汇总与接近完成任务，同时设置老化。它使用已有 DAG 信息，若已解决损失，不能将相似做法包装为新机制。"},
+    {"run_id":"v004-cal-progress8","args":["--policy","progress","--cap","8"],"purpose":"较小上限下的任务进度优先","interpretation":"与相同上限的先到先服务逐任务配对，分析收敛和展开竞争；同时核对实际 token、截断和质量，避免将输出变短误认为调度收益。"},
+    {"run_id":"v004-cal-pressure12","args":["--policy","pressure","--cap","12"],"purpose":"实时引擎压力反馈基线","interpretation":"只读取真实缓存占用和等待数；若本轮从未触发收缩，就应视为固定上限十二的重复，而非动态反馈机制已经有效。"},
+    {"run_id":"v004-cal-native-b","args":["--policy","native"],"purpose":"扫描末尾直接派发重复","interpretation":"与扫描中段同配置对照，初步检查运行顺序、温度和编译缓存影响。小样本差异只用于安排下一轮，不直接形成稳定加速结论。"}
+  ]
+}

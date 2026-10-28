@@ -1,0 +1,11 @@
+{
+  "run_id": "v004-cal-pressure12",
+  "args": [
+    "--policy",
+    "pressure",
+    "--cap",
+    "12"
+  ],
+  "purpose": "实时引擎压力反馈基线",
+  "interpretation": "只读取真实缓存占用和等待数；若本轮从未触发收缩，就应视为固定上限十二的重复，而非动态反馈机制已经有效。"
+}

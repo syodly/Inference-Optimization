@@ -1,0 +1,23 @@
+{
+  "batch_id": "calibration-v002",
+  "runs": [
+    {
+      "run_id": "v002-warmup-sharded1",
+      "args": ["--count", "1"],
+      "purpose": "真实多 Session 链路与内核预热",
+      "interpretation": "该轮包含首次内核编译与冷启动，仅用于审计完整调用、事件和评分，不能进入调度速度比较。下一轮使用独立缓存复位协议，预热与测量分开。"
+    },
+    {
+      "run_id": "v002-cal-direct8",
+      "args": ["--workflow", "direct", "--count", "8"],
+      "purpose": "同一模型的集中上下文质量对照",
+      "interpretation": "该轮给单个父 Session 提供全部上下文，用于判断分片与证据压缩是否损害可解性，调用图不同，不能将其与七调用流程直接当作等工作量调度比较。"
+    },
+    {
+      "run_id": "v002-cal-sharded8",
+      "args": ["--count", "8"],
+      "purpose": "固定必做子任务的质量与系统校准",
+      "interpretation": "该轮所有子任务必须完成，先核查检索是否遗漏支持文档、证据是否被截断及父任务是否正确汇合；质量通过后才用相同流程评估派发痛点。"
+    }
+  ]
+}

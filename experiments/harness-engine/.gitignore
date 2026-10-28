@@ -1,0 +1,12 @@
+.venv*/
+datasets/**/*.parquet
+__pycache__/
+*.pyc
+models/
+cache/
+datasets/raw/
+runs/
+logs/
+state/
+*.tar.gz
+

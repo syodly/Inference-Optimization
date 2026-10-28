@@ -1,0 +1,11 @@
+{
+  "run_id": "v004-cal-progress8",
+  "args": [
+    "--policy",
+    "progress",
+    "--cap",
+    "8"
+  ],
+  "purpose": "较小上限下的任务进度优先",
+  "interpretation": "与相同上限的先到先服务逐任务配对，分析收敛和展开竞争；同时核对实际 token、截断和质量，避免将输出变短误认为调度收益。"
+}

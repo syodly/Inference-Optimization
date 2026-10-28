@@ -1,0 +1,155 @@
+{
+  "run_id": "v003-warmup-sharded1",
+  "policy": "native",
+  "cap": 12,
+  "expected_roots": 1,
+  "completed_root_records": 1,
+  "engine_errors": 0,
+  "root_errors": 0,
+  "parse_errors": 0,
+  "model_calls": 7,
+  "expected_model_calls": 7,
+  "length_finishes": 0,
+  "quality": {
+    "em": 0.0,
+    "f1": 0.6666666666666666,
+    "support_title_recall": 1.0
+  },
+  "root_latency_seconds": {
+    "n": 1,
+    "mean": 20.270915293018334,
+    "p50": 20.270915293018334,
+    "p95": 20.270915293018334,
+    "min": 20.270915293018334,
+    "max": 20.270915293018334
+  },
+  "batch_makespan_seconds": 20.271316756960005,
+  "frontend_wait_seconds": {
+    "n": 7,
+    "mean": 0.0002775825560092926,
+    "p50": 0.0002023889683187008,
+    "p95": 0.0006664034328423437,
+    "min": 0.00013756495900452137,
+    "max": 0.0008590910583734512
+  },
+  "model_ttft_seconds": {
+    "n": 7,
+    "mean": 1.5718979144335858,
+    "p50": 0.6707551330327988,
+    "p95": 3.4594345124438406,
+    "min": 0.20911700697615743,
+    "max": 3.4595142839243636
+  },
+  "stage": {
+    "query": {
+      "calls": 3,
+      "latency": {
+        "n": 3,
+        "mean": 5.910530369340752,
+        "p50": 5.871563930995762,
+        "p95": 6.132173440791666,
+        "min": 5.698897124035284,
+        "max": 6.161130052991211
+      },
+      "ttft": {
+        "n": 3,
+        "mean": 3.003545048995875,
+        "p50": 3.4592483789892867,
+        "p95": 3.459487693430856,
+        "min": 2.091872484073974,
+        "max": 3.4595142839243636
+      }
+    },
+    "evidence": {
+      "calls": 3,
+      "latency": {
+        "n": 3,
+        "mean": 10.338073543350523,
+        "p50": 11.14882161701098,
+        "p95": 11.719122021459043,
+        "min": 8.082910279976204,
+        "max": 11.782488733064383
+      },
+      "ttft": {
+        "n": 3,
+        "mean": 0.5945110823571061,
+        "p50": 0.6559424980077893,
+        "p95": 0.6692738695302978,
+        "min": 0.4568356160307303,
+        "max": 0.6707551330327988
+      }
+    },
+    "synthesis": {
+      "calls": 1,
+      "latency": {
+        "n": 1,
+        "mean": 2.610123247024603,
+        "p50": 2.610123247024603,
+        "p95": 2.610123247024603,
+        "min": 2.610123247024603,
+        "max": 2.610123247024603
+      },
+      "ttft": {
+        "n": 1,
+        "mean": 0.20911700697615743,
+        "p50": 0.20911700697615743,
+        "p95": 0.20911700697615743,
+        "min": 0.20911700697615743,
+        "max": 0.20911700697615743
+      }
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 5066,
+    "completion_tokens": 418,
+    "total_tokens": 5484
+  },
+  "engine": {
+    "running": {
+      "n": 77,
+      "mean": 1.9610389610389611,
+      "p50": 2.0,
+      "p95": 3.0,
+      "min": 0.0,
+      "max": 3.0
+    },
+    "waiting": {
+      "n": 77,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "kv_usage": {
+      "n": 77,
+      "mean": 0.025149976926626683,
+      "p50": 0.027918781725888353,
+      "p95": 0.040609137055837574,
+      "min": 0.0,
+      "max": 0.048223350253807085
+    }
+  },
+  "preemptions_delta": 0.0,
+  "prefix_queries_delta": 5066.0,
+  "prefix_hits_delta": 0.0,
+  "max_frontend_inflight_calls": 3,
+  "max_frontend_pending": 3,
+  "max_tools_inflight": 0,
+  "limitation": "Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.",
+  "trace_audit": {
+    "run_id": "v003-warmup-sharded1",
+    "passed": true,
+    "violations": [],
+    "request_count": 7,
+    "response_count": 7,
+    "root_count": 1,
+    "tool_count": 3,
+    "call_stages": {
+      "query": 3,
+      "evidence": 3,
+      "synthesis": 1
+    },
+    "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+  }
+}

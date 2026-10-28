@@ -1,0 +1,268 @@
+{
+  "tasks": "datasets/hotpot/tasks.jsonl",
+  "out": "runs/v003-warmup-sharded1",
+  "url": "http://127.0.0.1:18081",
+  "model": "qwen27b",
+  "split": "calibration",
+  "workflow": "sharded",
+  "offset": 0,
+  "count": 1,
+  "branches": 3,
+  "top_k": 3,
+  "policy": "native",
+  "cap": 12,
+  "seed": 1729,
+  "query_tokens": 40,
+  "evidence_tokens": 192,
+  "answer_tokens": 128,
+  "thinking": false,
+  "keep_cache": false,
+  "arrival_interval": 0,
+  "second_wave": 0,
+  "cohort": 4,
+  "tool_profile": "natural",
+  "tool_delay": 4,
+  "task_ids": [
+    "5a722a6855429971e9dc9320"
+  ],
+  "started": 1793209103.746128,
+  "tasks_sha256": "807ccbf4240968e382be8af2c932812eff3be49cea09a6b82cf9433a0fc0ae74",
+  "expected_model_calls": 7,
+  "application": "controlled source-grounded multi-agent HotpotQA; not official harness",
+  "source_sha256": {
+    "serve.py": "fb0800791fdf32a11538e27352693c5b4803cf17ebd89c014fe9019c1929c8b7",
+    "analyze.py": "09c3754c912d492a06ac69c9ed8b41680c779b134225831481c798c8ad7e896c",
+    "engine.py": "d43e91566b09ddc263ecef92ef2d38837110998c577cbe729e752da2c3ecdfb7",
+    "remote_setup.py": "78ba2844f2db2c6635046edb468c0feaa6fd3d05b4feeb6faaa626f07a98e05e",
+    "prepare_data.py": "427ddc118de282e7d44ed2d91ca13e804c314efe6336990be1f08ab386e56a20",
+    "batch.py": "8099f746b07d53e2fb28e3c22d385e01030c3b3876feef509ee5c41c794ad008",
+    "scheduler.py": "28980398188cbd0a6e000b9780ae71e54953e84a8589a9270c93b0c313e841cd",
+    "verify_model.py": "6d5797d56a246ce7fff65edc420c7de80f26f1b0a8cd4fbfeadc0b117b47c002",
+    "audit.py": "bae301c01e3ebf8f334e9f3a8e1c08ce426a3b7744552461b4e4fac39bbdaa32",
+    "run.py": "1d58f6a0f7949069d24b92c0e279104a6313ee72d12f56c7680d26a09af0f600"
+  },
+  "server": {
+    "pid": 822581,
+    "started": 1793208968.8962877,
+    "command": [
+      "/home/Liangyijia_Hu/harness-engine/.venv-engine/bin/vllm",
+      "serve",
+      "/home/Liangyijia_Hu/harness-engine/models/Qwen/Qwen3___8-27B",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18081",
+      "--served-model-name",
+      "qwen27b",
+      "--tensor-parallel-size",
+      "2",
+      "--dtype",
+      "bfloat16",
+      "--language-model-only",
+      "--max-model-len",
+      "16384",
+      "--max-num-seqs",
+      "48",
+      "--max-num-batched-tokens",
+      "8192",
+      "--gpu-memory-utilization",
+      ".9",
+      "--enable-prefix-caching",
+      "--enable-chunked-prefill",
+      "--enable-request-id-headers",
+      "--reasoning-parser",
+      "qwen3",
+      "--scheduling-policy",
+      "priority",
+      "--enforce-eager"
+    ],
+    "gpu_probe": "0, 14, 0\n1, 14, 0\n2, 14, 0\n3, 14, 0\n4, 14, 0\n5, 14, 0\n6, 14, 0\n7, 14, 0\n",
+    "env_overrides": {
+      "CUDA_VISIBLE_DEVICES": "0,1",
+      "OMP_NUM_THREADS": "1",
+      "VLLM_SERVER_DEV_MODE": "1"
+    },
+    "model_path": "/home/Liangyijia_Hu/harness-engine/models/Qwen/Qwen3___8-27B",
+    "log": "/home/Liangyijia_Hu/harness-engine/logs/engine-eager.log",
+    "mode": "eager; calibration baseline. Compare graph mode separately before final performance claims."
+  },
+  "model_manifest": {
+    "model_id": "Qwen/Qwen3.8-27B",
+    "path": "/home/Liangyijia_Hu/harness-engine/models/Qwen/Qwen3___8-27B",
+    "revision": {
+      "ChineseName": "",
+      "CreatedAt": 1786731894,
+      "Revision": "master",
+      "ShowName": ""
+    },
+    "files": [
+      {
+        "path": ".mdl",
+        "bytes": 41,
+        "sha256": "0525656ef5dc6f7556d7b89bac1cfa046a30f3e0903eb15f3079c033c4cf5c88"
+      },
+      {
+        "path": ".msc",
+        "bytes": 2566,
+        "sha256": "4b35c3d680c776934520a4bcda60c35d98e7ad5f86699d4358d97d7a7861a07f"
+      },
+      {
+        "path": ".mv",
+        "bytes": 36,
+        "sha256": "07ab7ae541d88a1d127797e51e3952be136e4418e3d4ebc5ae0151d64377bb50"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 11343,
+        "sha256": "50cbab8a892c5f2993b8c7351a99182507472def3b1374558308605d99b86b32"
+      },
+      {
+        "path": "README.md",
+        "bytes": 64430,
+        "sha256": "b8bdd4c23ab87abda560e4061f0fe349aac2b02c5de66e5bca24ecd5a8113875"
+      },
+      {
+        "path": "chat_template.jinja",
+        "bytes": 8952,
+        "sha256": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041"
+      },
+      {
+        "path": "config.json",
+        "bytes": 4312,
+        "sha256": "191e0af232104ed8b65258cf3fb2b842e288008baca7633c11b82a1ac7203aab"
+      },
+      {
+        "path": "configuration.json",
+        "bytes": 29,
+        "sha256": "8fa209ef18ac53dea0c47cf8d6f4e92c907565a4971bee413c1772e314a251fa"
+      },
+      {
+        "path": "crc32.txt",
+        "bytes": 238,
+        "sha256": "b42dd291f5f98b05807e458f5b47849969a9b3326acbf0c97d28b05826740b83"
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 202,
+        "sha256": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e"
+      },
+      {
+        "path": "merges.txt",
+        "bytes": 3353259,
+        "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+      },
+      {
+        "path": "model-00001-of-00018.safetensors",
+        "bytes": 3966730552
+      },
+      {
+        "path": "model-00002-of-00018.safetensors",
+        "bytes": 3043080328
+      },
+      {
+        "path": "model-00003-of-00018.safetensors",
+        "bytes": 2542796952
+      },
+      {
+        "path": "model-00004-of-00018.safetensors",
+        "bytes": 3988973152
+      },
+      {
+        "path": "model-00005-of-00018.safetensors",
+        "bytes": 2099339864
+      },
+      {
+        "path": "model-00006-of-00018.safetensors",
+        "bytes": 3979553696
+      },
+      {
+        "path": "model-00007-of-00018.safetensors",
+        "bytes": 2108759344
+      },
+      {
+        "path": "model-00008-of-00018.safetensors",
+        "bytes": 3979553696
+      },
+      {
+        "path": "model-00009-of-00018.safetensors",
+        "bytes": 2108759344
+      },
+      {
+        "path": "model-00010-of-00018.safetensors",
+        "bytes": 3979553696
+      },
+      {
+        "path": "model-00011-of-00018.safetensors",
+        "bytes": 2108759344
+      },
+      {
+        "path": "model-00012-of-00018.safetensors",
+        "bytes": 3979553696
+      },
+      {
+        "path": "model-00013-of-00018.safetensors",
+        "bytes": 2108759344
+      },
+      {
+        "path": "model-00014-of-00018.safetensors",
+        "bytes": 3979553696
+      },
+      {
+        "path": "model-00015-of-00018.safetensors",
+        "bytes": 2108759344
+      },
+      {
+        "path": "model-00016-of-00018.safetensors",
+        "bytes": 3979564040
+      },
+      {
+        "path": "model-00017-of-00018.safetensors",
+        "bytes": 2108759344
+      },
+      {
+        "path": "model-00018-of-00018.safetensors",
+        "bytes": 3392197344
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 112216,
+        "sha256": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df"
+      },
+      {
+        "path": "preprocessor_config.json",
+        "bytes": 390,
+        "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 12809320,
+        "sha256": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 17928,
+        "sha256": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27"
+      },
+      {
+        "path": "video_preprocessor_config.json",
+        "bytes": 385,
+        "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+      },
+      {
+        "path": "vocab.json",
+        "bytes": 6722759,
+        "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+      }
+    ],
+    "finished": 1793208628.1486688
+  },
+  "env": {
+    "status": "complete",
+    "started": 1793207484.3489857,
+    "finished": 1793207706.4346402,
+    "result": {
+      "python": "/home/Liangyijia_Hu/harness-engine/.venv-engine/bin/python",
+      "versions": "{\"torch\": \"2.13.0+cu132\", \"cuda\": \"13.2\", \"cuda_available\": true, \"vllm\": \"0.32.0\", \"transformers\": \"5.19.0\"}"
+    }
+  }
+}

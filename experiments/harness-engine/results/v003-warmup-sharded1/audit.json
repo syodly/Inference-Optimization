@@ -1,0 +1,15 @@
+{
+  "run_id": "v003-warmup-sharded1",
+  "passed": true,
+  "violations": [],
+  "request_count": 7,
+  "response_count": 7,
+  "root_count": 1,
+  "tool_count": 3,
+  "call_stages": {
+    "query": 3,
+    "evidence": 3,
+    "synthesis": 1
+  },
+  "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+}
