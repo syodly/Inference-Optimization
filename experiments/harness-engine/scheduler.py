@@ -26,7 +26,7 @@ class Controller:
         self.closed = False
 
     def target(self):
-        if self.policy == "native":
+        if self.policy in ["native", "backend_priority"]:
             return 128
         if self.policy == "pressure":
             m = self.engine.latest

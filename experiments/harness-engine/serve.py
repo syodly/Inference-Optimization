@@ -1,4 +1,5 @@
 """Start only this project's server, preserving command, identity and resource evidence."""
+import argparse
 import json
 import os
 from pathlib import Path
@@ -8,6 +9,9 @@ import time
 
 
 root = Path.home() / 'harness-engine'
+ap = argparse.ArgumentParser()
+ap.add_argument('--mode', choices=['eager', 'graph'], default='graph')
+args = ap.parse_args()
 state = json.loads((root / 'state/model.json').read_text())
 if state['status'] != 'complete':
     raise RuntimeError('Model download incomplete')
@@ -25,16 +29,19 @@ command = [str(root / '.venv-engine/bin/vllm'), 'serve', model_path,
            '--tensor-parallel-size', '2', '--dtype', 'bfloat16', '--language-model-only',
            '--max-model-len', '16384', '--max-num-seqs', '48', '--max-num-batched-tokens', '8192',
            '--gpu-memory-utilization', '.9', '--enable-prefix-caching', '--enable-chunked-prefill',
-           '--enable-request-id-headers', '--reasoning-parser', 'qwen3', '--scheduling-policy', 'priority',
-           '--enforce-eager']
-env = dict(os.environ, CUDA_VISIBLE_DEVICES='0,1', OMP_NUM_THREADS='1', VLLM_SERVER_DEV_MODE='1')
-log_path = root / 'logs/engine-eager.log'
+           '--enable-request-id-headers', '--reasoning-parser', 'qwen3', '--scheduling-policy', 'priority']
+if args.mode == 'eager':
+    command.append('--enforce-eager')
+overrides = {'CUDA_VISIBLE_DEVICES': '0,1', 'OMP_NUM_THREADS': '1', 'VLLM_SERVER_DEV_MODE': '1',
+             'CUDA_HOME': '/usr/local/cuda-13.2', 'PATH': '/usr/local/cuda-13.2/bin:' + os.environ['PATH']}
+env = dict(os.environ, **overrides)
+log_path = root / f'logs/engine-{args.mode}.log'
 with log_path.open('ab', buffering=0) as log:
     proc = subprocess.Popen(command, cwd=root, env=env, stdin=subprocess.DEVNULL,
                             stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
 metadata = {'pid': proc.pid, 'started': time.time(), 'command': command, 'gpu_probe': probe,
-            'env_overrides': {'CUDA_VISIBLE_DEVICES': '0,1', 'OMP_NUM_THREADS': '1', 'VLLM_SERVER_DEV_MODE': '1'},
+            'env_overrides': overrides,
             'model_path': model_path, 'log': str(log_path),
-            'mode': 'eager; calibration baseline. Compare graph mode separately before final performance claims.'}
+            'mode': args.mode}
 (root / 'state/server.json').write_text(json.dumps(metadata, indent=2))
 print(json.dumps(metadata, indent=2))

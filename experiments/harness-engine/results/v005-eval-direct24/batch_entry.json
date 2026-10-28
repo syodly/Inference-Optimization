@@ -1,0 +1,13 @@
+{
+  "run_id": "v005-eval-direct24",
+  "args": [
+    "--split",
+    "evaluation",
+    "--count",
+    "24",
+    "--workflow",
+    "direct"
+  ],
+  "purpose": "评估集集中上下文质量参照",
+  "interpretation": "工作图不同，此轮只检查真实问题是否因分片和证据压缩而不可解；不能将其速度直接当作固定工作调度加速。"
+}

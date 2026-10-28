@@ -1,0 +1,15 @@
+{
+  "run_id": "v005-eval-fixed24",
+  "args": [
+    "--split",
+    "evaluation",
+    "--count",
+    "24",
+    "--policy",
+    "fixed",
+    "--cap",
+    "24"
+  ],
+  "purpose": "更保守静态分波边界",
+  "interpretation": "补充实际静态并发曲线，检验校准集上压低并发的损失是否在较宽前沿中改变；不根据这个评估结果事后挑选报告赢家。"
+}

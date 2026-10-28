@@ -54,7 +54,7 @@ def audit(directory: Path):
             violations.append('Tool ordering invalid for ' + tool['node_id'])
         if tool['elapsed'] + .001 < tool['actual_cpu_seconds'] + tool['injected_delay_seconds']:
             violations.append('Tool duration accounting invalid for ' + tool['node_id'])
-    if config['policy'] != 'native':
+    if config['policy'] not in ['native', 'backend_priority']:
         if any(e['inflight_calls'] > e['target'] for e in events if e['event'] == 'frontend_release'):
             violations.append('New admission exceeded observed target')
     result = {'run_id': directory.name, 'passed': not violations, 'violations': violations,

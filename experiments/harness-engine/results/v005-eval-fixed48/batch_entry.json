@@ -1,0 +1,15 @@
+{
+  "run_id": "v005-eval-fixed48",
+  "args": [
+    "--split",
+    "evaluation",
+    "--count",
+    "24",
+    "--policy",
+    "fixed",
+    "--cap",
+    "48"
+  ],
+  "purpose": "与引擎活跃上限一致的静态背压",
+  "interpretation": "在途四十八为引擎配置给出的自然强基线。若简单上限已经达到最好结果，后续机制必须承认这一点，不能靠挑选弱上限展示优势。"
+}

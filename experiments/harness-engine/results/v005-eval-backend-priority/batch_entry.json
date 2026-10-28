@@ -1,0 +1,13 @@
+{
+  "run_id": "v005-eval-backend-priority",
+  "args": [
+    "--split",
+    "evaluation",
+    "--count",
+    "24",
+    "--policy",
+    "backend_priority"
+  ],
+  "purpose": "后端获得阶段语义的优先级基线",
+  "interpretation": "全部就绪调用直接提交，给 evidence 和 synthesis 更高引擎优先级。该基线获得阶段提示，但不能动态更新排队请求的提示或通过回调控制未形成工作，故不冒充完整同信息同动作后端。"
+}

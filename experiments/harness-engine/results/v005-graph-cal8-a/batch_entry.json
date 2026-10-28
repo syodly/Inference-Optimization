@@ -1,0 +1,6 @@
+{
+  "run_id": "v005-graph-cal8-a",
+  "args": [],
+  "purpose": "优化引擎下的低压力参考",
+  "interpretation": "与此前 eager 模式只作配置敏感性对照；主策略比较均使用当前同一图执行服务，不能把引擎模式变化误算为 Harness 收益。"
+}

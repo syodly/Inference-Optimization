@@ -1,0 +1,171 @@
+{
+  "run_id": "v005-eval-progress48",
+  "policy": "progress",
+  "cap": 48,
+  "expected_roots": 24,
+  "completed_root_records": 24,
+  "engine_errors": 0,
+  "root_errors": 0,
+  "parse_errors": 0,
+  "model_calls": 168,
+  "expected_model_calls": 168,
+  "length_finishes": 1,
+  "quality": {
+    "em": 0.7083333333333334,
+    "f1": 0.8039529914529915,
+    "support_title_recall": 0.8125
+  },
+  "root_latency_seconds": {
+    "n": 24,
+    "mean": 15.334939421421344,
+    "p50": 15.311312142002862,
+    "p95": 18.214609434240263,
+    "min": 11.15184365794994,
+    "max": 19.366636382066645
+  },
+  "valid_json_root_latency_seconds": {
+    "n": 24,
+    "mean": 15.334939421421344,
+    "p50": 15.311312142002862,
+    "p95": 18.214609434240263,
+    "min": 11.15184365794994,
+    "max": 19.366636382066645
+  },
+  "exact_correct_root_latency_seconds": {
+    "n": 17,
+    "mean": 15.220232136479085,
+    "p50": 14.964509172015823,
+    "p95": 17.47698380437214,
+    "min": 11.15184365794994,
+    "max": 19.366636382066645
+  },
+  "batch_makespan_seconds": 19.367354858084582,
+  "frontend_wait_seconds": {
+    "n": 168,
+    "mean": 1.4080769302305445,
+    "p50": 0.6864118094672449,
+    "p95": 5.463405068899737,
+    "min": 0.00012953695841133595,
+    "max": 6.044367050053552
+  },
+  "model_ttft_seconds": {
+    "n": 168,
+    "mean": 0.6922129341622903,
+    "p50": 0.6874039780232124,
+    "p95": 1.5170292701048311,
+    "min": 0.13347295601852238,
+    "max": 1.7243178449571133
+  },
+  "stage": {
+    "query": {
+      "calls": 72,
+      "latency": {
+        "n": 72,
+        "mean": 2.244284462466668,
+        "p50": 1.9671381349908188,
+        "p95": 4.31968416722375,
+        "min": 1.188715887023136,
+        "max": 5.285550829954445
+      },
+      "ttft": {
+        "n": 72,
+        "mean": 0.7379346677577511,
+        "p50": 0.7260119875427336,
+        "p95": 1.0310047478298656,
+        "min": 0.16663458105176687,
+        "max": 1.042251831968315
+      }
+    },
+    "evidence": {
+      "calls": 72,
+      "latency": {
+        "n": 72,
+        "mean": 7.086254875953374,
+        "p50": 6.8184937264886685,
+        "p95": 10.886568480485586,
+        "min": 2.4990369129227474,
+        "max": 13.282378234085627
+      },
+      "ttft": {
+        "n": 72,
+        "mean": 0.7945290727382397,
+        "p50": 0.6744640489923768,
+        "p95": 1.6731210925849154,
+        "min": 0.20268993300851434,
+        "max": 1.7243178449571133
+      }
+    },
+    "synthesis": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 1.460816828800792,
+        "p50": 1.314331651548855,
+        "p95": 2.189118274388602,
+        "min": 0.7243844399927184,
+        "max": 2.933937544003129
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 0.24809931764806,
+        "p50": 0.21998979500494897,
+        "p95": 0.4709632853104266,
+        "min": 0.13347295601852238,
+        "max": 0.49128241708967835
+      }
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 71686,
+    "completion_tokens": 8840,
+    "total_tokens": 80526
+  },
+  "engine": {
+    "running": {
+      "n": 72,
+      "mean": 32.361111111111114,
+      "p50": 42.5,
+      "p95": 48.0,
+      "min": 0.0,
+      "max": 48.0
+    },
+    "waiting": {
+      "n": 72,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "kv_usage": {
+      "n": 72,
+      "mean": 0.46387956748695003,
+      "p50": 0.6006711409395973,
+      "p95": 0.7046979865771812,
+      "min": 0.0,
+      "max": 0.7214765100671141
+    }
+  },
+  "preemptions_delta": 0.0,
+  "prefix_queries_delta": 71686.0,
+  "prefix_hits_delta": 0.0,
+  "max_frontend_inflight_calls": 48,
+  "max_frontend_pending": 72,
+  "max_tools_inflight": 4,
+  "limitation": "Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.",
+  "trace_audit": {
+    "run_id": "v005-eval-progress48",
+    "passed": true,
+    "violations": [],
+    "request_count": 168,
+    "response_count": 168,
+    "root_count": 24,
+    "tool_count": 72,
+    "call_stages": {
+      "query": 72,
+      "evidence": 72,
+      "synthesis": 24
+    },
+    "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+  }
+}

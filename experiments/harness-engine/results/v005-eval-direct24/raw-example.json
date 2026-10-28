@@ -1,0 +1,345 @@
+{
+  "run_id": "v005-eval-direct24",
+  "root_id": "5a7bc1bf55429927d897c033",
+  "source": {
+    "source": "hotpotqa/hotpot_qa",
+    "revision": "1908d6afbbead072334abe2965f91bd2709910ab",
+    "url": "https://huggingface.co/datasets/hotpotqa/hotpot_qa/resolve/1908d6afbbead072334abe2965f91bd2709910ab/distractor/validation-00000-of-00001.parquet",
+    "download_url": "https://hf-mirror.com/datasets/hotpotqa/hotpot_qa/resolve/1908d6afbbead072334abe2965f91bd2709910ab/distractor/validation-00000-of-00001.parquet",
+    "license": "cc-by-sa-4.0",
+    "seed": 1729,
+    "source_rows": 7405,
+    "calibration": 8,
+    "evaluation": 24,
+    "task_ids": [
+      "5a722a6855429971e9dc9320",
+      "5adf8c965542993344016cf5",
+      "5a87868c5542996e4f308828",
+      "5ab97c0255429970cfb8eb1f",
+      "5ae1316555429901ffe4adda",
+      "5ae75a5a5542991bbc9761f3",
+      "5ab29624554299545a2cf9b5",
+      "5a78f59755429970f5fffdf7",
+      "5a7bc1bf55429927d897c033",
+      "5a825a9d55429940e5e1a870",
+      "5a8d7e1055429941ae14dfd8",
+      "5abd74c95542993062266ca2",
+      "5ab84dea55429934fafe6d4f",
+      "5adcd5005542994d58a2f6f0",
+      "5abbdaac5542992ccd8e7fc0",
+      "5a8a12ae5542992d82986e92",
+      "5a7cdd6b55429909bec76858",
+      "5ac3e68b5542997ea680c98b",
+      "5ab5de535542992aa134a3b6",
+      "5a75abbb5542992d0ec05fd9",
+      "5a8cc7af554299653c1aa11e",
+      "5ab80faf55429916710eafd9",
+      "5a8db42f5542994ba4e3dd11",
+      "5a8dcbc0554299068b959df4",
+      "5a8393665542990548d0b1ea",
+      "5a8080365542992097ad2fed",
+      "5a74760b55429974ef308c03",
+      "5ae178a155429901ffe4ae92",
+      "5a8e1577554299068b959e54",
+      "5ae679ec5542996d980e7b75",
+      "5ae3f4fe5542995ad6573ce8",
+      "5a8de7c65542995085b37353"
+    ],
+    "sha256": {
+      "validation.parquet": "c20b638ca82b21d04fe12e14ff417ad05153d4d215a65de54497fca4e972f7c6",
+      "tasks.jsonl": "807ccbf4240968e382be8af2c932812eff3be49cea09a6b82cf9433a0fc0ae74",
+      "answers.jsonl": "ef5fd9af0a02167ecb0359614f659a77c0a5990fdb37f3027d9519e84b1d5044"
+    },
+    "quality_protocol": "Gold answers/supporting facts only read by offline analysis, never by runtime/policy.",
+    "workload_protocol": "Controlled multi-agent evidence-gathering application over public HotpotQA contexts; not official HotpotQA harness."
+  },
+  "task": {
+    "task_id": "5a7bc1bf55429927d897c033",
+    "split": "evaluation",
+    "question": "Which breed was bred first, the English Water Spaniel or the Estonian Hound?",
+    "type": "comparison",
+    "level": "hard",
+    "context_chars": 6414,
+    "bucket": "comparison_normal",
+    "documents": [
+      {
+        "doc_id": "d0",
+        "title": "Spaniel",
+        "text": "A spaniel is a type of gun dog.  Spaniels were especially bred to flush game out of denser brush.  By the late 17th century spaniels had been specialized into water and land breeds.  The extinct English Water Spaniel was used to retrieve water fowl shot down with arrows.  Land spaniels were setting spaniels—those that crept forward and pointed their game, allowing hunters to ensnare them with nets, and springing spaniels—those that sprang pheasants and partridges for hunting with falcons, and rabbits for hunting with greyhounds.  During the 17th century, the role of the spaniel dramatically changed as Englishmen began hunting with flintlocks for wing shooting.  Charles Goodall and Julia Gasow (1984) write that spaniels were \"transformed from untrained, wild beaters, to smooth, polished gun dogs.\""
+      },
+      {
+        "doc_id": "d1",
+        "title": "Estonian Hound",
+        "text": "The Estonian Hound (Estonian: \"eesti hagijas\") is a scent hound-like breed which is the only dog breed developed in Estonia.  It was bred in 1947 when the Soviet Union's national economy ministry decided that every country in the Union must have its own dog breed."
+      },
+      {
+        "doc_id": "d2",
+        "title": "Afghan Hound",
+        "text": "The Afghan Hound is a hound that is distinguished by its thick, fine, silky coat and its tail with a ring curl at the end.  The breed was selectively bred for its unique features in the cold mountains of Afghanistan.  Its local name is Tāžī Spay (Pashto: تاژي سپی‎ ) or Sag-e Tāzī (Dari Persian: سگ تازی).  Other names for this breed are \"Kuchi Hound\", \"Tāzī\", \"Balkh Hound\", \"Baluchi Hound\", \"Barakzai Hound\", \"Shalgar Hound\", \"Kabul Hound\", \"Galanday Hound\" or sometimes incorrectly \"African Hound\"."
+      },
+      {
+        "doc_id": "d3",
+        "title": "American Cocker Spaniel",
+        "text": "The American Cocker Spaniel is a breed of sporting dog.  It is a spaniel type dog that is closely related to the English Cocker Spaniel; the two breeds diverged during the 20th century due to differing breed standards in America and the UK.  In the United States, the breed is usually called the Cocker Spaniel, while elsewhere in the world, it is called the American Cocker Spaniel in order to differentiate between it and its English cousin, which was already known as \"Cocker Spaniel\" before the American variety was created.  The word \"cocker\" is commonly held to stem from their use to hunt woodcock in England, while \"spaniel\" is thought to be derived from the type's origins in Spain."
+      },
+      {
+        "doc_id": "d4",
+        "title": "Welsh Springer Spaniel",
+        "text": "The Welsh Springer Spaniel is a breed of dog and a member of the spaniel family.  Thought to be comparable to the old Land Spaniel, they are similar to the English Springer Spaniel and historically have been referred to as both the Welsh Spaniel and the Welsh Cocker Spaniel.  They were relatively unknown until a succession of victories in dog trials by the breed increased its popularity.  Following recognition by The Kennel Club in 1902, the breed gained the modern name of Welsh Springer Spaniel.  The breed's coat only comes in a single colour combination of white with red markings, usually in a piebald pattern.  Loyal and affectionate, they can become very attached to family members and are wary of strangers.  Health conditions are limited to those common among many breeds of dog, although they are affected more than average by hip dysplasia and some eye conditions.  They are a working dog, bred for hunting, and while not as rare as some varieties of spaniel, they are rarer than the more widely known English Springer Spaniel with which they are sometimes confused."
+      },
+      {
+        "doc_id": "d5",
+        "title": "American Water Spaniel",
+        "text": "The American Water Spaniel, (often abbreviated to AWS), is a breed of spaniel which originated in the United States.  Developed in the state of Wisconsin during the 19th century from a number of other breeds, including the Irish and English Water Spaniels.  The breed was saved by Dr. Fred J. Pfeifer, who set up the breed club and standard, and whose work led to recognition for the breed by the United Kennel Club, and later, the American Kennel Club.  While they are the state dog of Wisconsin, they remain a rare breed."
+      },
+      {
+        "doc_id": "d6",
+        "title": "English Springer Spaniel",
+        "text": "The English Springer Spaniel is a breed of gun dog in the Spaniel family traditionally used for flushing and retrieving game.  It is an affectionate, excitable breed with a typical lifespan of twelve to fourteen years.  They are very similar to the Welsh Springer Spaniel and are descended from the Norfolk or Shropshire Spaniels of the mid-19th century; the breed has diverged into separate show and working lines.  The breed suffers from average health complaints.  The show-bred version of the breed has been linked to \"rage syndrome\", although the disorder is very rare.  It is closely related to the Welsh Springer Spaniel and very closely to the English Cocker Spaniel; less than a century ago, springers and cockers would come from the same litter.  The smaller \"cockers\" hunted woodcock while the larger littermates were used to flush, or \"spring,\" game.  In 1902, The Kennel Club recognized the English Springer Spaniel as a distinct breed.  They are used as sniffer dogs on a widespread basis.  The term \"Springer\" comes from the historic hunting role, where the dog would flush (spring) birds into the air."
+      },
+      {
+        "doc_id": "d7",
+        "title": "Spanish Water Dog",
+        "text": "The Spanish Water Dog (perro de agua español ) breed dates back several hundred years and has its origins most likely in Turkey from where it was imported into Spain as a general purpose sheepdog and guard.  It is also used sometimes as a gundog, and is skilled at retrieval from water.  The SWD has strong genetic links to other ancient water breeds such as the Portuguese Water Dog, the French Barbet and the Irish Water Spaniel."
+      },
+      {
+        "doc_id": "d8",
+        "title": "English Water Spaniel",
+        "text": "The English Water Spaniel is a breed of dog that has been extinct since the first part of the 20th century, with the last specimen seen in the 1930s.  It was best known for its use in hunting waterfowl and for being able to dive as well as a duck.  It is described as similar to a Collie or to a cross between a Poodle and a Springer Spaniel with curly fur and typically in a white and liver/tan pattern."
+      },
+      {
+        "doc_id": "d9",
+        "title": "Tweed Water Spaniel",
+        "text": "The Tweed Water Spaniel, or Tweed Spaniel, is a breed of dog extinct since the 19th century.  It is best known for being involved in the early development of the modern Curly Coated Retriever and Golden Retriever breeds of dogs.  They were described as a generally brown athletic dogs from the area around Berwick-upon-Tweed near the River Tweed and close to the Scottish Borders.  A type of water dog, the breed was not well known outside the local area.  This breed may have been created by crossing local water dogs with imported St. John's water dog, another breed which is also now extinct."
+      }
+    ]
+  },
+  "notice": "Real requests/responses. Gold scoring is offline; controller did not receive answers.",
+  "remote_full_trace_directory": "/home/Liangyijia_Hu/harness-engine/runs/v005-eval-direct24",
+  "streams": {
+    "requests": [
+      {
+        "t": 0.08552541397511959,
+        "wall_time": 1793210836.6931286,
+        "call_id": "5a7bc1bf55429927d897c033-parent-synthesis",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "node_id": "5a7bc1bf55429927d897c033/parent",
+        "stage": "synthesis",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are the parent research agent. Read all supplied source documents, resolve multi-hop relations, and answer the question using only the supplied evidence. Return a JSON object with answer (a short answer string) and citations (a list of source IDs). No markdown, explanation or extra fields. If insufficient evidence, answer \"unknown\"."
+            },
+            {
+              "role": "user",
+              "content": "Question: Which breed was bred first, the English Water Spaniel or the Estonian Hound?\nSource documents:\n[{\"doc_id\": \"d0\", \"title\": \"Spaniel\", \"text\": \"A spaniel is a type of gun dog.  Spaniels were especially bred to flush game out of denser brush.  By the late 17th century spaniels had been specialized into water and land breeds.  The extinct English Water Spaniel was used to retrieve water fowl shot down with arrows.  Land spaniels were setting spaniels—those that crept forward and pointed their game, allowing hunters to ensnare them with nets, and springing spaniels—those that sprang pheasants and partridges for hunting with falcons, and rabbits for hunting with greyhounds.  During the 17th century, the role of the spaniel dramatically changed as Englishmen began hunting with flintlocks for wing shooting.  Charles Goodall and Julia Gasow (1984) write that spaniels were \\\"transformed from untrained, wild beaters, to smooth, polished gun dogs.\\\"\"}, {\"doc_id\": \"d1\", \"title\": \"Estonian Hound\", \"text\": \"The Estonian Hound (Estonian: \\\"eesti hagijas\\\") is a scent hound-like breed which is the only dog breed developed in Estonia.  It was bred in 1947 when the Soviet Union's national economy ministry decided that every country in the Union must have its own dog breed.\"}, {\"doc_id\": \"d2\", \"title\": \"Afghan Hound\", \"text\": \"The Afghan Hound is a hound that is distinguished by its thick, fine, silky coat and its tail with a ring curl at the end.  The breed was selectively bred for its unique features in the cold mountains of Afghanistan.  Its local name is Tāžī Spay (Pashto: تاژي سپی‎ ) or Sag-e Tāzī (Dari Persian: سگ تازی).  Other names for this breed are \\\"Kuchi Hound\\\", \\\"Tāzī\\\", \\\"Balkh Hound\\\", \\\"Baluchi Hound\\\", \\\"Barakzai Hound\\\", \\\"Shalgar Hound\\\", \\\"Kabul Hound\\\", \\\"Galanday Hound\\\" or sometimes incorrectly \\\"African Hound\\\".\"}, {\"doc_id\": \"d3\", \"title\": \"American Cocker Spaniel\", \"text\": \"The American Cocker Spaniel is a breed of sporting dog.  It is a spaniel type dog that is closely related to the English Cocker Spaniel; the two breeds diverged during the 20th century due to differing breed standards in America and the UK.  In the United States, the breed is usually called the Cocker Spaniel, while elsewhere in the world, it is called the American Cocker Spaniel in order to differentiate between it and its English cousin, which was already known as \\\"Cocker Spaniel\\\" before the American variety was created.  The word \\\"cocker\\\" is commonly held to stem from their use to hunt woodcock in England, while \\\"spaniel\\\" is thought to be derived from the type's origins in Spain.\"}, {\"doc_id\": \"d4\", \"title\": \"Welsh Springer Spaniel\", \"text\": \"The Welsh Springer Spaniel is a breed of dog and a member of the spaniel family.  Thought to be comparable to the old Land Spaniel, they are similar to the English Springer Spaniel and historically have been referred to as both the Welsh Spaniel and the Welsh Cocker Spaniel.  They were relatively unknown until a succession of victories in dog trials by the breed increased its popularity.  Following recognition by The Kennel Club in 1902, the breed gained the modern name of Welsh Springer Spaniel.  The breed's coat only comes in a single colour combination of white with red markings, usually in a piebald pattern.  Loyal and affectionate, they can become very attached to family members and are wary of strangers.  Health conditions are limited to those common among many breeds of dog, although they are affected more than average by hip dysplasia and some eye conditions.  They are a working dog, bred for hunting, and while not as rare as some varieties of spaniel, they are rarer than the more widely known English Springer Spaniel with which they are sometimes confused.\"}, {\"doc_id\": \"d5\", \"title\": \"American Water Spaniel\", \"text\": \"The American Water Spaniel, (often abbreviated to AWS), is a breed of spaniel which originated in the United States.  Developed in the state of Wisconsin during the 19th century from a number of other breeds, including the Irish and English Water Spaniels.  The breed was saved by Dr. Fred J. Pfeifer, who set up the breed club and standard, and whose work led to recognition for the breed by the United Kennel Club, and later, the American Kennel Club.  While they are the state dog of Wisconsin, they remain a rare breed.\"}, {\"doc_id\": \"d6\", \"title\": \"English Springer Spaniel\", \"text\": \"The English Springer Spaniel is a breed of gun dog in the Spaniel family traditionally used for flushing and retrieving game.  It is an affectionate, excitable breed with a typical lifespan of twelve to fourteen years.  They are very similar to the Welsh Springer Spaniel and are descended from the Norfolk or Shropshire Spaniels of the mid-19th century; the breed has diverged into separate show and working lines.  The breed suffers from average health complaints.  The show-bred version of the breed has been linked to \\\"rage syndrome\\\", although the disorder is very rare.  It is closely related to the Welsh Springer Spaniel and very closely to the English Cocker Spaniel; less than a century ago, springers and cockers would come from the same litter.  The smaller \\\"cockers\\\" hunted woodcock while the larger littermates were used to flush, or \\\"spring,\\\" game.  In 1902, The Kennel Club recognized the English Springer Spaniel as a distinct breed.  They are used as sniffer dogs on a widespread basis.  The term \\\"Springer\\\" comes from the historic hunting role, where the dog would flush (spring) birds into the air.\"}, {\"doc_id\": \"d7\", \"title\": \"Spanish Water Dog\", \"text\": \"The Spanish Water Dog (perro de agua español ) breed dates back several hundred years and has its origins most likely in Turkey from where it was imported into Spain as a general purpose sheepdog and guard.  It is also used sometimes as a gundog, and is skilled at retrieval from water.  The SWD has strong genetic links to other ancient water breeds such as the Portuguese Water Dog, the French Barbet and the Irish Water Spaniel.\"}, {\"doc_id\": \"d8\", \"title\": \"English Water Spaniel\", \"text\": \"The English Water Spaniel is a breed of dog that has been extinct since the first part of the 20th century, with the last specimen seen in the 1930s.  It was best known for its use in hunting waterfowl and for being able to dive as well as a duck.  It is described as similar to a Collie or to a cross between a Poodle and a Springer Spaniel with curly fur and typically in a white and liver/tan pattern.\"}, {\"doc_id\": \"d9\", \"title\": \"Tweed Water Spaniel\", \"text\": \"The Tweed Water Spaniel, or Tweed Spaniel, is a breed of dog extinct since the 19th century.  It is best known for being involved in the early development of the modern Curly Coated Retriever and Golden Retriever breeds of dogs.  They were described as a generally brown athletic dogs from the area around Berwick-upon-Tweed near the River Tweed and close to the Scottish Borders.  A type of water dog, the breed was not well known outside the local area.  This breed may have been created by crossing local water dogs with imported St. John's water dog, another breed which is also now extinct.\"}]"
+            }
+          ],
+          "max_tokens": 128,
+          "temperature": 0.0,
+          "seed": 1729,
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "chat_template_kwargs": {
+            "enable_thinking": false
+          }
+        }
+      }
+    ],
+    "responses": [
+      {
+        "t": 6.061269155004993,
+        "wall_time": 1793210842.668873,
+        "call_id": "5a7bc1bf55429927d897c033-parent-synthesis",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "node_id": "5a7bc1bf55429927d897c033/parent",
+        "stage": "synthesis",
+        "text": "{\n  \"answer\": \"English Water Spaniel\",\n  \"citations\": [\n    \"d0\",\n    \"d1\",\n    \"d8\"\n  ]\n}",
+        "reasoning": "",
+        "usage": {
+          "prompt_tokens": 1825,
+          "total_tokens": 1868,
+          "completion_tokens": 43,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "duration": 5.975769964046776,
+        "ttft": 3.368170819012448,
+        "finish_reason": "stop",
+        "server_request_id": "5a7bc1bf55429927d897c033-parent-synthesis"
+      }
+    ],
+    "sessions": [
+      {
+        "t": 0.08538109203800559,
+        "wall_time": 1793210836.6929843,
+        "event": "activation_start",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "session_id": "5a7bc1bf55429927d897c033/parent",
+        "activation_id": "5a7bc1bf55429927d897c033-parent-synthesis",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are the parent research agent. Read all supplied source documents, resolve multi-hop relations, and answer the question using only the supplied evidence. Return a JSON object with answer (a short answer string) and citations (a list of source IDs). No markdown, explanation or extra fields. If insufficient evidence, answer \"unknown\"."
+          },
+          {
+            "role": "user",
+            "content": "Question: Which breed was bred first, the English Water Spaniel or the Estonian Hound?\nSource documents:\n[{\"doc_id\": \"d0\", \"title\": \"Spaniel\", \"text\": \"A spaniel is a type of gun dog.  Spaniels were especially bred to flush game out of denser brush.  By the late 17th century spaniels had been specialized into water and land breeds.  The extinct English Water Spaniel was used to retrieve water fowl shot down with arrows.  Land spaniels were setting spaniels—those that crept forward and pointed their game, allowing hunters to ensnare them with nets, and springing spaniels—those that sprang pheasants and partridges for hunting with falcons, and rabbits for hunting with greyhounds.  During the 17th century, the role of the spaniel dramatically changed as Englishmen began hunting with flintlocks for wing shooting.  Charles Goodall and Julia Gasow (1984) write that spaniels were \\\"transformed from untrained, wild beaters, to smooth, polished gun dogs.\\\"\"}, {\"doc_id\": \"d1\", \"title\": \"Estonian Hound\", \"text\": \"The Estonian Hound (Estonian: \\\"eesti hagijas\\\") is a scent hound-like breed which is the only dog breed developed in Estonia.  It was bred in 1947 when the Soviet Union's national economy ministry decided that every country in the Union must have its own dog breed.\"}, {\"doc_id\": \"d2\", \"title\": \"Afghan Hound\", \"text\": \"The Afghan Hound is a hound that is distinguished by its thick, fine, silky coat and its tail with a ring curl at the end.  The breed was selectively bred for its unique features in the cold mountains of Afghanistan.  Its local name is Tāžī Spay (Pashto: تاژي سپی‎ ) or Sag-e Tāzī (Dari Persian: سگ تازی).  Other names for this breed are \\\"Kuchi Hound\\\", \\\"Tāzī\\\", \\\"Balkh Hound\\\", \\\"Baluchi Hound\\\", \\\"Barakzai Hound\\\", \\\"Shalgar Hound\\\", \\\"Kabul Hound\\\", \\\"Galanday Hound\\\" or sometimes incorrectly \\\"African Hound\\\".\"}, {\"doc_id\": \"d3\", \"title\": \"American Cocker Spaniel\", \"text\": \"The American Cocker Spaniel is a breed of sporting dog.  It is a spaniel type dog that is closely related to the English Cocker Spaniel; the two breeds diverged during the 20th century due to differing breed standards in America and the UK.  In the United States, the breed is usually called the Cocker Spaniel, while elsewhere in the world, it is called the American Cocker Spaniel in order to differentiate between it and its English cousin, which was already known as \\\"Cocker Spaniel\\\" before the American variety was created.  The word \\\"cocker\\\" is commonly held to stem from their use to hunt woodcock in England, while \\\"spaniel\\\" is thought to be derived from the type's origins in Spain.\"}, {\"doc_id\": \"d4\", \"title\": \"Welsh Springer Spaniel\", \"text\": \"The Welsh Springer Spaniel is a breed of dog and a member of the spaniel family.  Thought to be comparable to the old Land Spaniel, they are similar to the English Springer Spaniel and historically have been referred to as both the Welsh Spaniel and the Welsh Cocker Spaniel.  They were relatively unknown until a succession of victories in dog trials by the breed increased its popularity.  Following recognition by The Kennel Club in 1902, the breed gained the modern name of Welsh Springer Spaniel.  The breed's coat only comes in a single colour combination of white with red markings, usually in a piebald pattern.  Loyal and affectionate, they can become very attached to family members and are wary of strangers.  Health conditions are limited to those common among many breeds of dog, although they are affected more than average by hip dysplasia and some eye conditions.  They are a working dog, bred for hunting, and while not as rare as some varieties of spaniel, they are rarer than the more widely known English Springer Spaniel with which they are sometimes confused.\"}, {\"doc_id\": \"d5\", \"title\": \"American Water Spaniel\", \"text\": \"The American Water Spaniel, (often abbreviated to AWS), is a breed of spaniel which originated in the United States.  Developed in the state of Wisconsin during the 19th century from a number of other breeds, including the Irish and English Water Spaniels.  The breed was saved by Dr. Fred J. Pfeifer, who set up the breed club and standard, and whose work led to recognition for the breed by the United Kennel Club, and later, the American Kennel Club.  While they are the state dog of Wisconsin, they remain a rare breed.\"}, {\"doc_id\": \"d6\", \"title\": \"English Springer Spaniel\", \"text\": \"The English Springer Spaniel is a breed of gun dog in the Spaniel family traditionally used for flushing and retrieving game.  It is an affectionate, excitable breed with a typical lifespan of twelve to fourteen years.  They are very similar to the Welsh Springer Spaniel and are descended from the Norfolk or Shropshire Spaniels of the mid-19th century; the breed has diverged into separate show and working lines.  The breed suffers from average health complaints.  The show-bred version of the breed has been linked to \\\"rage syndrome\\\", although the disorder is very rare.  It is closely related to the Welsh Springer Spaniel and very closely to the English Cocker Spaniel; less than a century ago, springers and cockers would come from the same litter.  The smaller \\\"cockers\\\" hunted woodcock while the larger littermates were used to flush, or \\\"spring,\\\" game.  In 1902, The Kennel Club recognized the English Springer Spaniel as a distinct breed.  They are used as sniffer dogs on a widespread basis.  The term \\\"Springer\\\" comes from the historic hunting role, where the dog would flush (spring) birds into the air.\"}, {\"doc_id\": \"d7\", \"title\": \"Spanish Water Dog\", \"text\": \"The Spanish Water Dog (perro de agua español ) breed dates back several hundred years and has its origins most likely in Turkey from where it was imported into Spain as a general purpose sheepdog and guard.  It is also used sometimes as a gundog, and is skilled at retrieval from water.  The SWD has strong genetic links to other ancient water breeds such as the Portuguese Water Dog, the French Barbet and the Irish Water Spaniel.\"}, {\"doc_id\": \"d8\", \"title\": \"English Water Spaniel\", \"text\": \"The English Water Spaniel is a breed of dog that has been extinct since the first part of the 20th century, with the last specimen seen in the 1930s.  It was best known for its use in hunting waterfowl and for being able to dive as well as a duck.  It is described as similar to a Collie or to a cross between a Poodle and a Springer Spaniel with curly fur and typically in a white and liver/tan pattern.\"}, {\"doc_id\": \"d9\", \"title\": \"Tweed Water Spaniel\", \"text\": \"The Tweed Water Spaniel, or Tweed Spaniel, is a breed of dog extinct since the 19th century.  It is best known for being involved in the early development of the modern Curly Coated Retriever and Golden Retriever breeds of dogs.  They were described as a generally brown athletic dogs from the area around Berwick-upon-Tweed near the River Tweed and close to the Scottish Borders.  A type of water dog, the breed was not well known outside the local area.  This breed may have been created by crossing local water dogs with imported St. John's water dog, another breed which is also now extinct.\"}]"
+          }
+        ]
+      },
+      {
+        "t": 6.061430837027729,
+        "wall_time": 1793210842.6690342,
+        "event": "activation_end",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "session_id": "5a7bc1bf55429927d897c033/parent",
+        "activation_id": "5a7bc1bf55429927d897c033-parent-synthesis"
+      }
+    ],
+    "tools": [],
+    "roots": [
+      {
+        "t": 6.061493925983086,
+        "wall_time": 1793210842.6690972,
+        "root_id": "5a7bc1bf55429927d897c033",
+        "task_index": 0,
+        "duration": 5.978801162913442,
+        "output": "{\n  \"answer\": \"English Water Spaniel\",\n  \"citations\": [\n    \"d0\",\n    \"d1\",\n    \"d8\"\n  ]\n}",
+        "parsed": {
+          "answer": "English Water Spaniel",
+          "citations": [
+            "d0",
+            "d1",
+            "d8"
+          ]
+        },
+        "parse_error": null,
+        "children": [],
+        "error": null
+      }
+    ],
+    "events": [
+      {
+        "t": 0.08269161800853908,
+        "wall_time": 1793210836.6902947,
+        "event": "root_submit",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "task_index": 0,
+        "question": "Which breed was bred first, the English Water Spaniel or the Estonian Hound?",
+        "mandatory_children": 0
+      },
+      {
+        "t": 0.0827874829992652,
+        "wall_time": 1793210836.6903908,
+        "event": "model_ready",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "node_id": "5a7bc1bf55429927d897c033/parent",
+        "stage": "synthesis",
+        "tools_inflight": 0,
+        "pending": 1
+      },
+      {
+        "t": 0.08474499499425292,
+        "wall_time": 1793210836.6923482,
+        "event": "frontend_release",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "node_id": "5a7bc1bf55429927d897c033/parent",
+        "stage": "synthesis",
+        "frontend_wait": 0.0019583189859986305,
+        "inflight_calls": 1,
+        "tools_inflight": 0,
+        "pending": 23,
+        "policy": "native",
+        "target": 128,
+        "engine_observation": {
+          "time": 980575.39432709,
+          "running": 0.0,
+          "waiting": 0.0,
+          "kv_usage": 0.0,
+          "preemptions": 0.0,
+          "prefix_queries": 554879.0,
+          "prefix_hits": 0.0
+        }
+      },
+      {
+        "t": 0.08560796803794801,
+        "wall_time": 1793210836.693211,
+        "event": "model_submit",
+        "call_id": "5a7bc1bf55429927d897c033-parent-synthesis",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "node_id": "5a7bc1bf55429927d897c033/parent",
+        "stage": "synthesis"
+      },
+      {
+        "t": 3.453652299940586,
+        "wall_time": 1793210840.061256,
+        "event": "first_token",
+        "call_id": "5a7bc1bf55429927d897c033-parent-synthesis",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "node_id": "5a7bc1bf55429927d897c033/parent"
+      },
+      {
+        "t": 6.0613673069747165,
+        "wall_time": 1793210842.668971,
+        "event": "model_complete",
+        "call_id": "5a7bc1bf55429927d897c033-parent-synthesis",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "node_id": "5a7bc1bf55429927d897c033/parent",
+        "stage": "synthesis",
+        "usage": {
+          "prompt_tokens": 1825,
+          "total_tokens": 1868,
+          "completion_tokens": 43,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "t": 6.061557444976643,
+        "wall_time": 1793210842.6691606,
+        "event": "root_complete",
+        "root_id": "5a7bc1bf55429927d897c033",
+        "duration": 5.9788664219668135,
+        "valid_json": true
+      }
+    ],
+    "scored": [
+      {
+        "t": 6.061493925983086,
+        "wall_time": 1793210842.6690972,
+        "root_id": "5a7bc1bf55429927d897c033",
+        "task_index": 0,
+        "duration": 5.978801162913442,
+        "output": "{\n  \"answer\": \"English Water Spaniel\",\n  \"citations\": [\n    \"d0\",\n    \"d1\",\n    \"d8\"\n  ]\n}",
+        "parsed": {
+          "answer": "English Water Spaniel",
+          "citations": [
+            "d0",
+            "d1",
+            "d8"
+          ]
+        },
+        "parse_error": null,
+        "children": [],
+        "error": null,
+        "gold_answer": "The English Water Spaniel",
+        "predicted_answer": "English Water Spaniel",
+        "em": 1.0,
+        "f1": 1.0,
+        "support_title_recall": 1.0,
+        "valid_citations": 3,
+        "support_titles": [
+          "English Water Spaniel",
+          "Estonian Hound"
+        ]
+      }
+    ]
+  }
+}

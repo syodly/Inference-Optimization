@@ -1,0 +1,15 @@
+{
+  "run_id": "v005-eval-pressure48",
+  "args": [
+    "--split",
+    "evaluation",
+    "--count",
+    "24",
+    "--policy",
+    "pressure",
+    "--cap",
+    "48"
+  ],
+  "purpose": "宽前沿资源反馈",
+  "interpretation": "读取同一引擎的真实排队与缓存占用，检查压力反馈触发条件及副作用。未触发时等同静态上限，触发后也必须与最佳静态配置比较。"
+}

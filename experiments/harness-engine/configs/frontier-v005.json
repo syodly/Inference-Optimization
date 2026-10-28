@@ -1,0 +1,16 @@
+{
+  "batch_id": "frontier-v005",
+  "runs": [
+    {"run_id":"v005-graph-warmup8","args":[],"purpose":"图执行模式独立预热","interpretation":"使用默认优化图执行引擎，首次形状编译和缓存预热独立保留，不参与主要策略计时比较；仍完成全部问题并评分。"},
+    {"run_id":"v005-graph-cal8-a","args":[],"purpose":"优化引擎下的低压力参考","interpretation":"与此前 eager 模式只作配置敏感性对照；主策略比较均使用当前同一图执行服务，不能把引擎模式变化误算为 Harness 收益。"},
+    {"run_id":"v005-eval-native24-a","args":["--split","evaluation","--count","24"],"purpose":"宽前沿直接派发","interpretation":"二十四个不同任务最多释放七十二个兄弟调用，超过引擎四十八活跃序列上限；仍保持短轮次，首先验证实际排队和整任务损失，而非假设它们必然出现。"},
+    {"run_id":"v005-eval-fixed48","args":["--split","evaluation","--count","24","--policy","fixed","--cap","48"],"purpose":"与引擎活跃上限一致的静态背压","interpretation":"在途四十八为引擎配置给出的自然强基线。若简单上限已经达到最好结果，后续机制必须承认这一点，不能靠挑选弱上限展示优势。"},
+    {"run_id":"v005-eval-backend-priority","args":["--split","evaluation","--count","24","--policy","backend_priority"],"purpose":"后端获得阶段语义的优先级基线","interpretation":"全部就绪调用直接提交，给 evidence 和 synthesis 更高引擎优先级。该基线获得阶段提示，但不能动态更新排队请求的提示或通过回调控制未形成工作，故不冒充完整同信息同动作后端。"},
+    {"run_id":"v005-eval-progress48","args":["--split","evaluation","--count","24","--policy","progress","--cap","48"],"purpose":"同上限的任务进度排序","interpretation":"只改变前端就绪调用的顺序，并与上限四十八的先到先服务逐任务对照，核对等待是否只是从后端搬到前端。"},
+    {"run_id":"v005-eval-fixed24","args":["--split","evaluation","--count","24","--policy","fixed","--cap","24"],"purpose":"更保守静态分波边界","interpretation":"补充实际静态并发曲线，检验校准集上压低并发的损失是否在较宽前沿中改变；不根据这个评估结果事后挑选报告赢家。"},
+    {"run_id":"v005-eval-pressure48","args":["--split","evaluation","--count","24","--policy","pressure","--cap","48"],"purpose":"宽前沿资源反馈","interpretation":"读取同一引擎的真实排队与缓存占用，检查压力反馈触发条件及副作用。未触发时等同静态上限，触发后也必须与最佳静态配置比较。"},
+    {"run_id":"v005-eval-native24-b","args":["--split","evaluation","--count","24"],"purpose":"宽前沿直接派发顺序重复","interpretation":"与本批前部相同任务和参数形成顺序重复，查看系统漂移及批处理文本差异；确认实测损失后再设计针对性机制。"},
+    {"run_id":"v005-eval-direct24","args":["--split","evaluation","--count","24","--workflow","direct"],"purpose":"评估集集中上下文质量参照","interpretation":"工作图不同，此轮只检查真实问题是否因分片和证据压缩而不可解；不能将其速度直接当作固定工作调度加速。"},
+    {"run_id":"v005-graph-cal8-b","args":[],"purpose":"优化引擎低压力顺序重复","interpretation":"在宽前沿批次之后重复八任务参考，检查图执行、内核缓存和系统稳定性。后续真实回流场景继续使用同一已校准配置。"}
+  ]
+}

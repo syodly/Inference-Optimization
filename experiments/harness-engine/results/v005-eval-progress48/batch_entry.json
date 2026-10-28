@@ -1,0 +1,15 @@
+{
+  "run_id": "v005-eval-progress48",
+  "args": [
+    "--split",
+    "evaluation",
+    "--count",
+    "24",
+    "--policy",
+    "progress",
+    "--cap",
+    "48"
+  ],
+  "purpose": "同上限的任务进度排序",
+  "interpretation": "只改变前端就绪调用的顺序，并与上限四十八的先到先服务逐任务对照，核对等待是否只是从后端搬到前端。"
+}

@@ -49,9 +49,10 @@ class Harness:
         self.journal.write('sessions', event='activation_start', root_id=root, session_id=session,
                            activation_id=call_id, messages=messages)
         try:
+            priority = {'query': 0, 'evidence': -1, 'synthesis': -2}[stage] if self.args.policy == 'backend_priority' else 0
             return await self.engine.generate(call_id=call_id, root_id=root, node_id=session,
                                               stage=stage, messages=messages, max_tokens=budget,
-                                              seed=self.args.seed)
+                                              seed=self.args.seed, priority=priority)
         finally:
             self.controller.release()
             self.journal.write('sessions', event='activation_end', root_id=root, session_id=session,
@@ -165,7 +166,7 @@ async def run(args):
                   application='controlled source-grounded multi-agent HotpotQA; not official harness',
                   source_sha256={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
                                  for p in Path(__file__).parent.glob('*.py')})
-    for name in ['server', 'model_manifest', 'model_verification', 'env']:
+    for name in ['server', 'model_manifest', 'model_verification', 'source_revision', 'env']:
         path = Path('state') / (name + '.json')
         if path.exists():
             config[name] = json.loads(path.read_text())
@@ -209,7 +210,7 @@ def main():
     ap.add_argument('--count', type=int, default=8)
     ap.add_argument('--branches', type=int, default=3)
     ap.add_argument('--top-k', type=int, default=3)
-    ap.add_argument('--policy', choices=['native', 'fixed', 'pressure', 'progress'], default='native')
+    ap.add_argument('--policy', choices=['native', 'fixed', 'pressure', 'progress', 'backend_priority'], default='native')
     ap.add_argument('--cap', type=int, default=12)
     ap.add_argument('--seed', type=int, default=1729)
     ap.add_argument('--query-tokens', type=int, default=40)
