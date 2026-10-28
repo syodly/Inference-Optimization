@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Topic1 · 多根任务准入实验室</title>
+  <title>Topic1 · 研究任务排队与并发演示</title>
   <style>
     :root { --lab-ink:#202b2a; --lab-muted:#65716f; --lab-line:#d9e1dd; --lab-paper:#f4f7f4; --lab-green:#167b62; --lab-green-soft:#e3f2eb; --lab-blue:#3972a1; --lab-blue-soft:#e8f0f7; --lab-orange:#bd6932; --lab-orange-soft:#f8eee5; --lab-red:#a84e4c; }
     * { box-sizing:border-box; }
@@ -83,13 +83,13 @@
     .gantt-wait { position:absolute; top:12px; height:2px; background:#bcc8c0; }
     .timeline-select { min-height:30px; margin-bottom:10px; padding:4px 6px; border:1px solid var(--lab-line); border-radius:3px; background:#fff; font-size:12px; color:var(--lab-ink); }
     .design-point { margin-top:7px; color:var(--lab-green); font-size:11px; font-weight:650; }
-    .gantt-track { position:relative; height:27px; border-bottom:1px solid #dfe7e2; background:repeating-linear-gradient(90deg,transparent 0,transparent calc(20% - 1px),#e8eeea calc(20% - 1px),#e8eeea 20%); }
+    .gantt-track { position:relative; height:27px; border-bottom:1px solid #dfe7e2; background:repeating-linear-gradient(90deg,transparent 0,transparent calc(25% - 1px),#e8eeea calc(25% - 1px),#e8eeea 25%); }
     .gantt-bar { position:absolute; top:4px; height:18px; min-width:5px; padding:2px 4px; overflow:hidden; border-radius:2px; color:#fff; font-size:10px; line-height:14px; white-space:nowrap; }
     .gantt-bar.a { background:#3972a1; }
     .gantt-bar.b { background:#bd6932; }
     .axis { display:flex; justify-content:space-between; padding-left:50px; color:#77827f; font-size:10px; }
     .kv-meter { display:grid; gap:10px; }
-    .kv-line { display:grid; grid-template-columns:38px 1fr 62px; align-items:center; gap:8px; font-size:11px; }
+    .kv-line { display:grid; grid-template-columns:52px 1fr 62px; align-items:center; gap:8px; font-size:12px; }
     .kv-line b { font-weight:650; }
     .kv-track { height:12px; background:#e9eeeb; }
     .kv-fill { height:100%; background:var(--lab-green); }
@@ -110,8 +110,39 @@
     .raw-data summary { cursor:pointer; font-weight:650; }
     .raw-data p { color:var(--lab-muted); line-height:1.6; }
     .raw-data pre { max-height:330px; overflow:auto; padding:12px; background:#f1f5f2; font-size:11px; line-height:1.6; white-space:pre; }
+    .reading-guide { margin:0 0 20px; padding:20px; background:#fff; border:1px solid var(--lab-line); }
+    .reading-guide h2 { margin:0 0 10px; font-size:18px; }
+    .reading-guide > p { margin:0 0 14px; font-size:14px; line-height:1.8; }
+    .guide-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .guide-card { padding:13px 14px; background:#f2f6f3; border-top:2px solid var(--lab-green); }
+    .guide-card b { display:block; margin-bottom:5px; font-size:14px; }
+    .guide-card p { margin:0; color:#53645d; font-size:13px; line-height:1.75; }
+    .guide-steps { margin:14px 0 0; color:#53645d; font-size:13px; line-height:1.8; }
+    .control-help { margin:7px 0 0; color:var(--lab-muted); font-size:12px; line-height:1.65; }
+    .policy-pick { padding:0; border:0; background:none; color:inherit; text-align:left; cursor:pointer; font-size:13px; }
+    .policy-pick[aria-pressed="true"] { color:var(--lab-green); font-weight:700; }
+    tr.is-selected { background:#f4faf6; }
+    .policy-pick:focus-visible { outline:2px solid var(--lab-green); outline-offset:4px; }
+    .policy-desc { display:block; min-width:160px; max-width:260px; margin-top:5px; color:var(--lab-muted); font-size:12px; line-height:1.6; white-space:normal; }
+    .result-explanation { margin:0; padding:12px 15px; background:var(--lab-green-soft); color:#35534a; font-size:13px; line-height:1.8; }
+    .metric-explainer { margin:0 0 14px; padding:15px; border:1px solid #bfd6c9; background:#f4faf6; }
+    .metric-explainer h3 { margin:0 0 7px; font-size:16px; }
+    .metric-explainer p { margin:5px 0; font-size:13px; line-height:1.8; }
+    .metric-formula { color:var(--lab-green); font-weight:700; }
+    .metric-examples { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:10px 0; }
+    .metric-example { padding:10px 12px; background:#fff; border-left:3px solid var(--lab-blue); font-size:13px; line-height:1.8; }
+    .metric-example:last-child { border-left-color:var(--lab-orange); }
+    .metric-example b { display:block; }
+    .timeline-legend { display:flex; flex-wrap:wrap; gap:8px 16px; margin:0 0 12px; font-size:12px; color:#53645d; }
+    .timeline-legend span { display:inline-flex; align-items:center; gap:5px; }
+    .legend-swatch { width:19px; height:9px; background:var(--lab-blue); }
+    .legend-swatch.wait { height:3px; background:#a6b7aa; }
+    .axis-title { margin:9px 0 0; color:var(--lab-muted); font-size:12px; }
+    .method-note summary { cursor:pointer; font-weight:700; }
+    .method-note p { margin:8px 0 0; }
     .lab-footer { margin-top:24px; padding-top:14px; border-top:1px solid var(--lab-line); color:var(--lab-muted); font-size:11px; line-height:1.6; }
     @media (max-width:950px) { .lab-grid { grid-template-columns:250px minmax(0,1fr); } .viz-grid { grid-template-columns:1fr; } }
+    @media (max-width:700px) { .guide-grid,.metric-examples { grid-template-columns:1fr; } .reading-guide { padding:15px; } .results-head { align-items:flex-start; flex-direction:column; } .gantt-root { font-size:12px; line-height:1.7; } }
     @media (max-width:700px) { .lab-shell { padding:14px 12px 36px; } .lab-top { align-items:flex-start; } .lab-nav { gap:10px; } .lab-heading { padding:21px 0 14px; } .lab-heading h1 { font-size:23px; } .workflow-flow { grid-template-columns:1fr; gap:5px; } .flow-arrow { transform:rotate(90deg); height:19px; line-height:19px; } .flow-step { min-height:auto; } .lab-grid { grid-template-columns:1fr; } .controls { order:0; } .lab-main { order:1; } .gantt-row { grid-template-columns:34px minmax(0,1fr); } .axis { padding-left:42px; } .dispatch-row { grid-template-columns:45px 55px 1fr; } .dispatch-tag { display:none; } }
   </style>
 </head>
@@ -122,60 +153,80 @@
       <nav class="lab-nav" aria-label="页面导航"><a href="topic1-design-space-review-20261028.md">研究评估稿</a><a href="topic1-design-v2.html">方案入口</a><a href="topic1-four-workflows.html">工作流图谱</a><a href="LLM_Optimization_Milestone.html">Milestone</a></nav>
     </header>
     <section class="lab-heading">
-      <div><h1>多根任务共享引擎：准入实验室</h1><p>固定两项研究任务的总工作集，只改变哪些 READY 工作先启动。比较局部并发上限、全局队列、压力反馈与 workflow 信号对 root 完成和等待的影响。每个 researcher 在此简化为一个固定成本调用，尚未接入 DSH 或真实模型。</p></div>
-      <div class="lab-status"><span class="status-chip"><strong>合成负载</strong> · 非实测</span><span class="status-chip">N 固定</span><span class="status-chip">时间单位：模拟刻度</span></div>
+      <div><h1>两项研究任务，共享一组模型资源</h1><p>两位用户同时做研究，但模型资源有限：哪些研究调用先开始，一次同时运行几个？这个演示用同样的 11 次调用，比较四种排队与放行方式，观察两项任务各自多久完成。</p></div>
+      <div class="lab-status"><span class="status-chip"><strong>合成演示</strong> · 非真实模型实测</span><span class="status-chip">2 项任务 · 固定 11 次调用</span><span class="status-chip">时间：模拟刻度，非秒</span></div>
+    </section>
+
+    <section class="reading-guide" aria-labelledby="guide-heading">
+      <h2 id="guide-heading">先看懂这个小实验</h2>
+      <p>任务 A、B 各做两轮研究。每轮先准备一批调用，调度器再根据空闲容量决定放行顺序；这一轮全部返回后，才准备下一轮。这里把一次研究简化为一次模型调用，运行时长与资源需求均为手工设定。</p>
+      <div class="guide-grid">
+        <div class="guide-card"><b>① 固定什么</b><p>A 做 6 次调用（4＋2），B 做 5 次（3＋2）。调用清单、模拟运行时长和两轮依赖相同；各策略下下一轮的就绪时刻可能不同。</p></div>
+        <div class="guide-card"><b>② 改变什么</b><p>只改变调用何时启动、先启动哪一个，以及同时运行几个。页面里的“准入”就是决定让某次已准备好的调用现在开始。</p></div>
+        <div class="guide-card"><b>③ 看什么</b><p>主要看整项任务的总耗时，以及调用排队多久。总耗时越小，表示用户在这个模拟场景里越早拿到最终结果。</p></div>
+      </div>
+      <p class="guide-steps"><strong>建议操作：</strong>先保留默认参数看结果 → 点击表中某种安排方式看时间线 → 再调低可用容量，看哪些调用开始排队。这里测试的是启动时机与并发；Agent 总量和工作流结构保持固定。</p>
     </section>
 
     <section class="section-band" aria-labelledby="workflow-heading">
-      <div class="section-title"><div><h2 id="workflow-heading">一次任务流程</h2><p>ODR 中 Supervisor 可发出多个 ConductResearch 调用并行运行；所有策略收到同一组合法 READY 子任务。Engine 容量只限制执行时机，不得删除必要研究分支。</p></div></div>
+      <div class="section-title"><div><h2 id="workflow-heading">每项任务怎样完成</h2><p>A、B 都按下面的流程推进。研究结构参考 ODR；本页把多轮模型／工具交互简化成固定时长调用，最终汇总也只模拟一段等待。</p></div></div>
       <div class="workflow-flow">
-        <div class="flow-step supervisor"><b>Supervisor · 规划一轮</b><small>根据 research brief 拆出研究问题，选定这一波 researcher 数量。</small></div>
+        <div class="flow-step supervisor"><b>规划当前一轮</b><small>准备一批研究问题。本页每项任务固定两轮，调用数预先设好。</small></div>
         <div class="flow-arrow" aria-hidden="true">→</div>
-        <div class="flow-step researchers"><b>ConductResearch · 当前 READY wave</b><small>真实 ODR researcher 内部有模型/工具循环；本页只将每个 researcher 抽象为一个不可抢占调用。</small><div class="agent-pills"><span>R1</span><span>R2</span><span>R3</span><span>R4</span></div><div class="design-point">设计点：选择具体 READY IDs 的启动顺序与并发</div></div>
+        <div class="flow-step researchers"><b>研究调用就绪 → 排队 → 执行</b><small>“就绪”表示所需输入已经准备好。容量够才放行；开始后持续运行至结束。</small><div class="agent-pills"><span>调用 1</span><span>调用 2</span><span>调用 3</span><span>…</span></div><div class="design-point">本页控制点：先放行谁，同时运行几个</div></div>
         <div class="flow-arrow" aria-hidden="true">→</div>
-        <div class="flow-step join"><b>等待结果 · join</b><small>本波全部返回后 Supervisor 汇总，再决定是否提出下一波。</small></div>
+        <div class="flow-step join"><b>等待本轮全部结果</b><small>最慢的调用也完成后，才准备下一轮；两轮完成后进入最终汇总。</small></div>
         <div class="flow-arrow" aria-hidden="true">→</div>
-        <div class="flow-step"><b>生成最终报告</b><small>workflow 按原语义完成；准入器不改变质量工作量。</small></div>
+        <div class="flow-step"><b>最终汇总 → 任务完成</b><small>本页用固定 2 个模拟刻度表示最终汇总，没有实际生成报告或评价质量。</small></div>
       </div>
     </section>
 
     <div class="lab-grid">
       <aside class="controls" aria-label="实验控制">
         <h2>实验条件</h2>
-        <div class="control-group"><div class="control-label"><span>负载场景</span><output id="workload-label">同时扇出</output></div>
+        <div class="control-group"><div class="control-label"><span>负载场景</span><output id="workload-label">同时开始</output></div>
           <div class="scenario-list" role="group" aria-label="选择场景">
-            <button class="scenario" data-scenario="burst" aria-pressed="true"><strong>01 · 同时扇出</strong><small>两个 root 同时产生 researcher wave</small></button>
-            <button class="scenario" data-scenario="skew" aria-pressed="false"><strong>02 · 到达错开</strong><small>第二个 root 晚到，观察跨 root 等待</small></button>
-            <button class="scenario" data-scenario="pressure" aria-pressed="false"><strong>03 · 外部压力突变</strong><small>共享池短时减少可用 KV 容量</small></button>
+            <button class="scenario" data-scenario="burst" aria-pressed="true"><strong>01 · 两项任务同时开始</strong><small>A、B 都在第 0 刻度到达，第 1 刻度准备好第一轮调用。</small></button>
+            <button class="scenario" data-scenario="skew" aria-pressed="false"><strong>02 · 任务 B 晚一点到</strong><small>A 在第 0 刻度到达，B 在第 7 刻度到达；各自从到达时刻计算耗时。</small></button>
+            <button class="scenario" data-scenario="pressure" aria-pressed="false"><strong>03 · 别的业务临时占用资源</strong><small>第 6–15 刻度，外部业务申请 5 份容量；已运行调用继续执行。</small></button>
           </div>
         </div>
-        <div class="control-group"><label class="control-label" for="tree-cap"><span>每 root 活跃调用上限（proxy）</span></label><div class="select-wrap"><select id="tree-cap"><option>2</option><option selected>4</option><option>8</option></select></div></div>
-        <div class="control-group"><label class="control-label" for="engine-cap"><span>Engine KV 容量</span><output id="engine-value">16 units</output></label><input id="engine-cap" type="range" min="10" max="24" step="2" value="16"><div class="range-ends"><span>10</span><span>24</span></div></div>
-        <div class="control-group"><label class="control-label" for="global-cap"><span>全局并发上限（适用策略）</span></label><div class="select-wrap"><select id="global-cap"><option>2</option><option selected>3</option><option>4</option><option>6</option></select></div></div>
-        <div class="fixed-work" id="fixed-work"><strong>固定工作集</strong><br>11 次 researcher 调用 · 2 个 root · 两波工作流</div>
-        <button id="run-button" class="run-button" type="button">运行四种准入策略</button>
-        <p class="guard-note">所有策略遵守同一个局部调用上限及硬 KV 预算。等待队列是本页 wrapper 的假设，不是 DSH 原生功能；DSH 的 live/materializing activation 槽位也不等同于 Engine 活跃模型调用。</p>
+        <div class="control-group"><label class="control-label" for="tree-cap"><span>每项任务最多同时运行几个调用</span></label><div class="select-wrap"><select id="tree-cap"><option>2</option><option selected>4</option><option>8</option></select></div><p class="control-help">四种安排方式都遵守这个上限。设为 2，表示 A、B 各自最多同时运行 2 次调用。</p></div>
+        <div class="control-group"><label class="control-label" for="engine-cap"><span>模型可用容量（抽象 KV 额度）</span><output id="engine-value">16 份</output></label><input id="engine-cap" type="range" min="10" max="24" step="2" value="16"><div class="range-ends"><span>10 份</span><span>24 份</span></div><p class="control-help">每个运行中的调用占用 3–5 份。这里用来粗略表示模型的上下文缓存容量，数值不是 GB，也不是 GPU 数量。</p></div>
+        <div class="control-group"><label class="control-label" for="global-cap"><span>所有任务合计的并发上限</span></label><div class="select-wrap"><select id="global-cap"><option>2</option><option selected>3</option><option>4</option><option>6</option></select></div><p class="control-help">只用于第 2–4 种方式。例如设为 3，A、B 合计最多运行 3 次；压力反馈还可能临时下调。</p></div>
+        <div class="fixed-work" id="fixed-work"><strong>固定工作量</strong><br>11 次调用 · 2 项任务 · 每项各两轮</div>
+        <button id="run-button" class="run-button" type="button">按当前条件重新比较</button>
+        <p class="guard-note">改选项会立即更新结果。这里限制的是运行中的模型调用数，与 DSH 的 Agent 存活数量是两个概念。</p>
       </aside>
 
       <main class="lab-main">
+        <section class="metric-explainer" aria-labelledby="metric-heading">
+          <h3 id="metric-heading">JCT 就是“整项任务的总耗时”</h3>
+          <p>JCT 是 Job Completion Time 的缩写。本页从任务到达开始计时，包括准备、排队、模型执行和最终汇总等待。</p>
+          <p class="metric-formula">任务总耗时（JCT）＝任务完成时刻 − 任务到达时刻</p>
+          <div class="metric-examples" id="metric-examples" aria-live="polite"></div>
+          <p id="metric-average"></p>
+          <p>这些都是模拟刻度，不对应真实秒数。同一任务的调用可以并行，所以不能把所有调用时长直接相加。下面统一用中文“任务耗时”。</p>
+        </section>
         <section class="results" aria-labelledby="results-heading">
-          <div class="results-head"><h2 id="results-heading">同一工作集 · 策略对照</h2><span id="result-summary">运行中…</span></div>
-          <div class="table-scroll"><table><thead><tr><th>准入策略</th><th>平均 root JCT</th><th>P95 root JCT</th><th>最长 READY 等待</th><th>峰值并发</th><th>等待轮次</th></tr></thead><tbody id="result-rows"></tbody></table></div>
+          <div class="results-head"><h2 id="results-heading">同样 11 次调用，哪种安排更快完成</h2><span id="result-summary">计算中…</span></div>
+          <div class="table-scroll"><table><thead><tr><th>安排方式 · 点击看时间线</th><th>任务 A 耗时</th><th>任务 B 耗时</th><th>平均任务耗时 ↓</th><th title="某次调用从输入准备好，到获准启动的最长等待">最长排队等待 ↓</th></tr></thead><tbody id="result-rows"></tbody></table></div>
+          <p class="result-explanation" id="result-explanation" aria-live="polite"></p>
         </section>
         <div class="viz-grid">
-          <section class="viz-panel"><h3 id="timeline-title">派发时间线</h3><p>每次调用独立一行：灰线为 READY 等待，色带为执行。J 是汇总等待，不消耗模拟 Engine KV。</p><select id="timeline-policy" class="timeline-select" aria-label="查看策略时间线"><option value="tree">局部上限</option><option value="fcfs">全局 FCFS</option><option value="pressure">压力反馈</option><option value="workflow" selected>Workflow + pressure</option></select><div id="gantt" class="gantt"></div><div class="axis" id="axis"></div></section>
-          <section class="viz-panel"><h3>Engine 容量视图</h3><p>各项是独立峰值，不能相加。外部请求同样须等待容量，不能撤销已运行请求的 KV 预算。</p><div id="kv-meter" class="kv-meter"></div></section>
+          <section class="viz-panel"><h3 id="timeline-title">调用什么时候开始、什么时候结束</h3><p>每行是一次调用：A1–A6 属于任务 A，B1–B5 属于任务 B。按横轴从左向右读；两条色带在时间上重叠，表示同时运行。条形悬停可看具体时刻。</p><select id="timeline-policy" class="timeline-select" aria-label="查看哪种安排方式的时间线"><option value="tree" selected>① 仅按单任务上限</option><option value="fcfs">② 加全局先到先运行队列</option><option value="pressure">③ 再按压力降低并发</option><option value="workflow">④ 压力反馈＋任务优先级</option></select><div class="timeline-legend"><span><i class="legend-swatch wait"></i>灰线：就绪后排队</span><span><i class="legend-swatch"></i>色带：执行（蓝 A／橙 B）</span><span>末行“汇总”：固定等待</span></div><div id="gantt" class="gantt"></div><div class="axis" id="axis"></div><p class="axis-title">横轴：从场景开始计的模拟时刻 →</p></section>
+          <section class="viz-panel"><h3>这些调用占了多少容量</h3><p>下面列的是整个过程的峰值，各峰值可能出现在不同时间，不能直接相加。外部业务也要等空位，不能抢走已运行调用的额度。</p><div id="kv-meter" class="kv-meter"></div></section>
         </div>
-        <section class="dispatch" aria-labelledby="dispatch-heading"><div class="results-head"><h2 id="dispatch-heading">关键准入事件</h2><span id="dispatch-summary"></span></div><div class="dispatch-list" id="dispatch-list"></div></section>
+        <section class="dispatch" aria-labelledby="dispatch-heading"><div class="results-head"><h2 id="dispatch-heading">逐次查看：哪个调用获准开始</h2><span id="dispatch-summary"></span></div><div class="dispatch-list" id="dispatch-list"></div></section>
         <details class="raw-data"><summary>展开原始参数、在线观测与准入动作（合成）</summary><p>driver_input 是完整的合成场景；controller_decisions 每条仅保留当时可见的 READY 集合和资源快照。没有真实 prompt、Agent 输出或 GPU telemetry，不能当作 benchmark raw data。</p><pre id="raw-data"></pre></details>
-        <div class="method-note"><strong>解释边界：</strong>当前服务时长、KV 需求、root deadline 和压力事件都是手工设定。只有当前波次在完成前一波后才进入 READY；控制策略读取当前 READY/运行状态及声明的 deadline，不能看到未来波次。本页不模拟 continuous batching、KV 驱逐/恢复或模型质量；Workflow + pressure 是 EDF/aging 教学启发式，既不是新算法，也不代表 HEAR、CONCUR、Coda 或 TOPAS 的复现。</div>
+        <details class="method-note"><summary>展开技术假设与研究边界</summary><p>运行时长、KV 需求、任务截止时间和压力事件均为手工设定；各任务固定两轮研究。下一轮只有在上一轮全部完成并经过准备等待后才就绪。策略只使用当前已就绪调用、运行状态和已到达任务声明的截止时间，不能看到未来波次。</p><p>第 3、4 种方式使用相同压力降档规则。第 4 种另外优先保护已排队至少 6 刻度的调用，其余按任务声明的截止时间排序。这是 EDF/aging 教学启发式，不作为新算法或已有论文的复现。</p><p>等待队列由本页模拟器提供，不能等同于 DSH 的原生能力；这里也没有模拟 DSH activation 的完整生命周期、连续批处理、KV 驱逐／恢复、资源争抢导致的运行变慢或模型质量。因此降低并发未必更快，演示结果只能帮助读懂安排过程，实际收益仍需真实工作流与模型测量。</p></details>
       </main>
     </div>
     <footer class="lab-footer">Workflow 结构参照 <a href="https://github.com/langchain-ai/open_deep_research">Open Deep Research</a>：Supervisor 通过 ConductResearch 并行运行 researcher subgraph，结果返回后继续汇总。当前场景参数为合成值。研究边界与后续验证见 <a href="topic1-design-space-review-20261028.md">Topic1 方向评估</a>。</footer>
   </div>
   <script>
     const source = {
-      burst: { label: "同时扇出", external: [], roots: [
+      burst: { label: "同时开始", external: [], roots: [
         { id:"A", arrival:0, deadline:26, waves:[{think:1,tasks:[["A1",5,4],["A2",8,3],["A3",4,5],["A4",6,3]]},{think:2,tasks:[["A5",6,4],["A6",4,3]]}], join:2 },
         { id:"B", arrival:0, deadline:30, waves:[{think:1,tasks:[["B1",4,3],["B2",7,4],["B3",5,3]]},{think:1,tasks:[["B4",5,4],["B5",3,3]]}], join:2 }
       ] },
@@ -189,12 +240,12 @@
       ] }
     };
     const policies = [
-      { id:"tree", label:"局部上限", klass:"", desc:"每 root 调用上限 + Engine 容量门槛" },
-      { id:"fcfs", label:"全局 FCFS", klass:"fcfs", desc:"全局并发 cap + READY 时间" },
-      { id:"pressure", label:"压力反馈", klass:"pressure", desc:"全局 cap 随压力降档 + FCFS" },
-      { id:"workflow", label:"Workflow + pressure", klass:"workflow", desc:"压力降档 + 声明的 root deadline + aging" }
+      { id:"tree", label:"① 仅按单任务上限", klass:"", desc:"各任务遵守自己的并发上限，启动前检查剩余容量。" },
+      { id:"fcfs", label:"② 加全局先到先运行队列", klass:"fcfs", desc:"再限制所有任务的合计并发；能放下的调用按就绪先后启动。" },
+      { id:"pressure", label:"③ 再按压力降低并发", klass:"pressure", desc:"沿用全局排队方式；资源压力较高时，进一步减少同时运行数。" },
+      { id:"workflow", label:"④ 压力反馈＋任务优先级", klass:"workflow", desc:"使用相同压力规则；先保护等待久的调用，其余按声明的任务截止时间排序。" }
     ];
-    let selectedScenario="burst", selectedPolicy="workflow", latestResults=[];
+    let selectedScenario="burst", selectedPolicy="tree", latestResults=[];
     const byId=id=>document.getElementById(id);
     const cloneRoots=roots=>roots.map(root=>({...root,waveIndex:0,nextWaveAt:root.arrival+root.waves[0].think,currentWave:null,doneInWave:0,finishAt:null,done:false}));
     function simulate(policy,opts){
@@ -278,35 +329,49 @@
     function runAll(){
       const opts={tree:Number(byId("tree-cap").value),engine:Number(byId("engine-cap").value),global:Number(byId("global-cap").value)};
       const count=source[selectedScenario].roots.reduce((s,r)=>s+r.waves.reduce((n,w)=>n+w.tasks.length,0),0);
-      byId("fixed-work").innerHTML=`<strong>固定工作集</strong><br>${count} 次 researcher 调用 · 2 个 root · 两波 workflow`;
+      byId("fixed-work").innerHTML=`<strong>固定工作量</strong><br>${count} 次调用 · 2 项任务 · 每项各两轮`;
       latestResults=policies.map(p=>simulate(p.id,opts));
       const best=Math.min(...latestResults.map(r=>r.avg));
       byId("result-rows").innerHTML=latestResults.map(r=>{
         const p=policies.find(x=>x.id===r.policy);
-        return `<tr class="${r.avg===best?"best":""}"><td><span class="policy-name"><i class="policy-dot ${p.klass}"></i>${p.label}</span></td><td>${r.avg.toFixed(1)}</td><td>${r.p95.toFixed(1)}</td><td>${r.maxWait.toFixed(1)}</td><td>${r.peakActive}</td><td>${r.blocked}</td></tr>`;
+        const elapsed=id=>r.roots.find(x=>x.id===id).finishAt-r.roots.find(x=>x.id===id).arrival;
+        return `<tr class="${r.avg===best?"best":""}"><td><button type="button" class="policy-pick" data-policy="${p.id}" aria-pressed="${p.id===selectedPolicy}" title="查看这种安排方式的时间线"><span class="policy-name"><i class="policy-dot ${p.klass}"></i>${p.label}</span></button><small class="policy-desc">${p.desc}</small></td><td>${elapsed("A").toFixed(1)}</td><td>${elapsed("B").toFixed(1)}</td><td>${r.avg.toFixed(1)}</td><td>${r.maxWait.toFixed(1)}</td></tr>`;
       }).join("");
-      byId("result-summary").textContent=`${count} calls / policy · 仅 2 roots，P95 即较大值`;
+      byId("result-summary").textContent=`每种方式完成相同 ${count} 次调用 · 单位：模拟刻度`;
+      const fastest=latestResults.filter(r=>r.avg===best).map(r=>policies.find(p=>p.id===r.policy).label).join("、");
+      byId("result-explanation").textContent=`当前合成参数下，${fastest}的平均任务耗时最短，为 ${best.toFixed(1)} 刻度。四种方式做完的工作量相同；点击方式名称可查看调用怎样排队。降低并发不一定更快，真实资源干扰与模型质量还需要单独实测。`;
+      byId("result-rows").querySelectorAll("[data-policy]").forEach(button=>button.addEventListener("click",()=>{
+        selectedPolicy=button.dataset.policy; byId("timeline-policy").value=selectedPolicy; renderPolicy();
+      }));
       renderPolicy();
     }
     function renderPolicy(){
       const result=latestResults.find(r=>r.policy===selectedPolicy); if(!result)return;
       const maxT=Math.max(1,result.makespan), rootIds=["A","B"];
-      byId("timeline-title").textContent=`派发时间线 · ${policies.find(p=>p.id===selectedPolicy).label}`;
+      const policy=policies.find(p=>p.id===selectedPolicy);
+      byId("timeline-title").textContent=`调用时间线 · ${policy.label}`;
+      byId("metric-examples").innerHTML=result.roots.map(root=>`<div class="metric-example"><b>任务 ${root.id}</b>第 ${root.arrival} 刻度到达 → 第 ${root.finishAt} 刻度完成<br>总耗时：${root.finishAt} − ${root.arrival} ＝ <strong>${root.finishAt-root.arrival} 刻度</strong></div>`).join("");
+      const durations=result.roots.map(root=>root.finishAt-root.arrival);
+      byId("metric-average").textContent=`当前查看“${policy.label}”：平均任务耗时＝（${durations.join("＋")}）÷ ${durations.length} ＝ ${result.avg.toFixed(1)} 刻度。表中“最长排队等待”只计算某次调用就绪后到启动的等待，不等于整项任务的耗时。`;
+      byId("result-rows").querySelectorAll("[data-policy]").forEach(button=>{
+        const selected=button.dataset.policy===selectedPolicy;
+        button.setAttribute("aria-pressed",String(selected)); button.closest("tr").classList.toggle("is-selected",selected);
+      });
       byId("gantt").innerHTML=rootIds.map(id=>{
         const rows=result.started.filter(x=>x.root===id).sort((a,b)=>a.id.localeCompare(b.id)).map(x=>{
           const left=x.start/maxT*100, width=Math.max(.8,(x.end-x.start)/maxT*100);
           const waitLeft=x.readyAt/maxT*100,waitWidth=(x.start-x.readyAt)/maxT*100;
-          return `<div class="gantt-row"><span class="gantt-label">${x.id}</span><div class="gantt-track"><span class="gantt-wait" style="left:${waitLeft}%;width:${waitWidth}%"></span><span class="gantt-bar ${id.toLowerCase()}" style="left:${left}%;width:${width}%" title="${x.id} · READY ${x.readyAt} · ${x.start}–${x.end} · KV ${x.kv}">${x.id}</span></div></div>`;
+          return `<div class="gantt-row"><span class="gantt-label">${x.id}</span><div class="gantt-track"><span class="gantt-wait" style="left:${waitLeft}%;width:${waitWidth}%" title="就绪后排队：${x.readyAt}–${x.start}，等待 ${x.start-x.readyAt} 刻度"></span><span class="gantt-bar ${id.toLowerCase()}" style="left:${left}%;width:${width}%" title="${x.id} · 第 ${x.wave+1} 轮 · 就绪 ${x.readyAt} · 启动 ${x.start} · 结束 ${x.end} · 占用 ${x.kv} 份容量">${x.id}</span></div></div>`;
         }).join("");
         const root=result.roots.find(r=>r.id===id),joinStart=root.finishAt-root.join;
-        return `<div class="gantt-root">Root ${id} · JCT ${(root.finishAt-root.arrival).toFixed(1)}</div>${rows}<div class="gantt-row"><span class="gantt-label">J${id}</span><div class="gantt-track"><span class="gantt-bar ${id.toLowerCase()}" style="left:${joinStart/maxT*100}%;width:${root.join/maxT*100}%" title="最终汇总等待 ${joinStart}–${root.finishAt}">J</span></div></div>`;
+        return `<div class="gantt-root">任务 ${id} · 到达 ${root.arrival} → 完成 ${root.finishAt} · 总耗时 ${(root.finishAt-root.arrival).toFixed(1)} 刻度</div>${rows}<div class="gantt-row"><span class="gantt-label">汇总</span><div class="gantt-track"><span class="gantt-bar ${id.toLowerCase()}" style="left:${joinStart/maxT*100}%;width:${root.join/maxT*100}%" title="最终汇总等待 ${joinStart}–${root.finishAt}，不占用模拟模型容量">汇总</span></div></div>`;
       }).join("");
       byId("axis").innerHTML=`<span>0</span><span>${(maxT*.25).toFixed(0)}</span><span>${(maxT*.5).toFixed(0)}</span><span>${(maxT*.75).toFixed(0)}</span><span>${maxT.toFixed(0)}</span>`;
       const base=Number(byId("engine-cap").value), external=result.externalPeak, running=result.peakActiveKV;
-      byId("kv-meter").innerHTML=`<div class="kv-line"><b>运行中</b><div class="kv-track"><div class="kv-fill" style="width:${Math.min(100,running/base*100)}%"></div></div><output>${running}/${base}</output></div><div class="kv-line"><b>外部负载</b><div class="kv-track"><div class="kv-fill external" style="width:${Math.min(100,external/base*100)}%"></div></div><output>${external}/${base}</output></div><div class="fixed-work"><strong>峰值总占用 ${result.peakKV}/${base}</strong><br>当前模型不含 KV 驱逐与恢复开销。</div>`;
-      byId("dispatch-list").innerHTML=result.decisions.slice(0,60).map(d=>`<div class="dispatch-row"><span class="dispatch-time">t=${d.time.toFixed(1)}</span><span class="dispatch-id">${d.job.id}</span><span>Root ${d.job.root} · W${d.job.wave+1} · ${d.job.duration} 刻度 · ${d.job.kv} KV</span><span class="dispatch-tag ${d.job.root.toLowerCase()}">READY 后放行</span></div>`).join("");
+      byId("kv-meter").innerHTML=`<div class="kv-line"><b>本页调用</b><div class="kv-track"><div class="kv-fill" style="width:${Math.min(100,running/base*100)}%"></div></div><output>${running}/${base} 份</output></div><div class="kv-line"><b>外部业务</b><div class="kv-track"><div class="kv-fill external" style="width:${Math.min(100,external/base*100)}%"></div></div><output>${external}/${base} 份</output></div><div class="fixed-work"><strong>总占用最高 ${result.peakKV}/${base} 份</strong><br>同一时刻最多运行 ${result.peakActive} 次调用。<br>当前模拟不计算缓存驱逐与恢复成本。</div>`;
+      byId("dispatch-list").innerHTML=result.decisions.slice(0,60).map(d=>`<div class="dispatch-row"><span class="dispatch-time">t=${d.time.toFixed(1)}</span><span class="dispatch-id">${d.job.id}</span><span>任务 ${d.job.root} · 第 ${d.job.wave+1} 轮 · 运行 ${d.job.duration} 刻度 · 占用 ${d.job.kv} 份</span><span class="dispatch-tag ${d.job.root.toLowerCase()}">已就绪 → 放行</span></div>`).join("");
       byId("dispatch-summary").textContent=`展示 ${Math.min(result.decisions.length,60)} / ${result.decisions.length} 次派发`;
-      byId("raw-data").textContent=JSON.stringify({data_type:"synthetic_mechanism_fixture",driver_input:source[selectedScenario],policy:policies.find(p=>p.id===selectedPolicy),controller_decisions:result.decisions.map(d=>({observed:d.observed,action:d.action})),completion:result.roots.map(r=>({root:r.id,arrival:r.arrival,completed:r.finishAt}))},null,2);
+      byId("raw-data").textContent=JSON.stringify({data_type:"synthetic_mechanism_fixture",time_unit:"simulation_tick_not_seconds",capacity_unit:"abstract_KV_unit_not_GB",driver_input:source[selectedScenario],policy:policy,controller_decisions:result.decisions.map(d=>({observed:d.observed,action:d.action})),completion:result.roots.map(r=>({root:r.id,arrival:r.arrival,completed:r.finishAt,task_duration:r.finishAt-r.arrival})),metrics:{average_task_duration:result.avg,longest_ready_queue_wait:result.maxWait,peak_parallel_calls:result.peakActive}},null,2);
     }
     document.querySelectorAll(".scenario").forEach(button=>button.addEventListener("click",()=>{
       selectedScenario=button.dataset.scenario;
@@ -316,7 +381,7 @@
     byId("run-button").addEventListener("click",runAll);
     byId("timeline-policy").addEventListener("change",()=>{selectedPolicy=byId("timeline-policy").value;renderPolicy();});
     byId("tree-cap").addEventListener("change",runAll); byId("global-cap").addEventListener("change",runAll);
-    byId("engine-cap").addEventListener("input",()=>{byId("engine-value").textContent=`${byId("engine-cap").value} units`;runAll();});
+    byId("engine-cap").addEventListener("input",()=>{byId("engine-value").textContent=`${byId("engine-cap").value} 份`;runAll();});
     runAll();
   </script>
 </body>
