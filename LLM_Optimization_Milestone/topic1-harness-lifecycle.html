@@ -13,8 +13,8 @@
 </head>
 <body>
 <div class="shell">
-  <header class="top"><div class="brand"><b>L</b>LLM OPTIMIZATION · TOPIC1</div><nav class="nav" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">Milestone</a><a href="topic1-four-workflows.html">工作流图谱</a><a href="topic1-harness-study-20261028.md">完整核查稿</a><a href="papers/paper-60.html">HEAR 精读</a></nav></header>
-  <section class="hero"><p class="eyebrow">CURRENT FOCUS · HARNESS LIFECYCLE · 2026-10-28</p><h1>一个子 Agent，从创建到交回结果</h1><p class="lead">先看 Harness 实际做了什么，再找可以测的痛点。当前固定任务分解，关注上下文交接、父级唤醒和等待实例的回收；从真实执行记录判断是否值得设计。</p><div class="chips"><span class="chip">DSH 源码核对：f3803c9</span><span class="chip">首轮：上下文交接＋结果唤醒</span><span class="chip hypothesis">候选假设 · 尚未跑真实实验</span></div></section>
+  <header class="top"><div class="brand"><b>L</b>LLM OPTIMIZATION · TOPIC1</div><nav class="nav" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">Milestone</a><a href="topic1-harness-engine.html">当前研究焦点</a><a href="topic1-four-workflows.html">工作流图谱</a><a href="topic1-harness-study-20261028.md">完整核查稿</a><a href="papers/paper-60.html">HEAR 精读</a></nav></header>
+  <section class="hero"><p class="eyebrow">IMPLEMENTATION BACKGROUND · HARNESS LIFECYCLE · 2026-10-28</p><h1>一个子 Agent，从创建到交回结果</h1><p class="lead">保留的 DSH 实现核查：实例、历史、消息与结果如何流转。当前研究已转向 <a href="topic1-harness-engine.html">Harness 请求与 DAG 如何结合引擎状态展开和派发</a>；本页的上下文交接、父级唤醒及截图衍生实验仅作为此前候选，不限定研究范围。</p><div class="chips"><span class="chip">DSH 源码核对：f3803c9</span><span class="chip">实现资料 · 非当前主线</span><span class="chip hypothesis">候选假设 · 尚未跑真实实验</span></div></section>
 
   <section class="panel"><h2>先分清四件事</h2><p class="intro">给某个 Agent 再派一次任务，不一定要新建一个 Agent；一个正在等待的 Agent，也不一定正在调用模型。</p><div class="objects"><div class="object"><b>子任务</b><p>要完成的一件事，例如核对一篇论文或检查一个模块。</p></div><div class="object"><b>子 Session</b><p>可持久保存的身份与历史；任务完成后仍可被发现和继续。</p></div><div class="object"><b>Activation · 在线实例</b><p>创建或冷恢复的一次驻留期；完成清理才归还实例槽位。</p></div><div class="object"><b>模型请求</b><p>实际请求推理服务的一次调用；一个实例内部可以多次调用。</p></div></div><p class="scope-note">Workflow 决定要做哪些逻辑任务、有哪些依赖；Harness 决定如何把它们落实为带历史的实例、消息和结果；Engine 决定真实推理与缓存如何执行。本轮先固定 Workflow，审计 Harness 的实现边界。</p></section>
 
