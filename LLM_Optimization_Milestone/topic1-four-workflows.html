@@ -89,6 +89,23 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:18px 0 30px;b
 @media(max-width:900px){.design-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.design-item:nth-child(2){border-right:0}.design-item:nth-child(-n+2){border-bottom:1px solid var(--line)}}
 @media(max-width:520px){.drawer-head h2{font-size:21px}.module-links{grid-template-columns:1fr;gap:8px}.design-item{padding:12px}.design-item p{min-height:0}}
 </style>
+<style>
+/* Current Harness–Engine view; existing workload diagrams retain their layout. */
+.dag-scroll svg .edge.feedback{stroke:var(--blue)}
+.legend span[id]{display:inline;margin:0;color:inherit;font:inherit}
+.harness-notice{display:flex;gap:14px;align-items:flex-start;padding:15px 21px;border-bottom:1px solid var(--line);background:#fff8ee;font-size:13px;line-height:1.8}
+.harness-notice strong{flex-shrink:0;color:#93532c}.harness-notice span{color:#625d50}.harness-notice a{color:var(--green)}
+.dag-scroll svg.harness-flow{min-width:1350px}
+.dag-scroll .harness-flow .title{font-size:20px;transform:translateY(5px)}
+.dag-scroll .harness-flow .sub{font-size:16px;transform:translateY(9px)}
+.dag-scroll .harness-flow .edge-label{font-size:16px;paint-order:stroke;stroke:#f6faf4;stroke-width:6px;stroke-linejoin:round}
+.harness-flow .lane-title{font-size:20px;font-weight:750;fill:var(--violet)}.harness-flow .engine-label{fill:var(--blue)}
+.harness-flow .lane-note,.harness-flow .scope-note{font-size:16px;fill:var(--muted)}.harness-flow .scope-label{font-size:19px;font-weight:700;fill:var(--green)}
+.runtime-background{border-top:1px solid var(--line);background:#f5f6f9}.runtime-background>summary{padding:17px 21px;color:var(--violet);font-size:14px;font-weight:700;cursor:pointer}.runtime-background>p{margin:0;padding:0 21px 16px;color:var(--muted);font-size:13px;line-height:1.8}.runtime-background>p a{color:var(--green)}
+.module-background{margin:8px 0 20px;border:1px solid #d7cce5;padding:12px;background:#f7f4fa;border-radius:7px}.module-background>summary{font-size:14px;color:var(--violet);font-weight:700;cursor:pointer}.module-background .module-list{margin:12px 0 0}
+.workflow-tab:focus-visible,.runtime-background>summary:focus-visible,.module-background>summary:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+@media(max-width:650px){.harness-notice{flex-direction:column;gap:3px;padding:13px 16px}}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -100,25 +117,25 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:18px 0 30px;b
   </header>
 
   <section class="hero">
-    <div><p class="eyebrow">TOPIC1 / HARNESS × INFERENCE ENGINE</p><h1>让 workflow<br><em>跟着资源工作</em></h1><p class="lede">把 workload、执行结构和 runtime activation 分开看。展示 ODR、Coding、GPT Researcher 与 CRAG 的四类任务工作流 / 条件数据流，单列 DSH 的运行时结构。对照 width、depth、stage、stop 与安全派发；橙色虚线表示 Topic1 建议控制位置。</p></div>
+    <div><p class="eyebrow">TOPIC1 / HARNESS × INFERENCE ENGINE</p><h1>让 workflow<br><em>跟着资源工作</em></h1><p class="lede">展示 ODR、Coding、GPT Researcher 与 CRAG 的四类任务结构，以及当前 Harness × Engine 的跨层接入设想：已揭示 DAG、工具中工作与后端状态如何共同影响展开和派发。DSH 原生生命周期保留在实现背景折叠区。</p></div>
     <div class="hero-note"><strong>图上先看结构</strong>节点是实际执行或评测边界；箭头是调用关系；分支、循环和橙色标签直接标出 width、depth、stage、stop 与 release 的设计空间。点击任意节点查看对应的调用、参数、prompt 和 raw schema。</div>
   </section>
 
   <section class="section" id="workflow-explorer">
-    <div class="section-head"><h2>四类工作流与一个 Harness 运行时</h2><p>任务工作流、条件数据流与 Harness 运行时分别标注；含循环的结构不统称 DAG。切换标签，点击节点查看调用、参数与证据边界。</p></div>
+    <div class="section-head"><h2>四类工作流与跨层派发设想</h2><p>应用结构、Topic1 待验证接入与 DSH 原生机制分别标注；含循环的结构不统称静态 DAG。切换标签，点击节点查看职责、参数与证据边界。</p></div>
     <div class="workflow-coverage" aria-label="新增结构的选择理由"><div><b>递归研究 · GPT Researcher</b>区别于 ODR 的批次 fan-out：发现会形成后续问题，再向更深一层展开。</div><div><b>条件纠错 · CRAG</b>区别于一律启动候选：评估检索质量后，只执行内部、外部或双路取证路径。</div></div>
     <div class="explorer">
-      <div class="explorer-head"><div><b>WORKFLOW CONTROL SURFACE</b><span>实线 = 执行路径　·　橙色虚线 = Topic1 控制点　·　点击节点 = 详情抽屉</span></div><div class="legend"><span><i></i>workflow</span><span><i class="control"></i>design point</span><span><i class="runtime"></i>runtime</span><span><i class="eval"></i>benchmark / evaluation</span></div></div>
-      <div class="workflow-tabs" role="tablist" aria-label="选择 workflow"><button class="workflow-tab" role="tab" type="button" data-workflow="research" aria-selected="true">ODR Research<small>批次 fan-out</small></button><button class="workflow-tab" role="tab" type="button" data-workflow="coding" aria-selected="false">Coding Harness<small>候选 / 修复</small></button><button class="workflow-tab" role="tab" type="button" data-workflow="dsh" aria-selected="false">DSH Runtime<small>activation lifecycle</small></button><button class="workflow-tab" role="tab" type="button" data-workflow="gptr" aria-selected="false">GPT Researcher<small>递归 / 树状展开</small></button><button class="workflow-tab" role="tab" type="button" data-workflow="crag" aria-selected="false">CRAG<small>条件路由 / 纠错</small></button></div>
+      <div class="explorer-head"><div><b>WORKFLOW CONTROL SURFACE</b><span id="workflow-legend-hint">实线 = 执行路径 · 橙色虚线 = Topic1 控制点 · 点击节点 = 详情抽屉</span></div><div class="legend"><span><i></i>workflow</span><span><i class="control"></i>design point</span><span><i class="runtime"></i><span id="workflow-violet-label">runtime</span></span><span><i class="eval"></i><span id="workflow-blue-label">benchmark / evaluation</span></span></div></div>
+      <div class="workflow-tabs" role="tablist" aria-label="选择 workflow"><button class="workflow-tab" role="tab" type="button" data-workflow="research" aria-selected="true">ODR Research<small>批次 fan-out</small></button><button class="workflow-tab" role="tab" type="button" data-workflow="coding" aria-selected="false">Coding Harness<small>候选 / 修复</small></button><button class="workflow-tab" role="tab" type="button" data-workflow="dsh" aria-selected="false">Harness × Engine<small>DAG 展开 / 请求派发</small></button><button class="workflow-tab" role="tab" type="button" data-workflow="gptr" aria-selected="false">GPT Researcher<small>递归 / 树状展开</small></button><button class="workflow-tab" role="tab" type="button" data-workflow="crag" aria-selected="false">CRAG<small>条件路由 / 纠错</small></button></div>
       <section class="workflow-overview" id="workflow-overview" aria-live="polite" aria-label="当前工作流说明"></section>
       <div class="graph-panel is-active" data-panel="research"></div><div class="graph-panel" data-panel="coding" hidden></div><div class="graph-panel" data-panel="dsh" hidden></div><div class="graph-panel" data-panel="gptr" hidden></div><div class="graph-panel" data-panel="crag" hidden></div>
     </div>
-    <div class="boundary"><div><b>类型与基线</b>INFRAMIND / Murakkab 保留为对照。CRAG 是条件检索方法，不要求每个模块都是 Agent；DSH 单列为 Harness 运行时，其 activation 生命周期与应用工作流分开看。</div><div><b>证据边界</b>新增结构依据已保存的 GPT Researcher 源码与 CRAG Algorithm 1。原有机制、Topic1 建议、示意 schema 与未测量 trace 分开标注；不把材料收录当作已执行实验。</div></div>
+    <div class="boundary"><div><b>类型与基线</b>INFRAMIND / Murakkab 保留为对照。CRAG 不要求每个模块都是 Agent。Harness × Engine 是待验证接入图；DSH 原生 activation 生命周期单独折叠，不等于引擎请求调度。</div><div><b>证据边界</b>应用结构依据相应论文或源码；跨层控制、引擎反馈与拟埋点 schema 尚未运行。E1 先固定必做工作，与同信息后端策略比较；可选探索 E2 独立验证质量与成本。</div></div>
   </section>
 
   <div class="sources"><span>证据来源：</span><a href="https://github.com/langchain-ai/open_deep_research/blob/main/src/open_deep_research/deep_researcher.py">ODR execution</a><a href="https://github.com/langchain-ai/open_deep_research/blob/main/src/open_deep_research/configuration.py">ODR configuration</a><a href="https://github.com/Ayanami0730/deep_research_bench">DeepResearchBench</a><a href="https://github.com/LiveCodeBench/LiveCodeBench">LiveCodeBench</a><a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/subagent.md">DSH subagent API</a><a href="https://www.usenix.org/conference/osdi26/presentation/chaudhry">Murakkab / OSDI</a></div>
   <div class="sources"><span>新增证据：</span><a href="https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py">GPT Researcher · 固定源码快照</a><a href="https://docs.gptr.dev/docs/gpt-researcher/gptr/deep_research">Deep Research 文档</a><a href="https://arxiv.org/abs/2401.15884">CRAG · Algorithm 1</a></div>
-  <footer><span>Topic1 representative workflows · 2026-10-28</span><span>workflow explorer 与主站共享导航和证据边界</span></footer>
+  <footer><span>Topic1 representative workflows · 2026-10-29</span><span>workflow explorer 与主站共享导航和证据边界</span></footer>
 </div>
 
 <div class="drawer-backdrop" id="drawer-backdrop"></div>
@@ -129,6 +146,6 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:18px 0 30px;b
   <div class="drawer-foot">事实与建议分开标注；未测量的运行结果不会被写成性能结论。</div>
 </aside>
 <script src="topic1-extra-workflows.js"></script>
-<script src="topic1-detail.js"></script>
+<script src="topic1-detail.js?v=20261029-dag"></script>
 </body>
 </html>
