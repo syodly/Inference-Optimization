@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic1 · 多根任务准入实验室</title>
+  <style>
+    :root { --lab-ink:#202b2a; --lab-muted:#65716f; --lab-line:#d9e1dd; --lab-paper:#f4f7f4; --lab-green:#167b62; --lab-green-soft:#e3f2eb; --lab-blue:#3972a1; --lab-blue-soft:#e8f0f7; --lab-orange:#bd6932; --lab-orange-soft:#f8eee5; --lab-red:#a84e4c; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--lab-paper); color:var(--lab-ink); font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif; letter-spacing:0; }
+    .lab-shell { max-width:1360px; margin:0 auto; padding:20px 24px 56px; }
+    .lab-top { display:flex; justify-content:space-between; align-items:center; gap:16px; padding-bottom:16px; border-bottom:1px solid var(--lab-line); }
+    .lab-brand { display:flex; align-items:center; gap:11px; font-size:13px; font-weight:700; }
+    .lab-mark { display:grid; place-items:center; width:30px; height:30px; background:var(--lab-ink); color:#fff; border-radius:4px; font-size:14px; }
+    .lab-nav { display:flex; flex-wrap:wrap; gap:16px; font-size:13px; }
+    .lab-nav a { color:#365f58; text-decoration:none; }
+    .lab-nav a:hover { text-decoration:underline; }
+    .lab-heading { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:18px; padding:28px 0 20px; }
+    .lab-heading h1 { margin:0 0 7px; font-size:28px; line-height:1.2; }
+    .lab-heading p { max-width:770px; margin:0; color:var(--lab-muted); line-height:1.65; font-size:14px; }
+    .lab-status { display:flex; flex-wrap:wrap; gap:7px; }
+    .status-chip { padding:6px 9px; border:1px solid var(--lab-line); background:#fff; border-radius:4px; color:#45524f; font-size:12px; }
+    .status-chip strong { color:var(--lab-green); }
+    .section-band { margin:12px 0 20px; padding:18px 20px; background:#fff; border-top:2px solid #789e8b; }
+    .section-title { display:flex; justify-content:space-between; align-items:start; gap:14px; margin-bottom:12px; }
+    .section-title h2 { margin:0; font-size:18px; }
+    .section-title p { margin:4px 0 0; color:var(--lab-muted); font-size:13px; line-height:1.55; }
+    .workflow-flow { display:grid; grid-template-columns:minmax(120px,1fr) 28px minmax(260px,2fr) 28px minmax(150px,1.1fr) 28px minmax(120px,1fr); align-items:stretch; gap:8px; }
+    .flow-step { min-height:74px; padding:11px 12px; border:1px solid var(--lab-line); border-left:4px solid var(--lab-green); background:#fbfdfb; }
+    .flow-step.supervisor { border-left-color:#636f8b; }
+    .flow-step.researchers { border-left-color:var(--lab-blue); }
+    .flow-step.join { border-left-color:var(--lab-orange); }
+    .flow-step b { display:block; margin-bottom:5px; font-size:13px; }
+    .flow-step small { display:block; color:var(--lab-muted); line-height:1.5; font-size:12px; }
+    .flow-arrow { align-self:center; text-align:center; color:#70807a; font-size:21px; }
+    .agent-pills { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+    .agent-pills span { min-width:31px; padding:4px 6px; border:1px solid #b9d1e0; border-radius:3px; background:var(--lab-blue-soft); color:#315f83; text-align:center; font-size:11px; }
+    .lab-grid { display:grid; grid-template-columns:290px minmax(0,1fr); align-items:start; gap:18px; }
+    .controls { padding:16px; border:1px solid var(--lab-line); background:#fff; }
+    .controls h2 { margin:0 0 13px; font-size:16px; }
+    .control-group { padding:12px 0; border-top:1px solid #e8eeeb; }
+    .control-group:first-of-type { border-top:0; padding-top:0; }
+    .control-label { display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:13px; font-weight:650; }
+    .control-label output { color:var(--lab-green); font-variant-numeric:tabular-nums; }
+    .scenario-list { display:grid; gap:6px; }
+    button,select,input { font:inherit; letter-spacing:0; }
+    .scenario { width:100%; padding:9px 10px; border:1px solid var(--lab-line); border-radius:4px; background:#fff; color:var(--lab-ink); text-align:left; cursor:pointer; }
+    .scenario[aria-pressed="true"] { border-color:var(--lab-green); background:var(--lab-green-soft); box-shadow:inset 3px 0 var(--lab-green); }
+    .scenario strong { display:block; font-size:12px; }
+    .scenario small { display:block; margin-top:3px; color:var(--lab-muted); font-size:11px; line-height:1.4; }
+    .select-wrap select { width:100%; min-height:36px; padding:6px 8px; border:1px solid var(--lab-line); border-radius:4px; background:#fff; color:var(--lab-ink); }
+    input[type="range"] { width:100%; accent-color:var(--lab-green); }
+    .range-ends { display:flex; justify-content:space-between; color:var(--lab-muted); font-size:11px; }
+    .fixed-work { padding:10px; background:#f2f6f3; color:#42524c; font-size:12px; line-height:1.55; }
+    .fixed-work strong { color:var(--lab-ink); }
+    .run-button { width:100%; margin-top:14px; padding:10px 12px; border:0; border-radius:4px; background:var(--lab-ink); color:#fff; font-weight:650; cursor:pointer; }
+    .run-button:hover { background:#344441; }
+    .guard-note { margin:11px 0 0; color:var(--lab-muted); font-size:11px; line-height:1.55; }
+    .lab-main { min-width:0; }
+    .results { background:#fff; border-top:2px solid var(--lab-ink); }
+    .results-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:13px 15px; border-bottom:1px solid var(--lab-line); }
+    .results-head h2 { margin:0; font-size:16px; }
+    .results-head span { color:var(--lab-muted); font-size:12px; }
+    .table-scroll { overflow:auto; }
+    table { width:100%; border-collapse:collapse; font-size:12px; white-space:nowrap; }
+    th,td { padding:9px 11px; border-bottom:1px solid #e7ece9; text-align:right; font-variant-numeric:tabular-nums; }
+    th { color:#596561; background:#f6f8f6; font-size:11px; font-weight:650; }
+    th:first-child,td:first-child { text-align:left; }
+    tr.best td:first-child { color:var(--lab-green); font-weight:700; }
+    .policy-name { display:inline-flex; align-items:center; gap:7px; }
+    .policy-dot { width:8px; height:8px; border-radius:50%; background:#68746f; }
+    .policy-dot.fcfs { background:var(--lab-blue); }
+    .policy-dot.pressure { background:var(--lab-orange); }
+    .policy-dot.workflow { background:var(--lab-green); }
+    .viz-grid { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(230px,.9fr); align-items:start; gap:14px; margin-top:14px; }
+    .viz-panel { min-width:0; padding:14px; background:#fff; border:1px solid var(--lab-line); }
+    .viz-panel h3 { margin:0 0 4px; font-size:14px; }
+    .viz-panel > p { margin:0 0 12px; color:var(--lab-muted); font-size:11px; line-height:1.5; }
+    .gantt { display:grid; gap:9px; }
+    .gantt-row { display:grid; grid-template-columns:42px minmax(0,1fr); align-items:center; gap:8px; }
+    .gantt-label { color:#596561; font-size:11px; font-weight:700; }
+    .gantt-root { margin-top:6px; color:#344b43; font-size:11px; font-weight:700; }
+    .gantt-wait { position:absolute; top:12px; height:2px; background:#bcc8c0; }
+    .timeline-select { min-height:30px; margin-bottom:10px; padding:4px 6px; border:1px solid var(--lab-line); border-radius:3px; background:#fff; font-size:12px; color:var(--lab-ink); }
+    .design-point { margin-top:7px; color:var(--lab-green); font-size:11px; font-weight:650; }
+    .gantt-track { position:relative; height:27px; border-bottom:1px solid #dfe7e2; background:repeating-linear-gradient(90deg,transparent 0,transparent calc(20% - 1px),#e8eeea calc(20% - 1px),#e8eeea 20%); }
+    .gantt-bar { position:absolute; top:4px; height:18px; min-width:5px; padding:2px 4px; overflow:hidden; border-radius:2px; color:#fff; font-size:10px; line-height:14px; white-space:nowrap; }
+    .gantt-bar.a { background:#3972a1; }
+    .gantt-bar.b { background:#bd6932; }
+    .axis { display:flex; justify-content:space-between; padding-left:50px; color:#77827f; font-size:10px; }
+    .kv-meter { display:grid; gap:10px; }
+    .kv-line { display:grid; grid-template-columns:38px 1fr 62px; align-items:center; gap:8px; font-size:11px; }
+    .kv-line b { font-weight:650; }
+    .kv-track { height:12px; background:#e9eeeb; }
+    .kv-fill { height:100%; background:var(--lab-green); }
+    .kv-fill.external { background:var(--lab-orange); }
+    .kv-line output { color:var(--lab-muted); text-align:right; font-variant-numeric:tabular-nums; }
+    .dispatch { margin-top:14px; background:#fff; border:1px solid var(--lab-line); }
+    .dispatch-list { max-height:210px; overflow:auto; padding:0 14px 10px; }
+    .dispatch-row { display:grid; grid-template-columns:53px 70px 1fr 95px; gap:8px; align-items:center; padding:7px 0; border-bottom:1px solid #edf1ee; font-size:11px; }
+    .dispatch-row:last-child { border-bottom:0; }
+    .dispatch-time { color:var(--lab-muted); font-variant-numeric:tabular-nums; }
+    .dispatch-id { font-weight:700; }
+    .dispatch-tag { justify-self:start; padding:3px 5px; border-radius:3px; background:#f0f4f1; color:#4c5b55; }
+    .dispatch-tag.a { background:var(--lab-blue-soft); color:#315f83; }
+    .dispatch-tag.b { background:var(--lab-orange-soft); color:#8f4e25; }
+    .method-note { margin-top:14px; padding:12px 14px; border-left:3px solid var(--lab-orange); background:var(--lab-orange-soft); color:#68452f; font-size:12px; line-height:1.6; }
+    .method-note strong { color:#51351f; }
+    .raw-data { margin-top:14px; padding:12px 14px; border:1px solid var(--lab-line); background:#fff; font-size:12px; }
+    .raw-data summary { cursor:pointer; font-weight:650; }
+    .raw-data p { color:var(--lab-muted); line-height:1.6; }
+    .raw-data pre { max-height:330px; overflow:auto; padding:12px; background:#f1f5f2; font-size:11px; line-height:1.6; white-space:pre; }
+    .lab-footer { margin-top:24px; padding-top:14px; border-top:1px solid var(--lab-line); color:var(--lab-muted); font-size:11px; line-height:1.6; }
+    @media (max-width:950px) { .lab-grid { grid-template-columns:250px minmax(0,1fr); } .viz-grid { grid-template-columns:1fr; } }
+    @media (max-width:700px) { .lab-shell { padding:14px 12px 36px; } .lab-top { align-items:flex-start; } .lab-nav { gap:10px; } .lab-heading { padding:21px 0 14px; } .lab-heading h1 { font-size:23px; } .workflow-flow { grid-template-columns:1fr; gap:5px; } .flow-arrow { transform:rotate(90deg); height:19px; line-height:19px; } .flow-step { min-height:auto; } .lab-grid { grid-template-columns:1fr; } .controls { order:0; } .lab-main { order:1; } .gantt-row { grid-template-columns:34px minmax(0,1fr); } .axis { padding-left:42px; } .dispatch-row { grid-template-columns:45px 55px 1fr; } .dispatch-tag { display:none; } }
+  </style>
+</head>
+<body>
+  <div class="lab-shell">
+    <header class="lab-top">
+      <div class="lab-brand"><div class="lab-mark">L</div><span>LLM OPTIMIZATION · TOPIC1</span></div>
+      <nav class="lab-nav" aria-label="页面导航"><a href="topic1-design-space-review-20261028.md">研究评估稿</a><a href="topic1-design-v2.html">方案入口</a><a href="topic1-four-workflows.html">工作流图谱</a><a href="LLM_Optimization_Milestone.html">Milestone</a></nav>
+    </header>
+    <section class="lab-heading">
+      <div><h1>多根任务共享引擎：准入实验室</h1><p>固定两项研究任务的总工作集，只改变哪些 READY 工作先启动。比较局部并发上限、全局队列、压力反馈与 workflow 信号对 root 完成和等待的影响。每个 researcher 在此简化为一个固定成本调用，尚未接入 DSH 或真实模型。</p></div>
+      <div class="lab-status"><span class="status-chip"><strong>合成负载</strong> · 非实测</span><span class="status-chip">N 固定</span><span class="status-chip">时间单位：模拟刻度</span></div>
+    </section>
+
+    <section class="section-band" aria-labelledby="workflow-heading">
+      <div class="section-title"><div><h2 id="workflow-heading">一次任务流程</h2><p>ODR 中 Supervisor 可发出多个 ConductResearch 调用并行运行；所有策略收到同一组合法 READY 子任务。Engine 容量只限制执行时机，不得删除必要研究分支。</p></div></div>
+      <div class="workflow-flow">
+        <div class="flow-step supervisor"><b>Supervisor · 规划一轮</b><small>根据 research brief 拆出研究问题，选定这一波 researcher 数量。</small></div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step researchers"><b>ConductResearch · 当前 READY wave</b><small>真实 ODR researcher 内部有模型/工具循环；本页只将每个 researcher 抽象为一个不可抢占调用。</small><div class="agent-pills"><span>R1</span><span>R2</span><span>R3</span><span>R4</span></div><div class="design-point">设计点：选择具体 READY IDs 的启动顺序与并发</div></div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step join"><b>等待结果 · join</b><small>本波全部返回后 Supervisor 汇总，再决定是否提出下一波。</small></div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step"><b>生成最终报告</b><small>workflow 按原语义完成；准入器不改变质量工作量。</small></div>
+      </div>
+    </section>
+
+    <div class="lab-grid">
+      <aside class="controls" aria-label="实验控制">
+        <h2>实验条件</h2>
+        <div class="control-group"><div class="control-label"><span>负载场景</span><output id="workload-label">同时扇出</output></div>
+          <div class="scenario-list" role="group" aria-label="选择场景">
+            <button class="scenario" data-scenario="burst" aria-pressed="true"><strong>01 · 同时扇出</strong><small>两个 root 同时产生 researcher wave</small></button>
+            <button class="scenario" data-scenario="skew" aria-pressed="false"><strong>02 · 到达错开</strong><small>第二个 root 晚到，观察跨 root 等待</small></button>
+            <button class="scenario" data-scenario="pressure" aria-pressed="false"><strong>03 · 外部压力突变</strong><small>共享池短时减少可用 KV 容量</small></button>
+          </div>
+        </div>
+        <div class="control-group"><label class="control-label" for="tree-cap"><span>每 root 活跃调用上限（proxy）</span></label><div class="select-wrap"><select id="tree-cap"><option>2</option><option selected>4</option><option>8</option></select></div></div>
+        <div class="control-group"><label class="control-label" for="engine-cap"><span>Engine KV 容量</span><output id="engine-value">16 units</output></label><input id="engine-cap" type="range" min="10" max="24" step="2" value="16"><div class="range-ends"><span>10</span><span>24</span></div></div>
+        <div class="control-group"><label class="control-label" for="global-cap"><span>全局并发上限（适用策略）</span></label><div class="select-wrap"><select id="global-cap"><option>2</option><option selected>3</option><option>4</option><option>6</option></select></div></div>
+        <div class="fixed-work" id="fixed-work"><strong>固定工作集</strong><br>11 次 researcher 调用 · 2 个 root · 两波工作流</div>
+        <button id="run-button" class="run-button" type="button">运行四种准入策略</button>
+        <p class="guard-note">所有策略遵守同一个局部调用上限及硬 KV 预算。等待队列是本页 wrapper 的假设，不是 DSH 原生功能；DSH 的 live/materializing activation 槽位也不等同于 Engine 活跃模型调用。</p>
+      </aside>
+
+      <main class="lab-main">
+        <section class="results" aria-labelledby="results-heading">
+          <div class="results-head"><h2 id="results-heading">同一工作集 · 策略对照</h2><span id="result-summary">运行中…</span></div>
+          <div class="table-scroll"><table><thead><tr><th>准入策略</th><th>平均 root JCT</th><th>P95 root JCT</th><th>最长 READY 等待</th><th>峰值并发</th><th>等待轮次</th></tr></thead><tbody id="result-rows"></tbody></table></div>
+        </section>
+        <div class="viz-grid">
+          <section class="viz-panel"><h3 id="timeline-title">派发时间线</h3><p>每次调用独立一行：灰线为 READY 等待，色带为执行。J 是汇总等待，不消耗模拟 Engine KV。</p><select id="timeline-policy" class="timeline-select" aria-label="查看策略时间线"><option value="tree">局部上限</option><option value="fcfs">全局 FCFS</option><option value="pressure">压力反馈</option><option value="workflow" selected>Workflow + pressure</option></select><div id="gantt" class="gantt"></div><div class="axis" id="axis"></div></section>
+          <section class="viz-panel"><h3>Engine 容量视图</h3><p>各项是独立峰值，不能相加。外部请求同样须等待容量，不能撤销已运行请求的 KV 预算。</p><div id="kv-meter" class="kv-meter"></div></section>
+        </div>
+        <section class="dispatch" aria-labelledby="dispatch-heading"><div class="results-head"><h2 id="dispatch-heading">关键准入事件</h2><span id="dispatch-summary"></span></div><div class="dispatch-list" id="dispatch-list"></div></section>
+        <details class="raw-data"><summary>展开原始参数、在线观测与准入动作（合成）</summary><p>driver_input 是完整的合成场景；controller_decisions 每条仅保留当时可见的 READY 集合和资源快照。没有真实 prompt、Agent 输出或 GPU telemetry，不能当作 benchmark raw data。</p><pre id="raw-data"></pre></details>
+        <div class="method-note"><strong>解释边界：</strong>当前服务时长、KV 需求、root deadline 和压力事件都是手工设定。只有当前波次在完成前一波后才进入 READY；控制策略读取当前 READY/运行状态及声明的 deadline，不能看到未来波次。本页不模拟 continuous batching、KV 驱逐/恢复或模型质量；Workflow + pressure 是 EDF/aging 教学启发式，既不是新算法，也不代表 HEAR、CONCUR、Coda 或 TOPAS 的复现。</div>
+      </main>
+    </div>
+    <footer class="lab-footer">Workflow 结构参照 <a href="https://github.com/langchain-ai/open_deep_research">Open Deep Research</a>：Supervisor 通过 ConductResearch 并行运行 researcher subgraph，结果返回后继续汇总。当前场景参数为合成值。研究边界与后续验证见 <a href="topic1-design-space-review-20261028.md">Topic1 方向评估</a>。</footer>
+  </div>
+  <script>
+    const source = {
+      burst: { label: "同时扇出", external: [], roots: [
+        { id:"A", arrival:0, deadline:26, waves:[{think:1,tasks:[["A1",5,4],["A2",8,3],["A3",4,5],["A4",6,3]]},{think:2,tasks:[["A5",6,4],["A6",4,3]]}], join:2 },
+        { id:"B", arrival:0, deadline:30, waves:[{think:1,tasks:[["B1",4,3],["B2",7,4],["B3",5,3]]},{think:1,tasks:[["B4",5,4],["B5",3,3]]}], join:2 }
+      ] },
+      skew: { label:"到达错开", external:[], roots:[
+        { id:"A", arrival:0, deadline:25, waves:[{think:1,tasks:[["A1",5,4],["A2",8,3],["A3",4,5],["A4",6,3]]},{think:2,tasks:[["A5",6,4],["A6",4,3]]}],join:2 },
+        { id:"B", arrival:7, deadline:32, waves:[{think:1,tasks:[["B1",4,3],["B2",7,4],["B3",5,3]]},{think:1,tasks:[["B4",5,4],["B5",3,3]]}],join:2 }
+      ] },
+      pressure: { label:"外部压力突变", external:[{at:6,value:5},{at:15,value:0}], roots:[
+        { id:"A", arrival:0, deadline:29, waves:[{think:1,tasks:[["A1",5,4],["A2",8,3],["A3",4,5],["A4",6,3]]},{think:2,tasks:[["A5",6,4],["A6",4,3]]}],join:2 },
+        { id:"B", arrival:0, deadline:31, waves:[{think:1,tasks:[["B1",4,3],["B2",7,4],["B3",5,3]]},{think:1,tasks:[["B4",5,4],["B5",3,3]]}],join:2 }
+      ] }
+    };
+    const policies = [
+      { id:"tree", label:"局部上限", klass:"", desc:"每 root 调用上限 + Engine 容量门槛" },
+      { id:"fcfs", label:"全局 FCFS", klass:"fcfs", desc:"全局并发 cap + READY 时间" },
+      { id:"pressure", label:"压力反馈", klass:"pressure", desc:"全局 cap 随压力降档 + FCFS" },
+      { id:"workflow", label:"Workflow + pressure", klass:"workflow", desc:"压力降档 + 声明的 root deadline + aging" }
+    ];
+    let selectedScenario="burst", selectedPolicy="workflow", latestResults=[];
+    const byId=id=>document.getElementById(id);
+    const cloneRoots=roots=>roots.map(root=>({...root,waveIndex:0,nextWaveAt:root.arrival+root.waves[0].think,currentWave:null,doneInWave:0,finishAt:null,done:false}));
+    function simulate(policy,opts){
+      const cfg=source[selectedScenario], roots=cloneRoots(cfg.roots), pending=[], active=[], started=[], decisions=[];
+      let now=0, external=0, externalTarget=0, extIndex=0, blocked=0, peakActive=0, peakActiveKV=0, peakKV=0, externalPeak=0, guard=0;
+      function release(){
+        for(const root of roots){
+          if(root.done||root.finishAt!==null||root.waveIndex>=root.waves.length||root.nextWaveAt>now) continue;
+          const wave=root.waves[root.waveIndex]; root.currentWave=root.waveIndex; root.waveIndex++; root.doneInWave=0; root.nextWaveAt=Infinity;
+          for(const row of wave.tasks) pending.push({id:row[0],root:root.id,duration:row[1],kv:row[2],readyAt:now,wave:root.currentWave});
+        }
+      }
+      function localCount(rootId){return active.filter(x=>x.root===rootId).length;}
+      function capFor(){
+        if(policy==="tree") return Infinity;
+        if(policy==="fcfs") return opts.global;
+        const pressure=(externalTarget+active.reduce((s,x)=>s+x.kv,0))/Math.max(1,opts.engine);
+        if(pressure>=.68) return Math.max(1,Math.floor(opts.global/2));
+        if(pressure>=.45) return Math.max(1,opts.global-1);
+        return opts.global;
+      }
+      function orderReady(eligible){
+        if(policy!=="workflow") return eligible.sort((a,b)=>a.readyAt-b.readyAt||a.id.localeCompare(b.id));
+        const aged=eligible.filter(x=>now-x.readyAt>=6).sort((a,b)=>a.readyAt-b.readyAt||a.id.localeCompare(b.id));
+        if(aged.length) return aged;
+        return eligible.sort((a,b)=>{
+          const ra=roots.find(r=>r.id===a.root), rb=roots.find(r=>r.id===b.root);
+          return ra.deadline-rb.deadline||a.readyAt-b.readyAt||a.id.localeCompare(b.id);
+        });
+      }
+      while(roots.some(r=>!r.done)&&guard++<1000){
+        for(;extIndex<cfg.external.length&&cfg.external[extIndex].at<=now;extIndex++) externalTarget=cfg.external[extIndex].value;
+        external=Math.min(externalTarget,Math.max(0,opts.engine-active.reduce((s,x)=>s+x.kv,0)));
+        externalPeak=Math.max(externalPeak,external);
+        peakKV=Math.max(peakKV,external+active.reduce((s,x)=>s+x.kv,0));
+        release();
+        let dispatched=false;
+        while(true){
+          const engineFree=Math.max(0,opts.engine-external-active.reduce((s,x)=>s+x.kv,0));
+          const eligible=orderReady(pending.filter(job=>localCount(job.root)<opts.tree&&job.kv<=engineFree&&active.length<capFor()));
+          if(!eligible.length) break;
+          const job=eligible[0], end=now+job.duration;
+          const observed={at:now,readyIds:pending.map(x=>x.id),eligibleIds:eligible.map(x=>x.id),engine:{capacity:opts.engine,activeKV:active.reduce((s,x)=>s+x.kv,0),externalKV:external,externalDemand:externalTarget},activeLimit:Number.isFinite(capFor())?capFor():"not_set",localCallLimit:opts.tree,declaredDeadlines:roots.filter(r=>r.arrival<=now).map(r=>({root:r.id,deadline:r.deadline}))};
+          pending.splice(pending.indexOf(job),1);
+          const item={...job,start:now,end}; active.push(item); started.push(item); dispatched=true;
+          peakActive=Math.max(peakActive,active.length);
+          peakActiveKV=Math.max(peakActiveKV,active.reduce((s,x)=>s+x.kv,0));
+          peakKV=Math.max(peakKV,external+active.reduce((s,x)=>s+x.kv,0));
+          decisions.push({time:now,job,policy,observed,action:{grant:[job.id]},activeKV:active.reduce((s,x)=>s+x.kv,0),external,activeCount:active.length});
+        }
+        if(roots.every(r=>r.done)) break;
+        if(pending.length&&!dispatched) blocked++;
+        const events=[];
+        for(const item of active) if(item.end>now) events.push(item.end);
+        for(const root of roots){
+          if(!root.done&&root.finishAt!==null&&root.finishAt>now) events.push(root.finishAt);
+          if(!root.done&&root.finishAt===null&&root.waveIndex<root.waves.length&&Number.isFinite(root.nextWaveAt)&&root.nextWaveAt>now) events.push(root.nextWaveAt);
+        }
+        if(extIndex<cfg.external.length&&cfg.external[extIndex].at>now) events.push(cfg.external[extIndex].at);
+        if(!events.length){ if(pending.length) throw new Error("当前容量无法容纳剩余 READY 调用"); break; }
+        now=Math.min(...events);
+        const completed=active.filter(x=>x.end<=now+1e-9);
+        for(const item of completed){
+          active.splice(active.indexOf(item),1);
+          const root=roots.find(r=>r.id===item.root); root.doneInWave++;
+          const wave=root.waves[item.wave];
+          if(root.doneInWave===wave.tasks.length){
+            if(root.waveIndex<root.waves.length) root.nextWaveAt=now+root.waves[root.waveIndex].think;
+            else root.finishAt=now+root.join;
+          }
+        }
+        for(const root of roots) if(root.finishAt!==null&&root.finishAt<=now) root.done=true;
+      }
+      if(roots.some(r=>!r.done)) throw new Error("模拟没有完成全部 root，不能输出有效结果");
+      const expected=cfg.roots.flatMap(r=>r.waves.flatMap(w=>w.tasks.map(x=>x[0])));
+      if(started.length!==expected.length||new Set(started.map(x=>x.id)).size!==expected.length) throw new Error("调用集合缺失或重复");
+      const completion=roots.map(r=>r.finishAt-r.arrival).sort((a,b)=>a-b);
+      const waits=started.map(x=>x.start-x.readyAt);
+      return {policy,started,decisions,roots,avg:completion.reduce((s,x)=>s+x,0)/completion.length,p95:completion[Math.min(completion.length-1,Math.ceil(completion.length*.95)-1)],maxWait:Math.max(0,...waits),peakActive,blocked,peakActiveKV,peakKV,externalPeak,makespan:Math.max(...roots.map(r=>r.finishAt??now))};
+    }
+    function runAll(){
+      const opts={tree:Number(byId("tree-cap").value),engine:Number(byId("engine-cap").value),global:Number(byId("global-cap").value)};
+      const count=source[selectedScenario].roots.reduce((s,r)=>s+r.waves.reduce((n,w)=>n+w.tasks.length,0),0);
+      byId("fixed-work").innerHTML=`<strong>固定工作集</strong><br>${count} 次 researcher 调用 · 2 个 root · 两波 workflow`;
+      latestResults=policies.map(p=>simulate(p.id,opts));
+      const best=Math.min(...latestResults.map(r=>r.avg));
+      byId("result-rows").innerHTML=latestResults.map(r=>{
+        const p=policies.find(x=>x.id===r.policy);
+        return `<tr class="${r.avg===best?"best":""}"><td><span class="policy-name"><i class="policy-dot ${p.klass}"></i>${p.label}</span></td><td>${r.avg.toFixed(1)}</td><td>${r.p95.toFixed(1)}</td><td>${r.maxWait.toFixed(1)}</td><td>${r.peakActive}</td><td>${r.blocked}</td></tr>`;
+      }).join("");
+      byId("result-summary").textContent=`${count} calls / policy · 仅 2 roots，P95 即较大值`;
+      renderPolicy();
+    }
+    function renderPolicy(){
+      const result=latestResults.find(r=>r.policy===selectedPolicy); if(!result)return;
+      const maxT=Math.max(1,result.makespan), rootIds=["A","B"];
+      byId("timeline-title").textContent=`派发时间线 · ${policies.find(p=>p.id===selectedPolicy).label}`;
+      byId("gantt").innerHTML=rootIds.map(id=>{
+        const rows=result.started.filter(x=>x.root===id).sort((a,b)=>a.id.localeCompare(b.id)).map(x=>{
+          const left=x.start/maxT*100, width=Math.max(.8,(x.end-x.start)/maxT*100);
+          const waitLeft=x.readyAt/maxT*100,waitWidth=(x.start-x.readyAt)/maxT*100;
+          return `<div class="gantt-row"><span class="gantt-label">${x.id}</span><div class="gantt-track"><span class="gantt-wait" style="left:${waitLeft}%;width:${waitWidth}%"></span><span class="gantt-bar ${id.toLowerCase()}" style="left:${left}%;width:${width}%" title="${x.id} · READY ${x.readyAt} · ${x.start}–${x.end} · KV ${x.kv}">${x.id}</span></div></div>`;
+        }).join("");
+        const root=result.roots.find(r=>r.id===id),joinStart=root.finishAt-root.join;
+        return `<div class="gantt-root">Root ${id} · JCT ${(root.finishAt-root.arrival).toFixed(1)}</div>${rows}<div class="gantt-row"><span class="gantt-label">J${id}</span><div class="gantt-track"><span class="gantt-bar ${id.toLowerCase()}" style="left:${joinStart/maxT*100}%;width:${root.join/maxT*100}%" title="最终汇总等待 ${joinStart}–${root.finishAt}">J</span></div></div>`;
+      }).join("");
+      byId("axis").innerHTML=`<span>0</span><span>${(maxT*.25).toFixed(0)}</span><span>${(maxT*.5).toFixed(0)}</span><span>${(maxT*.75).toFixed(0)}</span><span>${maxT.toFixed(0)}</span>`;
+      const base=Number(byId("engine-cap").value), external=result.externalPeak, running=result.peakActiveKV;
+      byId("kv-meter").innerHTML=`<div class="kv-line"><b>运行中</b><div class="kv-track"><div class="kv-fill" style="width:${Math.min(100,running/base*100)}%"></div></div><output>${running}/${base}</output></div><div class="kv-line"><b>外部负载</b><div class="kv-track"><div class="kv-fill external" style="width:${Math.min(100,external/base*100)}%"></div></div><output>${external}/${base}</output></div><div class="fixed-work"><strong>峰值总占用 ${result.peakKV}/${base}</strong><br>当前模型不含 KV 驱逐与恢复开销。</div>`;
+      byId("dispatch-list").innerHTML=result.decisions.slice(0,60).map(d=>`<div class="dispatch-row"><span class="dispatch-time">t=${d.time.toFixed(1)}</span><span class="dispatch-id">${d.job.id}</span><span>Root ${d.job.root} · W${d.job.wave+1} · ${d.job.duration} 刻度 · ${d.job.kv} KV</span><span class="dispatch-tag ${d.job.root.toLowerCase()}">READY 后放行</span></div>`).join("");
+      byId("dispatch-summary").textContent=`展示 ${Math.min(result.decisions.length,60)} / ${result.decisions.length} 次派发`;
+      byId("raw-data").textContent=JSON.stringify({data_type:"synthetic_mechanism_fixture",driver_input:source[selectedScenario],policy:policies.find(p=>p.id===selectedPolicy),controller_decisions:result.decisions.map(d=>({observed:d.observed,action:d.action})),completion:result.roots.map(r=>({root:r.id,arrival:r.arrival,completed:r.finishAt}))},null,2);
+    }
+    document.querySelectorAll(".scenario").forEach(button=>button.addEventListener("click",()=>{
+      selectedScenario=button.dataset.scenario;
+      document.querySelectorAll(".scenario").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));
+      byId("workload-label").textContent=source[selectedScenario].label; runAll();
+    }));
+    byId("run-button").addEventListener("click",runAll);
+    byId("timeline-policy").addEventListener("change",()=>{selectedPolicy=byId("timeline-policy").value;renderPolicy();});
+    byId("tree-cap").addEventListener("change",runAll); byId("global-cap").addEventListener("change",runAll);
+    byId("engine-cap").addEventListener("input",()=>{byId("engine-value").textContent=`${byId("engine-cap").value} units`;runAll();});
+    runAll();
+  </script>
+</body>
+</html>

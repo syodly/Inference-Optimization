@@ -41,11 +41,12 @@
   <div class="shell">
     <header class="topbar">
       <div class="brand"><div class="mark">L</div><div><strong>LLM OPTIMIZATION</strong><span>Topic1 · design and workload plan</span></div></div>
-      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">返回 Milestone</a><a href="papers/paper-60.html">HEAR 精读</a><a href="topic-boundary-review.html">Topic 边界复审</a></nav>
+      <nav class="toplinks" aria-label="页面导航"><a href="LLM_Optimization_Milestone.html">返回 Milestone</a><a href="topic1-admission-lab.html">准入实验室</a><a href="papers/paper-60.html">HEAR 精读</a><a href="topic-boundary-review.html">Topic 边界复审</a></nav>
     </header>
     <main class="source-page">
       <h1>Topic1：Harness–Engine 协同框架</h1>
       <p class="source-note">组件化候选方案与数据使用计划 · 2026-10-19 · 尚待实验验证</p>
+      <div class="dataset-note"><strong>2026-10-28 收敛复审：</strong>下面保留原三组件候选框架。当前先区分 workflow、Harness activation 与 Engine invocation，并验证固定工作集下的跨 root READY 准入机会；尚未确认新的论文贡献。详见 <a href="topic1-design-space-review-20261028.md">方向评估与候选排序</a>，可在 <a href="topic1-admission-lab.html">准入实验室</a> 调整合成场景和检查事件。</div>
       <article class="source-content">
         <p class="topic-lead">目标：让 Agent Harness 对工作流的了解，与推理引擎对 KV、队列和资源压力的观测共同影响任务推进。候选框架由三个功能组件组成，共用一个计划选择器；HEAR 是双向协同的关键参照。</p>
 
@@ -80,7 +81,6 @@
             <tr><td><a href="https://github.com/SWE-bench/SWE-bench">SWE-bench</a> + <a href="https://github.com/OpenHands/OpenHands">OpenHands</a></td><td>代码仓库 issue 修复任务与测试环境，形成多轮读写、运行测试和继续修改的编码工作流。</td><td>作为主要端到端验证：运行真实 Agent，自由生成并按测试评估任务解决率，同时测完成时间、P95、吞吐与 KV 成本。</td><td>任务执行成本高，先用完整任务做小规模机制验证；不可把 trace 回放指标当作代码正确率。</td></tr>
             <tr><td>SCBench</td><td>长上下文、多轮请求的缓存评测负载。</td><td>单独检验长前缀和跨轮请求的状态管理；与工具型工作流结果分开报告。</td><td>覆盖长上下文服务，不代表 coding agent 的工具依赖与分支执行。</td></tr>
             <tr><td><a href="https://github.com/RDI-Foundation/browsecomp-plus">BrowseComp-Plus</a> / DeepResearchBench + Open Deep Research</td><td>多步检索与研究任务，包含 Main/Reader 等多角色协作。</td><td>作为第二类工作流，检验并行任务分波、依赖汇合与跨会话资源竞争，并用原基准质量指标评估。</td><td>运行成本较高，放在核心 coding 机制成立后做通用性验证。</td></tr>
-            <tr><td><a href="https://github.com/sierra-research/tau2-bench">τ²-bench</a></td><td>多轮用户交互和带业务状态的工具任务。</td><td>可选的交互型泛化验证，重点检查调用授权与工作流状态。</td><td>不是首轮必须跑的负载；有副作用的未来操作不应提前执行。</td></tr>
           </tbody>
         </table>
 

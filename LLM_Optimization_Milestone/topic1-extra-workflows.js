@@ -71,39 +71,5 @@
       return finish(h,d,s,'点击三个动作查看知识来源；三路不是默认并行','质量路由 = 论文机制；橙色虚线 = 建议控制')
     }
   };
-  var tau={
-    data:{
-      title:'τ²-bench · Stateful Tool Interaction',
-      sub:'任务与策略 → Agent / 用户交互 → 工具执行 → 环境与观测 → 下一轮或终止评测',
-      overview:'这里展示 τ²-bench 的参考交互边界，不把 benchmark 说成固定 Agent 编排器。已保存的 README 定义了领域 policy、tools、tasks，以及可选的 user tools。Agent 与用户模拟器交互，工具调用产生环境相关结果，观测再影响下一轮。图选择文本轮次交互，不混入语音并发；不同领域和版本的工具及评测设置必须固定。',
-      intro:{purpose:'用于评测 Agent 在航班、零售、电信等工具环境里能否按领域规则完成真实任务。Agent 需要与用户模拟器多轮沟通，再调用会改变环境状态的工具，并根据真实返回继续决策。',flow:'领域任务 / Policy → Agent 与用户交互 → 工具调用 → 环境状态变化 → 返回观测 → 下一轮或结束',designSpace:'可研究：在用户 / 工具观测返回后，结合后端压力，对已就绪、已授权且未启动的下一次调用做准入或延后，并评估等待期间的 KV 保留 / 恢复。该结构可调整的空间更受依赖约束，不能随意增加角色、跳过必要步骤或重放有副作用的操作；先验证时延与资源收益。'},
-      meta:[['结构类型','有状态工具 / 多轮交互'],['对比独立候选','输入随用户与工具结果改变'],['展示范围','参考文本交互边界，非固定拓扑'],['证据','已保存 τ²-bench README 快照']],
-      designs:[['依赖优先','未得到必要用户输入或工具结果时，下一步不能假定就绪','dependency / ready state'],['安全派发 · 建议','只对已授权、未启动且依赖满足的动作做准入','Topic1 proposed: admit / defer'],['副作用边界','不可把写操作当作可任意跳过或取消的候选','policy / side effects'],['终止与评测','按原任务协议结束并评测，不拿评分答案在线调度','original task evaluation']],
-      calls:['加载固定领域的任务、policy、tools 与初始环境','Agent 与用户模拟器交换消息，获得必要任务信息','Agent 选择工具，环境执行并返回结果；部分领域允许用户工具','工具结果与对话观测更新后续决策所能看到的信息','继续对话或工具步骤，直到达到原框架终止条件','原任务评测使用规定的运行结果；此页面不虚构评分或成功率'],
-      actions:['Topic1 建议：在模型调用或工具动作开始前做 admission，保留依赖与授权','等待用户或工具期间可研究 KV 保留 / 恢复，但不能偷看未来回复','有副作用的运行中动作不能按普通 research 分支随意取消或重放','用户工具只在所选领域提供时存在，不要求所有任务都有双侧工具','记录等待、动作顺序、环境版本与终止原因；环境版本 trace 字段为接入建议'],
-      params:['固定 domain、task、Agent、user simulator、工具环境与版本','本图只展示文本轮次模式，不代表语音全双工执行','policy / tools / tasks 是 README 明确的领域边界','user tools 为可选，不是所有领域都必须提供','不硬填默认最大轮数、模型或奖励公式；以选定版本配置为准'],
-      prompt:'[说明性占位，非官方 Agent 或用户模拟器 prompt]\nAgent：遵循所选领域 policy，基于已收到的用户消息和工具结果采取动作。\n用户模拟器：按任务和模拟器协议回应；仅在领域支持时使用用户工具。\n\n不得将未发生的用户回复、隐藏评测答案或未来工具结果提前注入在线决策。',
-      raw:{kind:'reference interaction boundaries and proposed trace; not measured',benchmark:'tau2-bench',source_snapshot:'S20_tau2bench.txt',mode_scope:'text turn-based only',domain_boundaries:['policy','tools','tasks','optional user tools'],proposed_trace_fields:['task_id','domain','turn','actor','observation','action','environment_version','tool_started','tool_finished','wait_time','stop_reason'],evaluation:'use the selected benchmark version; not defined by this diagram',measured:false},
-      note:'证据：本地保存的 sierra-research/tau2-bench README 快照。快照与当前线上版本可能不同，实验需固定版本。本图抽象交互边界，不声称是官方完整调用图；资源准入、KV 与环境版本记账是 Topic1 建议。'
-    },
-    nodes:{
-      task:info('任务与初始状态 / Task','任务、领域策略、工具和初始环境是运行的前提，不是预先已知的完整对话 DAG。','固定领域与任务配置','Agent 的初始输入'),
-      agent:info('Agent 决策 / Agent','根据已获得的对话与工具结果选择下一条消息或工具动作。未知用户回复和未来结果不得当作已知输入。','当前观测、policy 与任务','用户交互，或工具调用'),
-      user:info('用户模拟器 / User','按任务和模拟器协议与 Agent 交互。本图展示文本轮次，双向连线不表示同时运行。','Agent 消息与模拟器任务','回复 Agent；可选用户工具'),
-      usertools:info('可选用户工具 / User tools','README 明确部分领域可给用户模拟器提供工具。连线表示可选边界，不要求每次对话都调用。','用户模拟器','领域环境'),
-      tools:info('Agent 工具 / Tools','执行所选领域允许的动作。读写、副作用和幂等性取决于实际工具，不能一概当作可交换的独立分支。','Agent 已授权的工具动作','领域环境'),
-      environment:info('领域环境 / Environment','工具与领域状态相互作用；后续请求的有效性取决于此前动作与返回。此节点是交互抽象，不虚构某个统一数据库实现。','Agent 工具或可选用户工具','结果与观测'),
-      observation:info('结果与观测 / Observation','将实际收到的结果交回下一轮决策。尚未完成的动作必须等待，不能把未来内容提前绑定。','环境执行与对话进展','Agent 下一轮，或终止评测'),
-      evaluation:info('终止与原基准评测 / Evaluation','运行按所选框架版本结束，再执行原任务评测。图不把隐藏评分结果当在线控制信号，也不提供自造奖励公式。','已完成的任务运行','离线结果与报告'),
-      policy:info('领域策略 / Policy','README 中每个领域定义 policy。资源调度不能覆盖任务规则与用户授权。','固定领域配置','Agent 与工具约束'),
-      admission:info('安全派发 / Topic1 proposed','建议只准入已就绪、已授权、尚未开始的动作；运行中的有副作用操作不能通过 skip 或普通取消语义抹掉。','依赖、权限与后端状态','未启动动作的 admit / defer')
-    },
-    graph:function(h,d){
-      var s='<svg viewBox="0 0 1800 700" role="img" aria-labelledby="tau-title"><title id="tau-title">有状态工具与用户交互边界</title>'+h.defs();
-      s+=h.node('task',20,300,190,88,'任务 / 初始状态','Domain / task','eval')+h.node('agent',285,300,220,88,'Agent 决策','当前消息 / 观测')+h.node('user',285,65,220,88,'用户模拟器','User simulator')+h.node('usertools',775,65,275,88,'可选用户工具','仅限支持的领域')+h.node('tools',615,300,235,88,'Agent 工具','Tools / policy-bound')+h.node('environment',935,300,235,88,'领域环境','状态与执行结果')+h.node('observation',1240,300,225,88,'结果与观测','Actual observation')+h.node('evaluation',1530,300,245,88,'终止 / 原基准评测','End / task evaluation','eval')+h.node('policy',285,500,220,88,'领域策略','Policy / constraints')+h.node('admission',615,500,285,88,'安全派发 · 建议','依赖满足 / 授权 / 预算','control');
-      s+=h.edge('M210 344 L285 344')+h.edge('M395 300 L395 153','Agent 消息','',445,238)+h.edge('M285 109 L245 109 L245 255 L320 255 L320 300','用户回复','',213,215)+h.edge('M505 109 L775 109','领域支持时','',640,94)+h.edge('M1050 109 L1052 300')+h.edge('M505 344 L615 344')+h.edge('M850 344 L935 344')+h.edge('M1170 344 L1240 344')+h.edge('M1465 344 L1530 344','终止后','',1497,323)+h.edge('M1352 388 L1352 640 L550 640 L550 370 L505 370','观测返回下一轮','',1060,672)+h.edge('M395 500 L395 388')+h.edge('M757 500 L757 388','仅约束未启动动作','control',840,460);
-      return finish(h,d,s,'用户工具为可选；图展示交互边界而非固定 Agent 拓扑','橙色虚线 = 安全准入建议；不任意取消副作用')
-    }
-  };
-  window.Topic1WorkflowExtras={gptr:gptr,crag:crag,tau:tau};
+  window.Topic1WorkflowExtras={gptr:gptr,crag:crag};
 })();
