@@ -1,0 +1,168 @@
+{
+  "batch_id": "mixed-history-v017",
+  "base_args": [
+    "--workflow",
+    "verified",
+    "--tasks",
+    "datasets/mixed-research/tasks.jsonl",
+    "--split",
+    "evaluation",
+    "--count",
+    "16",
+    "--source-format",
+    "text",
+    "--thinking",
+    "--sampling-profile",
+    "qwen",
+    "--reasoning-effort",
+    "low",
+    "--draft-tokens",
+    "4096",
+    "--evidence-tokens",
+    "4096",
+    "--answer-tokens",
+    "4096",
+    "--measure-prompts",
+    "--starvation-seconds",
+    "120"
+  ],
+  "runs": [
+    {
+      "run_id": "v017-mixed-cal8-history",
+      "args": [
+        "--split",
+        "calibration",
+        "--count",
+        "8",
+        "--policy",
+        "history_budget",
+        "--cap",
+        "24",
+        "--history-budget-tokens",
+        "100000"
+      ],
+      "purpose": "长短文混合的历史工作集完整校准",
+      "interpretation": "交替使用已有四道长文和四道短文校准题，不修改原始来源。新机制在长prompt形成后按真实token数申请虚拟历史预算，工具等待期间持续记账，续写完成释放；校准用十万token预算主动覆盖额度等待和释放路径，不承诺物理KV驻留。先核对八十调用、实际prompt长度、工具来源与分组质量。"
+    },
+    {
+      "run_id": "v017-mixed-native16",
+      "args": [],
+      "purpose": "十六根任务的长短上下文混合参照",
+      "interpretation": "八道LongBench-v2与八道HotpotQA评估题交替到达，全部采用同一十调用流程。逻辑子Session数相同，但每个长短Session历史规模不同；隐藏答案仍仅离线评分。分别报告长文选项准确率、短文EM/F1与时延，不能用混合平均质量掩盖某一组下降。"
+    },
+    {
+      "run_id": "v017-mixed-native16-unmeasured",
+      "args": [
+        "--no-measure-prompts"
+      ],
+      "purpose": "不额外获取prompt长度的原生强对照",
+      "interpretation": "实际系统原生派发不需要额外tokenize调用，因此本轮去掉该观测开销，直接与预算机制的完整耗时比较。共同测量组可隔离机制，未测量原生组检验净收益，不能只给基线增加观测负担而掩盖新机制成本。"
+    },
+    {
+      "run_id": "v017-mixed-fixed18",
+      "args": [
+        "--policy",
+        "fixed",
+        "--cap",
+        "18"
+      ],
+      "purpose": "混合上下文的调用上限基线",
+      "interpretation": "固定十八个在途模型调用，所有Session最终执行。与按Session数及历史规模限制的机制对照，检查普通并发调参是否足够；输入测量和所有前端等待完全计时。"
+    },
+    {
+      "run_id": "v017-mixed-session18",
+      "args": [
+        "--policy",
+        "session_window",
+        "--cap",
+        "24",
+        "--session-cap",
+        "18"
+      ],
+      "purpose": "混合上下文的固定Session数基线",
+      "interpretation": "每个子Session都占一个窗口名额，短文和长文权重相同。它可能保护长历史，也可能因短Session占名额而留下可用容量；只有整任务和分组结果能判断，不能预设基线一定较差。"
+    },
+    {
+      "run_id": "v017-mixed-return24",
+      "args": [
+        "--policy",
+        "return_priority",
+        "--cap",
+        "24"
+      ],
+      "purpose": "混合上下文的强回流优先基线",
+      "interpretation": "使用一百二十秒老化与二十四调用上限，仅对已经就绪的回流和汇总排序。若它已经解决主要损失，不能把同类排序包装成新的历史预算机制价值。"
+    },
+    {
+      "run_id": "v017-mixed-return24-unmeasured",
+      "args": [
+        "--policy",
+        "return_priority",
+        "--cap",
+        "24",
+        "--no-measure-prompts"
+      ],
+      "purpose": "去掉观测开销的强回流排序",
+      "interpretation": "该排序只需要阶段，不需要实际prompt长度；移除额外tokenize调用后再测整任务耗时，作为低开销强基线。预算策略若只能胜过被人为附加观测成本的排序，就不能声称有净收益。"
+    },
+    {
+      "run_id": "v017-mixed-return18",
+      "args": [
+        "--policy",
+        "return_priority",
+        "--cap",
+        "18"
+      ],
+      "purpose": "混合上下文的较窄强回流基线",
+      "interpretation": "同样一百二十秒老化，以十八在途调用与二十四上限直接比较，防止只用粗糙并发基线衬托新机制。所有必做工作和真实长度测量相同。"
+    },
+    {
+      "run_id": "v017-mixed-size18",
+      "args": [
+        "--policy",
+        "size_return",
+        "--cap",
+        "18"
+      ],
+      "purpose": "长度感知的简单排序基线",
+      "interpretation": "汇总和已就绪回流仍优先，其余请求按真实prompt长度从短到长排队，保留同一老化规则。它没有跨工具历史预算；如果已经复现混合均值收益，就不能把短题先完成当成历史保护的独立价值。分组报告质量与长尾。"
+    },
+    {
+      "run_id": "v017-mixed-size24",
+      "args": [
+        "--policy",
+        "size_return",
+        "--cap",
+        "24"
+      ],
+      "purpose": "宽并发的长度排序对照",
+      "interpretation": "与历史预算使用相同的二十四调用上限和长度信息，只改为短请求优先的已就绪排序。该基线隔离长度信息与跨工具计账动作，不预设历史预算必然更好。"
+    },
+    {
+      "run_id": "v017-mixed-history200k",
+      "args": [
+        "--policy",
+        "history_budget",
+        "--cap",
+        "24",
+        "--history-budget-tokens",
+        "200000"
+      ],
+      "purpose": "按真实上下文规模记账的虚拟历史预算",
+      "interpretation": "冷draft按已绑定prompt实际token数和明确输出预留申请预算；draft完成后用实际usage更新，工具期间继续计账，回流允许推进直至释放。长短Session的成本不同；二十万token为透明代理预算，不等于混合注意力模型精确物理KV字节。"
+    },
+    {
+      "run_id": "v017-mixed-history-pressure",
+      "args": [
+        "--policy",
+        "history_pressure",
+        "--cap",
+        "24",
+        "--history-budget-tokens",
+        "200000"
+      ],
+      "purpose": "历史预算与实际引擎压力联合对照",
+      "interpretation": "在相同历史计账上加入真实缓存和等待阈值，压力高时缩小冷draft预算，已在工具中的历史不抹掉，回流不因预算增长死锁。与静态历史预算比较反馈的额外价值，也保留可能的过度退让；没有准确未来工具时长或隐藏答案。"
+    }
+  ]
+}

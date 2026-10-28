@@ -88,7 +88,10 @@ class Harness:
         return message
 
     async def model(self, root, session, stage, messages, budget):
-        await self.controller.admit(root, session, stage)
+        measured = (await self.engine.prompt_tokens(messages, self.args.thinking and stage != 'query',
+                                                   root_id=root, node_id=session, stage=stage)
+                    if self.args.measure_prompts else 0)
+        await self.controller.admit(root, session, stage, measured)
         self.activation += 1
         call_id = f'{root}-{session.rsplit("/", 1)[-1]}-{stage}'
         self.journal.write('sessions', event='activation_start', root_id=root, session_id=session,
@@ -97,10 +100,17 @@ class Harness:
             priorities = ({'query': 0, 'draft': -1, 'evidence': -2, 'synthesis': -3}
                           if self.args.workflow == 'verified' else {'query': 0, 'evidence': -1, 'synthesis': -2})
             priority = priorities[stage] if self.args.policy == 'backend_priority' else 0
-            return await self.engine.generate(call_id=call_id, root_id=root, node_id=session,
+            result = await self.engine.generate(call_id=call_id, root_id=root, node_id=session,
                                               stage=stage, messages=messages, max_tokens=budget,
                                               seed=self.args.seed, priority=priority,
                                               thinking=self.args.thinking and stage != 'query')
+            self.controller.observe_completion(session, stage, result.get('usage', {}))
+            if measured:
+                self.journal.write('events', event='prompt_measurement_check', root_id=root, node_id=session,
+                                   stage=stage, measured_prompt_tokens=measured,
+                                   actual_prompt_tokens=result.get('usage', {}).get('prompt_tokens'),
+                                   matches=measured == result.get('usage', {}).get('prompt_tokens'))
+            return result
         finally:
             self.controller.release()
             self.journal.write('sessions', event='activation_end', root_id=root, session_id=session,
@@ -285,11 +295,12 @@ async def run(args):
     for source in Path(__file__).parent.glob('*.py'):
         shutil.copy2(source, source_snapshot / source.name)
     stop = asyncio.Event()
-    controller = Controller(args.policy, args.cap, engine, journal, args.session_cap)
+    controller = Controller(args.policy, args.cap, engine, journal, args.session_cap,
+                            args.starvation_seconds, args.history_budget_tokens, args.history_output_reserve)
     try:
         journal.write('events', event='engine_health', models=await engine.health())
         metrics = await engine.sample()
-        if args.policy == 'pressure' and any(metrics.get(k) is None for k in ['kv_usage', 'waiting']):
+        if args.policy in ['pressure', 'history_pressure'] and any(metrics.get(k) is None for k in ['kv_usage', 'waiting']):
             raise RuntimeError('Required engine metrics absent; do not silently replace pressure policy')
         if not args.keep_cache:
             await engine.reset_cache()
@@ -324,9 +335,13 @@ def main():
     ap.add_argument('--branches', type=int, default=3)
     ap.add_argument('--top-k', type=int, default=3)
     ap.add_argument('--policy', choices=['native', 'fixed', 'pressure', 'progress', 'backend_priority',
-                                        'session_window', 'return_priority'], default='native')
+                                        'session_window', 'return_priority', 'size_return', 'history_budget', 'history_pressure'], default='native')
     ap.add_argument('--cap', type=int, default=12)
     ap.add_argument('--session-cap', type=int, default=12)
+    ap.add_argument('--starvation-seconds', type=float, default=10)
+    ap.add_argument('--measure-prompts', action=argparse.BooleanOptionalAction, default=False)
+    ap.add_argument('--history-budget-tokens', type=int, default=200000)
+    ap.add_argument('--history-output-reserve', type=int, default=1024)
     ap.add_argument('--seed', type=int, default=1729)
     ap.add_argument('--query-tokens', type=int, default=40)
     ap.add_argument('--evidence-tokens', type=int, default=192)
@@ -345,6 +360,8 @@ def main():
     ap.add_argument('--verify-delay', type=float, default=0)
     ap.add_argument('--verify-jitter', type=float, default=0)
     args = ap.parse_args()
+    if args.policy in ['size_return', 'history_budget', 'history_pressure'] and not args.measure_prompts:
+        ap.error('Size-aware policies require actual prompt measurement: --measure-prompts')
     asyncio.run(run(args))
 
 

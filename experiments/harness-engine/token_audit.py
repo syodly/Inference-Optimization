@@ -8,6 +8,7 @@ from pathlib import Path
 import httpx
 
 from analyze import read, distribution
+from engine import tokenize_payload
 
 
 async def audit_tokens(directory, url):
@@ -17,18 +18,7 @@ async def audit_tokens(directory, url):
     async with httpx.AsyncClient(timeout=120) as client:
         async def tokenize(row):
             p = row['payload']
-            payload = {k: p[k] for k in ['model', 'messages', 'chat_template_kwargs'] if k in p}
-            # ChatCompletionRequest normalizes this legacy field before rendering;
-            # the generic /tokenize request does not. Mirror that normalization.
-            payload['messages'] = [dict(m) for m in p['messages']]
-            for m in payload['messages']:
-                thought = m.pop('reasoning_content', None)
-                if thought is not None and m.get('reasoning') is None:
-                    m['reasoning'] = thought
-            # Chat rendering passes reasoning_effort into template kwargs.
-            if p.get('reasoning_effort'):
-                payload['chat_template_kwargs'] = {**payload.get('chat_template_kwargs', {}),
-                                                   'reasoning_effort': p['reasoning_effort']}
+            payload = tokenize_payload(p)
             async with gate:
                 result = await client.post(url.rstrip('/') + '/tokenize', json=payload)
                 result.raise_for_status()

@@ -1,0 +1,9 @@
+{
+  "batch_id":"strong-return-v016",
+  "base_args":["--workflow","verified","--tasks","datasets/longbench-v2/tasks.jsonl","--split","evaluation","--count","8","--source-format","text","--thinking","--sampling-profile","qwen","--reasoning-effort","low","--draft-tokens","4096","--evidence-tokens","4096","--answer-tokens","4096","--measure-prompts"],
+  "runs":[
+    {"run_id":"v016-render-cal4","args":["--split","calibration","--count","4"],"purpose":"实际聊天模板长度测量的完整校准轮次","interpretation":"沿用四道长文校准题和十调用任务链，通过真实tokenize接口测量已经形成的prompt，并与每次生成返回的usage逐项核对。历史reasoning字段先按Chat接口规则标准化。新增测量耗时计入根任务，不作为性能收益；若计数不匹配，保留完整trace修正测量后再比较。"},
+    {"run_id":"v016-return18-aging120","args":["--policy","return_priority","--cap","18","--starvation-seconds","120"],"purpose":"更强回流排序与并发对照","interpretation":"v014默认十秒老化来自早期短文场景，可能在长文模型阶段尚未结束时过早把冷draft提升为最高优先级。本轮显式把老化保护设为一百二十秒，保持必做任务和模型配置；它是更强的请求排序基线，若消除Session窗口差距则如实承认。"},
+    {"run_id":"v016-return24-aging120","args":["--policy","return_priority","--cap","24","--starvation-seconds","120"],"purpose":"宽并发下的强回流排序","interpretation":"固定同一排序和老化，扩大模型调用上限到二十四，检查此前窗口收益是否主要来自优先级与并发调参。真实输入长度测量与前一轮相同，不把额外观测开销只施加给某一种策略；所有等待、输出变化和最终质量都保留。"}
+  ]
+}

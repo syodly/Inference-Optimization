@@ -6,14 +6,29 @@ import shutil
 from analyze import read
 
 
+def rebuild_index(root: Path):
+    index = []
+    artifacts = ['config.json', 'scored.jsonl', 'raw-example.json', 'research_record.md',
+                 'audit.json', 'history_audit.json', 'token_audit.json']
+    for summary_path in sorted((root / 'results').glob('*/summary.json')):
+        summary = json.loads(summary_path.read_text(encoding='utf-8'))
+        index.append({'run_id': summary['run_id'], 'summary': summary,
+                      'paths': {n: f"{summary['run_id']}/{n}" for n in artifacts
+                                if (summary_path.parent / n).exists()}})
+    (root / 'results/index.json').write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding='utf-8')
+    return index
+
+
 def export(run: Path, root: Path):
-    destination = root / 'results' / run.name
+    config = json.loads((run / 'config.json').read_text())
+    replay = bool(config.get('replay'))
+    destination = root / 'results' / ('replays' if replay else '') / run.name
     destination.mkdir(parents=True, exist_ok=True)
     for name in ['config.json', 'summary.json', 'audit.json', 'scored.jsonl', 'research_record.md',
-                 'workload_fingerprints.json', 'batch_entry.json', 'token_audit.json']:
+                 'workload_fingerprints.json', 'batch_entry.json', 'token_audit.json',
+                 'history_audit.json', 'lifecycle_audit.json']:
         if (run / name).exists():
             shutil.copy2(run / name, destination / name)
-    config = json.loads((run / 'config.json').read_text())
     example_id = config['task_ids'][0]
     task_path = root / config['tasks']
     sample = {'run_id': run.name, 'root_id': example_id,
@@ -22,16 +37,20 @@ def export(run: Path, root: Path):
               'notice': 'Real requests/responses. Gold scoring is offline; controller did not receive answers.',
               'remote_full_trace_directory': str(run),
               'streams': {}}
-    for stream in ['requests', 'responses', 'sessions', 'tools', 'roots', 'events', 'scored']:
+    if replay:
+        sample['notice'] = ('Fixed-work diagnostic replay. These are actual GPU responses, while downstream '
+                            'history and the recorded final root output are frozen from the source trace. '
+                            'Do not interpret the root record as live answer quality.')
+        sample['replay_protocol'] = config['replay']
+    for stream in ['requests', 'responses', 'sessions', 'tools', 'roots', 'events', 'scored',
+                   *(['replay_frozen_outputs'] if replay else [])]:
+        if replay and stream == 'scored':
+            continue
         sample['streams'][stream] = [r for r in read(run / (stream + '.jsonl')) if r.get('root_id') == example_id]
     (destination / 'raw-example.json').write_text(json.dumps(sample, ensure_ascii=False, indent=2), encoding='utf-8')
-    index = []
-    for summary_path in sorted((root / 'results').glob('*/summary.json')):
-        summary = json.loads(summary_path.read_text())
-        index.append({'run_id': summary['run_id'], 'summary': summary,
-                      'paths': {n: f"{summary['run_id']}/{n}" for n in
-                                ['config.json', 'scored.jsonl', 'raw-example.json', 'research_record.md', 'audit.json']}})
-    (root / 'results/index.json').write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding='utf-8')
+    if replay:
+        return destination
+    rebuild_index(root)
     return destination
 
 

@@ -72,6 +72,25 @@ def audit(directory: Path):
         released = [e for e in events if e['event'] == 'session_released']
         if {e['node_id'] for e in admissions} != {e['node_id'] for e in released}:
             violations.append('Session lease accounting incomplete')
+    measured = [e for e in events if e['event'] == 'prompt_measurement_check']
+    if config.get('measure_prompts'):
+        if len(measured) != len(responses) or any(not e['matches'] for e in measured):
+            violations.append('Measured prompt tokens do not match actual chat request usage')
+    if any(e['event'] == 'history_claim_opened' for e in events):
+        claims = {}
+        for e in events:
+            if e['event'] in ['history_claim_opened', 'history_claim_updated']:
+                claims[e['node_id']] = e['history_tokens']
+            elif e['event'] == 'session_released':
+                released_claim = claims.pop(e['node_id'], None)
+                if released_claim != e.get('released_history_tokens'):
+                    violations.append('Released history claim differs from ledger')
+            else:
+                continue
+            if sum(claims.values()) != e['total_claimed']:
+                violations.append('History ledger total differs from per-Session claims')
+        if claims:
+            violations.append('History claims remain after all root tasks finished')
     result = {'run_id': directory.name, 'passed': not violations, 'violations': violations,
               'request_count': len(requests), 'response_count': len(responses),
               'root_count': len(roots), 'tool_count': len(tools),

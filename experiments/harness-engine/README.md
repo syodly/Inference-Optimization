@@ -6,7 +6,7 @@
 
 当前服务为 Qwen3.8-27B BF16、双 A800、图执行、64K 上下文、48 条引擎序列上限、8192 batched tokens，启用前缀缓存、分块 prefill、阶段优先级和逐请求遥测。最新工作是 `verified`：三个持久子 Session 各执行 query → BM25 → draft → 来源核验 → evidence，父 Session 等待全部分支，每个根任务十次必做调用。长文来自固定版本 LongBench-v2，原始全文未截断或补字。来源核验仅判断引句出处，答案由隐藏标签离线评分；两者分别报告。
 
-最新状态见 [CONTINUE.md](CONTINUE.md)，网页见 [真实流程与原始调用](../../LLM_Optimization_Milestone/topic1-experiments.html)。v012 自然八题观察到 evidence 零命中和22次抢占；v014正在比较固定调用上限、回流优先、跨工具Session窗口与后端阶段优先。单轮结果不代表稳定收益或新颖性结论。
+最新状态见 [CONTINUE.md](CONTINUE.md)，网页见 [真实流程与原始调用](../../LLM_Optimization_Milestone/topic1-experiments.html)。v012自然八题观察到evidence零命中和22次抢占。v015固定工作量回放保留窗口18约7%的均值差距，但v016加强普通回流排序后已接近窗口结果；v018正在固定工作量复核。v019审计发现自然工具间隔仅约9毫秒，不能归因为长工具等待。v017测试长短上下文混合与虚拟历史预算，v020单独干预工具等待；按实测继续修正归因。
 
 这是自行实现、与 DSH 动作相似的 Harness，**不声称复现完整 DSH**。公开 HotpotQA 上下文被固定分为三个文档分片。每个任务创建三个持久子 Session，依次执行真实模型生成检索词、真实 BM25 工具、真实模型证据整理；父 Session 等待全部子任务，调用模型给出带来源的答案。默认每任务七次模型调用，全部为必做工作。该受控 DAG 用于隔离派发行为；更复杂的动态图和质量驱动展开放在独立实验。
 
@@ -30,6 +30,8 @@ python3 serve.py
 四个初始基线：`native` 直接派发；`fixed --cap N` 固定在途调用数；`pressure` 根据真实引擎等待与缓存占用收缩；`progress` 同 cap 下优先汇总和接近完成的任务，保留老化。后三者均需与静态 cap 扫描比较。新机制须以测得的痛点为依据。
 
 新增基线 `return_priority` 同 cap 优先回流与汇总；`session_window --session-cap N --cap M` 在工具等待期间继续对持久子 Session 计账，全部等待计入根任务。`backend_priority` 将阶段优先级交给真实引擎；它不是具有相同展开权限的完整后端实现。
+
+`size_return`在同一回流优先规则下按实际prompt长度排序，用来检查混合负载的改善是否只是短请求优先。`history_budget`在长draft形成时按实际token申请虚拟历史额度，工具期间计账、回流完成释放；`history_pressure`再使用实际引擎压力收缩冷draft额度。它们不等于物理KV驻留控制。真实长度测量的开销计入根任务，并和不需要该测量的低开销基线比较。
 
 ```bash
 .venv-engine/bin/python batch.py configs/verified-quality-v012.json

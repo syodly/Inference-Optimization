@@ -3,7 +3,12 @@ const base='../experiments/harness-engine/results/';
 const $=id=>document.getElementById(id), esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(x,n=2)=>x==null?'—':Number(x).toFixed(n);
 let rounds=[],current=null,loadVersion=0,nodeData=new Map(),edges=[],lastFocus=null,closeTimer;
-const isLong=r=>r.run_id.includes('long');
+const datasetKind=r=>r.summary.quality_by_dataset?'mixed':(/option|LongBench/i.test(r.summary.quality_protocol||'')||r.run_id.includes('long')?'long':'short');
+const isLong=r=>datasetKind(r)==='long';
+function qualityText(r){
+ const s=r.summary,g=s.quality_by_dataset;
+ return g?`长 ${fmt(g['longbench-v2']?.em*100,1)}% · 短 ${fmt(g.hotpot?.f1*100,1)}%`:`${fmt((isLong(r)?s.quality.em:s.quality.f1)*100,1)}%`;
+}
 const roles={
  root:'这是用户的一次逻辑任务，由 Harness 按本轮固定规则创建研究子 Session。这里没有额外的规划模型调用；父模型在全部必做子任务汇合后回答。分支启动时机是 D1 的控制位置。',
  query:'这是研究子 Agent 的第一次 activation。它根据问题和自己负责的来源标题生成检索词，随后把控制权交给 BM25 工具。后面的证据整理继续使用同一 Session，不是新建一个 Agent。',
@@ -15,9 +20,9 @@ const roles={
 };
 const stageNames={query:'生成检索词',draft:'起草事实与原文引用',evidence:'整理证据并返回',synthesis:'汇合并生成最终答案'};
 async function json(path){const r=await fetch(path,{cache:'no-cache'});if(!r.ok)throw Error(`${r.status} ${path}`);return r.json();}
-function visible(){return rounds.filter(r=>$('dataset').value==='all'||(isLong(r)?'long':'short')===$('dataset').value);}
+function visible(){return rounds.filter(r=>$('dataset').value==='all'||datasetKind(r)===$('dataset').value);}
 function table(){
- const list=visible();$('rounds').innerHTML=list.map(r=>{const s=r.summary;return `<tr class="${r.run_id===current?'selected':''}"><td><button data-run="${esc(r.run_id)}">${esc(r.run_id)}</button></td><td>${s.completed_root_records}/${s.expected_roots}</td><td>${s.model_calls}</td><td>${fmt((isLong(r)?s.quality.em:s.quality.f1)*100,1)}%</td><td>${fmt(s.root_latency_seconds.mean)}</td><td>${fmt(s.root_latency_seconds.p95)}</td><td>${fmt(s.preemptions_delta,0)}</td></tr>`}).join('');
+ const list=visible();$('rounds').innerHTML=list.map(r=>{const s=r.summary;return `<tr class="${r.run_id===current?'selected':''}"><td><button data-run="${esc(r.run_id)}">${esc(r.run_id)}</button></td><td>${s.completed_root_records}/${s.expected_roots}</td><td>${s.model_calls}</td><td>${esc(qualityText(r))}</td><td>${fmt(s.root_latency_seconds.mean)}</td><td>${fmt(s.root_latency_seconds.p95)}</td><td>${fmt(s.preemptions_delta,0)}</td></tr>`}).join('');
  $('rounds').querySelectorAll('[data-run]').forEach(b=>b.onclick=()=>selectRun(b.dataset.run));
 }
 function selectOptions(){const list=visible();$('run').innerHTML=list.map(r=>`<option value="${esc(r.run_id)}">${esc(r.run_id)}</option>`).join('');table();if(list.length)selectRun(list.some(r=>r.run_id===current)?current:list[list.length-1].run_id);}
@@ -72,13 +77,14 @@ async function selectRun(id){
  current=id;$('run').value=id;table();closeDrawer();const ticket=++loadVersion,entry=rounds.find(r=>r.run_id===id);if(!entry)return;
  $('status').textContent=`正在加载 ${id} 的完整案例…`;
  try{const [config,sample]=await Promise.all([json(base+entry.paths['config.json']),json(base+entry.paths['raw-example.json'])]);if(ticket!==loadVersion)return;
-  const s=entry.summary;$('detail').hidden=false;$('run-label').textContent=id;$('run-title').textContent=isLong(entry)?'真实全文研究 · 多来源证据汇合':'多跳问答 · 分片调查与事实汇合';
+  const s=entry.summary,mixed=datasetKind(entry)==='mixed';$('detail').hidden=false;$('run-label').textContent=id;$('run-title').textContent=mixed?'长短上下文混合 · 历史规模与派发':isLong(entry)?'真实全文研究 · 多来源证据汇合':'多跳问答 · 分片调查与事实汇合';
   const verify=s.source_verification,cache=s.cache_by_stage?.evidence;
   $('validation-note').textContent=verify?`本轮实际运行 ${verify.tool_calls} 次来源检查，草稿解析失败 ${verify.draft_parse_errors} 次；${verify.quote_checks} 条引用中 ${verify.valid_quotes} 条通过原文核验。来源有效与答案正确分别评价。${verify.draft_parse_errors?'此轮包含工具解析失败，不能当作全部核验正常完成的性能证据。':''}`:'本轮不包含引用核验工具；答案通过数据集隐藏标签独立评分。';
   $('cache-note').textContent=cache?.cached_fraction!=null?`工具之后的 evidence 调用：实际命中 ${cache.cached_prompt_tokens.toLocaleString()} / ${cache.accounted_prompt_tokens.toLocaleString()} 个输入 token（${fmt(cache.cached_fraction*100,1)}%）。这是实际测量；对比不同任务时需核对原文长度、缓存块对齐和引擎容量。`:'此轮没有逐请求缓存明细，缺失值不按零命中解释。';
-  $('purpose').textContent=isLong(entry)?'任务来自 LongBench-v2 原始多文档研究题，涵盖论文、政府报告、法律资料和新闻。模型需要从完整来源中找到支持关系，给出四选一答案。原文按连续片段分给研究子 Session，未用占位文本扩充上下文。':'任务来自 HotpotQA 的真实问题与文档。研究子 Session 分别调查文档分片，把部分事实交给父 Agent 关联。集中阅读轮次直接提供全部文档，用来审核任务质量。';
-  $('stats').innerHTML=[['任务平均耗时',fmt(s.root_latency_seconds.mean)+' s'],[isLong(entry)?'选项准确率':'答案 F1',fmt((isLong(entry)?s.quality.em:s.quality.f1)*100,1)+'%'],['整批模型调用',s.model_calls],['抢占次数',fmt(s.preemptions_delta,0)]].map(([a,b])=>`<div class="stat"><span>${esc(a)}</span><b>${esc(b)}</b></div>`).join('');
-  $('links').innerHTML=Object.entries({'raw-example.json':'完整案例 · Prompt 与调用','config.json':'完整实验参数','scored.jsonl':'全部任务评分','research_record.md':'本轮约 300 字记录','audit.json':'因果顺序审计'}).filter(([p])=>entry.paths[p]).map(([p,label])=>`<a href="${esc(base+entry.paths[p])}" target="_blank" rel="noopener">${label} ↗</a>`).join('');
+  $('purpose').textContent=mixed?'固定的 LongBench-v2 原始长文题与 HotpotQA 短文多跳题交替提交，执行相同的三子 Session、十次必做调用流程。它们占用相同的逻辑 Session 数，但历史上下文规模不同。分别报告长文选项准确率和短文答案 F1；下方展示其中一个真实任务。':isLong(entry)?'任务来自 LongBench-v2 原始多文档研究题，涵盖论文、政府报告、法律资料和新闻。模型需要从完整来源中找到支持关系，给出四选一答案。原文按连续片段分给研究子 Session，未用占位文本扩充上下文。':'任务来自 HotpotQA 的真实问题与文档。研究子 Session 分别调查文档分片，把部分事实交给父 Agent 关联。集中阅读轮次直接提供全部文档，用来审核任务质量。';
+  $('stats').innerHTML=[['任务平均耗时',fmt(s.root_latency_seconds.mean)+' s'],[mixed?'长文准确率 · 短文 F1':isLong(entry)?'选项准确率':'答案 F1',qualityText(entry)],['整批模型调用',s.model_calls],['抢占次数',fmt(s.preemptions_delta,0)]].map(([a,b])=>`<div class="stat"><span>${esc(a)}</span><b>${esc(b)}</b></div>`).join('');
+  if(mixed){const groups=s.quality_by_dataset;$('cache-note').textContent+=` 分组平均任务耗时：长文 ${fmt(groups['longbench-v2']?.root_latency_seconds.mean)} 秒，短文 ${fmt(groups.hotpot?.root_latency_seconds.mean)} 秒。混合均值改善不能代替两组都改善。`;}
+  $('links').innerHTML=Object.entries({'raw-example.json':'完整案例 · Prompt 与调用','config.json':'完整实验参数','scored.jsonl':'全部任务评分','research_record.md':'本轮约 300 字记录','audit.json':'因果顺序审计','history_audit.json':'历史回流间隔审计','token_audit.json':'实际 token 前缀审计'}).filter(([p])=>entry.paths[p]).map(([p,label])=>`<a href="${esc(base+entry.paths[p])}" target="_blank" rel="noopener">${label} ↗</a>`).join('');
   $('question').textContent=sample.task.question;graph(config,sample);$('status').textContent=`已载入 ${rounds.length} 个完整轮次。当前：${id}；上方是整批统计，下方是单个实际任务。`;history.replaceState(null,'','#'+encodeURIComponent(id));
  }catch(error){if(ticket===loadVersion)$('status').textContent='案例暂未加载。可通过下方的逐轮实验记录查看完整证据。';console.error(error);}
 }

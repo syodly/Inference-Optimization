@@ -1,0 +1,8 @@
+{
+  "run_id": "v017-mixed-native16-unmeasured",
+  "args": [
+    "--no-measure-prompts"
+  ],
+  "purpose": "不额外获取prompt长度的原生强对照",
+  "interpretation": "实际系统原生派发不需要额外tokenize调用，因此本轮去掉该观测开销，直接与预算机制的完整耗时比较。共同测量组可隔离机制，未测量原生组检验净收益，不能只给基线增加观测负担而掩盖新机制成本。"
+}

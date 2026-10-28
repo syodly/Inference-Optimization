@@ -1,0 +1,11 @@
+{
+  "run_id": "v016-render-cal4",
+  "args": [
+    "--split",
+    "calibration",
+    "--count",
+    "4"
+  ],
+  "purpose": "实际聊天模板长度测量的完整校准轮次",
+  "interpretation": "沿用四道长文校准题和十调用任务链，通过真实tokenize接口测量已经形成的prompt，并与每次生成返回的usage逐项核对。历史reasoning字段先按Chat接口规则标准化。新增测量耗时计入根任务，不作为性能收益；若计数不匹配，保留完整trace修正测量后再比较。"
+}

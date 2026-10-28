@@ -10,6 +10,20 @@ import time
 import httpx
 
 
+def tokenize_payload(payload):
+    """Match ChatCompletionRequest's legacy reasoning normalization for /tokenize."""
+    result = {k: payload[k] for k in ['model', 'messages', 'chat_template_kwargs'] if k in payload}
+    result['messages'] = [dict(m) for m in payload['messages']]
+    for message in result['messages']:
+        thought = message.pop('reasoning_content', None)
+        if thought is not None and message.get('reasoning') is None:
+            message['reasoning'] = thought
+    if payload.get('reasoning_effort'):
+        result['chat_template_kwargs'] = {**result.get('chat_template_kwargs', {}),
+                                          'reasoning_effort': payload['reasoning_effort']}
+    return result
+
+
 class Journal:
     def __init__(self, directory: Path):
         self.directory = directory
@@ -169,3 +183,16 @@ class Engine:
 
     async def close(self):
         await self.client.aclose()
+
+    async def prompt_tokens(self, messages, thinking, *, root_id, node_id, stage):
+        start = time.monotonic()
+        payload = {'model': self.model, 'messages': messages, 'chat_template_kwargs': {'enable_thinking': thinking}}
+        if thinking and self.reasoning_effort:
+            payload['reasoning_effort'] = self.reasoning_effort
+        response = await self.client.post(self.url + '/tokenize', json=tokenize_payload(payload))
+        response.raise_for_status()
+        result = response.json()
+        count = result['count']
+        self.journal.write('events', event='prompt_tokens_measured', root_id=root_id, node_id=node_id,
+                           stage=stage, prompt_tokens=count, duration=time.monotonic() - start)
+        return count

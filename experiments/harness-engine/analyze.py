@@ -143,9 +143,35 @@ def analyze(run, gold_path, tasks_path):
             'scope': 'Source provenance only; answer correctness is scored separately.',
         }
     summary['quality_protocol'] = config.get('data_manifest', {}).get('quality_protocol', 'HotpotQA normalized EM/F1')
+    datasets = sorted({tasks[k]['dataset_id'] for k in config['task_ids'] if tasks[k].get('dataset_id')})
+    if datasets:
+        summary['quality_by_dataset'] = {}
+        for dataset in datasets:
+            ids = {k for k in config['task_ids'] if tasks[k].get('dataset_id') == dataset}
+            scores = [r for r in scored if r['root_id'] in ids]
+            calls = [r for r in responses if r['root_id'] in ids]
+            summary['quality_by_dataset'][dataset] = {
+                'expected_roots': len(ids), 'completed_roots': len(scores),
+                'em': sum(r['em'] for r in scores) / len(ids),
+                'f1': sum(r['f1'] for r in scores) / len(ids),
+                'root_latency_seconds': distribution([r['duration'] for r in scores]),
+                'model_calls': len(calls),
+                'prompt_tokens': sum(r.get('usage', {}).get('prompt_tokens', 0) or 0 for r in calls),
+                'completion_tokens': sum(r.get('usage', {}).get('completion_tokens', 0) or 0 for r in calls),
+            }
     measured_queue = [r['server_metrics']['queue_time_ms'] / 1000 for r in responses
                       if r.get('server_metrics') and r['server_metrics'].get('queue_time_ms') is not None]
     summary['measured_engine_queue_seconds'] = distribution(measured_queue)
+    measurements = [e for e in events if e['event'] == 'prompt_measurement_check']
+    if measurements:
+        summary['prompt_measurement'] = {
+            'checked_calls': len(measurements), 'mismatches': sum(not e['matches'] for e in measurements),
+            'tokenization_overhead_seconds': distribution([e['duration'] for e in events if e['event'] == 'prompt_tokens_measured'])}
+    summary['control_observations']['max_history_claimed_tokens'] = max(
+        [e.get('total_claimed', e.get('history_claimed_tokens', 0)) for e in events], default=0)
+    summary['control_observations']['max_history_soft_target_overshoot_tokens'] = max(
+        [max(0, e.get('total_claimed', e.get('history_claimed_tokens', 0)) - e['history_target_tokens'])
+         for e in events if 'history_target_tokens' in e], default=0)
     fingerprints = {r['call_id']: {'stage': r['stage'],
                     'messages_sha256': hashlib.sha256(json.dumps(r['payload']['messages'], sort_keys=True).encode()).hexdigest()}
                     for r in read(run / 'requests.jsonl')}

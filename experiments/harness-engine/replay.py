@@ -31,7 +31,10 @@ class ReplayHarness(Harness):
         # The frozen predecessors/tool results must reconstruct identical API input.
         if messages != original['messages']:
             raise ValueError('Replay history differs from source trace: ' + recorded['call_id'])
-        await self.controller.admit(root, session, stage)
+        measured = (await self.engine.prompt_tokens(messages, original['chat_template_kwargs']['enable_thinking'],
+                                                   root_id=root, node_id=session, stage=stage)
+                    if self.args.measure_prompts else 0)
+        await self.controller.admit(root, session, stage, measured)
         call_id = recorded['call_id']
         self.activation += 1
         self.journal.write('sessions', event='activation_start', root_id=root, session_id=session,
@@ -47,6 +50,12 @@ class ReplayHarness(Harness):
                 max_tokens=quota, seed=self.args.seed, generation_overrides=payload)
             if actual.get('usage', {}).get('completion_tokens') != quota:
                 raise ValueError('Engine did not execute fixed token quota: ' + call_id)
+            self.controller.observe_completion(session, stage, actual.get('usage', {}))
+            if measured:
+                self.journal.write('events', event='prompt_measurement_check', root_id=root, node_id=session,
+                                   stage=stage, measured_prompt_tokens=measured,
+                                   actual_prompt_tokens=actual['usage']['prompt_tokens'],
+                                   matches=measured == actual['usage']['prompt_tokens'])
             self.journal.write('replay_frozen_outputs', root_id=root, node_id=session, stage=stage,
                                call_id=call_id, quota=quota,
                                text_sha256=hashlib.sha256(frozen['text'].encode()).hexdigest(),
@@ -68,26 +77,46 @@ async def execute(args):
     source_audit = json.loads((source / 'audit.json').read_text())
     if not source_audit['passed']:
         raise ValueError('Source causal audit failed')
+    tasks = {t['task_id']: t for t in read(Path(cfg['tasks']))}
+    source_count = len(cfg['task_ids'])
+    source_task_index = {k: i for i, k in enumerate(cfg['task_ids'])}
+    if args.only_dataset:
+        selected_ids = [k for k in cfg['task_ids'] if tasks[k].get('dataset_id') == args.only_dataset]
+        if not selected_ids:
+            raise ValueError('No source tasks belong to the requested dataset')
+        requests = [r for r in requests if r['root_id'] in selected_ids]
+        responses = [r for r in responses if r['root_id'] in selected_ids]
+        cfg = {**cfg, 'task_ids': selected_ids, 'count': len(selected_ids),
+               'expected_model_calls': len(requests)}
     original_namespace = argparse.Namespace(**cfg)
     for key in ['tasks', 'out']:
         setattr(original_namespace, key, Path(getattr(original_namespace, key)))
     original_namespace.out = args.out
     original_namespace.policy, original_namespace.cap = args.policy, args.cap
     original_namespace.session_cap = args.session_cap
-    tasks = {t['task_id']: t for t in read(original_namespace.tasks)}
+    original_namespace.starvation_seconds = args.starvation_seconds
+    original_namespace.measure_prompts = args.measure_prompts
     selected = [tasks[k] for k in cfg['task_ids']]
     journal = Journal(args.out)
-    engine = Engine(original_namespace.url, original_namespace.model, journal)
-    controller = Controller(args.policy, args.cap, engine, journal, args.session_cap)
+    engine = Engine(original_namespace.url, original_namespace.model, journal, original_namespace.thinking,
+                    original_namespace.sampling_profile, original_namespace.reasoning_effort)
+    controller = Controller(args.policy, args.cap, engine, journal, args.session_cap, args.starvation_seconds,
+                            args.history_budget_tokens, args.history_output_reserve)
     replay_cfg = {**cfg, 'out': str(args.out), 'policy': args.policy, 'cap': args.cap,
                   'session_cap': args.session_cap, 'started': time.time(),
+                  'starvation_seconds': args.starvation_seconds,
+                  'measure_prompts': args.measure_prompts, 'history_budget_tokens': args.history_budget_tokens,
+                  'history_output_reserve': args.history_output_reserve,
                   'replay': {'source_trace': str(source), 'source_config_sha256': hashlib.sha256((source / 'config.json').read_bytes()).hexdigest(),
                              'frozen_prompts': True, 'fixed_completion_token_quota': True,
+                             'selected_dataset': args.only_dataset, 'source_root_count': source_count,
+                             'source_task_indices': {k: source_task_index[k] for k in cfg['task_ids']},
                              'real_tools': True, 'live_quality_evaluation': False},
                   'source_sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in Path(__file__).parent.glob('*.py')}}
-    state_server = Path('state/server.json')
-    if state_server.exists():
-        replay_cfg['server'] = json.loads(state_server.read_text())
+    for name in ['server','source_revision','env']:
+        state_path = Path('state') / (name+'.json')
+        if state_path.exists():
+            replay_cfg[name] = json.loads(state_path.read_text())
     (args.out / 'config.json').write_text(json.dumps(replay_cfg, indent=2), encoding='utf-8')
     (args.out / 'sources').mkdir()
     for p in Path(__file__).parent.glob('*.py'):
@@ -100,7 +129,7 @@ async def execute(args):
         poll = asyncio.create_task(engine.poll(stop))
         schedule = asyncio.create_task(controller.loop())
         harness = ReplayHarness(original_namespace, engine, controller, journal, requests, responses)
-        await asyncio.gather(*(harness.root(t, i) for i, t in enumerate(selected)))
+        await asyncio.gather(*(harness.root(t, source_task_index[t['task_id']]) for t in selected))
         controller.close()
         await schedule
         stop.set()
@@ -114,6 +143,11 @@ async def execute(args):
     # Reuse timing/accounting analysis, explicitly remove frozen-answer quality.
     summary = analyze(args.out, original_namespace.tasks.parent / 'answers.jsonl', original_namespace.tasks)
     summary['quality'] = None
+    if summary.get('quality_by_dataset'):
+        summary['latency_by_dataset'] = {k: {name: value for name, value in group.items()
+                                             if name not in ['em', 'f1']}
+                                         for k, group in summary['quality_by_dataset'].items()}
+    summary.pop('quality_by_dataset', None)
     summary['quality_protocol'] = 'Not evaluated: causal replay uses frozen upstream outputs and forced decoding quotas.'
     summary.pop('exact_correct_root_latency_seconds', None)
     summary['trace_audit'] = audit(args.out)
@@ -159,7 +193,17 @@ if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--trace', type=Path, required=True)
     ap.add_argument('--out', type=Path, required=True)
-    ap.add_argument('--policy', choices=['native', 'fixed', 'pressure', 'progress', 'backend_priority', 'session_window', 'return_priority'], default='native')
+    ap.add_argument('--policy', choices=['native', 'fixed', 'pressure', 'progress', 'backend_priority',
+                                        'session_window', 'return_priority', 'size_return',
+                                        'history_budget', 'history_pressure'], default='native')
     ap.add_argument('--cap', type=int, default=12)
     ap.add_argument('--session-cap', type=int, default=12)
-    asyncio.run(execute(ap.parse_args()))
+    ap.add_argument('--starvation-seconds', type=float, default=10)
+    ap.add_argument('--only-dataset')
+    ap.add_argument('--measure-prompts', action='store_true')
+    ap.add_argument('--history-budget-tokens', type=int, default=200000)
+    ap.add_argument('--history-output-reserve', type=int, default=1024)
+    args = ap.parse_args()
+    if args.policy in ['size_return', 'history_budget', 'history_pressure'] and not args.measure_prompts:
+        ap.error('Size-aware policies require actual prompt measurement: --measure-prompts')
+    asyncio.run(execute(args))

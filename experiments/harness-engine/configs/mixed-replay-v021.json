@@ -1,0 +1,14 @@
+{
+  "batch_id": "mixed-replay-v021",
+  "trace": "runs/v017-mixed-native16",
+  "purpose": "冻结完整混合轮次中的相同请求和生成量，对照同题长短分组单独运行，验证互相干扰，再比较强排序与软历史预算",
+  "runs": [
+    {"run_id": "v021-replay-mixed-native-a", "args": []},
+    {"run_id": "v021-replay-short-alone", "args": ["--only-dataset", "hotpot"]},
+    {"run_id": "v021-replay-long-alone", "args": ["--only-dataset", "longbench-v2"]},
+    {"run_id": "v021-replay-mixed-return18", "args": ["--policy", "return_priority", "--cap", "18", "--starvation-seconds", "120"]},
+    {"run_id": "v021-replay-mixed-size18", "args": ["--policy", "size_return", "--cap", "18", "--starvation-seconds", "120", "--measure-prompts"]},
+    {"run_id": "v021-replay-mixed-history200k", "args": ["--policy", "history_budget", "--cap", "24", "--history-budget-tokens", "200000", "--starvation-seconds", "120", "--measure-prompts"]},
+    {"run_id": "v021-replay-mixed-native-b", "args": []}
+  ]
+}

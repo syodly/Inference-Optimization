@@ -1,0 +1,10 @@
+{
+  "batch_id":"strong-return-replay-v018",
+  "trace":"runs/v012-verified-long-native8",
+  "purpose":"用完全相同80份输入和48930解码token，检验更强回流优先是否消除Session窗口差距",
+  "runs":[
+    {"run_id":"v018-replay-native","args":[]},
+    {"run_id":"v018-replay-return18-aging120","args":["--policy","return_priority","--cap","18","--starvation-seconds","120"]},
+    {"run_id":"v018-replay-return12-aging120","args":["--policy","return_priority","--cap","12","--starvation-seconds","120"]}
+  ]
+}

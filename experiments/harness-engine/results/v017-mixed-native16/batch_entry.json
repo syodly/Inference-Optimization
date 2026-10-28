@@ -1,0 +1,6 @@
+{
+  "run_id": "v017-mixed-native16",
+  "args": [],
+  "purpose": "十六根任务的长短上下文混合参照",
+  "interpretation": "八道LongBench-v2与八道HotpotQA评估题交替到达，全部采用同一十调用流程。逻辑子Session数相同，但每个长短Session历史规模不同；隐藏答案仍仅离线评分。分别报告长文选项准确率、短文EM/F1与时延，不能用混合平均质量掩盖某一组下降。"
+}

@@ -1,0 +1,17 @@
+{
+  "run_id": "v017-mixed-cal8-history",
+  "args": [
+    "--split",
+    "calibration",
+    "--count",
+    "8",
+    "--policy",
+    "history_budget",
+    "--cap",
+    "24",
+    "--history-budget-tokens",
+    "100000"
+  ],
+  "purpose": "长短文混合的历史工作集完整校准",
+  "interpretation": "交替使用已有四道长文和四道短文校准题，不修改原始来源。新机制在长prompt形成后按真实token数申请虚拟历史预算，工具等待期间持续记账，续写完成释放；校准用十万token预算主动覆盖额度等待和释放路径，不承诺物理KV驻留。先核对八十调用、实际prompt长度、工具来源与分组质量。"
+}

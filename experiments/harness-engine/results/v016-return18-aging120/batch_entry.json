@@ -1,0 +1,13 @@
+{
+  "run_id": "v016-return18-aging120",
+  "args": [
+    "--policy",
+    "return_priority",
+    "--cap",
+    "18",
+    "--starvation-seconds",
+    "120"
+  ],
+  "purpose": "更强回流排序与并发对照",
+  "interpretation": "v014默认十秒老化来自早期短文场景，可能在长文模型阶段尚未结束时过早把冷draft提升为最高优先级。本轮显式把老化保护设为一百二十秒，保持必做任务和模型配置；它是更强的请求排序基线，若消除Session窗口差距则如实承认。"
+}
