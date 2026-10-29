@@ -1,0 +1,6 @@
+- id: session-title-llm
+  disabled: true
+- insert:
+    - id: natural-dag-observer
+      name: /home/Liangyijia_Hu/dsh-lab/natural-observer.mjs
+      inject: [agents, sessions, tools]

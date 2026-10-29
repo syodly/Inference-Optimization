@@ -1,0 +1,140 @@
+{
+  "case_id": "incident",
+  "title": "Diagnose a service incident from correlated evidence",
+  "exit_code": 1,
+  "watchdog_triggered": false,
+  "started_wall_time": 1793279100.2754033,
+  "finished_wall_time": 1793279220.50942,
+  "duration_seconds": 120.23401737213135,
+  "root_session": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+  "agent_sessions": 1,
+  "child_sessions": 0,
+  "model_calls": 4,
+  "tool_calls": 10,
+  "tool_counts": {
+    "bash": 1,
+    "read": 9
+  },
+  "tool_errors": 0,
+  "peak_outstanding_model_steps": 1,
+  "generated_tokens": 4816,
+  "output_truncations": 1,
+  "first_child_seconds": null,
+  "last_new_tool_seconds": 20.471596717834473,
+  "dag_nodes": 16,
+  "dag_edges": 22,
+  "initial_task": "Diagnose the checkout outage described in ticket.md. Correlate the available logs, metrics and configuration history. Write incident-report.md with a timestamped causal timeline, the most likely root cause, plausible alternatives, and a concrete mitigation and verification plan. Cite the supplied evidence and distinguish facts from hypotheses.",
+  "max_output_tokens": 4096,
+  "provenance": "Curated service incident with controlled timestamps and a connection-pool configuration regression; not a production trace.",
+  "final_text": "\n\nI've reviewed all the evidence and found a clear pattern: the checkout v2.18 deployment doubled the database pool size from 12 to 24 per replica, which pushed total connections to 162—exceeding the database's 100-connection limit and causing exhaustion. Now I'll write up the incident report.\n\n",
+  "audit": {
+    "native_sessions": 1,
+    "native_model_steps": 4,
+    "wire_responses": 4,
+    "ready_events": 4,
+    "unmapped_tool_starts": [],
+    "graph_is_acyclic": true,
+    "wire_configuration_valid": true,
+    "all_http_200": true,
+    "watchdog_triggered": false,
+    "first_request_available_tools": [
+      "bash",
+      "create_goal",
+      "edit",
+      "exit_plan_mode",
+      "get_goal",
+      "glob",
+      "grep",
+      "interrupt_agent",
+      "job_kill",
+      "job_list",
+      "job_output",
+      "list_agents",
+      "read",
+      "read_image",
+      "send_message",
+      "skill",
+      "subagent",
+      "subagent_fork",
+      "todo_write",
+      "update_goal",
+      "web_fetch",
+      "web_search",
+      "workflow",
+      "working_directory",
+      "write"
+    ],
+    "delegation_tools_available": true,
+    "initial_task_present_unchanged": true
+  },
+  "steps": [
+    {
+      "node_id": "model:session-24240db0-cac9-4303-bd11-31921d517cb7:1:1",
+      "session_id": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+      "turn": 1,
+      "step": 1,
+      "ready_seconds": 1.883,
+      "response_seconds": 5.657,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 5.659596681594849,
+      "last_tool_end_seconds": 5.93459677696228,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-24240db0-cac9-4303-bd11-31921d517cb7:1:2",
+      "session_id": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+      "turn": 1,
+      "step": 2,
+      "ready_seconds": 5.97,
+      "response_seconds": 10.876,
+      "tools": {
+        "read": 3
+      },
+      "first_tool_seconds": 10.878596782684326,
+      "last_tool_end_seconds": 10.915596723556519,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-24240db0-cac9-4303-bd11-31921d517cb7:1:3",
+      "session_id": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+      "turn": 1,
+      "step": 3,
+      "ready_seconds": 10.955,
+      "response_seconds": 20.451,
+      "tools": {
+        "read": 6
+      },
+      "first_tool_seconds": 20.454596757888794,
+      "last_tool_end_seconds": 20.527596712112427,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-24240db0-cac9-4303-bd11-31921d517cb7:1:4",
+      "session_id": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+      "turn": 1,
+      "step": 4,
+      "ready_seconds": 20.596,
+      "response_seconds": 120.07,
+      "tools": {},
+      "first_tool_seconds": null,
+      "last_tool_end_seconds": null,
+      "model_text": "\n\nI've reviewed all the evidence and found a clear pattern: the checkout v2.18 deployment doubled the database pool size from 12 to 24 per replica, which pushed total connections to 162—exceeding the database's 100-connection limit and causing exhaustion. Now I'll write up the incident report.\n\n",
+      "bash_exit_codes": []
+    }
+  ],
+  "max_tools_proposed_in_one_response": 6,
+  "bash_nonzero_exits": 0,
+  "quality_checks": {
+    "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+    "report_present": false,
+    "expected_mechanism": "6*24 + 18 exceeds database connection limit 100 after 09:03 rollout; edge rollback does not resolve it.",
+    "report_text": null
+  }
+}

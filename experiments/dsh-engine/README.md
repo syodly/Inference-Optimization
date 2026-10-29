@@ -8,6 +8,8 @@
 
 三轮已接入[网页实验选择器](../../LLM_Optimization_Milestone/topic1-experiments.html#dsh-e1-small-native)，默认显示官方DSH；每轮八题均可切换，流程节点可展开完整messages、API参数、模型返回和派发时的真实引擎状态。浏览器数据由 `python experiments/dsh-engine/export_results_web.py` 从已归档证据离线导出，不重跑模型；`verify_results_web.py` 检查全部24个逐题流程及旧实验切换。
 
+**最新：完成五类只给初始任务的自然DAG观察。** 简单问答、多文档调查、代码修复、CSV分析、故障诊断没有指定Agent数量或未来步骤。五类均自然选择一个根Agent，模型调用数为1、13、6、16、5；工具依赖图随执行增长。保留两次4096输出触顶的首轮，再以更大输出上限从头执行两类。详见[观察报告与时间点](notes/natural-dag-20261029.md)及[时间轴页面](../../LLM_Optimization_Milestone/topic1-dag-observation.html)。全部原始调用与事件均归档，没有恢复旧性能批次。
+
 ## 当前安装
 
 | 项目 | 实际配置 |

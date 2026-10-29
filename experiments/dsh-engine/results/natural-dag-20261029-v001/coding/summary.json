@@ -1,0 +1,175 @@
+{
+  "case_id": "coding",
+  "title": "Repair a small service from regression failures",
+  "exit_code": 0,
+  "watchdog_triggered": false,
+  "started_wall_time": 1793278901.1364279,
+  "finished_wall_time": 1793278990.0055974,
+  "duration_seconds": 88.86917018890381,
+  "root_session": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+  "agent_sessions": 1,
+  "child_sessions": 0,
+  "model_calls": 6,
+  "tool_calls": 11,
+  "tool_counts": {
+    "bash": 3,
+    "read": 5,
+    "edit": 3
+  },
+  "tool_errors": 0,
+  "peak_outstanding_model_steps": 1,
+  "generated_tokens": 3490,
+  "output_truncations": 0,
+  "first_child_seconds": null,
+  "last_new_tool_seconds": 71.83157205581665,
+  "dag_nodes": 19,
+  "dag_edges": 24,
+  "initial_task": "Fix the checkout service so that its documented contracts and regression tests pass. Preserve the public APIs and existing tests. Run the tests, make the necessary implementation changes, and summarize the cause of each bug and your verification.",
+  "max_output_tokens": 4096,
+  "provenance": "Curated Python checkout repository, seven public unittest cases; not an upstream benchmark.",
+  "final_text": "\n\nAll 7 regression tests pass. Here's a summary of each bug and its fix:\n\n## Bugs and fixes\n\n**1. `pricing.py` — premature intermediate rounding** (`test_round_once`)\n- **Cause:** `total()` quantized to cents *after the discount* and again after tax. For `0.05 × 0.9 = 0.045`, the intermediate round-up to `0.05` then produced `0.05 × 1.1 = 0.055 → 0.06`, violating the contract \"round the final amount once.\"\n- **Fix:** Removed the intermediate `quantize`; the full-precision discounted amount is now multiplied by `(1 + tax)` and rounded exactly once with `ROUND_HALF_UP` at the end (`0.045 × 1.1 = 0.0495 → 0.05`).\n\n**2. `inventory.py` — non-atomic reservation** (`test_atomic_reservation`)\n- **Cause:** `reserve()` decremented stock inside the same loop that validated it, so when a later SKU failed, earlier SKUs had already been deducted (stock was left as `{'a': 1, 'b': 0}` instead of unchanged).\n- **Fix:** Split into two passes — first validate every line (stock sufficiency), then apply all decrements. A failure now leaves the entire stock untouched.\n\n**3. `inventory.py` — missing quantity validation** (`test_negative_quantity`, `test_zero_quantity`)\n- **Cause:** No check that quantities are positive integers; a negative quantity actually *increased* stock, and zero was silently accepted.\n- **Fix:** Each quantity is now validated as a positive integer (rejecting non-ints and booleans) before any stock check, raising `ValueError` otherwise.\n\n**4. `checkout.py` — no idempotency** (`test_retry_does_not_reserve_twice`)\n- **Cause:** `submit()` never consulted `self.completed`, so resubmitting a successful order key reserved stock a second time.\n- **Fix:** `submit()` now returns the cached original result immediately when the key is already in `completed`, without touching stock.\n\n**5. `checkout.py` — invalid orders consumed stock** (`test_invalid_price_does_not_consume_stock`)\n- **Cause:** `reserve()` ran *before* `total()`, so a pricing failure (e.g. an unparseable price) left stock already decremented while no success was recorded.\n- **Fix:** Reordered so the amount is computed first; only after pricing succeeds is stock reserved and the result recorded. Any failure now leaves stock and `completed` untouched.\n\n## Verification\n- Before: `python3 -m unittest -v` → **6 of 7 failed**.\n- After: `python3 -m unittest -v` → **7 of 7 pass** (`OK`).\n- Public APIs (`Checkout.submit`, `reserve`, `total`) and the test file are unchanged in signature/behavior — only implementation internals were corrected, per the README contracts.",
+  "audit": {
+    "native_sessions": 1,
+    "native_model_steps": 6,
+    "wire_responses": 6,
+    "ready_events": 6,
+    "unmapped_tool_starts": [],
+    "graph_is_acyclic": true,
+    "wire_configuration_valid": true,
+    "all_http_200": true,
+    "watchdog_triggered": false,
+    "first_request_available_tools": [
+      "bash",
+      "create_goal",
+      "edit",
+      "exit_plan_mode",
+      "get_goal",
+      "glob",
+      "grep",
+      "interrupt_agent",
+      "job_kill",
+      "job_list",
+      "job_output",
+      "list_agents",
+      "read",
+      "read_image",
+      "send_message",
+      "skill",
+      "subagent",
+      "subagent_fork",
+      "todo_write",
+      "update_goal",
+      "web_fetch",
+      "web_search",
+      "workflow",
+      "working_directory",
+      "write"
+    ],
+    "delegation_tools_available": true,
+    "initial_task_present_unchanged": true
+  },
+  "steps": [
+    {
+      "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:1",
+      "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+      "turn": 1,
+      "step": 1,
+      "ready_seconds": 1.863,
+      "response_seconds": 4.456,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 4.461572170257568,
+      "last_tool_end_seconds": 4.803572177886963,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:2",
+      "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+      "turn": 1,
+      "step": 2,
+      "ready_seconds": 4.851,
+      "response_seconds": 12.588,
+      "tools": {
+        "read": 5
+      },
+      "first_tool_seconds": 12.591572046279907,
+      "last_tool_end_seconds": 12.649572134017944,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:3",
+      "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+      "turn": 1,
+      "step": 3,
+      "ready_seconds": 12.702,
+      "response_seconds": 47.985,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 47.99157214164734,
+      "last_tool_end_seconds": 48.256572008132935,
+      "model_text": "\n\nI've reviewed all the files. Let me run the regression suite first to confirm the failures.\n\n",
+      "bash_exit_codes": [
+        1
+      ]
+    },
+    {
+      "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:4",
+      "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+      "turn": 1,
+      "step": 4,
+      "ready_seconds": 48.295,
+      "response_seconds": 68.391,
+      "tools": {
+        "edit": 3
+      },
+      "first_tool_seconds": 68.39957213401794,
+      "last_tool_end_seconds": 68.46157217025757,
+      "model_text": "\n\n6 of 7 tests fail, and the causes are clear. Now I'll apply the fixes to the three implementation files.\n\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:5",
+      "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+      "turn": 1,
+      "step": 5,
+      "ready_seconds": 68.49,
+      "response_seconds": 71.829,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 71.83157205581665,
+      "last_tool_end_seconds": 72.09157204627991,
+      "model_text": "\n\nAll three fixes applied. Re-running the suite to verify:\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:6",
+      "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+      "turn": 1,
+      "step": 6,
+      "ready_seconds": 72.141,
+      "response_seconds": 88.712,
+      "tools": {},
+      "first_tool_seconds": null,
+      "last_tool_end_seconds": null,
+      "model_text": "\n\nAll 7 regression tests pass. Here's a summary of each bug and its fix:\n\n## Bugs and fixes\n\n**1. `pricing.py` — premature intermediate rounding** (`test_round_once`)\n- **Cause:** `total()` quantized to cents *after the discount* and again after tax. For `0.05 × 0.9 = 0.045`, the intermediate round-up to `0.05` then produced `0.05 × 1.1 = 0.055 → 0.06`, violating the contract \"round the final amount once.\"\n- **Fix:** Removed the intermediate `quantize`; the full-precision discounted amount is now multiplied by `(1 + tax)` and rounded exactly once with `ROUND_HALF_UP` at the end (`0.045 × 1.1 = 0.0495 → 0.05`).\n\n**2. `inventory.py` — non-atomic reservation** (`test_atomic_reservation`)\n- **Cause:** `reserve()` decremented stock inside the same loop that validated it, so when a later SKU failed, earlier SKUs had already been deducted (stock was left as `{'a': 1, 'b': 0}` instead of unchanged).\n- **Fix:** Split into two passes — first validate every line (stock sufficiency), then apply all decrements. A failure now leaves the entire stock untouched.\n\n**3. `inventory.py` — missing quantity validation** (`test_negative_quantity`, `test_zero_quantity`)\n- **Cause:** No check that quantities are positive integers; a negative quantity actually *increased* stock, and zero was silently accepted.\n- **Fix:** Each quantity is now validated as a positive integer (rejecting non-ints and booleans) before any stock check, raising `ValueError` otherwise.\n\n**4. `checkout.py` — no idempotency** (`test_retry_does_not_reserve_twice`)\n- **Cause:** `submit()` never consulted `self.completed`, so resubmitting a successful order key reserved stock a second time.\n- **Fix:** `submit()` now returns the cached original result immediately when the key is already in `completed`, without touching stock.\n\n**5. `checkout.py` — invalid orders consumed stock** (`test_invalid_price_does_not_consume_stock`)\n- **Cause:** `reserve()` ran *before* `total()`, so a pricing failure (e.g. an unparseable price) left stock already decremented while no success was recorded.\n- **Fix:** Reordered so the amount is computed first; only after pricing succeeds is stock reserved and the result recorded. Any failure now leaves stock and `completed` untouched.\n\n## Verification\n- Before: `python3 -m unittest -v` → **6 of 7 failed**.\n- After: `python3 -m unittest -v` → **7 of 7 pass** (`OK`).\n- Public APIs (`Checkout.submit`, `reserve`, `total`) and the test file are unchanged in signature/behavior — only implementation internals were corrected, per the README contracts.",
+      "bash_exit_codes": []
+    }
+  ],
+  "max_tools_proposed_in_one_response": 5,
+  "bash_nonzero_exits": 1,
+  "quality_checks": {
+    "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+    "original_tests_unchanged": true
+  },
+  "offline_test_exit_code": 0,
+  "offline_test_output": "test_atomic_reservation (test_checkout.Rules) ... ok\ntest_invalid_price_does_not_consume_stock (test_checkout.Rules) ... ok\ntest_negative_quantity (test_checkout.Rules) ... ok\ntest_retry_does_not_reserve_twice (test_checkout.Rules) ... ok\ntest_round_once (test_checkout.Rules) ... ok\ntest_success (test_checkout.Rules) ... ok\ntest_zero_quantity (test_checkout.Rules) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n"
+}

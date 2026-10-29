@@ -1,0 +1,829 @@
+{
+  "batch_id": "natural-dag-20261029-v001",
+  "cases": [
+    {
+      "case_id": "simple",
+      "title": "Single calculation",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793278534.3325014,
+      "finished_wall_time": 1793278540.2115846,
+      "duration_seconds": 5.879083633422852,
+      "root_session": "session-fe0540f1-5e99-441c-98f5-ccb31331a881",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_counts": {},
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 115,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": null,
+      "dag_nodes": 3,
+      "dag_edges": 2,
+      "initial_task": "An invoice is 240 dollars before a 17.5% discount. What is the final price? Give a brief calculation.",
+      "max_output_tokens": 4096,
+      "provenance": "Curated one-step control; expected price 198 dollars.",
+      "final_text": "\n\n**Final price: $198**\n\nCalculation:\n- Discount: 240 × 0.175 = $42\n- Final price: 240 − 42 = **$198**\n\n(Equivalently: 240 × 0.825 = 198)",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 1,
+        "wire_responses": 1,
+        "ready_events": 1,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-fe0540f1-5e99-441c-98f5-ccb31331a881:1:1",
+          "session_id": "session-fe0540f1-5e99-441c-98f5-ccb31331a881",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.923,
+          "response_seconds": 5.677,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\n**Final price: $198**\n\nCalculation:\n- Discount: 240 × 0.175 = $42\n- Final price: 240 − 42 = **$198**\n\n(Equivalently: 240 × 0.825 = 198)",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 0,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "expected_198_in_answer": true
+      }
+    },
+    {
+      "case_id": "research",
+      "title": "Source-grounded multi-document research",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793278637.9784365,
+      "finished_wall_time": 1793278901.1090813,
+      "duration_seconds": 263.13064527511597,
+      "root_session": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 13,
+      "tool_calls": 68,
+      "tool_counts": {
+        "bash": 3,
+        "read": 61,
+        "todo_write": 3,
+        "write": 1
+      },
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 10349,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 247.76656341552734,
+      "dag_nodes": 83,
+      "dag_edges": 138,
+      "initial_task": "Prepare a source-grounded fact-check report answering the questions in questions.md. Use the supplied source collection, cite the supporting filenames and explain any missing or conflicting evidence. Write the report to report.md and summarize your findings.",
+      "max_output_tokens": 4096,
+      "provenance": "Six original HotpotQA calibration questions and their distractor document collections; no answer labels supplied.",
+      "final_text": "\n\nReport written to `report.md`. I read all 60 source files (10 per question) and grounded every answer in specific filenames. Findings:\n\n1. **Mick Carter's pub address** → **46 Albert Square, Walford, London E20** — the fictional address of The Queen Victoria in *EastEnders*. Supported by `q1/d2.md` (Mick becomes landlord of The Queen Victoria) and `q1/d3.md` (states the address). No conflicts; the address is explicitly fictional.\n\n2. **Kriti Sanon's remix video** → the song \"Raabta\" is from ***Agent Vinod*** (2012). `q2/d3.md` states the remix video stars Kriti Sanon (with Deepika Padukone, Sushant Singh Rajput, Jim Sarbh). Caveat: `q2/d9.md` mentions a *music* video (not remix) for \"Main Tera Boyfriend\" from *Raabta* — a near-miss distractor, but the question asks specifically about a remix video.\n\n3. **Founded first** → **Gino's Pizza and Spaghetti** (1961, per `q3/d3.md`) vs. Papa Murphy's (1995, per `q3/d7.md`; even its 1981 predecessor companies are later). Note: `q3/d0.md` describes *Gino's Hamburgers* (1957) — a different chain, so it doesn't change the answer.\n\n4. **Radio personality/DJ** → **John Garabedian** — described as a radio personality and DJ, creator/host of *Open House Party* (`q4/d9.md`, `q4/d8.md`, `q4/d3.md`). Charles A. Agemian's only source (`q4/d7.md`) describes him solely as a banker, with no radio work mentioned.\n\n5. **Shared football team** → **FC Bayern Munich** — Gómez spent four seasons there (`q5/d8.md`); Martínez plays for/signed with Bayern (`q5/d7.md`, `q5/d5.md`). Distractor: `q5/d4.md` is about *Willie Martinez*, a different person (a coach).\n\n6. **Same formation city?** → **No** — Goo Goo Dolls formed in **Buffalo, New York** (1985, `q6/d5.md`); Echosmith formed in **Chino, California** (2009, `q6/d0.md`).\n\nAll six questions are answerable from the supplied sources with no unresolved conflicts; the report documents the distractor documents and the one fictional-address caveat.",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 13,
+        "wire_responses": 13,
+        "ready_events": 13,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:1",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.869,
+          "response_seconds": 4.588,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 4.592563629150391,
+          "last_tool_end_seconds": 4.896563529968262,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:2",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 4.942,
+          "response_seconds": 8.785,
+          "tools": {
+            "read": 1,
+            "bash": 1
+          },
+          "first_tool_seconds": 8.78856348991394,
+          "last_tool_end_seconds": 9.007563591003418,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:3",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 9.048,
+          "response_seconds": 21.756,
+          "tools": {
+            "todo_write": 1,
+            "bash": 1
+          },
+          "first_tool_seconds": 21.759563446044922,
+          "last_tool_end_seconds": 21.96156358718872,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:4",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 21.999,
+          "response_seconds": 38.85,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 38.8535635471344,
+          "last_tool_end_seconds": 38.9325635433197,
+          "model_text": "\n\nThe sources are small (60 files, ~35KB total). Let me read them all, starting with q1.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:5",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 5,
+          "ready_seconds": 39.023,
+          "response_seconds": 58.2,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 58.20556354522705,
+          "last_tool_end_seconds": 58.28156352043152,
+          "model_text": "\n\nQ1 is clear: Mick Carter (EastEnders) is landlord of The Queen Victoria, fictional address 46 Albert Square, Walford, London E20. Now q2.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:6",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 6,
+          "ready_seconds": 58.368,
+          "response_seconds": 79.905,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 79.90956354141235,
+          "last_tool_end_seconds": 79.9785635471344,
+          "model_text": "\n\nQ2 is clear: the remix video of \"Raabta\" (a song from *Agent Vinod*) stars Kriti Sanon. Now q3.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:7",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 7,
+          "ready_seconds": 80.091,
+          "response_seconds": 101.757,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 101.76556348800659,
+          "last_tool_end_seconds": 101.84856343269348,
+          "model_text": "\n\nQ3 is clear: Gino's Pizza and Spaghetti (1961) predates Papa Murphy's (1995, or 1981 for its predecessor companies). Now q4.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:8",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 8,
+          "ready_seconds": 101.94,
+          "response_seconds": 122.26,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 122.26356363296509,
+          "last_tool_end_seconds": 122.33856344223022,
+          "model_text": "\n\nQ4 is clear: John Garabedian was the radio personality/DJ; Agemian was a banker. Now q5.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:9",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 9,
+          "ready_seconds": 122.431,
+          "response_seconds": 142.913,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 142.9145634174347,
+          "last_tool_end_seconds": 142.9785635471344,
+          "model_text": "\n\nQ5 is clear: both played for FC Bayern Munich. Now q6.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:10",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 10,
+          "ready_seconds": 143.062,
+          "response_seconds": 174.192,
+          "tools": {
+            "todo_write": 1
+          },
+          "first_tool_seconds": 174.19756364822388,
+          "last_tool_end_seconds": 174.20856356620789,
+          "model_text": "\n\nAll 60 sources read. Every question has clear supporting evidence. Now writing the report.\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:11",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 11,
+          "ready_seconds": 174.236,
+          "response_seconds": 241.097,
+          "tools": {
+            "write": 1
+          },
+          "first_tool_seconds": 241.107563495636,
+          "last_tool_end_seconds": 241.1405634880066,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:12",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 12,
+          "ready_seconds": 241.171,
+          "response_seconds": 247.765,
+          "tools": {
+            "todo_write": 1
+          },
+          "first_tool_seconds": 247.76656341552734,
+          "last_tool_end_seconds": 247.7745635509491,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:13",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 13,
+          "ready_seconds": 247.799,
+          "response_seconds": 262.973,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nReport written to `report.md`. I read all 60 source files (10 per question) and grounded every answer in specific filenames. Findings:\n\n1. **Mick Carter's pub address** → **46 Albert Square, Walford, London E20** — the fictional address of The Queen Victoria in *EastEnders*. Supported by `q1/d2.md` (Mick becomes landlord of The Queen Victoria) and `q1/d3.md` (states the address). No conflicts; the address is explicitly fictional.\n\n2. **Kriti Sanon's remix video** → the song \"Raabta\" is from ***Agent Vinod*** (2012). `q2/d3.md` states the remix video stars Kriti Sanon (with Deepika Padukone, Sushant Singh Rajput, Jim Sarbh). Caveat: `q2/d9.md` mentions a *music* video (not remix) for \"Main Tera Boyfriend\" from *Raabta* — a near-miss distractor, but the question asks specifically about a remix video.\n\n3. **Founded first** → **Gino's Pizza and Spaghetti** (1961, per `q3/d3.md`) vs. Papa Murphy's (1995, per `q3/d7.md`; even its 1981 predecessor companies are later). Note: `q3/d0.md` describes *Gino's Hamburgers* (1957) — a different chain, so it doesn't change the answer.\n\n4. **Radio personality/DJ** → **John Garabedian** — described as a radio personality and DJ, creator/host of *Open House Party* (`q4/d9.md`, `q4/d8.md`, `q4/d3.md`). Charles A. Agemian's only source (`q4/d7.md`) describes him solely as a banker, with no radio work mentioned.\n\n5. **Shared football team** → **FC Bayern Munich** — Gómez spent four seasons there (`q5/d8.md`); Martínez plays for/signed with Bayern (`q5/d7.md`, `q5/d5.md`). Distractor: `q5/d4.md` is about *Willie Martinez*, a different person (a coach).\n\n6. **Same formation city?** → **No** — Goo Goo Dolls formed in **Buffalo, New York** (1985, `q6/d5.md`); Echosmith formed in **Chino, California** (2009, `q6/d0.md`).\n\nAll six questions are answerable from the supplied sources with no unresolved conflicts; the report documents the distractor documents and the one fictional-address caveat.",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 10,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "report_present": true,
+        "report_text": "# Fact-Check Report\n\n**Date:** 2026-10-29\n**Scope:** Answers to the six questions in `questions.md`, grounded exclusively in the supplied source collection under `sources/` (10 documents per question, `d0.md`–`d9.md`).\n**Method:** Every source file in each question's collection was read in full. Each answer below cites the specific files that support it, and notes any missing or conflicting evidence, including distractor documents that describe similarly named but different entities.\n\n---\n\n## Q1. Mick Carter is the landlord of a public house located at what address?\n\n**Answer: 46 Albert Square, Walford, London E20** (the fictional address of The Queen Victoria public house in *EastEnders*).\n\n**Supporting evidence:**\n- `sources/q1/d2.md` (Mick Carter): \"Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as 'The Vic').\"\n- `sources/q1/d3.md` (The Queen Victoria): \"The Queen Victoria (more often referred to as The Queen Vic or The Vic) is the Victorian public house in the BBC soap opera, 'EastEnders'. It has the fictional address of 46 Albert Square, Walford, London E20.\"\n- Corroborating context: `sources/q1/d6.md` (Linda Carter) confirms the Carter family took over The Queen Victoria (\"Linda became landlady of The Queen Victoria public house\"), and `sources/q1/d7.md` / `sources/q1/d9.md` (Whitney Dean, Nancy Carter) confirm the Carter family's association with the pub.\n\n**Missing/conflicting evidence:** None. The address is explicitly stated in `d3.md` and is unambiguous. Note that the address is fictional (Walford is the fictional setting of *EastEnders*). The remaining files in the collection (`d0.md` Fat Cat Brewery, `d1.md` The Gatehouse Monmouth, `d4.md` Shakespeare Public House Bristol, `d5.md` Square and Compass, `d8.md` Adam & Eve Birmingham) describe unrelated real-world pubs and do not mention Mick Carter.\n\n---\n\n## Q2. \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\n\n**Answer: *Agent Vinod*** (the song is \"Raabta\").\n\n**Supporting evidence:**\n- `sources/q2/d3.md` (Raabta, song): \"'Raabta' (English: Relation) is a romantic Hindi song from the 2012 Bollywood film, 'Agent Vinod'. … the remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\"\n- `sources/q2/d8.md` (Kriti Sanon) and `sources/q2/d6.md` (Heropanti) confirm that Kriti Sanon is a \"Heropanti\" star (her Hindi film debut, released 23 May 2014).\n\n**Missing/conflicting evidence:** No direct conflict, but one near-miss distractor should be noted: `sources/q2/d9.md` (Main Tera Boyfriend) states that song's *music video* stars Kriti Sanon and Sushant Singh Rajput and that it is from the film *Raabta* — but that is a music video, not a remix video, and the question specifically asks about a remix video. The only source describing a remix video featuring Kriti Sanon is `d3.md`, which ties it to *Agent Vinod*. The other files (`d0.md` Dohchay, `d1.md` Sabbir Khan, `d2.md` Raabta film, `d4.md` Raat Bhar, `d5.md` 1: Nenokkadine, `d7.md` Bareilly Ki Barfi) describe other films/songs and do not mention a remix video.\n\n---\n\n## Q3. Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\n\n**Answer: Gino's Pizza and Spaghetti** (founded 1961, vs. Papa Murphy's 1995).\n\n**Supporting evidence:**\n- `sources/q3/d3.md` (Gino's Pizza and Spaghetti): \"The company was founded by Kenney Grant in 1961.\"\n- `sources/q3/d7.md` (Papa Murphy's): \"It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).\"\n\n**Missing/conflicting evidence:** No conflict. Even counting the 1981 founding of Papa Murphy's predecessor companies, Gino's Pizza and Spaghetti (1961) still predates it. One naming trap in the collection: `sources/q3/d0.md` describes **Gino's Hamburgers** (founded 1957 in Baltimore) — a different chain from Gino's Pizza and Spaghetti, so it does not affect the answer. The remaining files (`d1.md` Tudor's Biscuit World, `d2.md` Papa Murphy's Park, `d4.md` Sacramento Republic FC, `d5.md` Papa Gino's, `d6.md` Gino's East, `d8.md` Spencer Park, `d9.md` Pizza 73) are unrelated distractors.\n\n---\n\n## Q4. Who was most well-known as a radio personality and disc jockey, John Garabedian or Charles A. Agemian?\n\n**Answer: John Garabedian.**\n\n**Supporting evidence:**\n- `sources/q4/d9.md` (John Garabedian): \"John H. Garabedian is an American radio personality and disc jockey … He is best known as the creator and former long-time host of 'Open House Party'.\"\n- `sources/q4/d8.md` (Open House Party): \"The show started in 1987, and was hosted by John Garabedian from September 1987 to January 2017. Garabedian created the show.\"\n- `sources/q4/d3.md` (XY TV): \"It was wholly owned by American radio personality John Garabedian.\"\n- `sources/q4/d7.md` (Charles A. Agemian): describes him as \"an American banker\" (executive vice president of operations at Chase Manhattan Bank, later CEO of Hackensack Trust Co.). The source contains **no mention of radio or disc jockey work** for Agemian.\n\n**Missing/conflicting evidence:** No conflict. The evidence is one-sided: three sources describe Garabedian as a radio personality/DJ, while the only source on Agemian describes him solely as a banker. The other files (`d0.md` Don Sherwood, `d1.md` M.G. Kelly, `d2.md` At Your Request, `d4.md` Radio personality, `d5.md` Lin Brehmer, `d6.md` Big Wilson) concern other radio personalities or the general concept, and are not relevant to the two named individuals.\n\n---\n\n## Q5. What football team did Mario Gomez and Javi Martinez both play for?\n\n**Answer: FC Bayern Munich.**\n\n**Supporting evidence:**\n- `sources/q5/d8.md` (Mario Gómez): \"Gómez joined Fiorentina after spending four seasons with Bayern Munich, which he joined after six years playing for VfB Stuttgart.\"\n- `sources/q5/d7.md` (Javi Martínez): \"… is a Spanish footballer who plays for German club FC Bayern Munich as a defensive midfielder or a central defender.\"\n- `sources/q5/d5.md` (2012–13 FC Bayern Munich season): \"Bayern also added holding midfielder Javi Martínez after the first week of the Bundesliga season at the transfer deadline.\"\n\n**Missing/conflicting evidence:** No conflict. The sources do not state the exact overlapping years, but both players' Bayern Munich stints are independently documented (Gómez: four seasons; Martínez: signed 2012, per `d5.md` and `d7.md`). One distractor to note: `sources/q5/d4.md` describes **Willie Martinez**, an American football *coach* — a different person from Javi Martínez. The remaining files (`d0.md` D.C. Armor, `d1.md` England women's U23, `d2.md` Kentucky Xtreme, `d3.md` Tate Forcier, `d6.md` 2012 FIU Panthers, `d9.md` 1993 Auburn Tigers) are unrelated.\n\n---\n\n## Q6. Were Goo Goo Dolls and Echosmith formed in the same city?\n\n**Answer: No.** Goo Goo Dolls were formed in **Buffalo, New York**; Echosmith were formed in **Chino, California**.\n\n**Supporting evidence:**\n- `sources/q6/d5.md` (Goo Goo Dolls): \"The Goo Goo Dolls are an American rock band formed in 1985 in Buffalo, New York, by vocalist and guitarist John Rzeznik, vocalist and bassist Robby Takac, and drummer George Tutuska.\"\n- `sources/q6/d0.md` (Echosmith): \"Echosmith is an American, Corporate indie pop band formed in February 2009 in Chino, California.\"\n\n**Missing/conflicting evidence:** No conflict. The two formation cities are explicitly stated and clearly different. The remaining files in the collection (`d1.md` All That You Are, `d2.md` Live in Buffalo, `d3.md` Goo Goo Dolls album, `d4.md` Notbroken, `d6.md` Something for the Rest of Us, `d7.md` Waiting for the Rest of It, `d8.md` iTunes Originals, `d9.md` Hold Me Up) concern Goo Goo Dolls releases and do not contradict the formation city.\n\n---\n\n## Summary Table\n\n| # | Question (short) | Answer | Key sources |\n|---|------------------|--------|-------------|\n| 1 | Mick Carter's pub address | 46 Albert Square, Walford, London E20 (The Queen Victoria, *EastEnders*) | `q1/d2.md`, `q1/d3.md` |\n| 2 | Film of the song whose remix video features Kriti Sanon | *Agent Vinod* (song: \"Raabta\") | `q2/d3.md` |\n| 3 | Founded first: Papa Murphy's or Gino's Pizza and Spaghetti | Gino's Pizza and Spaghetti (1961 vs. 1995) | `q3/d3.md`, `q3/d7.md` |\n| 4 | More well-known radio personality/DJ | John Garabedian | `q4/d9.md`, `q4/d8.md`, `q4/d7.md` |\n| 5 | Team shared by Mario Gomez and Javi Martinez | FC Bayern Munich | `q5/d8.md`, `q5/d7.md`, `q5/d5.md` |\n| 6 | Same formation city? | No — Buffalo, NY vs. Chino, CA | `q6/d5.md`, `q6/d0.md` |\n\n**Overall assessment:** All six questions are answerable from the supplied sources with no unresolved conflicts. The main evidentiary caveats are: (a) the Q1 address is explicitly fictional; (b) Q2 requires distinguishing a *remix* video (d3.md) from a regular music video (d9.md); (c) Q3 contains a similarly named but distinct chain (Gino's Hamburgers, d0.md) that does not affect the answer; and (d) Q5 contains a different person with a similar name (Willie Martinez, d4.md).\n"
+      }
+    },
+    {
+      "case_id": "coding",
+      "title": "Repair a small service from regression failures",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793278901.1364279,
+      "finished_wall_time": 1793278990.0055974,
+      "duration_seconds": 88.86917018890381,
+      "root_session": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 6,
+      "tool_calls": 11,
+      "tool_counts": {
+        "bash": 3,
+        "read": 5,
+        "edit": 3
+      },
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 3490,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 71.83157205581665,
+      "dag_nodes": 19,
+      "dag_edges": 24,
+      "initial_task": "Fix the checkout service so that its documented contracts and regression tests pass. Preserve the public APIs and existing tests. Run the tests, make the necessary implementation changes, and summarize the cause of each bug and your verification.",
+      "max_output_tokens": 4096,
+      "provenance": "Curated Python checkout repository, seven public unittest cases; not an upstream benchmark.",
+      "final_text": "\n\nAll 7 regression tests pass. Here's a summary of each bug and its fix:\n\n## Bugs and fixes\n\n**1. `pricing.py` — premature intermediate rounding** (`test_round_once`)\n- **Cause:** `total()` quantized to cents *after the discount* and again after tax. For `0.05 × 0.9 = 0.045`, the intermediate round-up to `0.05` then produced `0.05 × 1.1 = 0.055 → 0.06`, violating the contract \"round the final amount once.\"\n- **Fix:** Removed the intermediate `quantize`; the full-precision discounted amount is now multiplied by `(1 + tax)` and rounded exactly once with `ROUND_HALF_UP` at the end (`0.045 × 1.1 = 0.0495 → 0.05`).\n\n**2. `inventory.py` — non-atomic reservation** (`test_atomic_reservation`)\n- **Cause:** `reserve()` decremented stock inside the same loop that validated it, so when a later SKU failed, earlier SKUs had already been deducted (stock was left as `{'a': 1, 'b': 0}` instead of unchanged).\n- **Fix:** Split into two passes — first validate every line (stock sufficiency), then apply all decrements. A failure now leaves the entire stock untouched.\n\n**3. `inventory.py` — missing quantity validation** (`test_negative_quantity`, `test_zero_quantity`)\n- **Cause:** No check that quantities are positive integers; a negative quantity actually *increased* stock, and zero was silently accepted.\n- **Fix:** Each quantity is now validated as a positive integer (rejecting non-ints and booleans) before any stock check, raising `ValueError` otherwise.\n\n**4. `checkout.py` — no idempotency** (`test_retry_does_not_reserve_twice`)\n- **Cause:** `submit()` never consulted `self.completed`, so resubmitting a successful order key reserved stock a second time.\n- **Fix:** `submit()` now returns the cached original result immediately when the key is already in `completed`, without touching stock.\n\n**5. `checkout.py` — invalid orders consumed stock** (`test_invalid_price_does_not_consume_stock`)\n- **Cause:** `reserve()` ran *before* `total()`, so a pricing failure (e.g. an unparseable price) left stock already decremented while no success was recorded.\n- **Fix:** Reordered so the amount is computed first; only after pricing succeeds is stock reserved and the result recorded. Any failure now leaves stock and `completed` untouched.\n\n## Verification\n- Before: `python3 -m unittest -v` → **6 of 7 failed**.\n- After: `python3 -m unittest -v` → **7 of 7 pass** (`OK`).\n- Public APIs (`Checkout.submit`, `reserve`, `total`) and the test file are unchanged in signature/behavior — only implementation internals were corrected, per the README contracts.",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 6,
+        "wire_responses": 6,
+        "ready_events": 6,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:1",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.863,
+          "response_seconds": 4.456,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 4.461572170257568,
+          "last_tool_end_seconds": 4.803572177886963,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:2",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 4.851,
+          "response_seconds": 12.588,
+          "tools": {
+            "read": 5
+          },
+          "first_tool_seconds": 12.591572046279907,
+          "last_tool_end_seconds": 12.649572134017944,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:3",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 12.702,
+          "response_seconds": 47.985,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 47.99157214164734,
+          "last_tool_end_seconds": 48.256572008132935,
+          "model_text": "\n\nI've reviewed all the files. Let me run the regression suite first to confirm the failures.\n\n",
+          "bash_exit_codes": [
+            1
+          ]
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:4",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 48.295,
+          "response_seconds": 68.391,
+          "tools": {
+            "edit": 3
+          },
+          "first_tool_seconds": 68.39957213401794,
+          "last_tool_end_seconds": 68.46157217025757,
+          "model_text": "\n\n6 of 7 tests fail, and the causes are clear. Now I'll apply the fixes to the three implementation files.\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:5",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 5,
+          "ready_seconds": 68.49,
+          "response_seconds": 71.829,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 71.83157205581665,
+          "last_tool_end_seconds": 72.09157204627991,
+          "model_text": "\n\nAll three fixes applied. Re-running the suite to verify:\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:6",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 6,
+          "ready_seconds": 72.141,
+          "response_seconds": 88.712,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nAll 7 regression tests pass. Here's a summary of each bug and its fix:\n\n## Bugs and fixes\n\n**1. `pricing.py` — premature intermediate rounding** (`test_round_once`)\n- **Cause:** `total()` quantized to cents *after the discount* and again after tax. For `0.05 × 0.9 = 0.045`, the intermediate round-up to `0.05` then produced `0.05 × 1.1 = 0.055 → 0.06`, violating the contract \"round the final amount once.\"\n- **Fix:** Removed the intermediate `quantize`; the full-precision discounted amount is now multiplied by `(1 + tax)` and rounded exactly once with `ROUND_HALF_UP` at the end (`0.045 × 1.1 = 0.0495 → 0.05`).\n\n**2. `inventory.py` — non-atomic reservation** (`test_atomic_reservation`)\n- **Cause:** `reserve()` decremented stock inside the same loop that validated it, so when a later SKU failed, earlier SKUs had already been deducted (stock was left as `{'a': 1, 'b': 0}` instead of unchanged).\n- **Fix:** Split into two passes — first validate every line (stock sufficiency), then apply all decrements. A failure now leaves the entire stock untouched.\n\n**3. `inventory.py` — missing quantity validation** (`test_negative_quantity`, `test_zero_quantity`)\n- **Cause:** No check that quantities are positive integers; a negative quantity actually *increased* stock, and zero was silently accepted.\n- **Fix:** Each quantity is now validated as a positive integer (rejecting non-ints and booleans) before any stock check, raising `ValueError` otherwise.\n\n**4. `checkout.py` — no idempotency** (`test_retry_does_not_reserve_twice`)\n- **Cause:** `submit()` never consulted `self.completed`, so resubmitting a successful order key reserved stock a second time.\n- **Fix:** `submit()` now returns the cached original result immediately when the key is already in `completed`, without touching stock.\n\n**5. `checkout.py` — invalid orders consumed stock** (`test_invalid_price_does_not_consume_stock`)\n- **Cause:** `reserve()` ran *before* `total()`, so a pricing failure (e.g. an unparseable price) left stock already decremented while no success was recorded.\n- **Fix:** Reordered so the amount is computed first; only after pricing succeeds is stock reserved and the result recorded. Any failure now leaves stock and `completed` untouched.\n\n## Verification\n- Before: `python3 -m unittest -v` → **6 of 7 failed**.\n- After: `python3 -m unittest -v` → **7 of 7 pass** (`OK`).\n- Public APIs (`Checkout.submit`, `reserve`, `total`) and the test file are unchanged in signature/behavior — only implementation internals were corrected, per the README contracts.",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 5,
+      "bash_nonzero_exits": 1,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "original_tests_unchanged": true
+      },
+      "offline_test_exit_code": 0,
+      "offline_test_output": "test_atomic_reservation (test_checkout.Rules) ... ok\ntest_invalid_price_does_not_consume_stock (test_checkout.Rules) ... ok\ntest_negative_quantity (test_checkout.Rules) ... ok\ntest_retry_does_not_reserve_twice (test_checkout.Rules) ... ok\ntest_round_once (test_checkout.Rules) ... ok\ntest_success (test_checkout.Rules) ... ok\ntest_zero_quantity (test_checkout.Rules) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case_id": "analysis",
+      "title": "Reconcile CSV data and explain a business change",
+      "exit_code": 1,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793278990.0107336,
+      "finished_wall_time": 1793279100.2708633,
+      "duration_seconds": 110.26013016700745,
+      "root_session": "session-2ffa193b-e01b-4d5e-a3b7-33b657bdeae5",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 3,
+      "tool_calls": 5,
+      "tool_counts": {
+        "bash": 1,
+        "read": 4
+      },
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 4446,
+      "output_truncations": 1,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 11.07926630973816,
+      "dag_nodes": 10,
+      "dag_edges": 12,
+      "initial_task": "Investigate why February net revenue differs from January. Reconcile the supplied orders, refunds and product data using the definitions in data_dictionary.md. Produce a reproducible analysis and report.md with the monthly totals, the main drivers, and any data quality issues. Do not silently count duplicate events or include orders that are not paid.",
+      "max_output_tokens": 4096,
+      "provenance": "Deterministic curated commerce CSV workload with duplicate events, refunds and a product mix change; not production data.",
+      "final_text": "",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 3,
+        "wire_responses": 3,
+        "ready_events": 3,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-2ffa193b-e01b-4d5e-a3b7-33b657bdeae5:1:1",
+          "session_id": "session-2ffa193b-e01b-4d5e-a3b7-33b657bdeae5",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.839,
+          "response_seconds": 4.53,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 4.535266399383545,
+          "last_tool_end_seconds": 4.832266330718994,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-2ffa193b-e01b-4d5e-a3b7-33b657bdeae5:1:2",
+          "session_id": "session-2ffa193b-e01b-4d5e-a3b7-33b657bdeae5",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 4.879,
+          "response_seconds": 11.067,
+          "tools": {
+            "read": 4
+          },
+          "first_tool_seconds": 11.070266485214233,
+          "last_tool_end_seconds": 11.122266292572021,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-2ffa193b-e01b-4d5e-a3b7-33b657bdeae5:1:3",
+          "session_id": "session-2ffa193b-e01b-4d5e-a3b7-33b657bdeae5",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 11.163,
+          "response_seconds": 110.084,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 4,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "expected_monthly_totals": {
+          "2026-01": {
+            "gross": 8480,
+            "refunds": 140,
+            "net": 8340
+          },
+          "2026-02": {
+            "gross": 2900,
+            "refunds": 200,
+            "net": 2700
+          }
+        },
+        "report_present": false,
+        "report_text": null
+      }
+    },
+    {
+      "case_id": "incident",
+      "title": "Diagnose a service incident from correlated evidence",
+      "exit_code": 1,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793279100.2754033,
+      "finished_wall_time": 1793279220.50942,
+      "duration_seconds": 120.23401737213135,
+      "root_session": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 4,
+      "tool_calls": 10,
+      "tool_counts": {
+        "bash": 1,
+        "read": 9
+      },
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 4816,
+      "output_truncations": 1,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 20.471596717834473,
+      "dag_nodes": 16,
+      "dag_edges": 22,
+      "initial_task": "Diagnose the checkout outage described in ticket.md. Correlate the available logs, metrics and configuration history. Write incident-report.md with a timestamped causal timeline, the most likely root cause, plausible alternatives, and a concrete mitigation and verification plan. Cite the supplied evidence and distinguish facts from hypotheses.",
+      "max_output_tokens": 4096,
+      "provenance": "Curated service incident with controlled timestamps and a connection-pool configuration regression; not a production trace.",
+      "final_text": "\n\nI've reviewed all the evidence and found a clear pattern: the checkout v2.18 deployment doubled the database pool size from 12 to 24 per replica, which pushed total connections to 162—exceeding the database's 100-connection limit and causing exhaustion. Now I'll write up the incident report.\n\n",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 4,
+        "wire_responses": 4,
+        "ready_events": 4,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-24240db0-cac9-4303-bd11-31921d517cb7:1:1",
+          "session_id": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.883,
+          "response_seconds": 5.657,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 5.659596681594849,
+          "last_tool_end_seconds": 5.93459677696228,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-24240db0-cac9-4303-bd11-31921d517cb7:1:2",
+          "session_id": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 5.97,
+          "response_seconds": 10.876,
+          "tools": {
+            "read": 3
+          },
+          "first_tool_seconds": 10.878596782684326,
+          "last_tool_end_seconds": 10.915596723556519,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-24240db0-cac9-4303-bd11-31921d517cb7:1:3",
+          "session_id": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 10.955,
+          "response_seconds": 20.451,
+          "tools": {
+            "read": 6
+          },
+          "first_tool_seconds": 20.454596757888794,
+          "last_tool_end_seconds": 20.527596712112427,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-24240db0-cac9-4303-bd11-31921d517cb7:1:4",
+          "session_id": "session-24240db0-cac9-4303-bd11-31921d517cb7",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 20.596,
+          "response_seconds": 120.07,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nI've reviewed all the evidence and found a clear pattern: the checkout v2.18 deployment doubled the database pool size from 12 to 24 per replica, which pushed total connections to 162—exceeding the database's 100-connection limit and causing exhaustion. Now I'll write up the incident report.\n\n",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 6,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "report_present": false,
+        "expected_mechanism": "6*24 + 18 exceeds database connection limit 100 after 09:03 rollout; edge rollback does not resolve it.",
+        "report_text": null
+      }
+    }
+  ],
+  "replay": false,
+  "agent_count_fixed": false,
+  "predefined_graph": false
+}

@@ -1,0 +1,1144 @@
+{
+  "group": "natural-dag-20261029",
+  "conclusion": "五类成功执行全部由1个根Agent完成，未自然创建子Agent；模型／工具事件图随读取、测试、修正逐步增长。此结果只描述这些任务和官方DSH默认提示下的一次观察。",
+  "cases": [
+    {
+      "case_id": "simple",
+      "title": "Single calculation",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793278534.3325014,
+      "finished_wall_time": 1793278540.2115846,
+      "duration_seconds": 5.879083633422852,
+      "root_session": "session-fe0540f1-5e99-441c-98f5-ccb31331a881",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_counts": {},
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 115,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": null,
+      "dag_nodes": 3,
+      "dag_edges": 2,
+      "initial_task": "An invoice is 240 dollars before a 17.5% discount. What is the final price? Give a brief calculation.",
+      "max_output_tokens": 4096,
+      "provenance": "Curated one-step control; expected price 198 dollars.",
+      "final_text": "\n\n**Final price: $198**\n\nCalculation:\n- Discount: 240 × 0.175 = $42\n- Final price: 240 − 42 = **$198**\n\n(Equivalently: 240 × 0.825 = 198)",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 1,
+        "wire_responses": 1,
+        "ready_events": 1,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-fe0540f1-5e99-441c-98f5-ccb31331a881:1:1",
+          "session_id": "session-fe0540f1-5e99-441c-98f5-ccb31331a881",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.923,
+          "response_seconds": 5.677,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\n**Final price: $198**\n\nCalculation:\n- Discount: 240 × 0.175 = $42\n- Final price: 240 − 42 = **$198**\n\n(Equivalently: 240 × 0.825 = 198)",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 0,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "expected_198_in_answer": true
+      },
+      "run_id": "natural-dag-20261029-v001",
+      "provenance_cn": "整理的一步算术任务，正确价格198美元。",
+      "short_result_cn": "价格198美元",
+      "result_cn": "正确回答折扣后的价格198美元，没有调用工具或子Agent。",
+      "paths": {
+        "graph": "../natural-dag-20261029-v001/simple/graph.json",
+        "timeline": "../natural-dag-20261029-v001/simple/timeline.json",
+        "summary": "../natural-dag-20261029-v001/simple/summary.json",
+        "input": "../natural-dag-20261029-v001/simple/initial-task.txt",
+        "raw": "../../evidence/natural-dag-20261029-v001-raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "research",
+      "title": "Source-grounded multi-document research",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793278637.9784365,
+      "finished_wall_time": 1793278901.1090813,
+      "duration_seconds": 263.13064527511597,
+      "root_session": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 13,
+      "tool_calls": 68,
+      "tool_counts": {
+        "bash": 3,
+        "read": 61,
+        "todo_write": 3,
+        "write": 1
+      },
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 10349,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 247.76656341552734,
+      "dag_nodes": 83,
+      "dag_edges": 138,
+      "initial_task": "Prepare a source-grounded fact-check report answering the questions in questions.md. Use the supplied source collection, cite the supporting filenames and explain any missing or conflicting evidence. Write the report to report.md and summarize your findings.",
+      "max_output_tokens": 4096,
+      "provenance": "Six original HotpotQA calibration questions and their distractor document collections; no answer labels supplied.",
+      "final_text": "\n\nReport written to `report.md`. I read all 60 source files (10 per question) and grounded every answer in specific filenames. Findings:\n\n1. **Mick Carter's pub address** → **46 Albert Square, Walford, London E20** — the fictional address of The Queen Victoria in *EastEnders*. Supported by `q1/d2.md` (Mick becomes landlord of The Queen Victoria) and `q1/d3.md` (states the address). No conflicts; the address is explicitly fictional.\n\n2. **Kriti Sanon's remix video** → the song \"Raabta\" is from ***Agent Vinod*** (2012). `q2/d3.md` states the remix video stars Kriti Sanon (with Deepika Padukone, Sushant Singh Rajput, Jim Sarbh). Caveat: `q2/d9.md` mentions a *music* video (not remix) for \"Main Tera Boyfriend\" from *Raabta* — a near-miss distractor, but the question asks specifically about a remix video.\n\n3. **Founded first** → **Gino's Pizza and Spaghetti** (1961, per `q3/d3.md`) vs. Papa Murphy's (1995, per `q3/d7.md`; even its 1981 predecessor companies are later). Note: `q3/d0.md` describes *Gino's Hamburgers* (1957) — a different chain, so it doesn't change the answer.\n\n4. **Radio personality/DJ** → **John Garabedian** — described as a radio personality and DJ, creator/host of *Open House Party* (`q4/d9.md`, `q4/d8.md`, `q4/d3.md`). Charles A. Agemian's only source (`q4/d7.md`) describes him solely as a banker, with no radio work mentioned.\n\n5. **Shared football team** → **FC Bayern Munich** — Gómez spent four seasons there (`q5/d8.md`); Martínez plays for/signed with Bayern (`q5/d7.md`, `q5/d5.md`). Distractor: `q5/d4.md` is about *Willie Martinez*, a different person (a coach).\n\n6. **Same formation city?** → **No** — Goo Goo Dolls formed in **Buffalo, New York** (1985, `q6/d5.md`); Echosmith formed in **Chino, California** (2009, `q6/d0.md`).\n\nAll six questions are answerable from the supplied sources with no unresolved conflicts; the report documents the distractor documents and the one fictional-address caveat.",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 13,
+        "wire_responses": 13,
+        "ready_events": 13,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:1",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.869,
+          "response_seconds": 4.588,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 4.592563629150391,
+          "last_tool_end_seconds": 4.896563529968262,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:2",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 4.942,
+          "response_seconds": 8.785,
+          "tools": {
+            "read": 1,
+            "bash": 1
+          },
+          "first_tool_seconds": 8.78856348991394,
+          "last_tool_end_seconds": 9.007563591003418,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:3",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 9.048,
+          "response_seconds": 21.756,
+          "tools": {
+            "todo_write": 1,
+            "bash": 1
+          },
+          "first_tool_seconds": 21.759563446044922,
+          "last_tool_end_seconds": 21.96156358718872,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:4",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 21.999,
+          "response_seconds": 38.85,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 38.8535635471344,
+          "last_tool_end_seconds": 38.9325635433197,
+          "model_text": "\n\nThe sources are small (60 files, ~35KB total). Let me read them all, starting with q1.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:5",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 5,
+          "ready_seconds": 39.023,
+          "response_seconds": 58.2,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 58.20556354522705,
+          "last_tool_end_seconds": 58.28156352043152,
+          "model_text": "\n\nQ1 is clear: Mick Carter (EastEnders) is landlord of The Queen Victoria, fictional address 46 Albert Square, Walford, London E20. Now q2.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:6",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 6,
+          "ready_seconds": 58.368,
+          "response_seconds": 79.905,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 79.90956354141235,
+          "last_tool_end_seconds": 79.9785635471344,
+          "model_text": "\n\nQ2 is clear: the remix video of \"Raabta\" (a song from *Agent Vinod*) stars Kriti Sanon. Now q3.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:7",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 7,
+          "ready_seconds": 80.091,
+          "response_seconds": 101.757,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 101.76556348800659,
+          "last_tool_end_seconds": 101.84856343269348,
+          "model_text": "\n\nQ3 is clear: Gino's Pizza and Spaghetti (1961) predates Papa Murphy's (1995, or 1981 for its predecessor companies). Now q4.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:8",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 8,
+          "ready_seconds": 101.94,
+          "response_seconds": 122.26,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 122.26356363296509,
+          "last_tool_end_seconds": 122.33856344223022,
+          "model_text": "\n\nQ4 is clear: John Garabedian was the radio personality/DJ; Agemian was a banker. Now q5.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:9",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 9,
+          "ready_seconds": 122.431,
+          "response_seconds": 142.913,
+          "tools": {
+            "read": 10
+          },
+          "first_tool_seconds": 142.9145634174347,
+          "last_tool_end_seconds": 142.9785635471344,
+          "model_text": "\n\nQ5 is clear: both played for FC Bayern Munich. Now q6.\n\n\n\n\n\n\n\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:10",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 10,
+          "ready_seconds": 143.062,
+          "response_seconds": 174.192,
+          "tools": {
+            "todo_write": 1
+          },
+          "first_tool_seconds": 174.19756364822388,
+          "last_tool_end_seconds": 174.20856356620789,
+          "model_text": "\n\nAll 60 sources read. Every question has clear supporting evidence. Now writing the report.\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:11",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 11,
+          "ready_seconds": 174.236,
+          "response_seconds": 241.097,
+          "tools": {
+            "write": 1
+          },
+          "first_tool_seconds": 241.107563495636,
+          "last_tool_end_seconds": 241.1405634880066,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:12",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 12,
+          "ready_seconds": 241.171,
+          "response_seconds": 247.765,
+          "tools": {
+            "todo_write": 1
+          },
+          "first_tool_seconds": 247.76656341552734,
+          "last_tool_end_seconds": 247.7745635509491,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-8f567fa8-b7a5-4101-bf11-82790bf0d817:1:13",
+          "session_id": "session-8f567fa8-b7a5-4101-bf11-82790bf0d817",
+          "turn": 1,
+          "step": 13,
+          "ready_seconds": 247.799,
+          "response_seconds": 262.973,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nReport written to `report.md`. I read all 60 source files (10 per question) and grounded every answer in specific filenames. Findings:\n\n1. **Mick Carter's pub address** → **46 Albert Square, Walford, London E20** — the fictional address of The Queen Victoria in *EastEnders*. Supported by `q1/d2.md` (Mick becomes landlord of The Queen Victoria) and `q1/d3.md` (states the address). No conflicts; the address is explicitly fictional.\n\n2. **Kriti Sanon's remix video** → the song \"Raabta\" is from ***Agent Vinod*** (2012). `q2/d3.md` states the remix video stars Kriti Sanon (with Deepika Padukone, Sushant Singh Rajput, Jim Sarbh). Caveat: `q2/d9.md` mentions a *music* video (not remix) for \"Main Tera Boyfriend\" from *Raabta* — a near-miss distractor, but the question asks specifically about a remix video.\n\n3. **Founded first** → **Gino's Pizza and Spaghetti** (1961, per `q3/d3.md`) vs. Papa Murphy's (1995, per `q3/d7.md`; even its 1981 predecessor companies are later). Note: `q3/d0.md` describes *Gino's Hamburgers* (1957) — a different chain, so it doesn't change the answer.\n\n4. **Radio personality/DJ** → **John Garabedian** — described as a radio personality and DJ, creator/host of *Open House Party* (`q4/d9.md`, `q4/d8.md`, `q4/d3.md`). Charles A. Agemian's only source (`q4/d7.md`) describes him solely as a banker, with no radio work mentioned.\n\n5. **Shared football team** → **FC Bayern Munich** — Gómez spent four seasons there (`q5/d8.md`); Martínez plays for/signed with Bayern (`q5/d7.md`, `q5/d5.md`). Distractor: `q5/d4.md` is about *Willie Martinez*, a different person (a coach).\n\n6. **Same formation city?** → **No** — Goo Goo Dolls formed in **Buffalo, New York** (1985, `q6/d5.md`); Echosmith formed in **Chino, California** (2009, `q6/d0.md`).\n\nAll six questions are answerable from the supplied sources with no unresolved conflicts; the report documents the distractor documents and the one fictional-address caveat.",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 10,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "report_present": true,
+        "report_text": "# Fact-Check Report\n\n**Date:** 2026-10-29\n**Scope:** Answers to the six questions in `questions.md`, grounded exclusively in the supplied source collection under `sources/` (10 documents per question, `d0.md`–`d9.md`).\n**Method:** Every source file in each question's collection was read in full. Each answer below cites the specific files that support it, and notes any missing or conflicting evidence, including distractor documents that describe similarly named but different entities.\n\n---\n\n## Q1. Mick Carter is the landlord of a public house located at what address?\n\n**Answer: 46 Albert Square, Walford, London E20** (the fictional address of The Queen Victoria public house in *EastEnders*).\n\n**Supporting evidence:**\n- `sources/q1/d2.md` (Mick Carter): \"Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as 'The Vic').\"\n- `sources/q1/d3.md` (The Queen Victoria): \"The Queen Victoria (more often referred to as The Queen Vic or The Vic) is the Victorian public house in the BBC soap opera, 'EastEnders'. It has the fictional address of 46 Albert Square, Walford, London E20.\"\n- Corroborating context: `sources/q1/d6.md` (Linda Carter) confirms the Carter family took over The Queen Victoria (\"Linda became landlady of The Queen Victoria public house\"), and `sources/q1/d7.md` / `sources/q1/d9.md` (Whitney Dean, Nancy Carter) confirm the Carter family's association with the pub.\n\n**Missing/conflicting evidence:** None. The address is explicitly stated in `d3.md` and is unambiguous. Note that the address is fictional (Walford is the fictional setting of *EastEnders*). The remaining files in the collection (`d0.md` Fat Cat Brewery, `d1.md` The Gatehouse Monmouth, `d4.md` Shakespeare Public House Bristol, `d5.md` Square and Compass, `d8.md` Adam & Eve Birmingham) describe unrelated real-world pubs and do not mention Mick Carter.\n\n---\n\n## Q2. \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\n\n**Answer: *Agent Vinod*** (the song is \"Raabta\").\n\n**Supporting evidence:**\n- `sources/q2/d3.md` (Raabta, song): \"'Raabta' (English: Relation) is a romantic Hindi song from the 2012 Bollywood film, 'Agent Vinod'. … the remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\"\n- `sources/q2/d8.md` (Kriti Sanon) and `sources/q2/d6.md` (Heropanti) confirm that Kriti Sanon is a \"Heropanti\" star (her Hindi film debut, released 23 May 2014).\n\n**Missing/conflicting evidence:** No direct conflict, but one near-miss distractor should be noted: `sources/q2/d9.md` (Main Tera Boyfriend) states that song's *music video* stars Kriti Sanon and Sushant Singh Rajput and that it is from the film *Raabta* — but that is a music video, not a remix video, and the question specifically asks about a remix video. The only source describing a remix video featuring Kriti Sanon is `d3.md`, which ties it to *Agent Vinod*. The other files (`d0.md` Dohchay, `d1.md` Sabbir Khan, `d2.md` Raabta film, `d4.md` Raat Bhar, `d5.md` 1: Nenokkadine, `d7.md` Bareilly Ki Barfi) describe other films/songs and do not mention a remix video.\n\n---\n\n## Q3. Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\n\n**Answer: Gino's Pizza and Spaghetti** (founded 1961, vs. Papa Murphy's 1995).\n\n**Supporting evidence:**\n- `sources/q3/d3.md` (Gino's Pizza and Spaghetti): \"The company was founded by Kenney Grant in 1961.\"\n- `sources/q3/d7.md` (Papa Murphy's): \"It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).\"\n\n**Missing/conflicting evidence:** No conflict. Even counting the 1981 founding of Papa Murphy's predecessor companies, Gino's Pizza and Spaghetti (1961) still predates it. One naming trap in the collection: `sources/q3/d0.md` describes **Gino's Hamburgers** (founded 1957 in Baltimore) — a different chain from Gino's Pizza and Spaghetti, so it does not affect the answer. The remaining files (`d1.md` Tudor's Biscuit World, `d2.md` Papa Murphy's Park, `d4.md` Sacramento Republic FC, `d5.md` Papa Gino's, `d6.md` Gino's East, `d8.md` Spencer Park, `d9.md` Pizza 73) are unrelated distractors.\n\n---\n\n## Q4. Who was most well-known as a radio personality and disc jockey, John Garabedian or Charles A. Agemian?\n\n**Answer: John Garabedian.**\n\n**Supporting evidence:**\n- `sources/q4/d9.md` (John Garabedian): \"John H. Garabedian is an American radio personality and disc jockey … He is best known as the creator and former long-time host of 'Open House Party'.\"\n- `sources/q4/d8.md` (Open House Party): \"The show started in 1987, and was hosted by John Garabedian from September 1987 to January 2017. Garabedian created the show.\"\n- `sources/q4/d3.md` (XY TV): \"It was wholly owned by American radio personality John Garabedian.\"\n- `sources/q4/d7.md` (Charles A. Agemian): describes him as \"an American banker\" (executive vice president of operations at Chase Manhattan Bank, later CEO of Hackensack Trust Co.). The source contains **no mention of radio or disc jockey work** for Agemian.\n\n**Missing/conflicting evidence:** No conflict. The evidence is one-sided: three sources describe Garabedian as a radio personality/DJ, while the only source on Agemian describes him solely as a banker. The other files (`d0.md` Don Sherwood, `d1.md` M.G. Kelly, `d2.md` At Your Request, `d4.md` Radio personality, `d5.md` Lin Brehmer, `d6.md` Big Wilson) concern other radio personalities or the general concept, and are not relevant to the two named individuals.\n\n---\n\n## Q5. What football team did Mario Gomez and Javi Martinez both play for?\n\n**Answer: FC Bayern Munich.**\n\n**Supporting evidence:**\n- `sources/q5/d8.md` (Mario Gómez): \"Gómez joined Fiorentina after spending four seasons with Bayern Munich, which he joined after six years playing for VfB Stuttgart.\"\n- `sources/q5/d7.md` (Javi Martínez): \"… is a Spanish footballer who plays for German club FC Bayern Munich as a defensive midfielder or a central defender.\"\n- `sources/q5/d5.md` (2012–13 FC Bayern Munich season): \"Bayern also added holding midfielder Javi Martínez after the first week of the Bundesliga season at the transfer deadline.\"\n\n**Missing/conflicting evidence:** No conflict. The sources do not state the exact overlapping years, but both players' Bayern Munich stints are independently documented (Gómez: four seasons; Martínez: signed 2012, per `d5.md` and `d7.md`). One distractor to note: `sources/q5/d4.md` describes **Willie Martinez**, an American football *coach* — a different person from Javi Martínez. The remaining files (`d0.md` D.C. Armor, `d1.md` England women's U23, `d2.md` Kentucky Xtreme, `d3.md` Tate Forcier, `d6.md` 2012 FIU Panthers, `d9.md` 1993 Auburn Tigers) are unrelated.\n\n---\n\n## Q6. Were Goo Goo Dolls and Echosmith formed in the same city?\n\n**Answer: No.** Goo Goo Dolls were formed in **Buffalo, New York**; Echosmith were formed in **Chino, California**.\n\n**Supporting evidence:**\n- `sources/q6/d5.md` (Goo Goo Dolls): \"The Goo Goo Dolls are an American rock band formed in 1985 in Buffalo, New York, by vocalist and guitarist John Rzeznik, vocalist and bassist Robby Takac, and drummer George Tutuska.\"\n- `sources/q6/d0.md` (Echosmith): \"Echosmith is an American, Corporate indie pop band formed in February 2009 in Chino, California.\"\n\n**Missing/conflicting evidence:** No conflict. The two formation cities are explicitly stated and clearly different. The remaining files in the collection (`d1.md` All That You Are, `d2.md` Live in Buffalo, `d3.md` Goo Goo Dolls album, `d4.md` Notbroken, `d6.md` Something for the Rest of Us, `d7.md` Waiting for the Rest of It, `d8.md` iTunes Originals, `d9.md` Hold Me Up) concern Goo Goo Dolls releases and do not contradict the formation city.\n\n---\n\n## Summary Table\n\n| # | Question (short) | Answer | Key sources |\n|---|------------------|--------|-------------|\n| 1 | Mick Carter's pub address | 46 Albert Square, Walford, London E20 (The Queen Victoria, *EastEnders*) | `q1/d2.md`, `q1/d3.md` |\n| 2 | Film of the song whose remix video features Kriti Sanon | *Agent Vinod* (song: \"Raabta\") | `q2/d3.md` |\n| 3 | Founded first: Papa Murphy's or Gino's Pizza and Spaghetti | Gino's Pizza and Spaghetti (1961 vs. 1995) | `q3/d3.md`, `q3/d7.md` |\n| 4 | More well-known radio personality/DJ | John Garabedian | `q4/d9.md`, `q4/d8.md`, `q4/d7.md` |\n| 5 | Team shared by Mario Gomez and Javi Martinez | FC Bayern Munich | `q5/d8.md`, `q5/d7.md`, `q5/d5.md` |\n| 6 | Same formation city? | No — Buffalo, NY vs. Chino, CA | `q6/d5.md`, `q6/d0.md` |\n\n**Overall assessment:** All six questions are answerable from the supplied sources with no unresolved conflicts. The main evidentiary caveats are: (a) the Q1 address is explicitly fictional; (b) Q2 requires distinguishing a *remix* video (d3.md) from a regular music video (d9.md); (c) Q3 contains a similarly named but distinct chain (Gino's Hamburgers, d0.md) that does not affect the answer; and (d) Q5 contains a different person with a similar name (Willie Martinez, d4.md).\n"
+      },
+      "run_id": "natural-dag-20261029-v001",
+      "provenance_cn": "六道原始HotpotQA问题及60份来源文档；模型只见问题和来源，不见标签。不是网络实时研究。",
+      "short_result_cn": "报告已生成",
+      "result_cn": "六题均给出有来源引用的答案，报告已落盘；这是原有校准题的案例观察，不报告为新的基准准确率。",
+      "paths": {
+        "graph": "../natural-dag-20261029-v001/research/graph.json",
+        "timeline": "../natural-dag-20261029-v001/research/timeline.json",
+        "summary": "../natural-dag-20261029-v001/research/summary.json",
+        "input": "../natural-dag-20261029-v001/research/initial-task.txt",
+        "raw": "../../evidence/natural-dag-20261029-v001-raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "coding",
+      "title": "Repair a small service from regression failures",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793278901.1364279,
+      "finished_wall_time": 1793278990.0055974,
+      "duration_seconds": 88.86917018890381,
+      "root_session": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 6,
+      "tool_calls": 11,
+      "tool_counts": {
+        "bash": 3,
+        "read": 5,
+        "edit": 3
+      },
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 3490,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 71.83157205581665,
+      "dag_nodes": 19,
+      "dag_edges": 24,
+      "initial_task": "Fix the checkout service so that its documented contracts and regression tests pass. Preserve the public APIs and existing tests. Run the tests, make the necessary implementation changes, and summarize the cause of each bug and your verification.",
+      "max_output_tokens": 4096,
+      "provenance": "Curated Python checkout repository, seven public unittest cases; not an upstream benchmark.",
+      "final_text": "\n\nAll 7 regression tests pass. Here's a summary of each bug and its fix:\n\n## Bugs and fixes\n\n**1. `pricing.py` — premature intermediate rounding** (`test_round_once`)\n- **Cause:** `total()` quantized to cents *after the discount* and again after tax. For `0.05 × 0.9 = 0.045`, the intermediate round-up to `0.05` then produced `0.05 × 1.1 = 0.055 → 0.06`, violating the contract \"round the final amount once.\"\n- **Fix:** Removed the intermediate `quantize`; the full-precision discounted amount is now multiplied by `(1 + tax)` and rounded exactly once with `ROUND_HALF_UP` at the end (`0.045 × 1.1 = 0.0495 → 0.05`).\n\n**2. `inventory.py` — non-atomic reservation** (`test_atomic_reservation`)\n- **Cause:** `reserve()` decremented stock inside the same loop that validated it, so when a later SKU failed, earlier SKUs had already been deducted (stock was left as `{'a': 1, 'b': 0}` instead of unchanged).\n- **Fix:** Split into two passes — first validate every line (stock sufficiency), then apply all decrements. A failure now leaves the entire stock untouched.\n\n**3. `inventory.py` — missing quantity validation** (`test_negative_quantity`, `test_zero_quantity`)\n- **Cause:** No check that quantities are positive integers; a negative quantity actually *increased* stock, and zero was silently accepted.\n- **Fix:** Each quantity is now validated as a positive integer (rejecting non-ints and booleans) before any stock check, raising `ValueError` otherwise.\n\n**4. `checkout.py` — no idempotency** (`test_retry_does_not_reserve_twice`)\n- **Cause:** `submit()` never consulted `self.completed`, so resubmitting a successful order key reserved stock a second time.\n- **Fix:** `submit()` now returns the cached original result immediately when the key is already in `completed`, without touching stock.\n\n**5. `checkout.py` — invalid orders consumed stock** (`test_invalid_price_does_not_consume_stock`)\n- **Cause:** `reserve()` ran *before* `total()`, so a pricing failure (e.g. an unparseable price) left stock already decremented while no success was recorded.\n- **Fix:** Reordered so the amount is computed first; only after pricing succeeds is stock reserved and the result recorded. Any failure now leaves stock and `completed` untouched.\n\n## Verification\n- Before: `python3 -m unittest -v` → **6 of 7 failed**.\n- After: `python3 -m unittest -v` → **7 of 7 pass** (`OK`).\n- Public APIs (`Checkout.submit`, `reserve`, `total`) and the test file are unchanged in signature/behavior — only implementation internals were corrected, per the README contracts.",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 6,
+        "wire_responses": 6,
+        "ready_events": 6,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:1",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.863,
+          "response_seconds": 4.456,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 4.461572170257568,
+          "last_tool_end_seconds": 4.803572177886963,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:2",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 4.851,
+          "response_seconds": 12.588,
+          "tools": {
+            "read": 5
+          },
+          "first_tool_seconds": 12.591572046279907,
+          "last_tool_end_seconds": 12.649572134017944,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:3",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 12.702,
+          "response_seconds": 47.985,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 47.99157214164734,
+          "last_tool_end_seconds": 48.256572008132935,
+          "model_text": "\n\nI've reviewed all the files. Let me run the regression suite first to confirm the failures.\n\n",
+          "bash_exit_codes": [
+            1
+          ]
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:4",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 48.295,
+          "response_seconds": 68.391,
+          "tools": {
+            "edit": 3
+          },
+          "first_tool_seconds": 68.39957213401794,
+          "last_tool_end_seconds": 68.46157217025757,
+          "model_text": "\n\n6 of 7 tests fail, and the causes are clear. Now I'll apply the fixes to the three implementation files.\n\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:5",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 5,
+          "ready_seconds": 68.49,
+          "response_seconds": 71.829,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 71.83157205581665,
+          "last_tool_end_seconds": 72.09157204627991,
+          "model_text": "\n\nAll three fixes applied. Re-running the suite to verify:\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-87570cfe-7da9-45e1-a416-5f762279ddc6:1:6",
+          "session_id": "session-87570cfe-7da9-45e1-a416-5f762279ddc6",
+          "turn": 1,
+          "step": 6,
+          "ready_seconds": 72.141,
+          "response_seconds": 88.712,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nAll 7 regression tests pass. Here's a summary of each bug and its fix:\n\n## Bugs and fixes\n\n**1. `pricing.py` — premature intermediate rounding** (`test_round_once`)\n- **Cause:** `total()` quantized to cents *after the discount* and again after tax. For `0.05 × 0.9 = 0.045`, the intermediate round-up to `0.05` then produced `0.05 × 1.1 = 0.055 → 0.06`, violating the contract \"round the final amount once.\"\n- **Fix:** Removed the intermediate `quantize`; the full-precision discounted amount is now multiplied by `(1 + tax)` and rounded exactly once with `ROUND_HALF_UP` at the end (`0.045 × 1.1 = 0.0495 → 0.05`).\n\n**2. `inventory.py` — non-atomic reservation** (`test_atomic_reservation`)\n- **Cause:** `reserve()` decremented stock inside the same loop that validated it, so when a later SKU failed, earlier SKUs had already been deducted (stock was left as `{'a': 1, 'b': 0}` instead of unchanged).\n- **Fix:** Split into two passes — first validate every line (stock sufficiency), then apply all decrements. A failure now leaves the entire stock untouched.\n\n**3. `inventory.py` — missing quantity validation** (`test_negative_quantity`, `test_zero_quantity`)\n- **Cause:** No check that quantities are positive integers; a negative quantity actually *increased* stock, and zero was silently accepted.\n- **Fix:** Each quantity is now validated as a positive integer (rejecting non-ints and booleans) before any stock check, raising `ValueError` otherwise.\n\n**4. `checkout.py` — no idempotency** (`test_retry_does_not_reserve_twice`)\n- **Cause:** `submit()` never consulted `self.completed`, so resubmitting a successful order key reserved stock a second time.\n- **Fix:** `submit()` now returns the cached original result immediately when the key is already in `completed`, without touching stock.\n\n**5. `checkout.py` — invalid orders consumed stock** (`test_invalid_price_does_not_consume_stock`)\n- **Cause:** `reserve()` ran *before* `total()`, so a pricing failure (e.g. an unparseable price) left stock already decremented while no success was recorded.\n- **Fix:** Reordered so the amount is computed first; only after pricing succeeds is stock reserved and the result recorded. Any failure now leaves stock and `completed` untouched.\n\n## Verification\n- Before: `python3 -m unittest -v` → **6 of 7 failed**.\n- After: `python3 -m unittest -v` → **7 of 7 pass** (`OK`).\n- Public APIs (`Checkout.submit`, `reserve`, `total`) and the test file are unchanged in signature/behavior — only implementation internals were corrected, per the README contracts.",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 5,
+      "bash_nonzero_exits": 1,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "original_tests_unchanged": true
+      },
+      "offline_test_exit_code": 0,
+      "offline_test_output": "test_atomic_reservation (test_checkout.Rules) ... ok\ntest_invalid_price_does_not_consume_stock (test_checkout.Rules) ... ok\ntest_negative_quantity (test_checkout.Rules) ... ok\ntest_retry_does_not_reserve_twice (test_checkout.Rules) ... ok\ntest_round_once (test_checkout.Rules) ... ok\ntest_success (test_checkout.Rules) ... ok\ntest_zero_quantity (test_checkout.Rules) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n",
+      "run_id": "natural-dag-20261029-v001",
+      "provenance_cn": "人工整理的小型Python结账服务，含七项公开unittest测试；不是上游编码基准。",
+      "short_result_cn": "7项原测试通过",
+      "result_cn": "原测试文件保持不变；模型先测得6/7失败，修复三个实现文件后7/7通过，离线复验通过。",
+      "paths": {
+        "graph": "../natural-dag-20261029-v001/coding/graph.json",
+        "timeline": "../natural-dag-20261029-v001/coding/timeline.json",
+        "summary": "../natural-dag-20261029-v001/coding/summary.json",
+        "input": "../natural-dag-20261029-v001/coding/initial-task.txt",
+        "raw": "../../evidence/natural-dag-20261029-v001-raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "analysis",
+      "title": "Reconcile CSV data and explain a business change",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793279283.2852273,
+      "finished_wall_time": 1793279617.9812527,
+      "duration_seconds": 334.69602632522583,
+      "root_session": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 16,
+      "tool_calls": 18,
+      "tool_counts": {
+        "bash": 11,
+        "read": 4,
+        "write": 2,
+        "edit": 1
+      },
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 13410,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 318.97677278518677,
+      "dag_nodes": 36,
+      "dag_edges": 38,
+      "initial_task": "Investigate why February net revenue differs from January. Reconcile the supplied orders, refunds and product data using the definitions in data_dictionary.md. Produce a reproducible analysis and report.md with the monthly totals, the main drivers, and any data quality issues. Do not silently count duplicate events or include orders that are not paid.",
+      "max_output_tokens": 16384,
+      "provenance": "Deterministic curated commerce CSV workload with duplicate events, refunds and a product mix change; not production data.",
+      "final_text": "\n\nInvestigation complete. Here's the summary:\n\n## Why February net revenue differs from January\n\n**Monthly totals (per `data_dictionary.md` rules):**\n\n| Month | Paid orders | Gross | Refunds | **Net** |\n|-------|------------:|------:|--------:|--------:|\n| 2026-01 | 44 | $8,480 | $140 | **$8,340** |\n| 2026-02 | 44 | $2,900 | $200 | **$2,700** |\n| Change | 0 | −$5,580 (−65.8%) | +$60 | **−$5,640 (−67.6%)** |\n\n**Main drivers:**\n1. **Product mix shift — the dominant factor.** Paid order counts are identical (44 each month), so the decline is purely mix/price. February had **zero paid orders for p2 (Pro, $60) and p4 (Enterprise, $200)**, which together were 70% of January's gross. Decomposition of the −$5,580 gross change: p4 −$4,600, p2 −$1,320, p3 −$700 (21→14 units), p1 +$1,040 (23→75 units, the only positive).\n2. **Refunds** — a minor secondary drag: $140 → $200 (+$60). All refunds reference valid paid orders and are attributed to the original order's month.\n\n**Data quality issues found and handled:**\n- 3 exact duplicate order rows (`o1005`, `o2001`, `o2012`) — counted once per `order_id` per the dictionary (a naive count would overstate Jan gross by $180, Feb by $140).\n- 1 exact duplicate refund row (`r7`) — counted once (naive count would overstate Feb refunds by $100).\n- No other issues: all product IDs valid, all dates in expected months, no orphan/non-paid refund references, no conflicting duplicates. (Minor note: files use CRLF line endings.)\n\n**Deliverables in the workspace:**\n- `report.md` — full report with tables, driver decomposition, and data quality findings\n- `analyze.py` — reproducible script (`python3 analyze.py`); applies all dictionary rules, prints the tables, and writes `summary.json`\n- `summary.json` — machine-readable results\n\nAll totals were independently cross-checked with a separate awk implementation; both methods agree exactly.",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 16,
+        "wire_responses": 16,
+        "ready_events": 16,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:1",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.91,
+          "response_seconds": 4.605,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 4.607772588729858,
+          "last_tool_end_seconds": 4.886772632598877,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:2",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 4.933,
+          "response_seconds": 11.159,
+          "tools": {
+            "read": 4
+          },
+          "first_tool_seconds": 11.160772800445557,
+          "last_tool_end_seconds": 11.193772792816162,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:3",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 11.223,
+          "response_seconds": 104.984,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 104.9947726726532,
+          "last_tool_end_seconds": 105.18477272987366,
+          "model_text": "\n\nI've reviewed all four files. Now let me verify the data quality details (duplicates, refund references) and build a reproducible analysis script.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:4",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 105.221,
+          "response_seconds": 158.501,
+          "tools": {
+            "write": 1
+          },
+          "first_tool_seconds": 158.5077726840973,
+          "last_tool_end_seconds": 158.53277277946472,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:5",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 5,
+          "ready_seconds": 158.569,
+          "response_seconds": 161.602,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 161.60377264022827,
+          "last_tool_end_seconds": 161.8087728023529,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:6",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 6,
+          "ready_seconds": 161.839,
+          "response_seconds": 169.763,
+          "tools": {
+            "edit": 1
+          },
+          "first_tool_seconds": 169.76577281951904,
+          "last_tool_end_seconds": 169.78577280044556,
+          "model_text": "\n\nThe numbers match my hand-check, but there's a bug in the duplicate-detection comparison (comparing a tuple to a dict). Let me fix it:\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:7",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 7,
+          "ready_seconds": 169.831,
+          "response_seconds": 172.954,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 172.95577263832092,
+          "last_tool_end_seconds": 173.1637725830078,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:8",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 8,
+          "ready_seconds": 173.193,
+          "response_seconds": 182.76,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 182.7627727985382,
+          "last_tool_end_seconds": 182.93177270889282,
+          "model_text": "\n\nClean output now. Let me do an independent cross-check of the totals with a different tool (awk) to make sure the script isn't self-consistent-but-wrong:\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:9",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 9,
+          "ready_seconds": 182.962,
+          "response_seconds": 199.113,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 199.11477279663086,
+          "last_tool_end_seconds": 199.27677273750305,
+          "model_text": "\n\nThe orders cross-check printed nothing — let me debug that awk:\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:10",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 10,
+          "ready_seconds": 199.291,
+          "response_seconds": 203.234,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 203.2357726097107,
+          "last_tool_end_seconds": 203.40377259254456,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:11",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 11,
+          "ready_seconds": 203.415,
+          "response_seconds": 212.022,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 212.02377271652222,
+          "last_tool_end_seconds": 212.17977261543274,
+          "model_text": "\n\nThe file uses CRLF line endings — Python's csv module handles this transparently (so the script is correct), but awk needs `\\r` stripped. Re-running the cross-check:\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:12",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 12,
+          "ready_seconds": 212.193,
+          "response_seconds": 227.388,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 227.3917727470398,
+          "last_tool_end_seconds": 227.55477261543274,
+          "model_text": "\n\nI found a discrepancy where awk shows 3 cancelled February orders but Python shows 4, so I'm investigating the cause.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:13",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 13,
+          "ready_seconds": 227.58,
+          "response_seconds": 243.492,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 243.49577260017395,
+          "last_tool_end_seconds": 243.67577266693115,
+          "model_text": "\n\nFound it — my awk one-liner had a bug: in the cancelled branch it used `m` without assigning it (only the paid branch sets `m`). The data is fine; let me fix the cross-check:\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:14",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 14,
+          "ready_seconds": 243.704,
+          "response_seconds": 314.313,
+          "tools": {
+            "write": 1
+          },
+          "first_tool_seconds": 314.3237726688385,
+          "last_tool_end_seconds": 314.35077261924744,
+          "model_text": "\n\nBoth methods now agree exactly. All numbers are verified. Let me write the report:\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:15",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 15,
+          "ready_seconds": 314.383,
+          "response_seconds": 318.975,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 318.97677278518677,
+          "last_tool_end_seconds": 319.23077273368835,
+          "model_text": "\n\nFinal verification — re-run the script to confirm reproducibility and list deliverables:\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-3e2148d7-7461-4c5d-975a-d86aa981fd7d:1:16",
+          "session_id": "session-3e2148d7-7461-4c5d-975a-d86aa981fd7d",
+          "turn": 1,
+          "step": 16,
+          "ready_seconds": 319.258,
+          "response_seconds": 334.559,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nInvestigation complete. Here's the summary:\n\n## Why February net revenue differs from January\n\n**Monthly totals (per `data_dictionary.md` rules):**\n\n| Month | Paid orders | Gross | Refunds | **Net** |\n|-------|------------:|------:|--------:|--------:|\n| 2026-01 | 44 | $8,480 | $140 | **$8,340** |\n| 2026-02 | 44 | $2,900 | $200 | **$2,700** |\n| Change | 0 | −$5,580 (−65.8%) | +$60 | **−$5,640 (−67.6%)** |\n\n**Main drivers:**\n1. **Product mix shift — the dominant factor.** Paid order counts are identical (44 each month), so the decline is purely mix/price. February had **zero paid orders for p2 (Pro, $60) and p4 (Enterprise, $200)**, which together were 70% of January's gross. Decomposition of the −$5,580 gross change: p4 −$4,600, p2 −$1,320, p3 −$700 (21→14 units), p1 +$1,040 (23→75 units, the only positive).\n2. **Refunds** — a minor secondary drag: $140 → $200 (+$60). All refunds reference valid paid orders and are attributed to the original order's month.\n\n**Data quality issues found and handled:**\n- 3 exact duplicate order rows (`o1005`, `o2001`, `o2012`) — counted once per `order_id` per the dictionary (a naive count would overstate Jan gross by $180, Feb by $140).\n- 1 exact duplicate refund row (`r7`) — counted once (naive count would overstate Feb refunds by $100).\n- No other issues: all product IDs valid, all dates in expected months, no orphan/non-paid refund references, no conflicting duplicates. (Minor note: files use CRLF line endings.)\n\n**Deliverables in the workspace:**\n- `report.md` — full report with tables, driver decomposition, and data quality findings\n- `analyze.py` — reproducible script (`python3 analyze.py`); applies all dictionary rules, prints the tables, and writes `summary.json`\n- `summary.json` — machine-readable results\n\nAll totals were independently cross-checked with a separate awk implementation; both methods agree exactly.",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 4,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "expected_monthly_totals": {
+          "2026-01": {
+            "gross": 8480,
+            "refunds": 140,
+            "net": 8340
+          },
+          "2026-02": {
+            "gross": 2900,
+            "refunds": 200,
+            "net": 2700
+          }
+        },
+        "report_present": true,
+        "report_text": "# February vs January Net Revenue — Reconciliation Report\n\n**Scope:** Reconcile `orders.csv`, `refunds.csv`, and `products.csv` per the definitions in\n`data_dictionary.md`, and explain why February 2026 net revenue differs from January 2026.\n\n**Reproducibility:** Run `python3 analyze.py` in this directory. It applies the dictionary\nrules (dedupe orders by `order_id`, count only `status=paid`, dedupe refunds by\n`refund_id`, attribute refunds to the original paid order's month) and prints the tables\nbelow plus a machine-readable `summary.json`. Totals were independently cross-checked with\na separate awk implementation; both agree exactly.\n\n## 1. Monthly totals (USD)\n\n| Month    | Paid orders | Cancelled | Gross revenue | Refunds | **Net revenue** |\n|----------|------------:|----------:|--------------:|--------:|----------------:|\n| 2026-01  | 44          | 4         | 8,480.00      | 140.00  | **8,340.00**    |\n| 2026-02  | 44          | 4         | 2,900.00      | 200.00  | **2,700.00**    |\n| Change   | 0           | 0         | −5,580.00 (−65.8%) | +60.00 | **−5,640.00 (−67.6%)** |\n\nNet revenue = paid gross revenue − unique refunds, per the data dictionary.\n\n## 2. Main drivers of the difference\n\n**Order volume is identical (44 paid orders in each month), so the entire decline is a\nproduct-mix / price effect, not a volume effect.**\n\n### 2.1 Product mix (paid orders only)\n\n| Product | Category   | Unit price | Jan units | Feb units | Jan revenue | Feb revenue | Δ revenue |\n|---------|------------|-----------:|----------:|----------:|------------:|------------:|----------:|\n| p1      | Starter    | $20        | 23        | 75        | 460.00      | 1,500.00    | +1,040.00 |\n| p2      | Pro        | $60        | 22        | 0         | 1,320.00    | 0.00        | −1,320.00 |\n| p3      | Team       | $100       | 21        | 14        | 2,100.00    | 1,400.00    | −700.00   |\n| p4      | Enterprise | $200       | 23        | 0         | 4,600.00    | 0.00        | −4,600.00 |\n| **Total** |          |            | **89**    | **89**    | **8,480.00**| **2,900.00**| **−5,580.00** |\n\nDecomposition of the −$5,580 gross-revenue change:\n\n1. **p4 (Enterprise, $200) disappeared in February: −$4,600** — the single largest driver\n   (82% of the gross decline). In January it was 54.2% of gross revenue.\n2. **p2 (Pro, $60) disappeared in February: −$1,320** (24% of the gross decline).\n3. **p3 (Team, $100) volume fell 21 → 14 units: −$700.**\n4. **p1 (Starter, $20) volume rose 23 → 75 units: +$1,040** — the only positive\n   contribution, but it cannot offset the loss of the two higher-priced tiers.\n\nIn short: February's paid orders consist only of the two cheapest tiers (p1 and p3);\nthe mid (p2) and top (p4) tiers had zero paid orders, while January sold all four tiers\nin roughly equal unit counts.\n\n### 2.2 Refunds (secondary driver)\n\nUnique refunds rose from $140 (Jan) to $200 (Feb), a +$60 additional drag (~1% of the net\nchange). Refund detail (deduplicated, attributed to the original paid order's month):\n\n| Refund | Order  | Month   | Amount |\n|--------|--------|---------|-------:|\n| r1     | o1005  | 2026-01 | 20.00  |\n| r2     | o1011  | 2026-01 | 100.00 |\n| r3     | o1024  | 2026-01 | 20.00  |\n| r4     | o2002  | 2026-02 | 20.00  |\n| r5     | o2007  | 2026-02 | 60.00  |\n| r6     | o2014  | 2026-02 | 20.00  |\n| r7     | o2023  | 2026-02 | 100.00 |\n\nEvery refund references an existing **paid** order, so all are validly attributed.\n\n## 3. Data quality issues\n\n1. **Duplicate order rows (exact repeats of the same delivery event):**\n   - `o1005` — line 98 repeats line 7\n   - `o2001` — line 99 repeats line 51\n   - `o2012` — line 100 repeats line 62\n\n   Per the data dictionary, each `order_id` is counted once. If these had been counted\n   naively, January gross would be overstated by $180 and February gross by $140.\n2. **Duplicate refund row (exact repeat):** `r7` — line 9 repeats line 8. Counted once;\n   a naive count would overstate February refunds by $100.\n3. **No other issues found:** all `product_id` values exist in `products.csv`; all\n   `paid_date` values fall in the expected months; all refunds reference existing paid\n   orders (no orphan or non-paid references); no conflicting (non-identical) duplicate\n   rows.\n4. **Minor formatting note:** the CSV files use CRLF line endings; handled transparently\n   by the analysis (Python `csv` module) and by the awk cross-check after stripping `\\r`.\n\n### Impact of deduplication (for reference)\n\n| Scenario            | Jan net | Feb net | Net change |\n|---------------------|--------:|--------:|-----------:|\n| Correct (deduped)   | 8,340   | 2,700   | −5,640     |\n| Naive (duplicates counted) | 8,520 | 2,600 | −5,920 |\n\nDeduplication changes the month-over-month net change by $280 but does not change the\nconclusion: the decline is driven by the absence of p2/p4 sales in February.\n\n## 4. Conclusion\n\nFebruary net revenue ($2,700) is $5,640 (−67.6%) below January ($8,340). With paid order\ncounts identical (44 each), the difference is almost entirely a **product-mix shift**:\nFebruary had zero paid orders for the Pro ($60) and Enterprise ($200) tiers, which\ntogether contributed $5,920 (70%) of January's gross revenue, while the Starter tier\nvolume tripled and only partially offset the loss. A small additional drag came from\nhigher refunds (+$60). The supplied data contains four exact duplicate rows (3 orders,\n1 refund) that were deduplicated per the data dictionary; no other data quality issues\nwere found.\n"
+      },
+      "run_id": "natural-dag-20261029-v002",
+      "provenance_cn": "确定性生成的订单、产品、退款CSV，含重复事件与产品组合变化；不是生产数据。",
+      "short_result_cn": "核心金额核对通过",
+      "result_cn": "独立核对净收入：一月8340美元、二月2700美元，减少5640美元；脚本和报告已生成。报告有“两个最便宜档位”的价位排序措辞错误，原文保留。",
+      "paths": {
+        "graph": "../natural-dag-20261029-v002/analysis/graph.json",
+        "timeline": "../natural-dag-20261029-v002/analysis/timeline.json",
+        "summary": "../natural-dag-20261029-v002/analysis/summary.json",
+        "input": "../natural-dag-20261029-v002/analysis/initial-task.txt",
+        "raw": "../../evidence/natural-dag-20261029-v002-raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "incident",
+      "title": "Diagnose a service incident from correlated evidence",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793279618.0811596,
+      "finished_wall_time": 1793279821.3485482,
+      "duration_seconds": 203.26738929748535,
+      "root_session": "session-514891ce-7243-4461-ae0b-1c29da681667",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 5,
+      "tool_calls": 11,
+      "tool_counts": {
+        "bash": 1,
+        "read": 9,
+        "write": 1
+      },
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 8194,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 187.05984044075012,
+      "dag_nodes": 18,
+      "dag_edges": 24,
+      "initial_task": "Diagnose the checkout outage described in ticket.md. Correlate the available logs, metrics and configuration history. Write incident-report.md with a timestamped causal timeline, the most likely root cause, plausible alternatives, and a concrete mitigation and verification plan. Cite the supplied evidence and distinguish facts from hypotheses.",
+      "max_output_tokens": 16384,
+      "provenance": "Curated service incident with controlled timestamps and a connection-pool configuration regression; not a production trace.",
+      "final_text": "\n\nDiagnosis complete — `incident-report.md` is written to the incident directory. Summary of findings:\n\n## Root cause (high confidence)\n\n**Checkout v2.18 (rolled out 09:03–09:04) doubled `database_pool_max_per_replica` from 12 to 24.** With 6 replicas, the fleet pool ceiling went from 72 to **144 connections** — but the database has `max_connections=100`, of which 18 are used by other clients, leaving only **82** for checkout. The pool demanded more connections than the DB could grant; the DB hit its cap and rejected new connections, and checkout requests queued until the 4000 ms acquisition timeout → 504s.\n\n## Key evidence correlations\n\n- **Temporal:** failure begins in the exact minute the rollout completed (09:04); 09:03 (rollout in progress) is still healthy.\n- **Failure mode:** checkout fails at *connection acquisition* (`queue_wait_ms=4000`, `payment not called`), while the DB logs `FATAL remaining connection slots are reserved; active=100` — classic PostgreSQL connection-cap exhaustion.\n- **DB is healthy, not slow:** query p95 flat at 9 ms, `lock_waiters=0`, CPU flat at ~30% → saturation, not degradation.\n- **Exonerations (all factual):** edge v4.11 rolled back at 09:10 with timeouts persisting; payments healthy throughout; traffic constant at 100 rps (no spike).\n\n## Mitigation & verification (in the report)\n\n1. **Immediate:** roll back checkout to v2.17 (or hot-patch pool 24→12), then check `pg_stat_activity` for orphaned connections.\n2. **Prevent:** deploy-time guard (`replicas × pool_max + other_clients ≤ max_connections`, with headroom), alerting on `db_connection_waiters > 0`, canary rollouts with auto-rollback.\n3. **Structural:** PgBouncer-style pooler to decouple app pool sizes from DB caps.\n4. **Verification:** post-rollback metric targets (errors ≤0.5%, p95 ≤200 ms, waiters=0, no FATALs) plus a staging reproduction of the failure and a guard-rejection test before any future pool increase.\n\nThe report includes a full timestamped timeline, an alternatives table with verdicts, and a final section explicitly separating facts from hypotheses (e.g., *why* the pool grew to the new max — pre-open vs. demand-driven — is not distinguishable from the supplied data).",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 5,
+        "wire_responses": 5,
+        "ready_events": 5,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-514891ce-7243-4461-ae0b-1c29da681667:1:1",
+          "session_id": "session-514891ce-7243-4461-ae0b-1c29da681667",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.869,
+          "response_seconds": 5.643,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 5.64784049987793,
+          "last_tool_end_seconds": 5.942840337753296,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-514891ce-7243-4461-ae0b-1c29da681667:1:2",
+          "session_id": "session-514891ce-7243-4461-ae0b-1c29da681667",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 5.989,
+          "response_seconds": 14.071,
+          "tools": {
+            "read": 5
+          },
+          "first_tool_seconds": 14.074840307235718,
+          "last_tool_end_seconds": 14.160840511322021,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-514891ce-7243-4461-ae0b-1c29da681667:1:3",
+          "session_id": "session-514891ce-7243-4461-ae0b-1c29da681667",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 14.227,
+          "response_seconds": 20.75,
+          "tools": {
+            "read": 4
+          },
+          "first_tool_seconds": 20.752840518951416,
+          "last_tool_end_seconds": 20.800840377807617,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-514891ce-7243-4461-ae0b-1c29da681667:1:4",
+          "session_id": "session-514891ce-7243-4461-ae0b-1c29da681667",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 20.857,
+          "response_seconds": 187.038,
+          "tools": {
+            "write": 1
+          },
+          "first_tool_seconds": 187.05984044075012,
+          "last_tool_end_seconds": 187.09684038162231,
+          "model_text": "\n\nI've reviewed all the evidence and found a clear pattern: the checkout v2.18 deployment doubled the database pool size, pushing the fleet's connection demand to 144 against a 100-connection database limit, which caused the saturation. Now I'll write up the incident report.\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-514891ce-7243-4461-ae0b-1c29da681667:1:5",
+          "session_id": "session-514891ce-7243-4461-ae0b-1c29da681667",
+          "turn": 1,
+          "step": 5,
+          "ready_seconds": 187.123,
+          "response_seconds": 203.12,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nDiagnosis complete — `incident-report.md` is written to the incident directory. Summary of findings:\n\n## Root cause (high confidence)\n\n**Checkout v2.18 (rolled out 09:03–09:04) doubled `database_pool_max_per_replica` from 12 to 24.** With 6 replicas, the fleet pool ceiling went from 72 to **144 connections** — but the database has `max_connections=100`, of which 18 are used by other clients, leaving only **82** for checkout. The pool demanded more connections than the DB could grant; the DB hit its cap and rejected new connections, and checkout requests queued until the 4000 ms acquisition timeout → 504s.\n\n## Key evidence correlations\n\n- **Temporal:** failure begins in the exact minute the rollout completed (09:04); 09:03 (rollout in progress) is still healthy.\n- **Failure mode:** checkout fails at *connection acquisition* (`queue_wait_ms=4000`, `payment not called`), while the DB logs `FATAL remaining connection slots are reserved; active=100` — classic PostgreSQL connection-cap exhaustion.\n- **DB is healthy, not slow:** query p95 flat at 9 ms, `lock_waiters=0`, CPU flat at ~30% → saturation, not degradation.\n- **Exonerations (all factual):** edge v4.11 rolled back at 09:10 with timeouts persisting; payments healthy throughout; traffic constant at 100 rps (no spike).\n\n## Mitigation & verification (in the report)\n\n1. **Immediate:** roll back checkout to v2.17 (or hot-patch pool 24→12), then check `pg_stat_activity` for orphaned connections.\n2. **Prevent:** deploy-time guard (`replicas × pool_max + other_clients ≤ max_connections`, with headroom), alerting on `db_connection_waiters > 0`, canary rollouts with auto-rollback.\n3. **Structural:** PgBouncer-style pooler to decouple app pool sizes from DB caps.\n4. **Verification:** post-rollback metric targets (errors ≤0.5%, p95 ≤200 ms, waiters=0, no FATALs) plus a staging reproduction of the failure and a guard-rejection test before any future pool increase.\n\nThe report includes a full timestamped timeline, an alternatives table with verdicts, and a final section explicitly separating facts from hypotheses (e.g., *why* the pool grew to the new max — pre-open vs. demand-driven — is not distinguishable from the supplied data).",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 5,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy.",
+        "report_present": true,
+        "expected_mechanism": "6*24 + 18 exceeds database connection limit 100 after 09:03 rollout; edge rollback does not resolve it.",
+        "report_text": "# Incident Report: Checkout Outage — 2026-10-28\n\n**Status:** Root cause identified (high confidence)\n**Impact window:** 2026-10-28 09:04 UTC → ongoing at end of supplied data (09:15 UTC)\n**Impact:** Checkout error rate 0.3% → 8%, p95 latency 180 ms → 4200 ms (504s at the edge). Payments service unaffected.\n\n---\n\n## 1. Evidence inventory\n\n| Source | File | What it provides |\n|---|---|---|\n| Ticket | `ticket.md` | Onset \"shortly after 09:04 UTC\"; two changes that morning (edge release, checkout deployment) |\n| Deploy history | `deployments.log` | Timestamps of edge v4.11 deploy/rollback and checkout v2.18 rollout, incl. the pool config change |\n| Metrics | `metrics.csv` | Per-minute rps, error %, checkout p95, DB active connections / waiters / CPU, payment p95 |\n| Checkout app log | `logs/checkout.log` | Per-request outcome: `db_wait_ms` before, `database connection acquisition timeout; queue_wait_ms=4000` after |\n| Database log | `logs/database.log` | DB-side health: `active`, `query_p95_ms`, `lock_waiters`, and `FATAL remaining connection slots are reserved` |\n| Edge log | `logs/edge.log` | Upstream status/latency per request (200/180 ms before, 504/4200 ms after) |\n| Payments log | `logs/payments.log` | Payment service health (healthy throughout) |\n| Config history | `config/checkout-before.json`, `config/checkout-after.json` | Only diff: `database_pool_max_per_replica` 12 → 24 |\n\nAll timestamps are UTC.\n\n---\n\n## 2. Timestamped causal timeline\n\nAll entries below are **facts** from the supplied evidence unless marked *(hypothesis)*.\n\n| Time (UTC) | Event | Evidence |\n|---|---|---|\n| 08:58 | **Edge v4.11 deployed** — \"routing rules unchanged; adds request-id response header\". Baseline remains healthy (100 rps, 0.3% errors, checkout p95 180 ms, DB active=75, waiters=0, DB CPU 30%, payment p95 28 ms). | `deployments.log` L1; `metrics.csv` L2–L7; all logs 08:58–09:03 |\n| 09:03 | **Checkout v2.18 rollout begins**; config change `database_pool_max_per_replica` 12 → 24. Metrics still healthy at this minute. | `deployments.log` L2; `config/checkout-*.json`; `metrics.csv` L7 |\n| 09:04 | **Checkout v2.18 rollout complete (replicas=6).** In the same minute: error % 0.3 → **8**, checkout p95 180 → **4200 ms**, DB active connections 75 → **100**, DB connection waiters 0 → **24**. DB CPU flat (30 → 31%), DB `query_p95_ms` flat (9 ms), `lock_waiters=0`. | `deployments.log` L3; `metrics.csv` L8; `logs/database.log` L7 |\n| 09:04 | Checkout requests begin failing with **`database connection acquisition timeout; queue_wait_ms=4000; payment not called`** — requests die while waiting for a DB connection, before any payment call. | `logs/checkout.log` L7–L18 |\n| 09:04 | Database begins logging **`FATAL remaining connection slots are reserved; active=100`** — the DB is at its connection cap and rejecting new connections. Query performance itself is unchanged (p95 9 ms, no lock waiters). | `logs/database.log` L7–L18 |\n| 09:04 | Edge begins returning **504s at 4200 ms** for checkout upstream — consistent with the 4000 ms connection-queue timeout plus overhead. | `logs/edge.log` L7–L18 |\n| 09:04–09:15 | Failure state is **steady**: 8% errors, 4200 ms p95, DB pinned at active=100 with 24 waiters, every checkout request timing out on connection acquisition. Traffic constant at 100 rps. Payments service healthy the entire window (p95 28 ms, 0 errors). | `metrics.csv` L8–L19; `logs/checkout.log`; `logs/payments.log` |\n| 09:10 | **Edge v4.11 rolled back.** \"checkout timeouts persist\" — the edge change is exonerated. | `deployments.log` L4 |\n\n---\n\n## 3. Root cause analysis\n\n### Most likely root cause (high confidence)\n\n**The checkout v2.18 deployment raised `database_pool_max_per_replica` from 12 to 24, making the fleet-wide pool ceiling (6 replicas × 24 = 144) exceed the database's `max_connections` (100, of which 18 are used by other clients, leaving 82 for checkout). The pool demanded more connections than the database could grant; the DB hit its cap and rejected new connections, and checkout requests queued for a connection until the 4000 ms acquisition timeout, producing 504s.**\n\nCapacity math (facts from `config/checkout-before.json` / `checkout-after.json`):\n\n| | Before (v2.17) | After (v2.18) |\n|---|---|---|\n| Replicas | 6 | 6 |\n| Pool max per replica | 12 | **24** |\n| Fleet pool ceiling | 6 × 12 = **72** | 6 × 24 = **144** |\n| DB `max_connections` | 100 | 100 |\n| Other clients | 18 | 18 |\n| Connections available to checkout | 100 − 18 = **82** | 100 − 18 = **82** |\n| Headroom | 72 ≤ 82 ✅ (10 spare) | 144 > 82 ❌ (62 over) |\n\nCorroborating evidence:\n\n1. **Temporal correlation (fact):** the failure begins in the exact minute the rollout completed (09:04), after a healthy 09:03 minute during which the rollout was in progress.\n2. **Failure mode matches the mechanism (fact):** checkout fails at *connection acquisition* (`queue_wait_ms=4000`), not at query execution; the DB is simultaneously at `active=100` (its cap) logging `FATAL remaining connection slots are reserved` — the classic PostgreSQL message when `max_connections` is exhausted and only superuser-reserved slots remain.\n3. **The database is healthy, not slow (fact):** `query_p95_ms` stays at 9 ms, `lock_waiters=0`, DB CPU flat at ~30%. This is connection *saturation*, not query degradation.\n4. **Downstream is exonerated (fact):** payments are healthy throughout, and checkout logs confirm `payment not called` — requests never reached the payment step.\n5. **Edge is exonerated (fact):** edge v4.11 was rolled back at 09:10 and \"checkout timeouts persist\" (`deployments.log` L4). Edge routing rules were unchanged, and the edge 504s are upstream-originated.\n6. **No traffic change (fact):** rps constant at 100 across the whole window — this is not a load spike.\n\n*(Hypothesis — mechanism detail not directly observable in the data:)* why the pool grew to the new maximum at rollout time. Plausible triggers: the new pool size caused pools to pre-open/grow connections on replica startup, or the new version holds connections longer per request. The supplied data does not distinguish these; the capacity arithmetic above holds regardless of which trigger fired.\n\n### Plausible alternatives considered and ruled out\n\n| Alternative | Verdict | Why |\n|---|---|---|\n| **Edge v4.11 release** | Ruled out (fact) | Rolled back at 09:10; timeouts persisted. Routing rules unchanged; edge 504s are upstream-originated (4200 ms ≈ 4000 ms checkout queue timeout + overhead). |\n| **Database degradation** (slow queries, lock contention, CPU) | Ruled out (fact) | `query_p95_ms` flat at 9 ms, `lock_waiters=0`, DB CPU 30% → 31%. The DB is healthy but connection-saturated. |\n| **Payment service failure** | Ruled out (fact) | `payments.log` healthy the entire window (p95 28 ms, 0 errors); checkout requests failed *before* calling payments. |\n| **Traffic spike / load increase** | Ruled out (fact) | `requests_per_second` constant at 100 from 08:58 to 09:15. |\n| **Checkout v2.18 code change (new/slower queries)** | Unlikely | DB query p95 did not change (9 ms) and failures occur at connection acquisition, before query execution. The only config diff in the same deployment (pool 12 → 24) fully explains the observed saturation. *(Residual hypothesis: a code change could have increased connection hold time, which would compound the pool change — not distinguishable from the supplied data.)* |\n| **Other clients (18) consuming the DB** | Not the cause | Other clients were present and constant before and after; the pre-change budget (72 + 18 = 90 ≤ 100) had headroom. The change that broke the budget was the pool doubling. |\n\n---\n\n## 4. Mitigation plan\n\n### Immediate (restore service)\n\n1. **Roll back checkout to v2.17**, or hot-patch the config `database_pool_max_per_replica` 24 → 12 (equivalent: restore the 72-connection fleet ceiling, which fits the 82 available).\n   - If hot-patching: apply the config change and recycle replicas so pools shrink; verify no stale connections remain (see verification).\n2. **Confirm the database is not left with orphaned connections** after rollback: check `pg_stat_activity` for checkout connections above the expected 72 and terminate stragglers if present.\n\n### Short term (prevent recurrence)\n\n3. **Add a deploy-time capacity guard:** reject any checkout config where `replicas × database_pool_max_per_replica + other_clients > database_max_connections` (recommend enforcing ≤ 80% of `max_connections` to leave headroom for other clients and growth).\n4. **Alert on DB connection pressure:** `db_connection_waiters > 0` sustained for 1–2 minutes, and `db_active_connections / max_connections > 0.8`. The 09:04 waiters=24 signal would have paged before customer impact.\n5. **Canary/progressive rollout with automated rollback** on SLO breach (error % or p95), so a bad config change is caught on one replica, not six.\n\n### Longer term (structural)\n\n6. **Introduce a connection pooler (e.g., PgBouncer in transaction mode)** between checkout and the database, decapping app-side pool sizes from the DB's `max_connections` and making per-replica pool settings safe to tune independently.\n7. **Treat `database_max_connections` as a shared budget** with an explicit, documented allocation (checkout vs. other clients) reviewed at every capacity change.\n\n---\n\n## 5. Verification plan\n\n**Post-rollback (production), monitor for ≥ 15 minutes:**\n\n| Check | Expected (baseline) | Source |\n|---|---|---|\n| `error_percent` | ≤ 0.5% (baseline 0.3%) | `metrics.csv` |\n| `checkout_p95_ms` | ≤ 200 ms (baseline 180 ms) | `metrics.csv` |\n| `db_active_connections` | ≤ 75 (baseline 75) | `metrics.csv` |\n| `db_connection_waiters` | 0 | `metrics.csv` |\n| `db_cpu_percent` | ~30% | `metrics.csv` |\n| Checkout log | `completed db_wait_ms≈3`, no `connection acquisition timeout` | `logs/checkout.log` |\n| Database log | No `FATAL remaining connection slots are reserved` | `logs/database.log` |\n| Edge log | `upstream_status=200`, latency ≈ 180 ms | `logs/edge.log` |\n| Payments log | Remains healthy (control) | `logs/payments.log` |\n\n**Pre-deployment (staging), before re-attempting any pool increase:**\n\n1. **Reproduce the failure deterministically:** deploy with `database_pool_max_per_replica=24` against a DB with `max_connections=100`, `other_clients=18`; confirm the same signature (DB at cap, `FATAL` reserved-slots messages, 4000 ms acquisition timeouts, 504s). This validates the root-cause model.\n2. **Verify the guard:** attempt the same config through the deploy pipeline with the capacity guard in place; confirm it is rejected.\n3. **Verify the fix at scale:** with the pooler (or corrected budget) in place, run load at ≥ 100 rps and confirm `db_connection_waiters=0` and p95 ≤ 200 ms with headroom.\n\n---\n\n## 6. Facts vs. hypotheses — summary\n\n**Facts (directly from supplied evidence):**\n- Edge v4.11 deployed 08:58, rolled back 09:10; checkout v2.18 rolled out 09:03–09:04 with pool 12 → 24.\n- Failure began at 09:04: 8% errors, 4200 ms p95, DB active=100, waiters=24; steady through 09:15.\n- Checkout failures are DB connection-acquisition timeouts (4000 ms queue wait), before payment calls.\n- DB logged `FATAL remaining connection slots are reserved` at active=100 while query p95 (9 ms), lock waiters (0), and CPU (~30%) stayed flat.\n- Payments healthy throughout; traffic constant at 100 rps; edge rollback did not restore service.\n- Config diff is exactly one field: `database_pool_max_per_replica` 12 → 24; fleet ceiling 144 > DB cap 100 (82 available to checkout).\n\n**Hypotheses (inferred, not directly observable):**\n- The pool grew to the new maximum at rollout time (pre-open on startup vs. demand-driven growth — not distinguishable from the data).\n- A v2.18 code change may have increased connection hold time, compounding the pool change (not distinguishable; the config change alone is sufficient to explain the saturation).\n- The exact reason the DB rejected connections at 100 rather than 100−reserved is the standard PostgreSQL superuser-reserved-slot behavior (inferred from the FATAL message text).\n"
+      },
+      "run_id": "natural-dag-20261029-v002",
+      "provenance_cn": "人工整理的日志、指标和部署记录，设定连接池配置回归；不是生产事故。",
+      "short_result_cn": "报告与根因匹配",
+      "result_cn": "报告识别到六副本连接池从12增至24，使连接总需求超过数据库上限，并提出回滚和验证计划；没有实际执行运维变更。",
+      "paths": {
+        "graph": "../natural-dag-20261029-v002/incident/graph.json",
+        "timeline": "../natural-dag-20261029-v002/incident/timeline.json",
+        "summary": "../natural-dag-20261029-v002/incident/summary.json",
+        "input": "../natural-dag-20261029-v002/incident/initial-task.txt",
+        "raw": "../../evidence/natural-dag-20261029-v002-raw.tar.gz"
+      }
+    }
+  ],
+  "failed_attempts": [
+    {
+      "case_id": "analysis",
+      "run_id": "natural-dag-20261029-v001",
+      "duration_seconds": 110.26013016700745,
+      "model_calls": 3,
+      "max_output_tokens": 4096,
+      "reason": "单次输出达到4096，DSH以max-tokens结束，报告未生成。",
+      "summary": "../natural-dag-20261029-v001/analysis/summary.json",
+      "timeline": "../natural-dag-20261029-v001/analysis/timeline.json",
+      "raw": "../../evidence/natural-dag-20261029-v001-raw.tar.gz"
+    },
+    {
+      "case_id": "incident",
+      "run_id": "natural-dag-20261029-v001",
+      "duration_seconds": 120.23401737213135,
+      "model_calls": 4,
+      "max_output_tokens": 4096,
+      "reason": "单次输出达到4096，DSH以max-tokens结束，报告未生成。",
+      "summary": "../natural-dag-20261029-v001/incident/summary.json",
+      "timeline": "../natural-dag-20261029-v001/incident/timeline.json",
+      "raw": "../../evidence/natural-dag-20261029-v001-raw.tar.gz"
+    }
+  ],
+  "successful_model_calls": 41,
+  "successful_tool_calls": 108,
+  "no_predefined_graph": true,
+  "no_prescribed_agent_count": true,
+  "no_replay": true
+}
