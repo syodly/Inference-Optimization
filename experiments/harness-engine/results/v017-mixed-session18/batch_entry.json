@@ -1,0 +1,13 @@
+{
+  "run_id": "v017-mixed-session18",
+  "args": [
+    "--policy",
+    "session_window",
+    "--cap",
+    "24",
+    "--session-cap",
+    "18"
+  ],
+  "purpose": "混合上下文的固定Session数基线",
+  "interpretation": "每个子Session都占一个窗口名额，短文和长文权重相同。它可能保护长历史，也可能因短Session占名额而留下可用容量；只有整任务和分组结果能判断，不能预设基线一定较差。"
+}

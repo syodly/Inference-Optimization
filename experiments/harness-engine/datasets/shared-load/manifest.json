@@ -1,0 +1,605 @@
+{
+  "kind": "independent-tenant-research",
+  "sources": [
+    {
+      "tenant_id": "target",
+      "source_directory": "datasets/mixed-research",
+      "source_split": "evaluation",
+      "selected_ids": [
+        "66f10d67821e116aacb268d0",
+        "5a7bc1bf55429927d897c033",
+        "66f3b843821e116aacb2e692",
+        "5a825a9d55429940e5e1a870",
+        "66fb6d71bb02136c067c7c34",
+        "5a8d7e1055429941ae14dfd8",
+        "66fcf2f2bb02136c067c9169",
+        "5abd74c95542993062266ca2",
+        "66eefe85821e116aacb228dc",
+        "5ab84dea55429934fafe6d4f",
+        "66fb5f73bb02136c067c7ae7",
+        "5adcd5005542994d58a2f6f0",
+        "66f14c70821e116aacb271ee",
+        "5abbdaac5542992ccd8e7fc0",
+        "66fc0152bb02136c067c8826",
+        "5a8a12ae5542992d82986e92"
+      ],
+      "manifest": {
+        "kind": "mixed-research",
+        "source": "Existing fixed LongBench-v2 and HotpotQA manifests",
+        "sources": [
+          {
+            "dataset_id": "longbench-v2",
+            "source_directory": "datasets/longbench-v2",
+            "source_manifest": {
+              "source": "zai-org/LongBench-v2",
+              "revision": "2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9",
+              "license": "apache-2.0",
+              "download_url": "https://hf-mirror.com/datasets/zai-org/LongBench-v2/resolve/2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9/data.json",
+              "canonical_url": "https://huggingface.co/datasets/zai-org/LongBench-v2/resolve/2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9/data.json",
+              "seed": 2718,
+              "source_rows": 503,
+              "domain": "Multi-Document QA",
+              "candidates": [
+                {
+                  "id": "66fcf2f2bb02136c067c9169",
+                  "subdomain": "Multi-news",
+                  "tokens": 22544,
+                  "shard_tokens": [
+                    7663,
+                    7531,
+                    7350
+                  ]
+                },
+                {
+                  "id": "66eefe85821e116aacb228dc",
+                  "subdomain": "Academic",
+                  "tokens": 30753,
+                  "shard_tokens": [
+                    10561,
+                    9560,
+                    10632
+                  ]
+                },
+                {
+                  "id": "66f95126bb02136c067c5070",
+                  "subdomain": "Academic",
+                  "tokens": 29090,
+                  "shard_tokens": [
+                    9235,
+                    9390,
+                    10465
+                  ]
+                },
+                {
+                  "id": "66fb6d71bb02136c067c7c34",
+                  "subdomain": "Legal",
+                  "tokens": 27352,
+                  "shard_tokens": [
+                    9196,
+                    9213,
+                    8943
+                  ]
+                },
+                {
+                  "id": "66f14c70821e116aacb271ee",
+                  "subdomain": "Academic",
+                  "tokens": 24950,
+                  "shard_tokens": [
+                    8214,
+                    7769,
+                    8967
+                  ]
+                },
+                {
+                  "id": "66ebee0a5a08c7b9b35e1d05",
+                  "subdomain": "Academic",
+                  "tokens": 30135,
+                  "shard_tokens": [
+                    10255,
+                    9361,
+                    10519
+                  ]
+                },
+                {
+                  "id": "66f3c1c3821e116aacb2eaf6",
+                  "subdomain": "Governmental",
+                  "tokens": 33771,
+                  "shard_tokens": [
+                    11488,
+                    11249,
+                    11034
+                  ]
+                },
+                {
+                  "id": "66fa6867bb02136c067c6b3b",
+                  "subdomain": "Multi-news",
+                  "tokens": 24186,
+                  "shard_tokens": [
+                    8035,
+                    7974,
+                    8177
+                  ]
+                },
+                {
+                  "id": "66f0ed5a821e116aacb265ab",
+                  "subdomain": "Academic",
+                  "tokens": 27059,
+                  "shard_tokens": [
+                    8516,
+                    9466,
+                    9077
+                  ]
+                },
+                {
+                  "id": "66ee8bab821e116aacb21e44",
+                  "subdomain": "Academic",
+                  "tokens": 32039,
+                  "shard_tokens": [
+                    10249,
+                    10609,
+                    11181
+                  ]
+                },
+                {
+                  "id": "66ee490e821e116aacb2149c",
+                  "subdomain": "Academic",
+                  "tokens": 20184,
+                  "shard_tokens": [
+                    6484,
+                    6492,
+                    7208
+                  ]
+                },
+                {
+                  "id": "66f3b843821e116aacb2e692",
+                  "subdomain": "Governmental",
+                  "tokens": 33178,
+                  "shard_tokens": [
+                    11409,
+                    10546,
+                    11224
+                  ]
+                },
+                {
+                  "id": "66ec21e6821e116aacb1b2d2",
+                  "subdomain": "Academic",
+                  "tokens": 25368,
+                  "shard_tokens": [
+                    7925,
+                    8963,
+                    8480
+                  ]
+                },
+                {
+                  "id": "66fc0152bb02136c067c8826",
+                  "subdomain": "Multi-news",
+                  "tokens": 28313,
+                  "shard_tokens": [
+                    8696,
+                    9786,
+                    9831
+                  ]
+                },
+                {
+                  "id": "67062fbfbb02136c067cf66a",
+                  "subdomain": "Multi-news",
+                  "tokens": 21024,
+                  "shard_tokens": [
+                    6553,
+                    6423,
+                    8048
+                  ]
+                },
+                {
+                  "id": "66f96115bb02136c067c541c",
+                  "subdomain": "Legal",
+                  "tokens": 22328,
+                  "shard_tokens": [
+                    7194,
+                    7565,
+                    7569
+                  ]
+                },
+                {
+                  "id": "66fb5f73bb02136c067c7ae7",
+                  "subdomain": "Multi-news",
+                  "tokens": 23457,
+                  "shard_tokens": [
+                    5828,
+                    10137,
+                    7492
+                  ]
+                },
+                {
+                  "id": "66f10d67821e116aacb268d0",
+                  "subdomain": "Academic",
+                  "tokens": 20132,
+                  "shard_tokens": [
+                    6095,
+                    5977,
+                    8060
+                  ]
+                }
+              ],
+              "selection": "18000–36000 actual Qwen tokens, full original context, no truncation or padding; max shard 14000 tokens",
+              "chunking": "Nine contiguous character segments, paragraph boundaries preferred; concatenate exactly equals original context; three strided shards",
+              "task_ids": [
+                "66ebee0a5a08c7b9b35e1d05",
+                "66f3c1c3821e116aacb2eaf6",
+                "66f96115bb02136c067c541c",
+                "66fa6867bb02136c067c6b3b",
+                "66f10d67821e116aacb268d0",
+                "66f3b843821e116aacb2e692",
+                "66fb6d71bb02136c067c7c34",
+                "66fcf2f2bb02136c067c9169",
+                "66eefe85821e116aacb228dc",
+                "66fb5f73bb02136c067c7ae7",
+                "66f14c70821e116aacb271ee",
+                "66fc0152bb02136c067c8826",
+                "66ee490e821e116aacb2149c",
+                "67062fbfbb02136c067cf66a",
+                "66f95126bb02136c067c5070",
+                "66f0ed5a821e116aacb265ab"
+              ],
+              "calibration": 4,
+              "evaluation": 12,
+              "sha256": {
+                "data.json": "15d61c22d92c96900b3c4948b6aeea218d3214b676a65df48e7b8555604c7fe2",
+                "tasks.jsonl": "2fd081c4b2e49ce6e928bb227fbad34665b0142e6e2d8192feb59ba3eff63937",
+                "answers.jsonl": "b5a3bce25a741b5223ca51eeb0fbbfa349d2a6dda32c0bfff20fd74aa2c1e2e5"
+              },
+              "quality_protocol": "Strict option-label accuracy; hidden labels used only by offline analysis.",
+              "subdomains": {
+                "Academic": 7,
+                "Governmental": 2,
+                "Legal": 2,
+                "Multi-news": 5
+              }
+            },
+            "selected_task_ids": [
+              "66ebee0a5a08c7b9b35e1d05",
+              "66f3c1c3821e116aacb2eaf6",
+              "66f96115bb02136c067c541c",
+              "66fa6867bb02136c067c6b3b",
+              "66f10d67821e116aacb268d0",
+              "66f3b843821e116aacb2e692",
+              "66fb6d71bb02136c067c7c34",
+              "66fcf2f2bb02136c067c9169",
+              "66eefe85821e116aacb228dc",
+              "66fb5f73bb02136c067c7ae7",
+              "66f14c70821e116aacb271ee",
+              "66fc0152bb02136c067c8826"
+            ],
+            "tasks_sha256": "2fd081c4b2e49ce6e928bb227fbad34665b0142e6e2d8192feb59ba3eff63937"
+          },
+          {
+            "dataset_id": "hotpot",
+            "source_directory": "datasets/hotpot",
+            "source_manifest": {
+              "source": "hotpotqa/hotpot_qa",
+              "revision": "1908d6afbbead072334abe2965f91bd2709910ab",
+              "url": "https://huggingface.co/datasets/hotpotqa/hotpot_qa/resolve/1908d6afbbead072334abe2965f91bd2709910ab/distractor/validation-00000-of-00001.parquet",
+              "download_url": "https://hf-mirror.com/datasets/hotpotqa/hotpot_qa/resolve/1908d6afbbead072334abe2965f91bd2709910ab/distractor/validation-00000-of-00001.parquet",
+              "license": "cc-by-sa-4.0",
+              "seed": 1729,
+              "source_rows": 7405,
+              "calibration": 8,
+              "evaluation": 24,
+              "task_ids": [
+                "5a722a6855429971e9dc9320",
+                "5adf8c965542993344016cf5",
+                "5a87868c5542996e4f308828",
+                "5ab97c0255429970cfb8eb1f",
+                "5ae1316555429901ffe4adda",
+                "5ae75a5a5542991bbc9761f3",
+                "5ab29624554299545a2cf9b5",
+                "5a78f59755429970f5fffdf7",
+                "5a7bc1bf55429927d897c033",
+                "5a825a9d55429940e5e1a870",
+                "5a8d7e1055429941ae14dfd8",
+                "5abd74c95542993062266ca2",
+                "5ab84dea55429934fafe6d4f",
+                "5adcd5005542994d58a2f6f0",
+                "5abbdaac5542992ccd8e7fc0",
+                "5a8a12ae5542992d82986e92",
+                "5a7cdd6b55429909bec76858",
+                "5ac3e68b5542997ea680c98b",
+                "5ab5de535542992aa134a3b6",
+                "5a75abbb5542992d0ec05fd9",
+                "5a8cc7af554299653c1aa11e",
+                "5ab80faf55429916710eafd9",
+                "5a8db42f5542994ba4e3dd11",
+                "5a8dcbc0554299068b959df4",
+                "5a8393665542990548d0b1ea",
+                "5a8080365542992097ad2fed",
+                "5a74760b55429974ef308c03",
+                "5ae178a155429901ffe4ae92",
+                "5a8e1577554299068b959e54",
+                "5ae679ec5542996d980e7b75",
+                "5ae3f4fe5542995ad6573ce8",
+                "5a8de7c65542995085b37353"
+              ],
+              "sha256": {
+                "validation.parquet": "c20b638ca82b21d04fe12e14ff417ad05153d4d215a65de54497fca4e972f7c6",
+                "tasks.jsonl": "807ccbf4240968e382be8af2c932812eff3be49cea09a6b82cf9433a0fc0ae74",
+                "answers.jsonl": "ef5fd9af0a02167ecb0359614f659a77c0a5990fdb37f3027d9519e84b1d5044"
+              },
+              "quality_protocol": "Gold answers/supporting facts only read by offline analysis, never by runtime/policy.",
+              "workload_protocol": "Controlled multi-agent evidence-gathering application over public HotpotQA contexts; not official HotpotQA harness."
+            },
+            "selected_task_ids": [
+              "5a722a6855429971e9dc9320",
+              "5adf8c965542993344016cf5",
+              "5a87868c5542996e4f308828",
+              "5ab97c0255429970cfb8eb1f",
+              "5a7bc1bf55429927d897c033",
+              "5a825a9d55429940e5e1a870",
+              "5a8d7e1055429941ae14dfd8",
+              "5abd74c95542993062266ca2",
+              "5ab84dea55429934fafe6d4f",
+              "5adcd5005542994d58a2f6f0",
+              "5abbdaac5542992ccd8e7fc0",
+              "5a8a12ae5542992d82986e92"
+            ],
+            "tasks_sha256": "807ccbf4240968e382be8af2c932812eff3be49cea09a6b82cf9433a0fc0ae74"
+          }
+        ],
+        "ordering": "Alternate long and short roots within each fixed split.",
+        "calibration": 8,
+        "evaluation": 16,
+        "quality_protocol": "Report LongBench-v2 option accuracy and HotpotQA EM/F1 separately; a mixed aggregate is not a uniform quality measure.",
+        "sha256": {
+          "tasks.jsonl": "485895599b0937ec241c5f04c0fa29b87b591ef42394ce924a8d180b102a1ab3",
+          "answers.jsonl": "abe6a4e4418c9ace47fc85e24f40385951110ad368d7c29a6f6366bf2162ca7c"
+        }
+      },
+      "source_tasks_sha256": "485895599b0937ec241c5f04c0fa29b87b591ef42394ce924a8d180b102a1ab3"
+    },
+    {
+      "tenant_id": "background",
+      "source_directory": "datasets/longbench-v2",
+      "source_split": "calibration",
+      "selected_ids": [
+        "66ebee0a5a08c7b9b35e1d05",
+        "66f3c1c3821e116aacb2eaf6",
+        "66f96115bb02136c067c541c",
+        "66fa6867bb02136c067c6b3b"
+      ],
+      "manifest": {
+        "source": "zai-org/LongBench-v2",
+        "revision": "2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9",
+        "license": "apache-2.0",
+        "download_url": "https://hf-mirror.com/datasets/zai-org/LongBench-v2/resolve/2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9/data.json",
+        "canonical_url": "https://huggingface.co/datasets/zai-org/LongBench-v2/resolve/2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9/data.json",
+        "seed": 2718,
+        "source_rows": 503,
+        "domain": "Multi-Document QA",
+        "candidates": [
+          {
+            "id": "66fcf2f2bb02136c067c9169",
+            "subdomain": "Multi-news",
+            "tokens": 22544,
+            "shard_tokens": [
+              7663,
+              7531,
+              7350
+            ]
+          },
+          {
+            "id": "66eefe85821e116aacb228dc",
+            "subdomain": "Academic",
+            "tokens": 30753,
+            "shard_tokens": [
+              10561,
+              9560,
+              10632
+            ]
+          },
+          {
+            "id": "66f95126bb02136c067c5070",
+            "subdomain": "Academic",
+            "tokens": 29090,
+            "shard_tokens": [
+              9235,
+              9390,
+              10465
+            ]
+          },
+          {
+            "id": "66fb6d71bb02136c067c7c34",
+            "subdomain": "Legal",
+            "tokens": 27352,
+            "shard_tokens": [
+              9196,
+              9213,
+              8943
+            ]
+          },
+          {
+            "id": "66f14c70821e116aacb271ee",
+            "subdomain": "Academic",
+            "tokens": 24950,
+            "shard_tokens": [
+              8214,
+              7769,
+              8967
+            ]
+          },
+          {
+            "id": "66ebee0a5a08c7b9b35e1d05",
+            "subdomain": "Academic",
+            "tokens": 30135,
+            "shard_tokens": [
+              10255,
+              9361,
+              10519
+            ]
+          },
+          {
+            "id": "66f3c1c3821e116aacb2eaf6",
+            "subdomain": "Governmental",
+            "tokens": 33771,
+            "shard_tokens": [
+              11488,
+              11249,
+              11034
+            ]
+          },
+          {
+            "id": "66fa6867bb02136c067c6b3b",
+            "subdomain": "Multi-news",
+            "tokens": 24186,
+            "shard_tokens": [
+              8035,
+              7974,
+              8177
+            ]
+          },
+          {
+            "id": "66f0ed5a821e116aacb265ab",
+            "subdomain": "Academic",
+            "tokens": 27059,
+            "shard_tokens": [
+              8516,
+              9466,
+              9077
+            ]
+          },
+          {
+            "id": "66ee8bab821e116aacb21e44",
+            "subdomain": "Academic",
+            "tokens": 32039,
+            "shard_tokens": [
+              10249,
+              10609,
+              11181
+            ]
+          },
+          {
+            "id": "66ee490e821e116aacb2149c",
+            "subdomain": "Academic",
+            "tokens": 20184,
+            "shard_tokens": [
+              6484,
+              6492,
+              7208
+            ]
+          },
+          {
+            "id": "66f3b843821e116aacb2e692",
+            "subdomain": "Governmental",
+            "tokens": 33178,
+            "shard_tokens": [
+              11409,
+              10546,
+              11224
+            ]
+          },
+          {
+            "id": "66ec21e6821e116aacb1b2d2",
+            "subdomain": "Academic",
+            "tokens": 25368,
+            "shard_tokens": [
+              7925,
+              8963,
+              8480
+            ]
+          },
+          {
+            "id": "66fc0152bb02136c067c8826",
+            "subdomain": "Multi-news",
+            "tokens": 28313,
+            "shard_tokens": [
+              8696,
+              9786,
+              9831
+            ]
+          },
+          {
+            "id": "67062fbfbb02136c067cf66a",
+            "subdomain": "Multi-news",
+            "tokens": 21024,
+            "shard_tokens": [
+              6553,
+              6423,
+              8048
+            ]
+          },
+          {
+            "id": "66f96115bb02136c067c541c",
+            "subdomain": "Legal",
+            "tokens": 22328,
+            "shard_tokens": [
+              7194,
+              7565,
+              7569
+            ]
+          },
+          {
+            "id": "66fb5f73bb02136c067c7ae7",
+            "subdomain": "Multi-news",
+            "tokens": 23457,
+            "shard_tokens": [
+              5828,
+              10137,
+              7492
+            ]
+          },
+          {
+            "id": "66f10d67821e116aacb268d0",
+            "subdomain": "Academic",
+            "tokens": 20132,
+            "shard_tokens": [
+              6095,
+              5977,
+              8060
+            ]
+          }
+        ],
+        "selection": "18000–36000 actual Qwen tokens, full original context, no truncation or padding; max shard 14000 tokens",
+        "chunking": "Nine contiguous character segments, paragraph boundaries preferred; concatenate exactly equals original context; three strided shards",
+        "task_ids": [
+          "66ebee0a5a08c7b9b35e1d05",
+          "66f3c1c3821e116aacb2eaf6",
+          "66f96115bb02136c067c541c",
+          "66fa6867bb02136c067c6b3b",
+          "66f10d67821e116aacb268d0",
+          "66f3b843821e116aacb2e692",
+          "66fb6d71bb02136c067c7c34",
+          "66fcf2f2bb02136c067c9169",
+          "66eefe85821e116aacb228dc",
+          "66fb5f73bb02136c067c7ae7",
+          "66f14c70821e116aacb271ee",
+          "66fc0152bb02136c067c8826",
+          "66ee490e821e116aacb2149c",
+          "67062fbfbb02136c067cf66a",
+          "66f95126bb02136c067c5070",
+          "66f0ed5a821e116aacb265ab"
+        ],
+        "calibration": 4,
+        "evaluation": 12,
+        "sha256": {
+          "data.json": "15d61c22d92c96900b3c4948b6aeea218d3214b676a65df48e7b8555604c7fe2",
+          "tasks.jsonl": "2fd081c4b2e49ce6e928bb227fbad34665b0142e6e2d8192feb59ba3eff63937",
+          "answers.jsonl": "b5a3bce25a741b5223ca51eeb0fbbfa349d2a6dda32c0bfff20fd74aa2c1e2e5"
+        },
+        "quality_protocol": "Strict option-label accuracy; hidden labels used only by offline analysis.",
+        "subdomains": {
+          "Academic": 7,
+          "Governmental": 2,
+          "Legal": 2,
+          "Multi-news": 5
+        }
+      },
+      "source_tasks_sha256": "2fd081c4b2e49ce6e928bb227fbad34665b0142e6e2d8192feb59ba3eff63937"
+    }
+  ],
+  "target_roots": 16,
+  "background_roots": 4,
+  "notice": "Background tasks use existing calibration questions as real work, not held-out quality evidence. All original question/source texts are preserved; no padding or dummy GPU load.",
+  "quality_protocol": "Report each tenant and dataset separately; a mixed aggregate is not a uniform quality score.",
+  "sha256": {
+    "tasks.jsonl": "be354f02172ebd262807fc8845611fd6192f5c06056619000f0d23007cbfaccb",
+    "answers.jsonl": "8eefd1c54d872003136926f6533b08ab95c1224ac7781ab5677caf7dd5e4701a"
+  }
+}

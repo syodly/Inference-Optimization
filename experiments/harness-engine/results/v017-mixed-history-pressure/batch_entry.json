@@ -1,0 +1,13 @@
+{
+  "run_id": "v017-mixed-history-pressure",
+  "args": [
+    "--policy",
+    "history_pressure",
+    "--cap",
+    "24",
+    "--history-budget-tokens",
+    "200000"
+  ],
+  "purpose": "历史预算与实际引擎压力联合对照",
+  "interpretation": "在相同历史计账上加入真实缓存和等待阈值，压力高时缩小冷draft预算，已在工具中的历史不抹掉，回流不因预算增长死锁。与静态历史预算比较反馈的额外价值，也保留可能的过度退让；没有准确未来工具时长或隐藏答案。"
+}

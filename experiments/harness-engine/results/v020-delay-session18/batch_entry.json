@@ -1,0 +1,13 @@
+{
+  "run_id": "v020-delay-session18",
+  "args": [
+    "--policy",
+    "session_window",
+    "--cap",
+    "24",
+    "--session-cap",
+    "18"
+  ],
+  "purpose": "长工具间隔中的固定Session工作集",
+  "interpretation": "十八个持久子Session跨工具等待占窗口，最终执行全部分支，所有未展开等待计入根任务。与强调优回流基线比较，确认工具期间计账的收益及空转副作用；Session数不等于真实缓存字节。"
+}

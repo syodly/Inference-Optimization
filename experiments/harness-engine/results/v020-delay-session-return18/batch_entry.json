@@ -1,0 +1,13 @@
+{
+  "run_id": "v020-delay-session-return18",
+  "args": [
+    "--policy",
+    "session_return",
+    "--cap",
+    "24",
+    "--session-cap",
+    "18"
+  ],
+  "purpose": "回流排序与固定Session窗口的组合强基线",
+  "interpretation": "与历史预算使用同样的回流优先和二十四调用上限，仅把历史token目标换为固定十八Session。它用来隔离排序和跨工具计账的影响，不需要额外prompt长度测量；必须在比较预算的独立价值前检查该组合。"
+}

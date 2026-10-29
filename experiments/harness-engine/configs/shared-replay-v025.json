@@ -1,0 +1,16 @@
+{
+  "batch_id": "shared-replay-v025",
+  "trace": "runs/v024-shared-native-a",
+  "purpose": "两独立控制器共享引擎，固定双方的输入与每调用解码量；移除一组只测干扰，再对照真实引擎反馈的额外价值",
+  "runs": [
+    {"run_id": "v025-shared-replay-native-a", "args": []},
+    {"run_id": "v025-target-replay-alone", "args": ["--only-tenant", "target"]},
+    {"run_id": "v025-background-replay-alone", "args": ["--only-tenant", "background"]},
+    {"run_id": "v025-shared-replay-return24", "args": ["--policy", "return_priority", "--cap", "24"]},
+    {"run_id": "v025-shared-replay-pressure24", "args": ["--policy", "pressure", "--cap", "24"]},
+    {"run_id": "v025-shared-replay-history200k", "args": ["--policy", "history_budget", "--cap", "24"]},
+    {"run_id": "v025-shared-replay-history-pressure", "args": ["--policy", "history_pressure", "--cap", "24"]},
+    {"run_id": "v025-shared-replay-session-return18", "args": ["--policy", "session_return", "--cap", "24", "--session-cap", "18"]},
+    {"run_id": "v025-shared-replay-native-b", "args": []}
+  ]
+}

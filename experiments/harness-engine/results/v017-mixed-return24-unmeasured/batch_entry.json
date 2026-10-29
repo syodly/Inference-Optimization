@@ -1,0 +1,12 @@
+{
+  "run_id": "v017-mixed-return24-unmeasured",
+  "args": [
+    "--policy",
+    "return_priority",
+    "--cap",
+    "24",
+    "--no-measure-prompts"
+  ],
+  "purpose": "去掉观测开销的强回流排序",
+  "interpretation": "该排序只需要阶段，不需要实际prompt长度；移除额外tokenize调用后再测整任务耗时，作为低开销强基线。预算策略若只能胜过被人为附加观测成本的排序，就不能声称有净收益。"
+}

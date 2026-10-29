@@ -1,0 +1,18 @@
+{
+  "run_id": "v020-delay-session-return18",
+  "passed": true,
+  "violations": [],
+  "request_count": 80,
+  "response_count": 80,
+  "root_count": 8,
+  "tool_count": 48,
+  "trace_semantics_version": 2,
+  "agent_execution_count": 32,
+  "call_stages": {
+    "query": 24,
+    "draft": 24,
+    "evidence": 24,
+    "synthesis": 8
+  },
+  "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+}

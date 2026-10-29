@@ -1,0 +1,11 @@
+{
+  "run_id": "v017-mixed-fixed18",
+  "args": [
+    "--policy",
+    "fixed",
+    "--cap",
+    "18"
+  ],
+  "purpose": "混合上下文的调用上限基线",
+  "interpretation": "固定十八个在途模型调用，所有Session最终执行。与按Session数及历史规模限制的机制对照，检查普通并发调参是否足够；输入测量和所有前端等待完全计时。"
+}

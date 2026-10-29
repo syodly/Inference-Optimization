@@ -19,7 +19,7 @@ def main():
         lines.append(f"| {s['run_id']} | {s['root_latency_seconds']['mean']:.2f} | {s['root_latency_seconds']['p95']:.2f} | "
                      f"{c*100:.1f}% | {s['preemptions_delta']:.0f} | {s['tokens']['completion_tokens']} | "
                      f"{a['identical_input_prompts']}/{a['source_calls']} | {a['quota_matches']}/{a['source_calls']} |")
-    lines+=['','单批中的八个根任务相互影响，不是八次独立系统重复；平均值改善也不代表P95同步改善。',
+    lines+=['','同一批中的根任务相互影响，任务数量不等于独立系统重复次数；平均值改善也不代表P95同步改善。',
             '每轮真实输入、输出、工具、冻结文本哈希与源代码快照保存在远端runs目录；此处保留完整参数及统计索引。']
     args.results.mkdir(parents=True,exist_ok=True)
     (args.results/(args.prefix+'-comparison.md')).write_text('\n'.join(lines)+'\n',encoding='utf-8')

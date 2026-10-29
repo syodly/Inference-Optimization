@@ -1,0 +1,13 @@
+{
+  "batch_id": "placement-v026",
+  "trace": "runs/v017-mixed-native16",
+  "purpose": "比较相同信息和请求/Session准入权限放在前端或引擎侧代理，不将阶段优先级当完整后端对照",
+  "runs": [
+    {"run_id": "v026-frontend-return-a", "placement": "frontend", "policy": "return_priority"},
+    {"run_id": "v026-broker-return-a", "placement": "broker", "policy": "return_priority"},
+    {"run_id": "v026-broker-history200k", "placement": "broker", "policy": "history_budget"},
+    {"run_id": "v026-frontend-history200k", "placement": "frontend", "policy": "history_budget"},
+    {"run_id": "v026-broker-return-b", "placement": "broker", "policy": "return_priority"},
+    {"run_id": "v026-frontend-return-b", "placement": "frontend", "policy": "return_priority"}
+  ]
+}

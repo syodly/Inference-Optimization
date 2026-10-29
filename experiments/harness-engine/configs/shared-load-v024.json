@@ -1,0 +1,15 @@
+{
+  "batch_id": "shared-load-v024",
+  "purpose": "真实独立任务共享引擎，先验证前端自有状态之外的压力，再比较实际引擎反馈的增量价值",
+  "base_args": ["--arrival-interval", "2", "--background-arrival", "20"],
+  "runs": [
+    {"run_id": "v024-target-only-native", "args": ["--no-background"]},
+    {"run_id": "v024-shared-native-a", "args": []},
+    {"run_id": "v024-shared-return24", "args": ["--policy", "return_priority", "--cap", "24"]},
+    {"run_id": "v024-shared-pressure24", "args": ["--policy", "pressure", "--cap", "24"]},
+    {"run_id": "v024-shared-history200k", "args": ["--policy", "history_budget", "--cap", "24", "--history-budget-tokens", "200000"]},
+    {"run_id": "v024-shared-history-pressure", "args": ["--policy", "history_pressure", "--cap", "24", "--history-budget-tokens", "200000"]},
+    {"run_id": "v024-shared-session-return18", "args": ["--policy", "session_return", "--cap", "24", "--session-cap", "18"]},
+    {"run_id": "v024-shared-native-b", "args": []}
+  ]
+}

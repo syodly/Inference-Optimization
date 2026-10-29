@@ -14,6 +14,26 @@ def audit(directory: Path):
     tools = read(directory / 'tools.jsonl')
     roots = read(directory / 'roots.jsonl')
     violations = []
+    execution_count = None
+    if config.get('trace_semantics_version', 1) >= 2:
+        sessions = read(directory / 'sessions.jsonl')
+        starts = [s for s in sessions if s['event'] == 'agent_execution_start']
+        ends = [s for s in sessions if s['event'] == 'agent_execution_end']
+        execution_count = len(starts)
+        ids = [s['execution_id'] for s in starts]
+        if (len(ids) != config['expected_agent_executions'] or len(ids) != len(set(ids))
+                or set(ids) != {s['execution_id'] for s in ends} or len(ends) != len(starts)):
+            violations.append('Agent execution spans do not match the controlled research turns')
+        bounds = {s['session_id']: [s['t'], next((e['t'] for e in ends
+                   if e['execution_id'] == s['execution_id']), float('-inf'))] for s in starts}
+        for r in [*requests, *responses, *tools]:
+            a, b = bounds.get(r['node_id'], [float('inf'), float('-inf')])
+            if not a <= r['t'] <= b:
+                violations.append('Model/tool event is outside its Agent execution: ' + r['node_id'])
+        for kind in ['model_call_start', 'model_call_end']:
+            calls = [s['call_id'] for s in sessions if s['event'] == kind]
+            if len(calls) != len(set(calls)) or set(calls) != {r['call_id'] for r in requests}:
+                violations.append('Per-model-call spans are incomplete: ' + kind)
     if len(roots) != len(config['task_ids']) or {r['root_id'] for r in roots} != set(config['task_ids']):
         violations.append('Root records do not match submitted tasks')
     if len(requests) != config['expected_model_calls']:
@@ -65,7 +85,7 @@ def audit(directory: Path):
     if config['policy'] not in ['native', 'backend_priority']:
         if any(e['inflight_calls'] > e['target'] for e in events if e['event'] == 'frontend_release'):
             violations.append('New admission exceeded observed target')
-    if config['policy'] == 'session_window':
+    if config['policy'] in ['session_window', 'session_return']:
         admissions = [e for e in events if e['event'] == 'session_admitted']
         if any(e['active_sessions'] > config['session_cap'] for e in admissions):
             violations.append('Session working set exceeded configured window')
@@ -94,6 +114,8 @@ def audit(directory: Path):
     result = {'run_id': directory.name, 'passed': not violations, 'violations': violations,
               'request_count': len(requests), 'response_count': len(responses),
               'root_count': len(roots), 'tool_count': len(tools),
+              'trace_semantics_version': config.get('trace_semantics_version', 1),
+              'agent_execution_count': execution_count,
               'call_stages': dict(Counter(r['stage'] for r in requests)),
               'scope': 'Causal and accounting consistency, not proof of model quality or novelty.'}
     (directory / 'audit.json').write_text(json.dumps(result, indent=2))

@@ -1,0 +1,13 @@
+{
+  "run_id": "v017-mixed-history200k",
+  "args": [
+    "--policy",
+    "history_budget",
+    "--cap",
+    "24",
+    "--history-budget-tokens",
+    "200000"
+  ],
+  "purpose": "按真实上下文规模记账的虚拟历史预算",
+  "interpretation": "冷draft按已绑定prompt实际token数和明确输出预留申请预算；draft完成后用实际usage更新，工具期间继续计账，回流允许推进直至释放。长短Session的成本不同；二十万token为透明代理预算，不等于混合注意力模型精确物理KV字节。"
+}

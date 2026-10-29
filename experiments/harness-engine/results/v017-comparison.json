@@ -1,0 +1,732 @@
+{
+  "reference": "v017-mixed-native16-unmeasured",
+  "runs": [
+    {
+      "run_id": "v017-mixed-fixed18",
+      "policy": "fixed",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 184.3749914803775,
+      "p95_seconds": 219.14474861699273,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 65769,
+      "preemptions": 0.0,
+      "evidence_cache_fraction": 0.0,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.11679523880084161,
+          "p50": 0.11668890650616959,
+          "p95": 0.21052568250452167,
+          "min": 0.014379841974005103,
+          "max": 0.2362106500659138
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.6666666666666666,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 168.2312691562547,
+            "p50": 167.69661862804787,
+            "p95": 185.53597374621313,
+            "min": 152.42122431797907,
+            "max": 192.22034247394186
+          },
+          "model_calls": 80,
+          "prompt_tokens": 58931,
+          "completion_tokens": 16910
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.625,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 200.5187138045003,
+            "p50": 198.46301701903576,
+            "p95": 219.95291050978122,
+            "min": 181.40083716902882,
+            "max": 220.66005216597114
+          },
+          "model_calls": 80,
+          "prompt_tokens": 499279,
+          "completion_tokens": 48859
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": 22.116753365082275,
+        "longbench-v2": 0.5711709749269822
+      }
+    },
+    {
+      "run_id": "v017-mixed-history-pressure",
+      "policy": "history_pressure",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 133.70948064876575,
+      "p95_seconds": 207.84666581329657,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 64112,
+      "preemptions": 0.0,
+      "evidence_cache_fraction": 0.08069662597525577,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.12008264717587736,
+          "p50": 0.1168031704146415,
+          "p95": 0.22777054693433454,
+          "min": 0.013051823945716023,
+          "max": 0.24639057705644518
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.7916666666666666,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 91.11703576038417,
+            "p50": 87.08876895246794,
+            "p95": 134.00320856104372,
+            "min": 49.45129836106207,
+            "max": 134.6650622850284
+          },
+          "model_calls": 80,
+          "prompt_tokens": 58172,
+          "completion_tokens": 15941
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.75,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 176.30192553714733,
+            "p50": 180.74473627202678,
+            "p95": 214.91813613845733,
+            "min": 128.9723482960835,
+            "max": 221.10567267297301
+          },
+          "model_calls": 80,
+          "prompt_tokens": 499094,
+          "completion_tokens": 48171
+        }
+      },
+      "history_claim_peak_tokens": 199136,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": -33.85940295692927,
+        "longbench-v2": -11.574881166989858
+      }
+    },
+    {
+      "run_id": "v017-mixed-history200k",
+      "policy": "history_budget",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 132.1418581190519,
+      "p95_seconds": 208.81023123141495,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 63285,
+      "preemptions": 0.0,
+      "evidence_cache_fraction": 0.051185309651193556,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.14312616774332126,
+          "p50": 0.11770368448924273,
+          "p95": 0.3780808050767518,
+          "min": 0.011616668081842363,
+          "max": 0.4340423080138862
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.7916666666666666,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 89.71526189048018,
+            "p50": 74.83337530703284,
+            "p95": 142.73838145848129,
+            "min": 49.08176909398753,
+            "max": 150.99322701897472
+          },
+          "model_calls": 80,
+          "prompt_tokens": 58322,
+          "completion_tokens": 16659
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.75,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 174.56845434762363,
+            "p50": 170.85568778804736,
+            "p95": 214.66977049143168,
+            "min": 125.4420801360393,
+            "max": 219.79686734394636
+          },
+          "model_calls": 80,
+          "prompt_tokens": 498141,
+          "completion_tokens": 46626
+        }
+      },
+      "history_claim_peak_tokens": 201488,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": -34.876931236916796,
+        "longbench-v2": -12.444312374052513
+      }
+    },
+    {
+      "run_id": "v017-mixed-native16",
+      "policy": "native",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 171.8356694015747,
+      "p95_seconds": 212.10490028720233,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 66893,
+      "preemptions": 76.0,
+      "evidence_cache_fraction": 0.0,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.14844022154647973,
+          "p50": 0.11693087947787717,
+          "p95": 0.36936133159906587,
+          "min": 0.011643449892289937,
+          "max": 0.4575710069620982
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.675,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 143.25307124239043,
+            "p50": 143.16867637453834,
+            "p95": 162.16601930613396,
+            "min": 111.40796929004136,
+            "max": 168.2677465279121
+          },
+          "model_calls": 80,
+          "prompt_tokens": 59004,
+          "completion_tokens": 16909
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.625,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 200.41826756075898,
+            "p50": 201.94135070900666,
+            "p95": 217.35311018998618,
+            "min": 184.8822411489673,
+            "max": 221.94529385492206
+          },
+          "model_calls": 80,
+          "prompt_tokens": 500030,
+          "completion_tokens": 49984
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": 3.9854246920609127,
+        "longbench-v2": 0.520791655403996
+      }
+    },
+    {
+      "run_id": "v017-mixed-native16-unmeasured",
+      "policy": "native",
+      "measured_prompts": false,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 168.57127919449704,
+      "p95_seconds": 216.98815160343656,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 66879,
+      "preemptions": 75.0,
+      "evidence_cache_fraction": 0.0,
+      "prompt_measurement": null,
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.8,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 137.76264478085795,
+            "p50": 135.00560047349427,
+            "p95": 157.25137807773427,
+            "min": 120.95889562298544,
+            "max": 158.21131440298632
+          },
+          "model_calls": 80,
+          "prompt_tokens": 58908,
+          "completion_tokens": 16601
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.875,
+          "f1": 0.875,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 199.37991360813612,
+            "p50": 202.53793919354212,
+            "p95": 225.88475426506483,
+            "min": 173.57645352405962,
+            "max": 233.66928159398958
+          },
+          "model_calls": 80,
+          "prompt_tokens": 499670,
+          "completion_tokens": 50278
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": 0.0,
+        "longbench-v2": 0.0
+      }
+    },
+    {
+      "run_id": "v017-mixed-return18",
+      "policy": "return_priority",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 137.8965578538773,
+      "p95_seconds": 203.00288716578507,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 62869,
+      "preemptions": 0.0,
+      "evidence_cache_fraction": 0.245218945487042,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.1332002808798279,
+          "p50": 0.11325924552511424,
+          "p95": 0.2892416150076314,
+          "min": 0.014504637918435037,
+          "max": 0.3770256410352886
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.6477272727272727,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 105.89771997800563,
+            "p50": 94.98425188602414,
+            "p95": 165.64452793556265,
+            "min": 55.94013654801529,
+            "max": 166.79394380701706
+          },
+          "model_calls": 80,
+          "prompt_tokens": 58429,
+          "completion_tokens": 16500
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.625,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 169.895395729749,
+            "p50": 183.17734312050743,
+            "p95": 213.05970473653286,
+            "min": 97.18175585998688,
+            "max": 221.8594201109372
+          },
+          "model_calls": 80,
+          "prompt_tokens": 498112,
+          "completion_tokens": 46369
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": -23.13030854883815,
+        "longbench-v2": -14.788108463291028
+      }
+    },
+    {
+      "run_id": "v017-mixed-return24",
+      "policy": "return_priority",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 138.30166321722209,
+      "p95_seconds": 213.25790185152437,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 66575,
+      "preemptions": 0.0,
+      "evidence_cache_fraction": 0.05095680849462586,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.14262495974689954,
+          "p50": 0.11798096349230036,
+          "p95": 0.39012427180423387,
+          "min": 0.012269898899830878,
+          "max": 0.6289551919326186
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.675,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 88.83871954059578,
+            "p50": 74.68359237845289,
+            "p95": 139.55632755625993,
+            "min": 49.011373310000636,
+            "max": 142.3903065730119
+          },
+          "model_calls": 80,
+          "prompt_tokens": 58349,
+          "completion_tokens": 16771
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.625,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 187.7646068938484,
+            "p50": 190.47906998393591,
+            "p95": 217.721028076316,
+            "min": 134.7864868619945,
+            "max": 221.62626352300867
+          },
+          "model_calls": 80,
+          "prompt_tokens": 499550,
+          "completion_tokens": 49804
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": -35.51320121509466,
+        "longbench-v2": -5.825715591951052
+      }
+    },
+    {
+      "run_id": "v017-mixed-return24-unmeasured",
+      "policy": "return_priority",
+      "measured_prompts": false,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 134.99195431324188,
+      "p95_seconds": 211.06765502353664,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 64859,
+      "preemptions": 0.0,
+      "evidence_cache_fraction": 0.05089065478671431,
+      "prompt_measurement": null,
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.7857142857142857,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 92.25839430496853,
+            "p50": 76.7051461719675,
+            "p95": 148.62593362531624,
+            "min": 52.716002036002465,
+            "max": 160.71046338998713
+          },
+          "model_calls": 80,
+          "prompt_tokens": 58838,
+          "completion_tokens": 16522
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.625,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 177.72551432151522,
+            "p50": 176.72311000002082,
+            "p95": 212.42314607070293,
+            "min": 138.12083131400868,
+            "max": 213.60920073697343
+          },
+          "model_calls": 80,
+          "prompt_tokens": 499493,
+          "completion_tokens": 48337
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": -33.030906562714456,
+        "longbench-v2": -10.860873041193475
+      }
+    },
+    {
+      "run_id": "v017-mixed-session18",
+      "policy": "session_window",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 142.61931188799645,
+      "p95_seconds": 237.84140227851458,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 67419,
+      "preemptions": 0.0,
+      "evidence_cache_fraction": 0.2239306239030937,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.06663687440741342,
+          "p50": 0.02634802897227928,
+          "p95": 0.23924669609405044,
+          "min": 0.008530557039193809,
+          "max": 0.353978697094135
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.7916666666666666,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 102.81838208173576,
+            "p50": 89.88153461995535,
+            "p95": 170.83671641881227,
+            "min": 60.74438338703476,
+            "max": 182.42407169903163
+          },
+          "model_calls": 80,
+          "prompt_tokens": 58626,
+          "completion_tokens": 16662
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.625,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 182.42024169425713,
+            "p50": 170.95432284253184,
+            "p95": 245.31592620727605,
+            "min": 98.54096619796474,
+            "max": 251.85613464494236
+          },
+          "model_calls": 80,
+          "prompt_tokens": 497563,
+          "completion_tokens": 50757
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": -25.365557372035642,
+        "longbench-v2": -8.50620887879997
+      }
+    },
+    {
+      "run_id": "v017-mixed-size18",
+      "policy": "size_return",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 127.68182179374708,
+      "p95_seconds": 224.7815703059896,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 64258,
+      "preemptions": 0.0,
+      "evidence_cache_fraction": 0.06166831393658752,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.1331277325822157,
+          "p50": 0.11580850649625063,
+          "p95": 0.27297457843669665,
+          "min": 0.010401141014881432,
+          "max": 0.4667385099455714
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.8,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 58.79262270763866,
+            "p50": 63.45442844054196,
+            "p95": 79.1846633066365,
+            "min": 26.206921441014856,
+            "max": 81.23908349999692
+          },
+          "model_calls": 80,
+          "prompt_tokens": 59258,
+          "completion_tokens": 16309
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.625,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 196.5710208798555,
+            "p50": 189.7745675999904,
+            "p95": 225.82755586601562,
+            "min": 164.17130764201283,
+            "max": 226.74279323103838
+          },
+          "model_calls": 80,
+          "prompt_tokens": 498995,
+          "completion_tokens": 47949
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": -57.32324767634842,
+        "longbench-v2": -1.408814297011518
+      }
+    },
+    {
+      "run_id": "v017-mixed-size24",
+      "policy": "size_return",
+      "measured_prompts": true,
+      "same_root_tasks_as_reference": true,
+      "trace_audit_passed": true,
+      "mean_seconds": 131.73965701162524,
+      "p95_seconds": 217.66023546346696,
+      "model_calls": 160,
+      "expected_model_calls": 160,
+      "completion_tokens": 68251,
+      "preemptions": 7.0,
+      "evidence_cache_fraction": 0.021362907153780916,
+      "prompt_measurement": {
+        "checked_calls": 160,
+        "mismatches": 0,
+        "tokenization_overhead_seconds": {
+          "n": 160,
+          "mean": 0.1403733126608131,
+          "p50": 0.12255252449540421,
+          "p95": 0.37538264757604334,
+          "min": 0.015621376922354102,
+          "max": 0.4991389230126515
+        }
+      },
+      "groups": {
+        "hotpot": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.75,
+          "f1": 0.8,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 70.13645900663687,
+            "p50": 63.26197750255233,
+            "p95": 104.12276351029284,
+            "min": 54.04357636498753,
+            "max": 116.9901530459756
+          },
+          "model_calls": 80,
+          "prompt_tokens": 59111,
+          "completion_tokens": 17270
+        },
+        "longbench-v2": {
+          "expected_roots": 8,
+          "completed_roots": 8,
+          "em": 0.625,
+          "f1": 0.625,
+          "root_latency_seconds": {
+            "n": 8,
+            "mean": 193.3428550166136,
+            "p50": 191.95208805904258,
+            "p95": 222.14194095070707,
+            "min": 162.5784541890025,
+            "max": 226.06343325204216
+          },
+          "model_calls": 80,
+          "prompt_tokens": 500389,
+          "completion_tokens": 50981
+        }
+      },
+      "history_claim_peak_tokens": 0,
+      "history_soft_target_overshoot_tokens": null,
+      "group_mean_change_percent": {
+        "hotpot": -49.08891367597909,
+        "longbench-v2": -3.0279171468535315
+      }
+    }
+  ],
+  "scope": "Exploratory complete closed-loop runs, group quality and workload reported separately; no independent batch CI."
+}

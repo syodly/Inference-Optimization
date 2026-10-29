@@ -158,7 +158,17 @@ def analyze(run, gold_path, tasks_path):
                 'model_calls': len(calls),
                 'prompt_tokens': sum(r.get('usage', {}).get('prompt_tokens', 0) or 0 for r in calls),
                 'completion_tokens': sum(r.get('usage', {}).get('completion_tokens', 0) or 0 for r in calls),
+                'frontend_wait_seconds': distribution([e['frontend_wait'] for e in releases if e['root_id'] in ids]),
+                'cache_by_stage': {},
             }
+            for stage in sorted({r['stage'] for r in calls}):
+                measured = [r for r in calls if r['stage'] == stage and cached_tokens(r) is not None]
+                prompt = sum(r['usage']['prompt_tokens'] for r in measured)
+                hits = sum(cached_tokens(r) for r in measured)
+                summary['quality_by_dataset'][dataset]['cache_by_stage'][stage] = {
+                    'measured_calls': len(measured), 'accounted_prompt_tokens': prompt if measured else None,
+                    'cached_prompt_tokens': hits if measured else None,
+                    'cached_fraction': hits / prompt if prompt else None}
     measured_queue = [r['server_metrics']['queue_time_ms'] / 1000 for r in responses
                       if r.get('server_metrics') and r['server_metrics'].get('queue_time_ms') is not None]
     summary['measured_engine_queue_seconds'] = distribution(measured_queue)

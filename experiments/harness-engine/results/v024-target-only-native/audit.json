@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "scope": "Every model/tool/Agent span, dependency and ledger audited within its independent tenant; global call IDs must be disjoint.",
+  "tenants": {
+    "target": {
+      "run_id": "target",
+      "passed": true,
+      "violations": [],
+      "request_count": 160,
+      "response_count": 160,
+      "root_count": 16,
+      "tool_count": 96,
+      "trace_semantics_version": 2,
+      "agent_execution_count": 64,
+      "call_stages": {
+        "query": 48,
+        "draft": 48,
+        "evidence": 48,
+        "synthesis": 16
+      },
+      "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+    }
+  },
+  "global_request_count": 160
+}

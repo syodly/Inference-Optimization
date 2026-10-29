@@ -1,0 +1,389 @@
+{
+  "run_id": "v020-delay-history200k",
+  "policy": "history_budget",
+  "cap": 24,
+  "expected_roots": 8,
+  "completed_root_records": 8,
+  "engine_errors": 0,
+  "root_errors": 0,
+  "parse_errors": 0,
+  "model_calls": 80,
+  "expected_model_calls": 80,
+  "length_finishes": 0,
+  "empty_content_completions": 0,
+  "quality": {
+    "em": 0.625,
+    "f1": 0.625,
+    "support_title_recall": null
+  },
+  "root_latency_seconds": {
+    "n": 8,
+    "mean": 153.18204567526118,
+    "p50": 135.43452564900508,
+    "p95": 196.6984893964778,
+    "min": 125.55802558595315,
+    "max": 198.23464292904828
+  },
+  "valid_json_root_latency_seconds": {
+    "n": 8,
+    "mean": 153.18204567526118,
+    "p50": 135.43452564900508,
+    "p95": 196.6984893964778,
+    "min": 125.55802558595315,
+    "max": 198.23464292904828
+  },
+  "exact_correct_root_latency_seconds": {
+    "n": 5,
+    "mean": 132.51594210141337,
+    "p50": 133.47372525802348,
+    "p95": 136.60988508120644,
+    "min": 125.55802558595315,
+    "max": 137.39345803600736
+  },
+  "batch_makespan_seconds": 198.23519716796,
+  "frontend_wait_seconds": {
+    "n": 80,
+    "mean": 5.898749373717874,
+    "p50": 0.00013913196744397283,
+    "p95": 69.09656037236563,
+    "min": 3.2581971026957035e-05,
+    "max": 88.55484047706705
+  },
+  "model_ttft_seconds": {
+    "n": 80,
+    "mean": 3.7251433238212486,
+    "p50": 1.099794870999176,
+    "p95": 18.30598096535541,
+    "min": 0.22639085503760725,
+    "max": 21.70370626100339
+  },
+  "stage": {
+    "query": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 2.2891571955794157,
+        "p50": 1.4845138829550706,
+        "p95": 6.001818792597617,
+        "min": 1.3608090720372275,
+        "max": 7.490358366048895
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 1.031609950742374,
+        "p50": 1.066696620953735,
+        "p95": 1.110989959014114,
+        "min": 0.22639085503760725,
+        "max": 1.1277059270069003
+      }
+    },
+    "draft": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 57.93285668949344,
+        "p50": 53.48429091251455,
+        "p95": 86.67775588010552,
+        "min": 28.647846429026686,
+        "max": 96.25555695802905
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 9.853904559150882,
+        "p50": 8.53723663900746,
+        "p95": 21.190809929650275,
+        "min": 1.0685516679659486,
+        "max": 21.70370626100339
+      }
+    },
+    "evidence": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 28.087208026035416,
+        "p50": 25.278144033043645,
+        "p95": 53.381730228231746,
+        "min": 9.185765458038077,
+        "max": 61.573115779901855
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 1.4316682219699335,
+        "p50": 1.1523682094994,
+        "p95": 3.3090268714644475,
+        "min": 0.37708127906080335,
+        "max": 4.428637331002392
+      }
+    },
+    "synthesis": {
+      "calls": 8,
+      "latency": {
+        "n": 8,
+        "mean": 19.61663366612629,
+        "p50": 15.486824146006256,
+        "p95": 43.40988262938916,
+        "min": 4.570992921013385,
+        "max": 54.512485763058066
+      },
+      "ttft": {
+        "n": 8,
+        "mean": 0.29988504262291826,
+        "p50": 0.28623155294917524,
+        "p95": 0.3642410870583262,
+        "min": 0.23483801598194987,
+        "max": 0.37289282807614654
+      }
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 499595,
+    "completion_tokens": 48751,
+    "total_tokens": 548346
+  },
+  "engine": {
+    "running": {
+      "n": 711,
+      "mean": 10.483825597749648,
+      "p50": 11.0,
+      "p95": 18.0,
+      "min": 0.0,
+      "max": 24.0
+    },
+    "waiting": {
+      "n": 711,
+      "mean": 0.810126582278481,
+      "p50": 0.0,
+      "p95": 8.0,
+      "min": 0.0,
+      "max": 15.0
+    },
+    "kv_usage": {
+      "n": 711,
+      "mean": 0.416456786489168,
+      "p50": 0.40051679586563305,
+      "p95": 0.7364341085271318,
+      "min": 0.0,
+      "max": 0.7622739018087855
+    }
+  },
+  "preemptions_delta": 0.0,
+  "prefix_queries_delta": 499595.0,
+  "prefix_hits_delta": 112112.0,
+  "max_frontend_inflight_calls": 24,
+  "max_frontend_pending": 7,
+  "max_tools_inflight": 11,
+  "control_observations": {
+    "admissions_by_target": {
+      "24": 80
+    },
+    "admissions_with_nonzero_wait": 6,
+    "max_active_child_sessions": 24,
+    "session_wait_seconds": {
+      "n": 24,
+      "mean": 0.0004075267303657408,
+      "p50": 0.00041224597953259945,
+      "p95": 0.000416504981694743,
+      "min": 0.0003958779852837324,
+      "max": 0.00041790492832660675
+    },
+    "max_history_claimed_tokens": 204624,
+    "max_history_soft_target_overshoot_tokens": 4624
+  },
+  "limitation": "Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.",
+  "cache_by_stage": {
+    "query": {
+      "calls": 24,
+      "calls_with_cache_accounting": 24,
+      "cached_prompt_tokens": 0,
+      "accounted_prompt_tokens": 7443,
+      "cached_fraction": 0.0,
+      "cached_tokens_per_call": {
+        "n": 24,
+        "mean": 0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "created_cache_tokens": 0
+    },
+    "draft": {
+      "calls": 24,
+      "calls_with_cache_accounting": 24,
+      "cached_prompt_tokens": 0,
+      "accounted_prompt_tokens": 222754,
+      "cached_fraction": 0.0,
+      "cached_tokens_per_call": {
+        "n": 24,
+        "mean": 0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "created_cache_tokens": 215600
+    },
+    "evidence": {
+      "calls": 24,
+      "calls_with_cache_accounting": 24,
+      "cached_prompt_tokens": 112112,
+      "accounted_prompt_tokens": 259851,
+      "cached_fraction": 0.431447252463912,
+      "cached_tokens_per_call": {
+        "n": 24,
+        "mean": 4671.333333333333,
+        "p50": 3136.0,
+        "p95": 10858.399999999998,
+        "min": 0,
+        "max": 10976
+      },
+      "created_cache_tokens": 137200
+    },
+    "synthesis": {
+      "calls": 8,
+      "calls_with_cache_accounting": 8,
+      "cached_prompt_tokens": 0,
+      "accounted_prompt_tokens": 9547,
+      "cached_fraction": 0.0,
+      "cached_tokens_per_call": {
+        "n": 8,
+        "mean": 0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "created_cache_tokens": 6272
+    }
+  },
+  "source_verification": {
+    "tool_calls": 24,
+    "draft_parse_errors": 0,
+    "quote_checks": 72,
+    "valid_quotes": 51,
+    "valid_quote_fraction": 0.7083333333333334,
+    "actual_cpu_seconds": {
+      "n": 24,
+      "mean": 0.001964613067684695,
+      "p50": 0.0019814755069091916,
+      "p95": 0.0027388684335164725,
+      "min": 0.0008956750389188528,
+      "max": 0.002782618044875562
+    },
+    "elapsed_seconds": {
+      "n": 24,
+      "mean": 11.81999653154829,
+      "p50": 11.972382362000644,
+      "p95": 13.898496042384068,
+      "min": 9.343900225008838,
+      "max": 14.246027749031782
+    },
+    "injected_delay_seconds": {
+      "n": 24,
+      "mean": 11.815396394271161,
+      "p50": 11.968538354141902,
+      "p95": 13.892285651921364,
+      "min": 9.339381525693156,
+      "max": 14.240921498061219
+    },
+    "scope": "Source provenance only; answer correctness is scored separately."
+  },
+  "quality_protocol": "Strict option-label accuracy; hidden labels used only by offline analysis.",
+  "measured_engine_queue_seconds": {
+    "n": 80,
+    "mean": 1.821771716560761,
+    "p50": 1.3991433661431074e-05,
+    "p95": 13.662784514011578,
+    "min": 4.792003892362118e-06,
+    "max": 17.85507150599733
+  },
+  "prompt_measurement": {
+    "checked_calls": 80,
+    "mismatches": 0,
+    "tokenization_overhead_seconds": {
+      "n": 80,
+      "mean": 0.13478911397105547,
+      "p50": 0.09938978700665757,
+      "p95": 0.34571467104833564,
+      "min": 0.016315783956088126,
+      "max": 0.4507698330562562
+    }
+  },
+  "trace_audit": {
+    "run_id": "v020-delay-history200k",
+    "passed": true,
+    "violations": [],
+    "request_count": 80,
+    "response_count": 80,
+    "root_count": 8,
+    "tool_count": 48,
+    "trace_semantics_version": 2,
+    "agent_execution_count": 32,
+    "call_stages": {
+      "query": 24,
+      "draft": 24,
+      "evidence": 24,
+      "synthesis": 8
+    },
+    "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+  },
+  "history_return_audit": {
+    "run_id": "v020-delay-history200k",
+    "policy": "history_budget",
+    "complete_history_returns": 24,
+    "expected_history_returns": 24,
+    "returns_with_zero_cache": 12,
+    "returns_with_unknown_cache": 0,
+    "returns_exposed_to_new_cold_drafts_in_gap": 8,
+    "token_prefix_audit_available": false,
+    "draft_to_return_gap_seconds": {
+      "n": 24,
+      "mean": 11.905741213748115,
+      "p50": 12.0602696040296,
+      "p95": 13.99706217678031,
+      "min": 9.433024808997288,
+      "max": 14.310786203015596
+    },
+    "ready_to_submit_seconds": {
+      "n": 24,
+      "mean": 0.001477775755726422,
+      "p50": 0.0014284695498645306,
+      "p95": 0.0020680396177340295,
+      "min": 0.0010785290505737066,
+      "max": 0.0022983739618211985
+    },
+    "source_check_seconds": {
+      "n": 24,
+      "mean": 11.81999653154829,
+      "p50": 11.972382362000644,
+      "p95": 13.898496042384068,
+      "min": 9.343900225008838,
+      "max": 14.246027749031782
+    },
+    "cold_drafts_submitted_in_gap": {
+      "n": 24,
+      "mean": 0.625,
+      "p50": 0.0,
+      "p95": 2.0,
+      "min": 0,
+      "max": 3
+    },
+    "other_prompt_tokens_submitted_in_gap": {
+      "n": 24,
+      "mean": 47810.75,
+      "p50": 41278.0,
+      "p95": 110159.14999999998,
+      "min": 0,
+      "max": 124832
+    },
+    "return_engine_queue_seconds": {
+      "n": 24,
+      "mean": 7.525571466734012e-06,
+      "p50": 6.160931661725044e-06,
+      "p95": 1.3429875252768394e-05,
+      "min": 4.792003892362118e-06,
+      "max": 1.6825972124934196e-05
+    },
+    "scope": "Post-run exposure measurements, not an eviction event attribution or an online predictor. Observed metric boundaries can enclose unrelated work. Actual cache accounting is reported separately from common input prefixes and from provenance/answer quality."
+  }
+}

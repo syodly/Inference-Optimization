@@ -1,0 +1,11 @@
+{
+  "run_id": "v017-mixed-return18",
+  "args": [
+    "--policy",
+    "return_priority",
+    "--cap",
+    "18"
+  ],
+  "purpose": "混合上下文的较窄强回流基线",
+  "interpretation": "同样一百二十秒老化，以十八在途调用与二十四上限直接比较，防止只用粗糙并发基线衬托新机制。所有必做工作和真实长度测量相同。"
+}

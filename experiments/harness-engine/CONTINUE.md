@@ -1,5 +1,20 @@
 # 当前执行状态（2026-10-29，持续迭代）
 
+## 最新接续点：服务器时间 2026-10-29 10:32
+
+- v020七轮闭环和v021十一轮固定工作量回放已全部完成并同步本地，不要按下面早期记录重跑。新执行语义、账本和输入/配额审计全通过。
+- v021的短任务独占34.89秒、混合138.43–140.50秒；痛点成立。预算137.58秒、回流24为138.17秒，预算独立收益未成立。分组对照与图已生成：`results/v021-interference.*`及`results/figures-v021/`，见两篇v020/v021结果笔记。
+- 当前运行v024共享引擎八轮批次，由`continue_shared.py`（PID1889951）在前批结束后启动。状态`state/batch-shared-load-v024.json`，当时进入`v024-shared-return24`。勿另外启动争用引擎的实验。
+- 已结束target-only及shared-native-a：前者目标145.76秒；后者目标236.34秒/背景257.39秒，均为完整闭环，输出量不同，尚不作同工作量因果结论。原始日志仍在远端，各控制器独立账本和Agent执行审计通过。
+- 新`shared_replay.py`/`shared_replay_batch.py`及`configs/shared-replay-v025.json`准备下一批九轮同工作量共享实验，双方固定请求及解码量，单独移除一组验证干扰，再比较强回流、压力、预算、窗口。`offline_replay_inputs.py`对完整200次输入重建全通过，不把该CPU验证冒充GPU性能实验。
+- `after_batch.py`负责等待v024全部完成后再启动v025；部署/启动状态请检查`state/continuation-shared-replay-v025.json`。如果状态不存在则尚未启动，勿重复创建。
+- 共享实验的脚本为`shared.py`，网页已增加共享类型和两组耗时/质量，尚需拉取最新完整结果并浏览器回归验证、提交推送。没有把回放混入闭环答题表。
+- `token_audit.py`新增可选`--local-tokenizer`，可使用已下载权重的CPU tokenizer；尚未执行新版，不能当作新证据。不要对正在计时的引擎额外发送批量tokenize。
+- 当前引擎未重启，仍仅GPU0/1、Qwen3.8-27B BF16、vLLM0.32、64K/48seq/8192batched tokens。检查实际混合注意力缓存代码发现共享junction开关受EAGLE等条件约束，不能以打开一个无效参数声称补了后端强基线。
+- 研究目标保持active，用户只要求继续，没有要求多Agent。每轮仍记录约300字，不以某一批结束为整体完成。
+
+## 较早接续记录（保留来龙去脉，以最新段落为准）
+
 用户要求在 songprojgpu1 真实实验，短轮次，逐项验证痛点，先证据后机制，每轮约 300 字记录，直到用户手动停止。完整约束见 AGENTS.md。当前目标仍为 active，不要把阶段结果当作任务完成。
 
 - 远端目录 `/home/Liangyijia_Hu/harness-engine`；SSH 配置已经可用。模型和隔离环境已装好，不重复下载。
@@ -20,6 +35,10 @@
 - v017后执行已上传configs/tool-return-v020.json，六轮独立短实验，真实来源工具后注入12±3秒，对比native重复、return18、session18、history200k和history_pressure。注入不提供给控制器、不冒充自然工具痛点。再考虑旧v010的56调用回放及同信息/同展开权限后端强对照。不得只用阶段优先级宣称前端独有优势。
 - 网页增加v018/v019关键负结果、按实际质量协议辨别v016长文、混合任务分组得分及筛选；本地索引65个闭环轮次。Edge无窗口渲染验证17节点/18箭头、展开原始prompt、混合筛选，移动端无页面溢出、无JS错误。截图在evidence/web-v019，已重拍等待关闭动画结束，显示实际16题结果。新改动即将提交推送。
 - 本地另有ledger-v2测量改动待下一批部署：额度申请/增长/释放事件及总账审计、软目标超出量。不要在v017中途替换scheduler/analyze/audit，保持批次内稳定；v017结束后部署再启动v020。replay.py的分组独立对照与预算/长度测量支持已上传但尚未运行，configs/mixed-replay-v021.json也已上传，必须完整执行验证，不能把代码当实测结果。
+- 新增自动衔接器 `continue_batches.py`，PID1306985，状态`state/continuation-v020-v021.json`目前waiting。它会等v017声明的12轮全部完成，再从`stage-v2/`部署已经上传的十个文件，先运行v020六轮闭环，再运行v021九轮固定工作量对照；不要另行手动启动这两批造成争用。每轮几分钟，批次由多轮组成。STOP阻止后续轮次，失败不会自动重跑。日志`logs/continuation-v020-v021.log`。
+- `stage-v2`还包含DSH语义修复：新`run.py/replay.py`统一使用`model_calls`计数、`model_call_start/end`和`agent_execution_start/end`两层日志，配置`trace_semantics_version=2`；`audit.py`检查Agent执行区间包含全部模型/工具。必须成套部署，不要把新的run.py与旧的replay.py混用。旧v017每模型调用误名activation的原始日志保留，并在网站及notes/dsh-execution-semantics-v2.md说明。
+- v017又完成：fixed18均值184.37秒/P95 219.14；session18=142.62/P95 237.84；return24测量=138.30/213.26；return24无测量=134.99/211.07；return18=137.90/203.00；size18=127.68/224.78（短58.79、长196.57）。原生无测量=168.57/216.99（短137.76、长199.38）。还不能判断历史预算收益，强排序已解释许多差距；size18的P95较差。当前size24在运行，随后history200k/history_pressure。
+- 本地已同步71个闭环轮次，`compare_mixed.py`已生成results/v017-comparison.md/json，分组报告质量与工作量。v018作图代码与PNG/SVG/JSON已生成并视觉检查；网页新增展开图和DSH语义核对，Edge无窗口验证无JS错误、17节点/18箭头及原始Prompt展开。上次推送为b8f6f5d，当前新数据和第二版源代码待下一次提交。
 - 当前引擎实际缓存容量282532 token，旧v010为217725；启动参数虽近似相同，不能跨重启直接归因。run.py已新增实际启动容量证据，待部署。新引擎PID1036307，仅GPU0/1。
 - 后续优先项：精确 token 前缀一致性审计；八题长文的相同请求与依赖回放；确认工具回流是否损失缓存后比较 session 工作集上限、回流优先、资源/在途状态感知。若没有痛点，记录负结果并扩大结构多样性而非制造空工作。
 - 所有原始 prompt/response/tools/events/metrics 和代码快照在远端 runs/；本地 results/ 同步摘要及一条完整根任务。RESEARCH_LOG.md 当前以远端为主，每批结束后拉取，避免覆盖远端新记录。

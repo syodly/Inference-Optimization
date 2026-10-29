@@ -36,9 +36,9 @@ class ReplayHarness(Harness):
                     if self.args.measure_prompts else 0)
         await self.controller.admit(root, session, stage, measured)
         call_id = recorded['call_id']
-        self.activation += 1
-        self.journal.write('sessions', event='activation_start', root_id=root, session_id=session,
-                           activation_id=call_id, messages=messages)
+        self.model_calls += 1
+        self.journal.write('sessions', event='model_call_start', root_id=root, session_id=session,
+                           call_id=call_id, messages=messages)
         try:
             quota = frozen['usage']['completion_tokens']
             payload = {**original, 'max_tokens': quota, 'min_tokens': quota, 'ignore_eos': True}
@@ -63,8 +63,8 @@ class ReplayHarness(Harness):
             return frozen
         finally:
             self.controller.release()
-            self.journal.write('sessions', event='activation_end', root_id=root, session_id=session,
-                               activation_id=call_id)
+            self.journal.write('sessions', event='model_call_end', root_id=root, session_id=session,
+                               call_id=call_id)
 
 
 async def execute(args):
@@ -94,6 +94,8 @@ async def execute(args):
     original_namespace.out = args.out
     original_namespace.policy, original_namespace.cap = args.policy, args.cap
     original_namespace.session_cap = args.session_cap
+    if args.url:
+        original_namespace.url = args.url
     original_namespace.starvation_seconds = args.starvation_seconds
     original_namespace.measure_prompts = args.measure_prompts
     selected = [tasks[k] for k in cfg['task_ids']]
@@ -103,10 +105,14 @@ async def execute(args):
     controller = Controller(args.policy, args.cap, engine, journal, args.session_cap, args.starvation_seconds,
                             args.history_budget_tokens, args.history_output_reserve)
     replay_cfg = {**cfg, 'out': str(args.out), 'policy': args.policy, 'cap': args.cap,
+                  'url': original_namespace.url,
                   'session_cap': args.session_cap, 'started': time.time(),
                   'starvation_seconds': args.starvation_seconds,
                   'measure_prompts': args.measure_prompts, 'history_budget_tokens': args.history_budget_tokens,
                   'history_output_reserve': args.history_output_reserve,
+                  'trace_semantics_version': 2,
+                  'expected_agent_executions': len(selected) * (1 if cfg['workflow'] == 'direct' else cfg['branches'] + 1),
+                  'agent_execution_definition': 'One assigned parent/child research turn; not the entire DSH activation residency.',
                   'replay': {'source_trace': str(source), 'source_config_sha256': hashlib.sha256((source / 'config.json').read_bytes()).hexdigest(),
                              'frozen_prompts': True, 'fixed_completion_token_quota': True,
                              'selected_dataset': args.only_dataset, 'source_root_count': source_count,
@@ -192,9 +198,10 @@ async def execute(args):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--trace', type=Path, required=True)
+    ap.add_argument('--url', help='Optional equivalent-admission broker endpoint; underlying model and prompts stay fixed')
     ap.add_argument('--out', type=Path, required=True)
     ap.add_argument('--policy', choices=['native', 'fixed', 'pressure', 'progress', 'backend_priority',
-                                        'session_window', 'return_priority', 'size_return',
+                                        'session_window', 'session_return', 'return_priority', 'size_return',
                                         'history_budget', 'history_pressure'], default='native')
     ap.add_argument('--cap', type=int, default=12)
     ap.add_argument('--session-cap', type=int, default=12)

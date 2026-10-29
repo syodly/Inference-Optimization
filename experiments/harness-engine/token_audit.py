@@ -11,7 +11,7 @@ from analyze import read, distribution
 from engine import tokenize_payload
 
 
-async def audit_tokens(directory, url):
+async def audit_tokens(directory, url, local_tokenizer=None):
     requests = read(directory / 'requests.jsonl')
     responses = {r['call_id']: r for r in read(directory / 'responses.jsonl')}
     gate = asyncio.Semaphore(3)
@@ -24,7 +24,17 @@ async def audit_tokens(directory, url):
                 result.raise_for_status()
                 data = result.json()
             return row['call_id'], data['tokens']
-        token_map = dict(await asyncio.gather(*(tokenize(r) for r in requests)))
+        if local_tokenizer is None:
+            token_map = dict(await asyncio.gather(*(tokenize(r) for r in requests)))
+        else:
+            from transformers import AutoTokenizer
+            tokenizer = AutoTokenizer.from_pretrained(str(local_tokenizer), local_files_only=True)
+            token_map = {}
+            for row in requests:
+                payload = tokenize_payload(row['payload'])
+                token_map[row['call_id']] = tokenizer.apply_chat_template(
+                    payload['messages'], tokenize=True, add_generation_prompt=True,
+                    **payload.get('chat_template_kwargs', {}))
     previous = {}
     records = []
     for r in requests:
@@ -49,6 +59,8 @@ async def audit_tokens(directory, url):
         previous[r['node_id']] = r
     summary = {
         'run_id': directory.name, 'calls': len(records),
+        'tokenization_backend': 'local pinned model tokenizer' if local_tokenizer else 'actual engine /tokenize',
+        'local_tokenizer': str(local_tokenizer) if local_tokenizer else None,
         'all_token_counts_match_usage': all(r['token_count_matches_usage'] for r in records),
         'stage': {s: {
             'calls': sum(r['stage'] == s for r in records),
@@ -67,5 +79,7 @@ if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('run', type=Path)
     ap.add_argument('--url', default='http://127.0.0.1:18081')
+    ap.add_argument('--local-tokenizer', type=Path,
+                    help='Use the pinned model tokenizer on CPU without requests to an active timed engine')
     args = ap.parse_args()
-    asyncio.run(audit_tokens(args.run, args.url))
+    asyncio.run(audit_tokens(args.run, args.url, args.local_tokenizer))

@@ -66,26 +66,26 @@ class Controller:
         return not self.history_claims or sum(self.history_claims.values()) + self.claim_size(p.prompt_tokens) <= self.history_target()
 
     def choose(self, candidates):
-        if self.policy in ['progress', 'return_priority', 'size_return', 'history_budget', 'history_pressure']:
+        if self.policy in ['progress', 'return_priority', 'session_return', 'size_return', 'history_budget', 'history_pressure']:
             now = time.monotonic()
             return min(candidates, key=lambda p: (
                 0 if now - p.ready > self.starvation_seconds else 1,
                 0 if p.stage == "synthesis" else 1,
-                0 if self.policy in ['return_priority', 'size_return', 'history_budget', 'history_pressure'] and p.stage == 'evidence' else 1,
+                0 if self.policy in ['return_priority', 'session_return', 'size_return', 'history_budget', 'history_pressure'] and p.stage == 'evidence' else 1,
                 self.remaining.get(p.root_id, 99) if self.policy == 'progress' else 0,
                 p.prompt_tokens if self.policy == 'size_return' else 0, p.ready))
         return min(candidates, key=lambda p: p.ready)
 
     async def loop(self):
         while not self.closed:
-            while self.session_pending and (self.policy != 'session_window' or len(self.sessions) < self.session_cap):
+            while self.session_pending and (self.policy not in ['session_window', 'session_return'] or len(self.sessions) < self.session_cap):
                 p = self.session_pending.pop(0)
                 if p.future.cancelled():
                     continue
                 self.sessions.add(p.node_id)
                 self.journal.write('events', event='session_admitted', root_id=p.root_id, node_id=p.node_id,
                                    session_wait=time.monotonic() - p.ready, active_sessions=len(self.sessions),
-                                   session_cap=self.session_cap if self.policy == 'session_window' else None)
+                                   session_cap=self.session_cap if self.policy in ['session_window', 'session_return'] else None)
                 p.future.set_result(None)
             while self.pending and self.running < self.target():
                 candidates = [p for p in self.pending if self.eligible(p)]

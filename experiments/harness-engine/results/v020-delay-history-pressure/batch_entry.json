@@ -1,0 +1,14 @@
+{
+  "run_id": "v020-delay-history-pressure",
+  "args": [
+    "--policy",
+    "history_pressure",
+    "--cap",
+    "24",
+    "--history-budget-tokens",
+    "200000",
+    "--measure-prompts"
+  ],
+  "purpose": "长工具间隔中的引擎压力联合反馈",
+  "interpretation": "在相同历史预算上根据实际缓存占用和引擎等待收缩冷draft额度。回流可以推进至释放，禁止通过删减分支换速度。只有优于静态预算和强调优排序，才构成引擎反馈额外价值的初步证据；同时报告过度退让和长尾。"
+}

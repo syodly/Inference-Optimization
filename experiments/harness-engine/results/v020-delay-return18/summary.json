@@ -1,0 +1,377 @@
+{
+  "run_id": "v020-delay-return18",
+  "policy": "return_priority",
+  "cap": 18,
+  "expected_roots": 8,
+  "completed_root_records": 8,
+  "engine_errors": 0,
+  "root_errors": 0,
+  "parse_errors": 0,
+  "model_calls": 80,
+  "expected_model_calls": 80,
+  "length_finishes": 0,
+  "empty_content_completions": 0,
+  "quality": {
+    "em": 0.75,
+    "f1": 0.75,
+    "support_title_recall": null
+  },
+  "root_latency_seconds": {
+    "n": 8,
+    "mean": 163.49887433601543,
+    "p50": 161.77906179247657,
+    "p95": 196.2696673769038,
+    "min": 130.27569438994396,
+    "max": 198.77407439006492
+  },
+  "valid_json_root_latency_seconds": {
+    "n": 8,
+    "mean": 163.49887433601543,
+    "p50": 161.77906179247657,
+    "p95": 196.2696673769038,
+    "min": 130.27569438994396,
+    "max": 198.77407439006492
+  },
+  "exact_correct_root_latency_seconds": {
+    "n": 6,
+    "mean": 155.08209011684326,
+    "p50": 150.07386891706847,
+    "p95": 191.53271008477896,
+    "min": 130.27569438994396,
+    "max": 198.77407439006492
+  },
+  "batch_makespan_seconds": 198.77456428890582,
+  "frontend_wait_seconds": {
+    "n": 80,
+    "mean": 4.7204619417287175,
+    "p50": 0.07066084002144635,
+    "p95": 31.77675368785274,
+    "min": 0.00010851107072085142,
+    "max": 46.98022674000822
+  },
+  "model_ttft_seconds": {
+    "n": 80,
+    "mean": 2.723827910757973,
+    "p50": 1.5180695134913549,
+    "p95": 11.520248696464112,
+    "min": 0.15527828899212182,
+    "max": 15.962120353942737
+  },
+  "stage": {
+    "query": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 5.078164632815363,
+        "p50": 1.405272060947027,
+        "p95": 17.50487834693631,
+        "min": 1.1631851039128378,
+        "max": 18.725615340983495
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 0.739519113485585,
+        "p50": 0.9427497269934975,
+        "p95": 0.9436982938670553,
+        "min": 0.15527828899212182,
+        "max": 0.9452648130245507
+      }
+    },
+    "draft": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 66.12615295832317,
+        "p50": 66.62751935294364,
+        "p95": 96.9488298114389,
+        "min": 31.39020112203434,
+        "max": 120.72679287998471
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 6.201368661655579,
+        "p50": 5.074705943465233,
+        "p95": 14.96129517443478,
+        "min": 1.334250287967734,
+        "max": 15.962120353942737
+      }
+    },
+    "evidence": {
+      "calls": 24,
+      "latency": {
+        "n": 24,
+        "mean": 29.4338093942885,
+        "p50": 25.619218913954683,
+        "p95": 52.77299215049133,
+        "min": 11.174613252049312,
+        "max": 59.75635248294566
+      },
+      "ttft": {
+        "n": 24,
+        "mean": 2.038402389836847,
+        "p50": 1.9351571634761058,
+        "p95": 3.0820450406346933,
+        "min": 0.4513271830510348,
+        "max": 3.8311622469918802
+      }
+    },
+    "synthesis": {
+      "calls": 8,
+      "latency": {
+        "n": 8,
+        "mean": 21.551387848012382,
+        "p50": 16.736948232515715,
+        "p95": 38.60943823797861,
+        "min": 6.0752534460043535,
+        "max": 38.69002762099262
+      },
+      "ttft": {
+        "n": 8,
+        "mean": 0.30040861264569685,
+        "p50": 0.3018772614886984,
+        "p95": 0.31903425993514245,
+        "min": 0.27581059804651886,
+        "max": 0.3192517380230129
+      }
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 499623,
+    "completion_tokens": 49091,
+    "total_tokens": 548714
+  },
+  "engine": {
+    "running": {
+      "n": 712,
+      "mean": 12.450842696629213,
+      "p50": 15.5,
+      "p95": 18.0,
+      "min": 0.0,
+      "max": 18.0
+    },
+    "waiting": {
+      "n": 712,
+      "mean": 0.29213483146067415,
+      "p50": 0.0,
+      "p95": 2.0,
+      "min": 0.0,
+      "max": 9.0
+    },
+    "kv_usage": {
+      "n": 712,
+      "mean": 0.4852364776587405,
+      "p50": 0.6149870801033592,
+      "p95": 0.7881136950904393,
+      "min": 0.0,
+      "max": 0.8010335917312661
+    }
+  },
+  "preemptions_delta": 0.0,
+  "prefix_queries_delta": 499623.0,
+  "prefix_hits_delta": 20384.0,
+  "max_frontend_inflight_calls": 18,
+  "max_frontend_pending": 24,
+  "max_tools_inflight": 6,
+  "control_observations": {
+    "admissions_by_target": {
+      "18": 80
+    },
+    "admissions_with_nonzero_wait": 44,
+    "max_active_child_sessions": 24,
+    "session_wait_seconds": {
+      "n": 24,
+      "mean": 0.00039619220478925854,
+      "p50": 0.00039598101284354925,
+      "p95": 0.00039948048652149737,
+      "min": 0.00039095303509384394,
+      "max": 0.0004000419285148382
+    },
+    "max_history_claimed_tokens": 0,
+    "max_history_soft_target_overshoot_tokens": 0
+  },
+  "limitation": "Fixed mandatory DAG, actual greedy outputs may differ under floating point batching; compare traces/tokens.",
+  "cache_by_stage": {
+    "query": {
+      "calls": 24,
+      "calls_with_cache_accounting": 24,
+      "cached_prompt_tokens": 0,
+      "accounted_prompt_tokens": 7443,
+      "cached_fraction": 0.0,
+      "cached_tokens_per_call": {
+        "n": 24,
+        "mean": 0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "created_cache_tokens": 0
+    },
+    "draft": {
+      "calls": 24,
+      "calls_with_cache_accounting": 24,
+      "cached_prompt_tokens": 0,
+      "accounted_prompt_tokens": 222753,
+      "cached_fraction": 0.0,
+      "cached_tokens_per_call": {
+        "n": 24,
+        "mean": 0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "created_cache_tokens": 215600
+    },
+    "evidence": {
+      "calls": 24,
+      "calls_with_cache_accounting": 24,
+      "cached_prompt_tokens": 20384,
+      "accounted_prompt_tokens": 259924,
+      "cached_fraction": 0.07842292362382851,
+      "cached_tokens_per_call": {
+        "n": 24,
+        "mean": 849.3333333333334,
+        "p50": 0.0,
+        "p95": 7996.79999999998,
+        "min": 0,
+        "max": 10976
+      },
+      "created_cache_tokens": 228928
+    },
+    "synthesis": {
+      "calls": 8,
+      "calls_with_cache_accounting": 8,
+      "cached_prompt_tokens": 0,
+      "accounted_prompt_tokens": 9503,
+      "cached_fraction": 0.0,
+      "cached_tokens_per_call": {
+        "n": 8,
+        "mean": 0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "created_cache_tokens": 6272
+    }
+  },
+  "source_verification": {
+    "tool_calls": 24,
+    "draft_parse_errors": 0,
+    "quote_checks": 69,
+    "valid_quotes": 46,
+    "valid_quote_fraction": 0.6666666666666666,
+    "actual_cpu_seconds": {
+      "n": 24,
+      "mean": 0.0019938863309410713,
+      "p50": 0.002103385515511036,
+      "p95": 0.002788270497694611,
+      "min": 0.0008368119597434998,
+      "max": 0.003589089959859848
+    },
+    "elapsed_seconds": {
+      "n": 24,
+      "mean": 11.822436334177231,
+      "p50": 11.978807663486805,
+      "p95": 13.901421579904854,
+      "min": 9.344235789962113,
+      "max": 14.250234163017012
+    },
+    "injected_delay_seconds": {
+      "n": 24,
+      "mean": 11.815396394271161,
+      "p50": 11.968538354141902,
+      "p95": 13.892285651921364,
+      "min": 9.339381525693156,
+      "max": 14.240921498061219
+    },
+    "scope": "Source provenance only; answer correctness is scored separately."
+  },
+  "quality_protocol": "Strict option-label accuracy; hidden labels used only by offline analysis.",
+  "measured_engine_queue_seconds": {
+    "n": 80,
+    "mean": 0.6910488199922838,
+    "p50": 7.6125143095850945e-06,
+    "p95": 6.2475085712096154,
+    "min": 4.756031557917595e-06,
+    "max": 11.500795810949057
+  },
+  "trace_audit": {
+    "run_id": "v020-delay-return18",
+    "passed": true,
+    "violations": [],
+    "request_count": 80,
+    "response_count": 80,
+    "root_count": 8,
+    "tool_count": 48,
+    "trace_semantics_version": 2,
+    "agent_execution_count": 32,
+    "call_stages": {
+      "query": 24,
+      "draft": 24,
+      "evidence": 24,
+      "synthesis": 8
+    },
+    "scope": "Causal and accounting consistency, not proof of model quality or novelty."
+  },
+  "history_return_audit": {
+    "run_id": "v020-delay-return18",
+    "policy": "return_priority",
+    "complete_history_returns": 24,
+    "expected_history_returns": 24,
+    "returns_with_zero_cache": 22,
+    "returns_with_unknown_cache": 0,
+    "returns_exposed_to_new_cold_drafts_in_gap": 8,
+    "token_prefix_audit_available": false,
+    "draft_to_return_gap_seconds": {
+      "n": 24,
+      "mean": 13.95068927432294,
+      "p50": 13.748407419014256,
+      "p95": 19.532415866531665,
+      "min": 9.346276678028516,
+      "max": 20.210225758957677
+    },
+    "ready_to_submit_seconds": {
+      "n": 24,
+      "mean": 2.1274329290608875,
+      "p50": 1.589725375000853,
+      "p95": 6.666793765051986,
+      "min": 0.0011985169257968664,
+      "max": 7.004084433079697
+    },
+    "source_check_seconds": {
+      "n": 24,
+      "mean": 11.822436334177231,
+      "p50": 11.978807663486805,
+      "p95": 13.901421579904854,
+      "min": 9.344235789962113,
+      "max": 14.250234163017012
+    },
+    "cold_drafts_submitted_in_gap": {
+      "n": 24,
+      "mean": 0.875,
+      "p50": 0.0,
+      "p95": 3.849999999999998,
+      "min": 0,
+      "max": 4
+    },
+    "other_prompt_tokens_submitted_in_gap": {
+      "n": 24,
+      "mean": 43706.5,
+      "p50": 48182.0,
+      "p95": 63167.45,
+      "min": 2412,
+      "max": 74295
+    },
+    "return_engine_queue_seconds": {
+      "n": 24,
+      "mean": 6.652243124941985e-06,
+      "p50": 6.0344464145600796e-06,
+      "p95": 8.675939170643686e-06,
+      "min": 5.6729186326265335e-06,
+      "max": 8.816947229206562e-06
+    },
+    "scope": "Post-run exposure measurements, not an eviction event attribution or an online predictor. Observed metric boundaries can enclose unrelated work. Actual cache accounting is reported separately from common input prefixes and from provenance/answer quality."
+  }
+}

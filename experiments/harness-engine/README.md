@@ -6,9 +6,13 @@
 
 当前服务为 Qwen3.8-27B BF16、双 A800、图执行、64K 上下文、48 条引擎序列上限、8192 batched tokens，启用前缀缓存、分块 prefill、阶段优先级和逐请求遥测。最新工作是 `verified`：三个持久子 Session 各执行 query → BM25 → draft → 来源核验 → evidence，父 Session 等待全部分支，每个根任务十次必做调用。长文来自固定版本 LongBench-v2，原始全文未截断或补字。来源核验仅判断引句出处，答案由隐藏标签离线评分；两者分别报告。
 
-最新状态见 [CONTINUE.md](CONTINUE.md)，网页见 [真实流程与原始调用](../../LLM_Optimization_Milestone/topic1-experiments.html)。v012自然八题观察到evidence零命中和22次抢占。v015固定工作量回放保留窗口18约7%的均值差距，但v016加强普通回流排序后已接近窗口结果；v018正在固定工作量复核。v019审计发现自然工具间隔仅约9毫秒，不能归因为长工具等待。v017测试长短上下文混合与虚拟历史预算，v020单独干预工具等待；按实测继续修正归因。
+最新状态见 [CONTINUE.md](CONTINUE.md)，网页见 [真实流程与原始调用](../../LLM_Optimization_Milestone/topic1-experiments.html)。v020已完成七轮显式工具等待干预；v021已完成十一轮同输入、同生成配额的混合回放。短任务独占34.89秒、混合138.43–140.50秒，干扰成立；历史预算137.58秒与普通回流24的138.17秒近似，复杂机制的独立优势尚未成立。详见 [分组归因](notes/v021-interference-outcome.md) 与 [工具等待闭环](notes/v020-tool-delay-outcome.md)。
+
+当前v024顺序测试独立控制器共享引擎，目标16题和背景4题均完成有用研究，分别报告质量、等待和对别人的影响。接着v025固定双方输入和解码量做因果对照。v026则比较同信息、同请求/Session准入权限放在前端或引擎侧代理；代理不是原生vLLM逐token调度器。未执行的程序和未结束轮次不当作实测结果。每个轮次仍为分钟级目标，多轮批次的总时长不等于单轮规模。
 
 这是自行实现、与 DSH 动作相似的 Harness，**不声称复现完整 DSH**。公开 HotpotQA 上下文被固定分为三个文档分片。每个任务创建三个持久子 Session，依次执行真实模型生成检索词、真实 BM25 工具、真实模型证据整理；父 Session 等待全部子任务，调用模型给出带来源的答案。默认每任务七次模型调用，全部为必做工作。该受控 DAG 用于隔离派发行为；更复杂的动态图和质量驱动展开放在独立实验。
+
+这里模拟多份独立研究任务共享同一引擎。DSH文档的`maxActiveSubagents=8`按每棵任务树计数，在本图三个子任务下不会触发；我们增加的全局Session窗口是实验策略。一次子Agent执行包含模型和工具多个阶段，不能等同单次模型请求。旧日志的`activation_start/end`实际是模型请求区间，保留原样并按此解释；第二版分别写`model_call`与`agent_execution`，后者也不冒充DSH完整驻留生命周期。见[语义核对](notes/dsh-execution-semantics-v2.md)。
 
 每次调用保存完整历史、采样参数、响应、usage 和首 token 时间。另存任务、Session、activation、工具、汇合事件与真实 Prometheus 指标。`frontend_wait` 是 Harness 等待；API 首 token 时间包含后端队列、prefill 和网络开销，不直接称为服务内部排队时间。指标缺失保存为空，不能编造。父任务时延包括全部等待、工具与汇总过程。
 

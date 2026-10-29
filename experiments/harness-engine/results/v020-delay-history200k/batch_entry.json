@@ -1,0 +1,14 @@
+{
+  "run_id": "v020-delay-history200k",
+  "args": [
+    "--policy",
+    "history_budget",
+    "--cap",
+    "24",
+    "--history-budget-tokens",
+    "200000",
+    "--measure-prompts"
+  ],
+  "purpose": "长工具间隔中的真实上下文规模计账",
+  "interpretation": "按已经形成的实际prompt长度申请二十万token虚拟历史预算，工具期间继续记账。测量接口和前端等待都算入耗时，与无测量的低开销基线比较净收益；不向控制器提供注入时长、准确返回时间或隐藏答案。"
+}

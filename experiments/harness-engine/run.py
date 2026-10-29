@@ -72,7 +72,7 @@ def verify_quotes(documents, draft):
 class Harness:
     def __init__(self, args, engine, controller, journal):
         self.args, self.engine, self.controller, self.journal = args, engine, controller, journal
-        self.activation = 0
+        self.model_calls = 0
 
     def sources(self, documents):
         if self.args.source_format == 'json':
@@ -92,10 +92,10 @@ class Harness:
                                                    root_id=root, node_id=session, stage=stage)
                     if self.args.measure_prompts else 0)
         await self.controller.admit(root, session, stage, measured)
-        self.activation += 1
+        self.model_calls += 1
         call_id = f'{root}-{session.rsplit("/", 1)[-1]}-{stage}'
-        self.journal.write('sessions', event='activation_start', root_id=root, session_id=session,
-                           activation_id=call_id, messages=messages)
+        self.journal.write('sessions', event='model_call_start', root_id=root, session_id=session,
+                           call_id=call_id, messages=messages)
         try:
             priorities = ({'query': 0, 'draft': -1, 'evidence': -2, 'synthesis': -3}
                           if self.args.workflow == 'verified' else {'query': 0, 'evidence': -1, 'synthesis': -2})
@@ -113,17 +113,21 @@ class Harness:
             return result
         finally:
             self.controller.release()
-            self.journal.write('sessions', event='activation_end', root_id=root, session_id=session,
-                               activation_id=call_id)
+            self.journal.write('sessions', event='model_call_end', root_id=root, session_id=session,
+                               call_id=call_id)
 
     async def branch(self, task, branch_index, task_index):
         root = task['task_id']
         session = f'{root}/child{branch_index}'
         await self.controller.open_session(root, session)
+        self.journal.write('sessions', event='agent_execution_start', root_id=root, session_id=session,
+                           execution_id=session+'/run0', role='child')
         try:
             return await self.branch_work(task, branch_index, task_index)
         finally:
             self.controller.close_session(root, session)
+            self.journal.write('sessions', event='agent_execution_end', root_id=root, session_id=session,
+                               execution_id=session+'/run0', role='child')
 
     async def branch_work(self, task, branch_index, task_index):
         root = task['task_id']
@@ -212,6 +216,8 @@ class Harness:
         self.journal.write('events', event='root_submit', root_id=root, task_index=index,
                            question=task['question'],
                            mandatory_children=self.args.branches if self.args.workflow != 'direct' else 0)
+        self.journal.write('sessions', event='agent_execution_start', root_id=root, session_id=root+'/parent',
+                           execution_id=root+'/parent/run0', role='parent')
         try:
             if self.args.workflow != 'direct':
                 children = await asyncio.gather(*(self.branch(task, b, index) for b in range(self.args.branches)),
@@ -256,6 +262,9 @@ class Harness:
             self.journal.write('roots', root_id=root, task_index=index, duration=time.monotonic() - start,
                                output=None, parsed=None, error=repr(exc))
             self.journal.write('events', event='root_failed', root_id=root, error=repr(exc))
+        finally:
+            self.journal.write('sessions', event='agent_execution_end', root_id=root, session_id=root+'/parent',
+                               execution_id=root+'/parent/run0', role='parent')
 
 
 async def run(args):
@@ -270,6 +279,9 @@ async def run(args):
                   tasks_sha256=hashlib.sha256(args.tasks.read_bytes()).hexdigest(),
                   expected_model_calls=len(tasks) * (1 if args.workflow == 'direct' else
                                                     args.branches * (3 if args.workflow == 'verified' else 2) + 1),
+                  trace_semantics_version=2,
+                  expected_agent_executions=len(tasks) * (1 if args.workflow == 'direct' else args.branches + 1),
+                  agent_execution_definition='One assigned parent/child research turn spanning model and tool stages; not a full DSH resident activation lifecycle.',
                   application='controlled source-grounded multi-session harness; not official DSH',
                   source_sha256={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
                                  for p in Path(__file__).parent.glob('*.py')})
@@ -313,7 +325,7 @@ async def run(args):
         stop.set()
         await poll
         await engine.sample()
-        journal.write('events', event='run_complete', model_activations=harness.activation,
+        journal.write('events', event='run_complete', model_calls=harness.model_calls,
                        expected_model_calls=config['expected_model_calls'])
     finally:
         stop.set()
@@ -335,7 +347,7 @@ def main():
     ap.add_argument('--branches', type=int, default=3)
     ap.add_argument('--top-k', type=int, default=3)
     ap.add_argument('--policy', choices=['native', 'fixed', 'pressure', 'progress', 'backend_priority',
-                                        'session_window', 'return_priority', 'size_return', 'history_budget', 'history_pressure'], default='native')
+                                        'session_window', 'session_return', 'return_priority', 'size_return', 'history_budget', 'history_pressure'], default='native')
     ap.add_argument('--cap', type=int, default=12)
     ap.add_argument('--session-cap', type=int, default=12)
     ap.add_argument('--starvation-seconds', type=float, default=10)
