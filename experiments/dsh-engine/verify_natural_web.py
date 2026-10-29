@@ -42,7 +42,12 @@ def main():
                 assert '没有创建子Agent' in page.locator('#agent-map').inner_text()
                 report['cases'].append({'case': case, 'model_nodes': models, 'tool_nodes': tools})
                 for a in page.locator('#evidence-links a').all():
-                    assert page.request.get(urljoin(page.url, a.get_attribute('href'))).status == 200
+                    evidence = urljoin(page.url, a.get_attribute('href'))
+                    # Archives are independently hash-checked offline. Check
+                    # their published availability without downloading 9 MB
+                    # repeatedly for scenarios sharing the same archive.
+                    response = page.request.head(evidence) if evidence.endswith('.tar.gz') else page.request.get(evidence)
+                    assert response.status == 200, evidence
                 page.locator('#cursor').evaluate("el=>{el.value=0;el.dispatchEvent(new Event('input'))}")
                 assert page.locator('#graph [data-node]').count() == 0
                 page.locator('#cursor').evaluate("el=>{el.value=el.max;el.dispatchEvent(new Event('input'))}")
