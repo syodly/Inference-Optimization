@@ -1,0 +1,274 @@
+{
+  "status": "interrupted_by_user",
+  "run_id": "v025-target-replay-alone",
+  "recorded_at": "2026-10-29T11:09:02.818711+08:00",
+  "eligible_for_performance_or_quality_comparison": false,
+  "reason": "User paused during the second v025 round. Partial files preserved without generating a completed summary.",
+  "remote_directory": "/home/Liangyijia_Hu/harness-engine/runs/v025-target-replay-alone",
+  "files": [
+    {
+      "path": "runs/v025-target-replay-alone/config.json",
+      "bytes": 50168,
+      "sha256": "deda3fd9691b225da45a174508aed5be63783c3d70f3e4f34e5e2ec74ac0bc49",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/events.jsonl",
+      "bytes": 305639,
+      "sha256": "d8d75411c8020023ea446cee30e7fafba06eac3270e672c40d759f4cfe11deb0",
+      "lines": 898
+    },
+    {
+      "path": "runs/v025-target-replay-alone/metrics.jsonl",
+      "bytes": 68821,
+      "sha256": "16af047fd9052c4749b4f39ecf27862fdecb82dc71787dc6d50756e3c90fd8a5",
+      "lines": 301
+    },
+    {
+      "path": "runs/v025-target-replay-alone/metrics_raw.jsonl",
+      "bytes": 2182636,
+      "sha256": "558f0eb73baa8540be37961505f048dffd77a238d602d38e4ffe2a157aad4eb8",
+      "lines": 31
+    },
+    {
+      "path": "runs/v025-target-replay-alone/replay_frozen_outputs.jsonl",
+      "bytes": 35273,
+      "sha256": "ca4fafb103292b8e4796c55f133dd20042221b4d7cbff11ecaf635d718df385c",
+      "lines": 85
+    },
+    {
+      "path": "runs/v025-target-replay-alone/requests.jsonl",
+      "bytes": 1567314,
+      "sha256": "318507bc57db38cfb2c80463dee6362ec21d0617b4123dd6d0d74604712a209e",
+      "lines": 124
+    },
+    {
+      "path": "runs/v025-target-replay-alone/responses.jsonl",
+      "bytes": 143341,
+      "sha256": "f2d95be2b03c5ca2885003734c9be23042c68f0f023f0a79a15b034dc7661770",
+      "lines": 85
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sessions.jsonl",
+      "bytes": 1676415,
+      "sha256": "b0484fdd3b6d964d02654fa5127ca3b870b49c67a6512946b15adb83157532ab",
+      "lines": 291
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/after_batch.py",
+      "bytes": 2888,
+      "sha256": "f2b1b00f3bc620a323bbc72eed85008b17903c7bf0eff7f1650bce604f2e5da2",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/analyze.py",
+      "bytes": 13023,
+      "sha256": "8ecd58b7221c50d6c2fce7dc57deb341cb6285a893ede855847be06527867e42",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/analyze_interference.py",
+      "bytes": 5351,
+      "sha256": "3c8eb3ed77cc00fd1dc6862d25b5c50da880878582e31d2be32584487e9d4731",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/audit.py",
+      "bytes": 7978,
+      "sha256": "7af164231c34e4a290792f50cd02014e79ca584791ef17aac231a1f250faa558",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/batch.py",
+      "bytes": 5627,
+      "sha256": "e5f272cd10e8c8d47cb1276484c7fb1806efa07b7aaeb233a6d89e94ce63f010",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/broker.py",
+      "bytes": 8118,
+      "sha256": "8aca53ff6d48a687d6754a87aff27369850e4ff12a93a017f0edeb3116182062",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/compare.py",
+      "bytes": 4105,
+      "sha256": "ff547c4d546d3a11170704ffa11f1974df4fa2de932957cc9271c887164e8f1d",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/compare_mixed.py",
+      "bytes": 4941,
+      "sha256": "31144079c5a608dbefea6242b8d14cdac2c118b85b6b2bd7a269f2b8ab41c24a",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/compare_replays.py",
+      "bytes": 2111,
+      "sha256": "03aeae10b44af33ce65553d841bce2b5116979604b684f170b849ef6a0632f46",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/continue_batches.py",
+      "bytes": 3264,
+      "sha256": "6a155c3750f1beb505f578963beec83b79f3217eefd7317c2557e524447451c9",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/continue_shared.py",
+      "bytes": 2682,
+      "sha256": "9fb6515a4cbb4684d461d672ad4e7216a37e18145ce5c69af38fe3f282ca6a0c",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/engine.py",
+      "bytes": 9876,
+      "sha256": "0df0ad4728de37638deac53b8ec9e55a6df0ce460471fa07bf14488cc55adf0d",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/export_run.py",
+      "bytes": 3112,
+      "sha256": "27854be1a797fc0ec4b6ba51f6e535c5d57fd2fc5645538bd5cb9a312fc509a0",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/history_audit.py",
+      "bytes": 5973,
+      "sha256": "68decdf721d0e245e113a6e4136c67ff614719e73e91a33ddaf4894a2454ccbf",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/lifecycle_audit.py",
+      "bytes": 2899,
+      "sha256": "f615bc91b878958d1cf504740732d74371e1491d815cf2d7bed1731c4b567eed",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/offline_replay_inputs.py",
+      "bytes": 3814,
+      "sha256": "54bfa51ddaceffb1533fab2449161dcb759919970643e29428def905d35a4c2e",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/offline_shared_audit.py",
+      "bytes": 4127,
+      "sha256": "2ba4ada488494cdd9bfafdf13e0815eff2698fd6c3165b28c00413ac27f61d00",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/placement_batch.py",
+      "bytes": 9244,
+      "sha256": "50c587e0291685658a0f689390e089473a6a997a2feb2c56324139463445fec2",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/plot_interference.py",
+      "bytes": 3604,
+      "sha256": "dbb5a23f9ee2d47826399078294c2b1e7c69bdb190c0b2dbdb3a0e442a0cf694",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/prepare_data.py",
+      "bytes": 4083,
+      "sha256": "427ddc118de282e7d44ed2d91ca13e804c314efe6336990be1f08ab386e56a20",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/prepare_long_data.py",
+      "bytes": 5982,
+      "sha256": "c97f62a92b7c57ce890eee13583d53273fcdea18365b939d3301811cb515589c",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/prepare_mixed_data.py",
+      "bytes": 3128,
+      "sha256": "f9825794ccb2506201bbbce4e45c05a545facc048bdbfb41314424881c469709",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/prepare_shared_data.py",
+      "bytes": 2847,
+      "sha256": "613c7b3a65bbb78ea5cb6f9b94541ea7b2a6e3f43045c843c3af20872c9283ca",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/remote_setup.py",
+      "bytes": 3650,
+      "sha256": "78ba2844f2db2c6635046edb468c0feaa6fd3d05b4feeb6faaa626f07a98e05e",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/replay.py",
+      "bytes": 13665,
+      "sha256": "f11778ab3078fc7c45ae25eec2c14e7b2f56407062b6d9ebafb485780670ef18",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/replay_batch.py",
+      "bytes": 2443,
+      "sha256": "cf95fb6ea968b65c060f1193b2144090d41abcbb448ed340a0d001f03caee8bf",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/run.py",
+      "bytes": 24034,
+      "sha256": "43a3312198c9d7af888c41d258e8c347922a9392737eba4409da17b66dda6e8c",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/scheduler.py",
+      "bytes": 8462,
+      "sha256": "bb854854898ceab612a56a7eda7336e57a1e3371fa8c90f8fb11f4d4f0d284d8",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/serve.py",
+      "bytes": 2674,
+      "sha256": "44fd305bbbe963ae450791b2c79495098707f87d2bc327d0a94d76037b1b6f76",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/shared.py",
+      "bytes": 12790,
+      "sha256": "a76d44f0fd8b2ebc96db55fe4a1e1fbee61cb3ffa4d1627f38836c92cdb1b31c",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/shared_batch.py",
+      "bytes": 2041,
+      "sha256": "51ad349d469e0db0e953838f36a95fffb84bd163f1b17c25b5a317aeef8a8dde",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/shared_replay.py",
+      "bytes": 10749,
+      "sha256": "8e55cda84a84a6094249600973609b5f154c5dd130f1fa62867c2983690f8fed",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/shared_replay_batch.py",
+      "bytes": 2023,
+      "sha256": "46fda7f4f5899bb20666ed074806eaf38d48976ba600d6fa0e7ce6979a437d9f",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/token_audit.py",
+      "bytes": 4378,
+      "sha256": "83b01643e1383cc9f919574f7be4801aac71e289d348e78cc7cafacfe2d1c24d",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/sources/verify_model.py",
+      "bytes": 1443,
+      "sha256": "6d5797d56a246ce7fff65edc420c7de80f26f1b0a8cd4fbfeadc0b117b47c002",
+      "lines": null
+    },
+    {
+      "path": "runs/v025-target-replay-alone/tools.jsonl",
+      "bytes": 987440,
+      "sha256": "a9c3cdf341c748cc12979b64b06342e7e5f7422aac38421f323dc4805ee28527",
+      "lines": 76
+    }
+  ]
+}

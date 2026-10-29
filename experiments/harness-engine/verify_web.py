@@ -1,4 +1,5 @@
 """Browser regression check of real results, flow arrows, raw drawers and mobile."""
+import argparse
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -9,7 +10,10 @@ import threading
 def main():
     from playwright.sync_api import sync_playwright
     root = Path(__file__).resolve().parents[2]
-    out = Path(__file__).parent/'evidence/web-v021'; out.mkdir(parents=True, exist_ok=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--out', type=Path, default=Path(__file__).parent/'evidence/web-v021')
+    args = parser.parse_args()
+    out = args.out; out.mkdir(parents=True, exist_ok=True)
 
     class QuietHandler(SimpleHTTPRequestHandler):
         def log_message(self, *_):
@@ -31,11 +35,14 @@ def main():
             report['desktop'] = {'nodes': page.locator('#flow .flow-node').count(),
                                  'arrows': page.locator('#flow svg > path').count(),
                                  'target_background_description': page.locator('#purpose').inner_text()}
+            report['paused_status_visible'] = '用户已暂停研究' in page.locator('#pause-progress').inner_text()
+            assert report['paused_status_visible']
             assert report['desktop']['arrows'] == 18
             assert '独立Harness控制器' in report['desktop']['target_background_description']
             page.locator('#dataset').select_option('shared')
             page.wait_for_function("document.querySelector('#status').textContent.includes('已载入')")
             report['shared_visible_rows'] = page.locator('#rounds tr').count()
+            assert report['shared_visible_rows'] == 8
             page.select_option('#run', 'v024-shared-native-a')
             page.wait_for_function("document.querySelector('#run-label').textContent==='v024-shared-native-a'")
             page.wait_for_timeout(250)

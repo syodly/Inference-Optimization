@@ -80,6 +80,9 @@ class Harness:
         return '\n\n'.join(f"<source id=\"{d['doc_id']}\" title=\"{d['title']}\">\n{d['text']}\n</source>"
                             for d in documents)
 
+    def child_session(self, root, branch_index):
+        return f'{root}/child{branch_index}'
+
     @staticmethod
     def assistant(result):
         message = {'role': 'assistant', 'content': result['text']}
@@ -118,7 +121,7 @@ class Harness:
 
     async def branch(self, task, branch_index, task_index):
         root = task['task_id']
-        session = f'{root}/child{branch_index}'
+        session = self.child_session(root, branch_index)
         await self.controller.open_session(root, session)
         self.journal.write('sessions', event='agent_execution_start', root_id=root, session_id=session,
                            execution_id=session+'/run0', role='child')
@@ -131,7 +134,7 @@ class Harness:
 
     async def branch_work(self, task, branch_index, task_index):
         root = task['task_id']
-        session = f'{root}/child{branch_index}'
+        session = self.child_session(root, branch_index)
         docs = task['documents'][branch_index::self.args.branches]
         self.journal.write('events', event='session_spawn', root_id=root, node_id=session,
                            parent=root, shard=[d['doc_id'] for d in docs])

@@ -1,0 +1,17 @@
+{
+  "desktop": {
+    "nodes": 17,
+    "arrows": 18,
+    "target_background_description": "这是同一轮实验中的两个独立Harness控制器，共享真实双卡推理引擎。目标控制器处理16道长短混合研究任务，背景控制器另外完成4道不重合的长文研究任务。每题都保留完整的三子Session、检索、引用核验和父汇合。目标控制器只能看到自己的图和全局引擎指标，不能读取背景任务图或未来到达计划。背景取已有校准题作为有用负载，不当作新的隐藏测试集。"
+  },
+  "paused_status_visible": true,
+  "shared_visible_rows": 8,
+  "raw_prompt_present": true,
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390
+  },
+  "mixed_visible_rows": 12,
+  "page_errors": [],
+  "missing_resources": []
+}

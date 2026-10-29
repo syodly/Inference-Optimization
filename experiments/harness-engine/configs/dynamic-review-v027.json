@@ -1,0 +1,91 @@
+{
+  "batch_id": "dynamic-review-v027",
+  "program": "adaptive.py",
+  "purpose": "E2独立诊断：同一Qwen权重的推理模式是否改变可选Agent复核的价值和实际DAG；先验证质量与信号，再设计资源感知策略",
+  "base_args": [
+    "--count",
+    "8",
+    "--review-threshold",
+    "0.75"
+  ],
+  "runs": [
+    {
+      "run_id": "v027-thinking-none-a",
+      "args": [
+        "--review-mode",
+        "none",
+        "--thinking"
+      ]
+    },
+    {
+      "run_id": "v027-direct-always",
+      "args": [
+        "--review-mode",
+        "always",
+        "--no-thinking"
+      ]
+    },
+    {
+      "run_id": "v027-thinking-uncertain",
+      "args": [
+        "--review-mode",
+        "uncertain",
+        "--thinking"
+      ]
+    },
+    {
+      "run_id": "v027-direct-none",
+      "args": [
+        "--review-mode",
+        "none",
+        "--no-thinking"
+      ]
+    },
+    {
+      "run_id": "v027-thinking-always",
+      "args": [
+        "--review-mode",
+        "always",
+        "--thinking"
+      ]
+    },
+    {
+      "run_id": "v027-direct-uncertain",
+      "args": [
+        "--review-mode",
+        "uncertain",
+        "--no-thinking"
+      ]
+    },
+    {
+      "run_id": "v027-thinking-none-b",
+      "args": [
+        "--review-mode",
+        "none",
+        "--thinking"
+      ]
+    }
+  ],
+  "deploy": [
+    {
+      "source": "stage-dynamic/run.py",
+      "destination": "run.py",
+      "sha256": "5adceb5a43ddad5cafee0e4101f6340c48319d493b48733bbf950ef0dcb60a5a"
+    },
+    {
+      "source": "stage-dynamic/audit.py",
+      "destination": "audit.py",
+      "sha256": "77453e5e5a97f69426b9ac3c91c6b335b16917b9fc14276d8caab0ca85571869"
+    },
+    {
+      "source": "stage-dynamic/adaptive.py",
+      "destination": "adaptive.py",
+      "sha256": "6434887dc6ac82c3b56dde522f1287cd060b40ad8cfc93159b64a10fa49dcf1a"
+    },
+    {
+      "source": "stage-dynamic/shared_replay_batch.py",
+      "destination": "shared_replay_batch.py",
+      "sha256": "52364c2426067a202af38463c5d26f535eb8629731b8f13eae310d5844ae8297"
+    }
+  ]
+}

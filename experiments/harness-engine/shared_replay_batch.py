@@ -21,7 +21,9 @@ def main():
         state = {'batch_id': spec['batch_id'], 'status': 'running', 'current': run_id,
                  'completed': completed, 'started': time.time()}
         state_path.write_text(json.dumps(state, indent=2))
-        command = [sys.executable, 'shared_replay.py', '--trace', spec['trace'], '--out', 'runs/'+run_id, *entry['args']]
+        command = [sys.executable, spec.get('program', 'shared_replay.py'), '--out', 'runs/'+run_id,
+                   *(['--trace', spec['trace']] if 'trace' in spec else []),
+                   *spec.get('base_args', []), *entry['args']]
         with (Path('logs')/(run_id+'.log')).open('w') as log:
             result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT)
         if result.returncode:
@@ -31,7 +33,8 @@ def main():
         completed.append({'run_id': run_id, 'summary': summary, 'finished': time.time()})
         state.update(status='between_rounds', completed=completed, finished=time.time())
         state_path.write_text(json.dumps(state, indent=2))
-        print('DONE', run_id, {k: v['root_latency_seconds']['mean'] for k, v in summary['latency_by_tenant'].items()}, flush=True)
+        print('DONE', run_id, ({k: v['root_latency_seconds']['mean'] for k, v in summary['latency_by_tenant'].items()}
+                               if 'latency_by_tenant' in summary else summary['root_latency_seconds']), flush=True)
     state_path.write_text(json.dumps({'batch_id': spec['batch_id'], 'status': 'complete',
                                      'completed': completed, 'finished': time.time()}, indent=2))
 

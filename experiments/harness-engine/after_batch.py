@@ -1,7 +1,9 @@
 """Continue one predeclared batch only after an audited predecessor finishes."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import time
@@ -35,7 +37,15 @@ def main():
         time.sleep(5)
     if next_state.exists():
         save(status='existing_batch_needs_inspection', path=str(next_state)); return
-    save(status='running', program=args.program, specification=str(args.spec))
+    deployed = {}
+    for item in spec.get('deploy', []):
+        source, destination = Path(item['source']), Path(item['destination'])
+        digest = hashlib.sha256(source.read_bytes()).hexdigest()
+        if digest != item['sha256']:
+            raise RuntimeError('Staged source differs from the declared version: '+str(source))
+        shutil.copy2(source, destination)
+        deployed[str(destination)] = digest
+    save(status='running', program=args.program, specification=str(args.spec), deployed_sha256=deployed)
     with (Path('logs')/('batch-'+spec['batch_id']+'.log')).open('w') as log:
         result = subprocess.run([sys.executable, args.program, str(args.spec)],
                                 stdout=log, stderr=subprocess.STDOUT)

@@ -60,6 +60,35 @@ def audit(directory: Path):
     for r in roots:
         if r.get('error') or config['workflow'] == 'direct':
             continue
+        if config.get('dynamic_review'):
+            rid = r['root_id']
+            calls = [q for q in requests if q['root_id'] == rid]
+            declared = [e for e in events if e.get('root_id') == rid and e['event'] == 'review_decision']
+            primary = [e for e in events if e.get('root_id') == rid and e['event'] == 'model_complete'
+                       and e.get('stage') == 'evidence' and e.get('node_id', '').rsplit('/', 1)[-1].startswith('child')]
+            decision = [e for e in events if e.get('root_id') == rid and e['event'] == 'model_submit' and e.get('stage') == 'decision']
+            if len(primary) != 3 or len(decision) != 1 or len(declared) != 1:
+                violations.append('Dynamic root must join three primary children before one declared decision: '+rid)
+                continue
+            if max(e['t'] for e in primary) > decision[0]['t']:
+                violations.append('Dynamic parent decision preceded mandatory children: '+rid)
+            choice = declared[0]
+            expected = {(rid+'/child'+str(i), stage) for i in range(3) for stage in ['query', 'draft', 'evidence']}
+            expected.add((rid+'/parent', 'decision'))
+            if choice['launch_review']:
+                expected.update((rid+'/review0', stage) for stage in ['query', 'draft', 'evidence'])
+                expected.add((rid+'/parent', 'synthesis'))
+                review_calls = [q for q in calls if q['node_id'] == rid+'/review0']
+                review_end = [e for e in events if e.get('root_id') == rid and e['event'] == 'model_complete'
+                              and e.get('node_id') == rid+'/review0' and e.get('stage') == 'evidence']
+                final = [e for e in events if e.get('root_id') == rid and e['event'] == 'model_submit' and e.get('stage') == 'synthesis']
+                if not review_calls or min(q['t'] for q in review_calls) < choice['t'] or len(review_end) != 1 or len(final) != 1:
+                    violations.append('Dynamic review expansion boundaries invalid: '+rid)
+                elif review_end[0]['t'] > final[0]['t']:
+                    violations.append('Final synthesis preceded optional review: '+rid)
+            if {(q['node_id'], q['stage']) for q in calls} != expected or len(calls) != len(expected):
+                violations.append('Dynamic root call set differs from its declared branch choice: '+rid)
+            continue
         completed_children = [e for e in events if e.get('root_id') == r['root_id']
                               and e['event'] == 'model_complete' and e.get('stage') == 'evidence']
         synthesis = [e for e in events if e.get('root_id') == r['root_id']
@@ -71,7 +100,7 @@ def audit(directory: Path):
     for tool in tools:
         rows = by_node[tool['node_id']]
         before_stage = 'draft' if tool.get('tool_kind') == 'source_check' else 'query'
-        after_stage = 'draft' if before_stage == 'query' and config['workflow'] == 'verified' else 'evidence'
+        after_stage = 'draft' if before_stage == 'query' and config['workflow'] in ['verified', 'adaptive_verified'] else 'evidence'
         query_end = [e['t'] for e in rows if e['event'] == 'model_complete' and e.get('stage') == before_stage]
         tool_start = [e['t'] for e in rows if e['event'] == 'tool_start' and e.get('tool_id') == tool['tool_id']]
         tool_end = [e['t'] for e in rows if e['event'] == 'tool_complete' and e.get('tool_id') == tool['tool_id']]

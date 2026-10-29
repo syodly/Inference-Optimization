@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "closed_loop_recorded_rounds": 89,
+  "completed_diagnostic_replay_rounds": 21,
+  "completed_v024_rounds": 8,
+  "completed_v025_rounds": 1,
+  "python_syntax_checked": 40,
+  "errors": [],
+  "local_structure_check": "Local default Python lacks httpx; structure checks ran with existing isolated server environment and staged source, with zero GPU requests."
+}
