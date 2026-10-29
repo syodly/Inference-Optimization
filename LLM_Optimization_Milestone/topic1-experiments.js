@@ -92,7 +92,7 @@ async function selectRun(id){
    $('cache-note').textContent+=` 分组答题质量：${qualityText(entry)}。${background?`背景任务P95为${fmt(background.root_latency_seconds.p95)}秒。`:''} 引擎抢占和队列是共享的全局计数，不归给某一个控制器；上表平均耗时覆盖全部任务，这里另列目标与背景。`;
   }
   $('links').innerHTML=Object.entries({'raw-example.json':'完整案例 · Prompt 与调用','config.json':'完整实验参数','scored.jsonl':'全部任务评分','research_record.md':'本轮约 300 字记录','audit.json':'因果顺序审计','history_audit.json':'历史回流间隔审计','token_audit.json':'实际 token 前缀审计'}).filter(([p])=>entry.paths[p]).map(([p,label])=>`<a href="${esc(base+entry.paths[p])}" target="_blank" rel="noopener">${label} ↗</a>`).join('');
-  $('question').textContent=sample.task.question;graph(config,sample);$('status').textContent=`已载入 ${rounds.length} 个完整轮次。当前：${id}；上方是整批统计，下方是单个实际任务。`;history.replaceState(null,'','#'+encodeURIComponent(id));
+  $('question').textContent=sample.task.question;graph(config,sample);$('status').textContent=`已载入 ${rounds.length} 个已归档轮次。当前：${id}；上方是整批统计，下方是单个实际任务。`;history.replaceState(null,'','#'+encodeURIComponent(id));
  }catch(error){if(ticket===loadVersion)$('status').textContent='案例暂未加载。可通过下方的逐轮实验记录查看完整证据。';console.error(error);}
 }
 $('close').onclick=closeDrawer;$('backdrop').onclick=closeDrawer;$('run').onchange=()=>selectRun($('run').value);$('dataset').onchange=selectOptions;

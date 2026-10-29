@@ -6,7 +6,7 @@
 
 ## 当前应用
 
-当前服务为 Qwen3.8-27B BF16、双 A800、图执行、64K 上下文、48 条引擎序列上限、8192 batched tokens，启用前缀缓存、分块 prefill、阶段优先级和逐请求遥测。最新工作是 `verified`：三个持久子 Session 各执行 query → BM25 → draft → 来源核验 → evidence，父 Session 等待全部分支，每个根任务十次必做调用。长文来自固定版本 LongBench-v2，原始全文未截断或补字。来源核验仅判断引句出处，答案由隐藏标签离线评分；两者分别报告。
+暂停前服务为 Qwen3.8-27B BF16、双 A800、图执行、64K 上下文、48 条引擎序列上限、8192 batched tokens，启用前缀缓存、分块 prefill、阶段优先级和逐请求遥测。最新工作是 `verified`：三个持久子 Session 各执行 query → BM25 → draft → 来源核验 → evidence，父 Session 等待全部分支，每个根任务十次必做调用。长文来自固定版本 LongBench-v2，原始全文未截断或补字。来源核验仅判断引句出处，答案由隐藏标签离线评分；两者分别报告。
 
 最新状态见 [CONTINUE.md](CONTINUE.md)，网页见 [真实流程与原始调用](../../LLM_Optimization_Milestone/topic1-experiments.html)。v020已完成七轮显式工具等待干预；v021已完成十一轮同输入、同生成配额的混合回放。短任务独占34.89秒、混合138.43–140.50秒，干扰成立；历史预算137.58秒与普通回流24的138.17秒近似，复杂机制的独立优势尚未成立。详见 [分组归因](notes/v021-interference-outcome.md) 与 [工具等待闭环](notes/v020-tool-delay-outcome.md)。
 

@@ -24,6 +24,12 @@ def main():
     url = f'http://127.0.0.1:{server.server_port}/LLM_Optimization_Milestone/topic1-experiments.html'
     errors, missing = [], []
     report = {}
+    records = ['notes/paused-progress-20261029.md', 'notes/v024-shared-outcome.md', 'RESEARCH_LOG.md']
+    for name in records:
+        content = (Path(__file__).parent/name).read_text(encoding='utf-8')
+        assert '????' not in content and '\ufffd' not in content, f'Broken Unicode text: {name}'
+        assert any('\u4e00' <= character <= '\u9fff' for character in content), f'Missing Chinese text: {name}'
+    report['chinese_records_valid_utf8'] = records
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(executable_path='C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless=True)
@@ -63,6 +69,9 @@ def main():
             page.select_option('#dataset', 'mixed')
             page.wait_for_function("document.querySelector('#run-title').textContent.includes('长短上下文混合')")
             report['mixed_visible_rows'] = page.locator('#rounds tr').count()
+            page.goto(url.replace('topic1-experiments.html', 'topic1-harness-engine.html'))
+            report['main_page_paused_status'] = '已暂停' in page.locator('.status').inner_text()
+            assert report['main_page_paused_status']
             report['page_errors'] = errors; report['missing_resources'] = missing
             assert not errors and not missing
             browser.close()
