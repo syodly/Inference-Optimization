@@ -70,7 +70,7 @@ def main():
             page.wait_for_function("document.querySelector('#run-title').textContent.includes('长短上下文混合')")
             report['mixed_visible_rows'] = page.locator('#rounds tr').count()
             page.goto(url.replace('topic1-experiments.html', 'topic1-harness-engine.html'))
-            report['main_page_paused_status'] = '已暂停' in page.locator('.status').inner_text()
+            report['main_page_paused_status'] = '旧批次暂停' in page.locator('.status').inner_text()
             assert report['main_page_paused_status']
             report['page_errors'] = errors; report['missing_resources'] = missing
             assert not errors and not missing

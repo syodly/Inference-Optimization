@@ -1,0 +1,1471 @@
+{
+  "framework": "official-dsh",
+  "root_id": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+  "task": {
+    "task_id": "5a78f59755429970f5fffdf7",
+    "split": "calibration",
+    "question": "Mick Carter is the landlord of a public house located at what address?",
+    "type": "bridge",
+    "level": "hard",
+    "context_chars": 5385,
+    "bucket": "bridge_normal",
+    "documents": [
+      {
+        "doc_id": "d0",
+        "title": "Fat Cat Brewery",
+        "text": "The Fat Cat Brewery is a brewery located at the \"Fat Cat Brewery Tap\", Lawson Road, Norwich in the English county of Norfolk.  The brewery is owned by Colin Keatley landlord of the \"Fat Cat\" public house twice winner of the CAMRA National Pub of the Year."
+      },
+      {
+        "doc_id": "d1",
+        "title": "The Gatehouse, Monmouth",
+        "text": "The Gatehouse, also known as The Gate House, is a public house located next to Monnow Bridge in Monmouth, Wales.  The pub was known as the Barley Mow until it changed its name in 1993.  It is the only public house in Monmouth located beside a river.  The pub has a restaurant area, seated balcony and a function room."
+      },
+      {
+        "doc_id": "d2",
+        "title": "Mick Carter",
+        "text": "Michael \"Mick\" Carter is a fictional character from the BBC soap opera \"EastEnders\" played by Danny Dyer, making his first appearance in the show in the episode originally broadcast in the United Kingdom on 25 December 2013.  Dyer's casting was announced on 1 October 2013 with that of his on-screen partner, Linda Carter, played by Kellie Bright.  He is the son of established character Shirley Carter (Linda Henry) and a member of the Carter family.  Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as \"The Vic\"), bringing Linda, their son Johnny Carter (Sam Strike/Ted Reilly) and pet dog Lady Di with him.  They are later joined by daughter Nancy Carter (Maddy Hill), son Lee Carter (Danny-Boy Hatchard) and other members of the extended family."
+      },
+      {
+        "doc_id": "d3",
+        "title": "The Queen Victoria",
+        "text": "The Queen Victoria (more often referred to as The Queen Vic or The Vic) is the Victorian public house in the BBC soap opera, \"EastEnders\".  It has the fictional address of 46 Albert Square, Walford, London E20."
+      },
+      {
+        "doc_id": "d4",
+        "title": "Shakespeare Public House, Bristol",
+        "text": "The Shakespeare Public House (grid reference [ ST586725] ) is a historic public house situated at 66-70 Prince Street in Bristol, England.  Originally built in 1725 by the Bristol builder John Strahan as a pair of attached Georgian-style houses, it was converted into a public house in 1777 at which time it supplied refreshment to dock workers at the adjoining port.  It has been a grade II* listed building since 1959."
+      },
+      {
+        "doc_id": "d5",
+        "title": "Square and Compass, Worth Matravers",
+        "text": "The Square and Compass is a Grade II listed public house in Worth Matravers, Dorset.  Built in the 18th century as a pair of cottages before becoming a public house, the Square and Compass got its name in 1830 from a landlord who had been a stonemason.  The building includes a museum of fossils and other local artefacts and the pub is one of only nine nationally that has been included in every edition of CAMRA's good pub guide."
+      },
+      {
+        "doc_id": "d6",
+        "title": "Linda Carter",
+        "text": "Linda Bernadette Carter is a fictional character from the BBC soap opera \"EastEnders\", played by Kellie Bright.  She first appeared on 19 December 2013 and her casting was announced alongside her on-screen partner, Mick Carter (Danny Dyer).  Linda was introduced by new executive producer Dominic Treadwell-Collins as part of the Carter family.  Linda became landlady of The Queen Victoria public house and moved there with her family from her mother's pub in Watford.  Although never credited with the name, in a small number of episodes, the character is referred to as Linda Peacock.  In May 2016, Bright announced that she was pregnant with her second child and that she would be taking maternity leave.  Linda departed the series on 25 December 2016 although she made two separate guest appearances on 16 March and 30 June 2017.  She returned full-time on 7 August."
+      },
+      {
+        "doc_id": "d7",
+        "title": "Whitney Dean",
+        "text": "Whitney Carter (also Dean) is a fictional character from the BBC soap opera \"EastEnders\", played by Shona McGarty.  The character is the adoptive daughter of long-running character Bianca Jackson (Patsy Palmer), and was introduced in April when Palmer returned to the series after a six-year absence.  Whitney is described by executive producer Diederick Santer as both an equal to, and younger version of Bianca, and is the oldest of Bianca's four children.  Her storylines have revolved around her fractured family life, her sexual abuse by Bianca's partner Tony King (Chris Coghill), her sexual exploitation by Rob Grayson (Jody Latham), her marriage to Lee Carter (Danny-Boy Hatchard) and miscarrying his baby, surviving a bus crash, falling in love with her father-in-law Mick Carter (Danny Dyer) and becoming engaged to Woody Woodward (Lee Ryan).  McGarty was temporarily written out of \"EastEnders\" for four weeks in July 2012 because of her repeated lateness to work.  McGarty took an extended break from the show in 2017, with Whitney departing on 29 May, she returned on 31 July."
+      },
+      {
+        "doc_id": "d8",
+        "title": "Adam &amp; Eve, Birmingham",
+        "text": "The Adam & Eve is a former public house located on the corner of Bradford Street and Warner Street, in Deritend, Birmingham, England.  There had been a public house of this name in this location for at least 200 years."
+      },
+      {
+        "doc_id": "d9",
+        "title": "Nancy Carter",
+        "text": "Nancy Carter is a fictional character from the BBC soap opera \"EastEnders\", played by Maddy Hill.  Nancy's first appearance is in a combination of the show's 4775th and 4776th episodes, originally broadcast in the United Kingdom on 1 January 2014.  A member of the Carter family, Nancy is the daughter of Mick Carter (Danny Dyer) and Linda Carter (Kellie Bright).  Her storylines include relationships with Wayne Ladlow (Malachi Kirby), Dexter Hartman (Khali Best) and Tamwar Masood (Himesh Patel), coping with the aftermath of her mother's rape, suffering from epilepsy and a feud with her older brother Lee Carter (Danny-Boy Hatchard).  On 12 March 2016, it was announced that Hill would be leaving the show, with Nancy making her final appearance alongside Tamwar on 22 April 2016."
+      }
+    ]
+  },
+  "task_id": "5a78f59755429970f5fffdf7",
+  "scoring": {
+    "task_id": "5a78f59755429970f5fffdf7",
+    "question": "Mick Carter is the landlord of a public house located at what address?",
+    "answer": "46 Albert Square, Walford, London E20",
+    "gold": "46 Albert Square, Walford, London E20",
+    "em": 1.0,
+    "f1": 1.0,
+    "support_title_recall": 1.0,
+    "parse_error": null,
+    "final_text": "\n\n{\"answer\":\"46 Albert Square, Walford, London E20\",\"supporting_doc_ids\":[\"d2\",\"d3\"],\"reason\":\"Document d2 explicitly states 'Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as The Vic).' Document d3 provides the address of The Queen Victoria public house as '46 Albert Square, Walford, London E20.' Together these establish that Mick Carter is the landlord of The Queen Victoria at that address.\"}",
+    "wall_time": 1793269297.8032072,
+    "event": "task_finished",
+    "exit_code": 0,
+    "duration_seconds": 59.16467571258545
+  },
+  "child_sessions": [
+    "a6b32726-3826-478b-ad87-aaf95aa30ada",
+    "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+    "124d3864-5f7d-4fef-80cd-fc4f603cbd16"
+  ],
+  "workflow": {
+    "name": "research_workflow",
+    "arguments": {},
+    "duration_seconds": 44.76300001144409,
+    "result": {
+      "value": [
+        "\n\nBased on the retrieved documents, I can piece together the answer:\n\n- **d6** (Linda Carter) mentions Mick Carter (Danny Dyer) as Linda's on-screen partner, and states that \"Linda became landlady of The Queen Victoria public house.\"\n- **d3** (The Queen Victoria) states the pub \"has the fictional address of 46 Albert Square, Walford, London E20.\"\n\nThe sources connect Mick Carter to The Queen Victoria pub (via his partner Linda becoming landlady there), and give the pub's address.\n\n```json\n{\n  \"answer_fragment\": \"46 Albert Square, Walford, London E20\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d6\",\n      \"quote\": \"Linda became landlady of The Queen Victoria public house and moved there with her family from her mother's pub in Watford.\",\n      \"inference\": \"Mick Carter (Danny Dyer) is Linda Carter's on-screen partner; the pub associated with the Carter family is The Queen Victoria.\"\n    },\n    {\n      \"doc_id\": \"d3\",\n      \"quote\": \"It has the fictional address of 46 Albert Square, Walford, London E20.\",\n      \"inference\": \"The Queen Victoria public house is located at 46 Albert Square, Walford, London E20.\"\n    }\n  ],\n  \"missing\": \"No document explicitly states 'Mick Carter is the landlord of The Queen Victoria.' The connection is inferred from d6, which identifies Mick Carter as Linda's partner and notes she became landlady of The Queen Victoria. The sources do not directly name Mick Carter as landlord.\"\n}\n```",
+        "\n\nBased on the three documents returned, none of them connect \"Mick Carter\" to being a landlord of a public house. The only mention of \"Mick Carter\" is in document d7, where he is a fictional character in *EastEnders* (played by Danny Dyer). The two public house documents (d4 and d1) contain no reference to Mick Carter.\n\n```json\n{\n  \"answer_fragment\": \"Not found in retrieved sources\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d7\",\n      \"quote\": \"falling in love with her father-in-law Mick Carter (Danny Dyer)\",\n      \"inference\": \"Mick Carter is mentioned only as a fictional EastEnders character; no link to landlordship of a public house is stated.\"\n    },\n    {\n      \"doc_id\": \"d4\",\n      \"quote\": \"The Shakespeare Public House (grid reference [ ST586725] ) is a historic public house situated at 66-70 Prince Street in Bristol, England.\",\n      \"inference\": \"A public house is described but no landlord named Mick Carter is mentioned.\"\n    },\n    {\n      \"doc_id\": \"d1\",\n      \"quote\": \"The Gatehouse, also known as The Gate House, is a public house located next to Monnow Bridge in Monmouth, Wales.\",\n      \"inference\": \"A public house is described but no landlord named Mick Carter is mentioned.\"\n    }\n  ],\n  \"missing\": \"No retrieved document states that Mick Carter is the landlord of a public house or provides an address for such a property. The question cannot be answered from the available sources in branch 1.\"\n}\n```",
+        "\n\nBased on the retrieved sources, here is my evidence report:\n\n```json\n{\n  \"answer_fragment\": \"The Queen Victoria public house (referred to as 'The Vic')\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d2\",\n      \"quote\": \"Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as \\\"The Vic\\\"), bringing Linda, their son Johnny Carter (Sam Strike/Ted Reilly) and pet dog Lady Di with him.\",\n      \"inference\": \"Mick Carter is the landlord of The Queen Victoria public house. The source identifies the pub by name but does not provide a specific street address.\"\n    }\n  ],\n  \"missing\": \"The retrieved sources do not provide a specific street address for The Queen Victoria public house. Only the name of the pub is given. In the context of EastEnders, the pub is located in the fictional Albert Square, Walford, but this detail is not present in the retrieved documents.\"\n}\n```"
+      ],
+      "stopReason": "completed",
+      "agentsStarted": 3
+    },
+    "native_tool_events": [
+      {
+        "type": "tool/call",
+        "seq": 14,
+        "time": 1793269243547,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "chatcmpl-tool-828925f1d29d3512",
+          "name": "research_workflow",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 18,
+        "time": 1793269288321,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "chatcmpl-tool-828925f1d29d3512"
+            },
+            "toolCallId": "chatcmpl-tool-828925f1d29d3512",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"value\":[\"\\n\\nBased on the retrieved documents, I can piece together the answer:\\n\\n- **d6** (Linda Carter) mentions Mick Carter (Danny Dyer) as Linda's on-screen partner, and states that \\\"Linda became landlady of The Queen Victoria public house.\\\"\\n- **d3** (The Queen Victoria) states the pub \\\"has the fictional address of 46 Albert Square, Walford, London E20.\\\"\\n\\nThe sources connect Mick Carter to The Queen Victoria pub (via his partner Linda becoming landlady there), and give the pub's address.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"46 Albert Square, Walford, London E20\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d6\\\",\\n      \\\"quote\\\": \\\"Linda became landlady of The Queen Victoria public house and moved there with her family from her mother's pub in Watford.\\\",\\n      \\\"inference\\\": \\\"Mick Carter (Danny Dyer) is Linda Carter's on-screen partner; the pub associated with the Carter family is The Queen Victoria.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d3\\\",\\n      \\\"quote\\\": \\\"It has the fictional address of 46 Albert Square, Walford, London E20.\\\",\\n      \\\"inference\\\": \\\"The Queen Victoria public house is located at 46 Albert Square, Walford, London E20.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No document explicitly states 'Mick Carter is the landlord of The Queen Victoria.' The connection is inferred from d6, which identifies Mick Carter as Linda's partner and notes she became landlady of The Queen Victoria. The sources do not directly name Mick Carter as landlord.\\\"\\n}\\n```\",\"\\n\\nBased on the three documents returned, none of them connect \\\"Mick Carter\\\" to being a landlord of a public house. The only mention of \\\"Mick Carter\\\" is in document d7, where he is a fictional character in *EastEnders* (played by Danny Dyer). The two public house documents (d4 and d1) contain no reference to Mick Carter.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Not found in retrieved sources\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d7\\\",\\n      \\\"quote\\\": \\\"falling in love with her father-in-law Mick Carter (Danny Dyer)\\\",\\n      \\\"inference\\\": \\\"Mick Carter is mentioned only as a fictional EastEnders character; no link to landlordship of a public house is stated.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d4\\\",\\n      \\\"quote\\\": \\\"The Shakespeare Public House (grid reference [ ST586725] ) is a historic public house situated at 66-70 Prince Street in Bristol, England.\\\",\\n      \\\"inference\\\": \\\"A public house is described but no landlord named Mick Carter is mentioned.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d1\\\",\\n      \\\"quote\\\": \\\"The Gatehouse, also known as The Gate House, is a public house located next to Monnow Bridge in Monmouth, Wales.\\\",\\n      \\\"inference\\\": \\\"A public house is described but no landlord named Mick Carter is mentioned.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No retrieved document states that Mick Carter is the landlord of a public house or provides an address for such a property. The question cannot be answered from the available sources in branch 1.\\\"\\n}\\n```\",\"\\n\\nBased on the retrieved sources, here is my evidence report:\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"The Queen Victoria public house (referred to as 'The Vic')\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d2\\\",\\n      \\\"quote\\\": \\\"Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as \\\\\\\"The Vic\\\\\\\"), bringing Linda, their son Johnny Carter (Sam Strike/Ted Reilly) and pet dog Lady Di with him.\\\",\\n      \\\"inference\\\": \\\"Mick Carter is the landlord of The Queen Victoria public house. The source identifies the pub by name but does not provide a specific street address.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"The retrieved sources do not provide a specific street address for The Queen Victoria public house. Only the name of the pub is given. In the context of EastEnders, the pub is located in the fictional Albert Square, Walford, but this detail is not present in the retrieved documents.\\\"\\n}\\n```\"],\"stopReason\":\"completed\",\"agentsStarted\":3}"
+              }
+            ],
+            "isError": false,
+            "id": "3f2cade9-b071-4219-b7fd-c7ea155ca7d2"
+          }
+        },
+        "sourceEventSeqs": [
+          14
+        ],
+        "surfaceOp": "append"
+      }
+    ]
+  },
+  "streams": {
+    "requests": [
+      {
+        "call_id": "1793269240683505597-56e72677",
+        "node_id": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+        "stage": "plan",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research question: Mick Carter is the landlord of a public house located at what address?\nCall research_workflow exactly once. It runs all three mandatory research agents. After receiving all three reports, answer using only their evidence. Do not search yourself. Your final response must be one JSON object: {\"answer\":\"short direct answer\",\"supporting_doc_ids\":[\"d0\",\"d1\"],\"reason\":\"brief evidence-based explanation\"}. Do not add markdown fences. If evidence is missing, say so honestly."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\". Some platform temporary areas may also be writable.\n\nApproval policy: ask. Operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269240.576698,
+          "event": "admit",
+          "call_id": "f6cc3351-05fb-4810-a650-936dc6c511ac",
+          "task_id": "5a78f59755429970f5fffdf7",
+          "agent_id": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+          "stage": "plan",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269240.576526,
+          "admitted": 1793269240.5766537,
+          "frontend_wait": 0.0001277923583984375,
+          "target": 12,
+          "inflight": 8,
+          "pending": 0,
+          "engine": {
+            "running": 0.0,
+            "waiting": 0.0,
+            "kv_usage": 0.0,
+            "prefix_queries": 200095.0,
+            "prefix_hits": 53312.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269240.5483198
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269288349414962-871af862",
+        "node_id": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+        "stage": "synthesis",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research question: Mick Carter is the landlord of a public house located at what address?\nCall research_workflow exactly once. It runs all three mandatory research agents. After receiving all three reports, answer using only their evidence. Do not search yourself. Your final response must be one JSON object: {\"answer\":\"short direct answer\",\"supporting_doc_ids\":[\"d0\",\"d1\"],\"reason\":\"brief evidence-based explanation\"}. Do not add markdown fences. If evidence is missing, say so honestly."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\". Some platform temporary areas may also be writable.\n\nApproval policy: ask. Operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research the question: \"Mick Carter is the landlord of a public house located at what address?\"\n\nI need to call research_workflow exactly once, which will run all three mandatory research agents. Then I'll use their evidence to answer.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-828925f1d29d3512",
+                  "type": "function",
+                  "function": {
+                    "name": "research_workflow",
+                    "arguments": "{}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"value\":[\"\\n\\nBased on the retrieved documents, I can piece together the answer:\\n\\n- **d6** (Linda Carter) mentions Mick Carter (Danny Dyer) as Linda's on-screen partner, and states that \\\"Linda became landlady of The Queen Victoria public house.\\\"\\n- **d3** (The Queen Victoria) states the pub \\\"has the fictional address of 46 Albert Square, Walford, London E20.\\\"\\n\\nThe sources connect Mick Carter to The Queen Victoria pub (via his partner Linda becoming landlady there), and give the pub's address.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"46 Albert Square, Walford, London E20\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d6\\\",\\n      \\\"quote\\\": \\\"Linda became landlady of The Queen Victoria public house and moved there with her family from her mother's pub in Watford.\\\",\\n      \\\"inference\\\": \\\"Mick Carter (Danny Dyer) is Linda Carter's on-screen partner; the pub associated with the Carter family is The Queen Victoria.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d3\\\",\\n      \\\"quote\\\": \\\"It has the fictional address of 46 Albert Square, Walford, London E20.\\\",\\n      \\\"inference\\\": \\\"The Queen Victoria public house is located at 46 Albert Square, Walford, London E20.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No document explicitly states 'Mick Carter is the landlord of The Queen Victoria.' The connection is inferred from d6, which identifies Mick Carter as Linda's partner and notes she became landlady of The Queen Victoria. The sources do not directly name Mick Carter as landlord.\\\"\\n}\\n```\",\"\\n\\nBased on the three documents returned, none of them connect \\\"Mick Carter\\\" to being a landlord of a public house. The only mention of \\\"Mick Carter\\\" is in document d7, where he is a fictional character in *EastEnders* (played by Danny Dyer). The two public house documents (d4 and d1) contain no reference to Mick Carter.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Not found in retrieved sources\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d7\\\",\\n      \\\"quote\\\": \\\"falling in love with her father-in-law Mick Carter (Danny Dyer)\\\",\\n      \\\"inference\\\": \\\"Mick Carter is mentioned only as a fictional EastEnders character; no link to landlordship of a public house is stated.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d4\\\",\\n      \\\"quote\\\": \\\"The Shakespeare Public House (grid reference [ ST586725] ) is a historic public house situated at 66-70 Prince Street in Bristol, England.\\\",\\n      \\\"inference\\\": \\\"A public house is described but no landlord named Mick Carter is mentioned.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d1\\\",\\n      \\\"quote\\\": \\\"The Gatehouse, also known as The Gate House, is a public house located next to Monnow Bridge in Monmouth, Wales.\\\",\\n      \\\"inference\\\": \\\"A public house is described but no landlord named Mick Carter is mentioned.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No retrieved document states that Mick Carter is the landlord of a public house or provides an address for such a property. The question cannot be answered from the available sources in branch 1.\\\"\\n}\\n```\",\"\\n\\nBased on the retrieved sources, here is my evidence report:\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"The Queen Victoria public house (referred to as 'The Vic')\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d2\\\",\\n      \\\"quote\\\": \\\"Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as \\\\\\\"The Vic\\\\\\\"), bringing Linda, their son Johnny Carter (Sam Strike/Ted Reilly) and pet dog Lady Di with him.\\\",\\n      \\\"inference\\\": \\\"Mick Carter is the landlord of The Queen Victoria public house. The source identifies the pub by name but does not provide a specific street address.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"The retrieved sources do not provide a specific street address for The Queen Victoria public house. Only the name of the pub is given. In the context of EastEnders, the pub is located in the fictional Albert Square, Walford, but this detail is not present in the retrieved documents.\\\"\\n}\\n```\"],\"stopReason\":\"completed\",\"agentsStarted\":3}",
+              "tool_call_id": "chatcmpl-tool-828925f1d29d3512"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269288.3417025,
+          "event": "admit",
+          "call_id": "a8a547b2-8ef7-4b33-8f2b-6b80618e0858",
+          "task_id": "5a78f59755429970f5fffdf7",
+          "agent_id": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+          "stage": "synthesis",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269288.34148,
+          "admitted": 1793269288.3416488,
+          "frontend_wait": 0.00016880035400390625,
+          "target": 12,
+          "inflight": 10,
+          "pending": 0,
+          "engine": {
+            "running": 11.0,
+            "waiting": 0.0,
+            "kv_usage": 0.18087855297157618,
+            "prefix_queries": 285167.0,
+            "prefix_hits": 75264.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269288.121314
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269248399321629-4bc1eee5",
+        "node_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 1. Question: Mick Carter is the landlord of a public house located at what address?\nCall bench_search exactly once with branch=1 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269248.3726509,
+          "event": "admit",
+          "call_id": "29f55cd9-5680-4cba-9672-cc22ae1536af",
+          "task_id": "5a78f59755429970f5fffdf7",
+          "agent_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269244.0419285,
+          "admitted": 1793269248.3725967,
+          "frontend_wait": 4.330668210983276,
+          "target": 12,
+          "inflight": 12,
+          "pending": 11,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.15762273901808788,
+            "prefix_queries": 224372.0,
+            "prefix_hits": 53312.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269248.162652
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269264171288795-55e196c8",
+        "node_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 1. Question: Mick Carter is the landlord of a public house located at what address?\nCall bench_search exactly once with branch=1 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research branch 1, specifically to find the address of a public house where Mick Carter is the landlord. I need to call bench_search exactly once with branch=1 and a useful query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-bbd28078151db30c",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":1,\"query\":\"Mick Carter landlord public house address\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":1,\"query\":\"Mick Carter landlord public house address\",\"documents\":[{\"doc_id\":\"d7\",\"title\":\"Whitney Dean\",\"text\":\"Whitney Carter (also Dean) is a fictional character from the BBC soap opera \\\"EastEnders\\\", played by Shona McGarty.  The character is the adoptive daughter of long-running character Bianca Jackson (Patsy Palmer), and was introduced in April when Palmer returned to the series after a six-year absence.  Whitney is described by executive producer Diederick Santer as both an equal to, and younger version of Bianca, and is the oldest of Bianca's four children.  Her storylines have revolved around her fractured family life, her sexual abuse by Bianca's partner Tony King (Chris Coghill), her sexual exploitation by Rob Grayson (Jody Latham), her marriage to Lee Carter (Danny-Boy Hatchard) and miscarrying his baby, surviving a bus crash, falling in love with her father-in-law Mick Carter (Danny Dyer) and becoming engaged to Woody Woodward (Lee Ryan).  McGarty was temporarily written out of \\\"EastEnders\\\" for four weeks in July 2012 because of her repeated lateness to work.  McGarty took an extended break from the show in 2017, with Whitney departing on 29 May, she returned on 31 July.\",\"bm25\":2.0970530820328963},{\"doc_id\":\"d4\",\"title\":\"Shakespeare Public House, Bristol\",\"text\":\"The Shakespeare Public House (grid reference [ ST586725] ) is a historic public house situated at 66-70 Prince Street in Bristol, England.  Originally built in 1725 by the Bristol builder John Strahan as a pair of attached Georgian-style houses, it was converted into a public house in 1777 at which time it supplied refreshment to dock workers at the adjoining port.  It has been a grade II* listed building since 1959.\",\"bm25\":1.6762726312014091},{\"doc_id\":\"d1\",\"title\":\"The Gatehouse, Monmouth\",\"text\":\"The Gatehouse, also known as The Gate House, is a public house located next to Monnow Bridge in Monmouth, Wales.  The pub was known as the Barley Mow until it changed its name in 1993.  It is the only public house in Monmouth located beside a river.  The pub has a restaurant area, seated balcony and a function room.\",\"bm25\":1.5431384858483486}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-bbd28078151db30c"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269264.1551766,
+          "event": "admit",
+          "call_id": "e404592a-4053-4702-9142-f754e88794db",
+          "task_id": "5a78f59755429970f5fffdf7",
+          "agent_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269252.247669,
+          "admitted": 1793269264.1551197,
+          "frontend_wait": 11.907450675964355,
+          "target": 12,
+          "inflight": 12,
+          "pending": 10,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.19121447028423777,
+            "prefix_queries": 257098.0,
+            "prefix_hits": 63504.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269263.8450215
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269248527000480-08bd58cf",
+        "node_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 0. Question: Mick Carter is the landlord of a public house located at what address?\nCall bench_search exactly once with branch=0 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269248.502356,
+          "event": "admit",
+          "call_id": "ad6c9bee-3082-47ff-93f5-ad08c74312e9",
+          "task_id": "5a78f59755429970f5fffdf7",
+          "agent_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269244.0431728,
+          "admitted": 1793269248.5022976,
+          "frontend_wait": 4.459124803543091,
+          "target": 12,
+          "inflight": 12,
+          "pending": 11,
+          "engine": {
+            "running": 11.0,
+            "waiting": 0.0,
+            "kv_usage": 0.15762273901808788,
+            "prefix_queries": 224372.0,
+            "prefix_hits": 53312.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269248.4465191
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269263652547413-fba7d7b5",
+        "node_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 0. Question: Mick Carter is the landlord of a public house located at what address?\nCall bench_search exactly once with branch=0 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research branch 0 to find the address of a public house where Mick Carter is the landlord. I need to call bench_search exactly once with branch=0 and a relevant query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-b6e0e950a3190156",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":0,\"query\":\"Mick Carter landlord public house address\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":0,\"query\":\"Mick Carter landlord public house address\",\"documents\":[{\"doc_id\":\"d3\",\"title\":\"The Queen Victoria\",\"text\":\"The Queen Victoria (more often referred to as The Queen Vic or The Vic) is the Victorian public house in the BBC soap opera, \\\"EastEnders\\\".  It has the fictional address of 46 Albert Square, Walford, London E20.\",\"bm25\":2.49712107432571},{\"doc_id\":\"d0\",\"title\":\"Fat Cat Brewery\",\"text\":\"The Fat Cat Brewery is a brewery located at the \\\"Fat Cat Brewery Tap\\\", Lawson Road, Norwich in the English county of Norfolk.  The brewery is owned by Colin Keatley landlord of the \\\"Fat Cat\\\" public house twice winner of the CAMRA National Pub of the Year.\",\"bm25\":2.3611205316998007},{\"doc_id\":\"d6\",\"title\":\"Linda Carter\",\"text\":\"Linda Bernadette Carter is a fictional character from the BBC soap opera \\\"EastEnders\\\", played by Kellie Bright.  She first appeared on 19 December 2013 and her casting was announced alongside her on-screen partner, Mick Carter (Danny Dyer).  Linda was introduced by new executive producer Dominic Treadwell-Collins as part of the Carter family.  Linda became landlady of The Queen Victoria public house and moved there with her family from her mother's pub in Watford.  Although never credited with the name, in a small number of episodes, the character is referred to as Linda Peacock.  In May 2016, Bright announced that she was pregnant with her second child and that she would be taking maternity leave.  Linda departed the series on 25 December 2016 although she made two separate guest appearances on 16 March and 30 June 2017.  She returned full-time on 7 August.\",\"bm25\":2.1919688825942303}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-b6e0e950a3190156"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269263.6279335,
+          "event": "admit",
+          "call_id": "1be769d7-0d44-4fa6-b7c6-f3661d475c4f",
+          "task_id": "5a78f59755429970f5fffdf7",
+          "agent_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269252.2469316,
+          "admitted": 1793269263.6278589,
+          "frontend_wait": 11.380927324295044,
+          "target": 12,
+          "inflight": 12,
+          "pending": 11,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.18604651162790697,
+            "prefix_queries": 255451.0,
+            "prefix_hits": 62720.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269263.49051
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269248841681230-39bd96f1",
+        "node_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 2. Question: Mick Carter is the landlord of a public house located at what address?\nCall bench_search exactly once with branch=2 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269248.8173301,
+          "event": "admit",
+          "call_id": "5e43c1e1-492b-4e8b-a062-e8bc5690fa6e",
+          "task_id": "5a78f59755429970f5fffdf7",
+          "agent_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269244.0444634,
+          "admitted": 1793269248.8172724,
+          "frontend_wait": 4.772809028625488,
+          "target": 12,
+          "inflight": 12,
+          "pending": 11,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.16020671834625322,
+            "prefix_queries": 226530.0,
+            "prefix_hits": 53312.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269248.731936
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269266727742285-f53b66a2",
+        "node_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 2. Question: Mick Carter is the landlord of a public house located at what address?\nCall bench_search exactly once with branch=2 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5a78f59755429970f5fffdf7\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research branch 2 to find the address of a public house where Mick Carter is the landlord. I need to call bench_search exactly once with branch=2 and a relevant query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-97c817403f92ec52",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":2,\"query\":\"Mick Carter landlord public house address\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":2,\"query\":\"Mick Carter landlord public house address\",\"documents\":[{\"doc_id\":\"d2\",\"title\":\"Mick Carter\",\"text\":\"Michael \\\"Mick\\\" Carter is a fictional character from the BBC soap opera \\\"EastEnders\\\" played by Danny Dyer, making his first appearance in the show in the episode originally broadcast in the United Kingdom on 25 December 2013.  Dyer's casting was announced on 1 October 2013 with that of his on-screen partner, Linda Carter, played by Kellie Bright.  He is the son of established character Shirley Carter (Linda Henry) and a member of the Carter family.  Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as \\\"The Vic\\\"), bringing Linda, their son Johnny Carter (Sam Strike/Ted Reilly) and pet dog Lady Di with him.  They are later joined by daughter Nancy Carter (Maddy Hill), son Lee Carter (Danny-Boy Hatchard) and other members of the extended family.\",\"bm25\":3.7639239628667926},{\"doc_id\":\"d5\",\"title\":\"Square and Compass, Worth Matravers\",\"text\":\"The Square and Compass is a Grade II listed public house in Worth Matravers, Dorset.  Built in the 18th century as a pair of cottages before becoming a public house, the Square and Compass got its name in 1830 from a landlord who had been a stonemason.  The building includes a museum of fossils and other local artefacts and the pub is one of only nine nationally that has been included in every edition of CAMRA's good pub guide.\",\"bm25\":0.8474174018951202},{\"doc_id\":\"d8\",\"title\":\"Adam &amp; Eve, Birmingham\",\"text\":\"The Adam & Eve is a former public house located on the corner of Bradford Street and Warner Street, in Deritend, Birmingham, England.  There had been a public house of this name in this location for at least 200 years.\",\"bm25\":0.4288955223908349}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-97c817403f92ec52"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269266.7115865,
+          "event": "admit",
+          "call_id": "24d91e29-113b-4258-a74e-b91f7d53e487",
+          "task_id": "5a78f59755429970f5fffdf7",
+          "agent_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269252.2969587,
+          "admitted": 1793269266.7114887,
+          "frontend_wait": 14.414530038833618,
+          "target": 12,
+          "inflight": 12,
+          "pending": 9,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.18604651162790697,
+            "prefix_queries": 258876.0,
+            "prefix_hits": 64288.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269266.3696678
+          },
+          "policy": "pressure"
+        }
+      }
+    ],
+    "responses": [
+      {
+        "call_id": "1793269240683505597-56e72677",
+        "node_id": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+        "stage": "plan",
+        "duration": 2.8508156220195815,
+        "ttft": 1.0688015680061653,
+        "usage": {
+          "prompt_tokens": 996,
+          "total_tokens": 1067,
+          "completion_tokens": 71,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 54
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research the question: \"Mick Carter is the landlord of a public house located at what address?\"\n\nI need to call research_workflow exactly once, which will run all three mandatory research agents. Then I'll use their evidence to answer.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-828925f1d29d3512",
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "arguments": "{}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 2.8508156220195815,
+          "first_body_seconds": 1.0688015680061653,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:40 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "58f8ee6ed5a6462e8f81ad5f53ec162a",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269288349414962-871af862",
+        "node_id": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+        "stage": "synthesis",
+        "duration": 9.337982708937488,
+        "ttft": 0.30305340699851513,
+        "usage": {
+          "prompt_tokens": 2112,
+          "total_tokens": 2450,
+          "completion_tokens": 338,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 232
+          }
+        },
+        "message": {
+          "content": "\n\n{\"answer\":\"46 Albert Square, Walford, London E20\",\"supporting_doc_ids\":[\"d2\",\"d3\"],\"reason\":\"Document d2 explicitly states 'Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as The Vic).' Document d3 provides the address of The Queen Victoria public house as '46 Albert Square, Walford, London E20.' Together these establish that Mick Carter is the landlord of The Queen Victoria at that address.\"}",
+          "reasoning_content": "Now I have all three reports. Let me synthesize:\n\n1. Branch 1 (first report): Found that d6 mentions Mick Carter (Danny Dyer) as Linda's on-screen partner, and Linda became landlady of The Queen Victoria public house. d3 states The Queen Victoria has the fictional address of 46 Albert Square, Walford, London E20.\n\n2. Branch 2 (second report): No direct connection found between Mick Carter and being a landlord.\n\n3. Branch 3 (third report): d2 explicitly states \"Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as 'The Vic').\"\n\nSo combining:\n- d2 explicitly states Mick Carter becomes the landlord of The Queen Victoria public house.\n- d3 gives the address: 46 Albert Square, Walford, London E20.\n\nThe answer is 46 Albert Square, Walford, London E20.\n\nSupporting doc IDs: d2 (Mick becomes landlord of The Queen Victoria) and d3 (address of The Queen Victoria).\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 9.337982708937488,
+          "first_body_seconds": 0.30305340699851513,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:21:27 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "21582da6de3944bd886f40a13492b2a1",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269248399321629-4bc1eee5",
+        "node_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+        "stage": "query",
+        "duration": 3.746417189016938,
+        "ttft": 0.2752534629544243,
+        "usage": {
+          "prompt_tokens": 1079,
+          "total_tokens": 1169,
+          "completion_tokens": 90,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 44
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research branch 1, specifically to find the address of a public house where Mick Carter is the landlord. I need to call bench_search exactly once with branch=1 and a useful query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-bbd28078151db30c",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 1, \"query\": \"Mick Carter landlord public house address\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 3.746417189016938,
+          "first_body_seconds": 0.2752534629544243,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:47 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "81670e9de2a74f34a0058303bcfe6978",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269264171288795-55e196c8",
+        "node_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+        "stage": "evidence",
+        "duration": 18.4457432780182,
+        "ttft": 0.28882568096742034,
+        "usage": {
+          "prompt_tokens": 1778,
+          "total_tokens": 2383,
+          "completion_tokens": 605,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 229
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the three documents returned, none of them connect \"Mick Carter\" to being a landlord of a public house. The only mention of \"Mick Carter\" is in document d7, where he is a fictional character in *EastEnders* (played by Danny Dyer). The two public house documents (d4 and d1) contain no reference to Mick Carter.\n\n```json\n{\n  \"answer_fragment\": \"Not found in retrieved sources\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d7\",\n      \"quote\": \"falling in love with her father-in-law Mick Carter (Danny Dyer)\",\n      \"inference\": \"Mick Carter is mentioned only as a fictional EastEnders character; no link to landlordship of a public house is stated.\"\n    },\n    {\n      \"doc_id\": \"d4\",\n      \"quote\": \"The Shakespeare Public House (grid reference [ ST586725] ) is a historic public house situated at 66-70 Prince Street in Bristol, England.\",\n      \"inference\": \"A public house is described but no landlord named Mick Carter is mentioned.\"\n    },\n    {\n      \"doc_id\": \"d1\",\n      \"quote\": \"The Gatehouse, also known as The Gate House, is a public house located next to Monnow Bridge in Monmouth, Wales.\",\n      \"inference\": \"A public house is described but no landlord named Mick Carter is mentioned.\"\n    }\n  ],\n  \"missing\": \"No retrieved document states that Mick Carter is the landlord of a public house or provides an address for such a property. The question cannot be answered from the available sources in branch 1.\"\n}\n```",
+          "reasoning_content": "Let me analyze the results:\n\n1. **d7 (Whitney Dean)**: This mentions \"Mick Carter (Danny Dyer)\" as a character in EastEnders. It says Whitney \"falling in love with her father-in-law Mick Carter (Danny Dyer)\". This is about a fictional character, not about a landlord of a public house.\n\n2. **d4 (Shakespeare Public House, Bristol)**: This is about a public house at 66-70 Prince Street in Bristol. No mention of Mick Carter as landlord.\n\n3. **d1 (The Gatehouse, Monmouth)**: This is about a public house in Monmouth, Wales. No mention of Mick Carter as landlord.\n\nNone of the three returned documents mention Mick Carter as a landlord of a public house. The only mention of \"Mick Carter\" is in the EastEnders context (d7), where he's a fictional character. None of the documents connect Mick Carter to being a landlord of any public house.\n\nI need to report this honestly - the information is missing from the retrieved sources.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 18.4457432780182,
+          "first_body_seconds": 0.28882568096742034,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:21:04 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "52c7fc8e2228433999febfeeeb88b0dc",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269248527000480-08bd58cf",
+        "node_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+        "stage": "query",
+        "duration": 3.6200792440213263,
+        "ttft": 0.340826945961453,
+        "usage": {
+          "prompt_tokens": 1079,
+          "total_tokens": 1167,
+          "completion_tokens": 88,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 42
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research branch 0 to find the address of a public house where Mick Carter is the landlord. I need to call bench_search exactly once with branch=0 and a relevant query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-b6e0e950a3190156",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 0, \"query\": \"Mick Carter landlord public house address\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 3.6200792440213263,
+          "first_body_seconds": 0.340826945961453,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:47 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "ce89aeed6ac443088fe4769522bf8d75",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269263652547413-fba7d7b5",
+        "node_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+        "stage": "evidence",
+        "duration": 24.55549217306543,
+        "ttft": 0.25657934497576207,
+        "usage": {
+          "prompt_tokens": 1647,
+          "total_tokens": 2460,
+          "completion_tokens": 813,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 433
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the retrieved documents, I can piece together the answer:\n\n- **d6** (Linda Carter) mentions Mick Carter (Danny Dyer) as Linda's on-screen partner, and states that \"Linda became landlady of The Queen Victoria public house.\"\n- **d3** (The Queen Victoria) states the pub \"has the fictional address of 46 Albert Square, Walford, London E20.\"\n\nThe sources connect Mick Carter to The Queen Victoria pub (via his partner Linda becoming landlady there), and give the pub's address.\n\n```json\n{\n  \"answer_fragment\": \"46 Albert Square, Walford, London E20\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d6\",\n      \"quote\": \"Linda became landlady of The Queen Victoria public house and moved there with her family from her mother's pub in Watford.\",\n      \"inference\": \"Mick Carter (Danny Dyer) is Linda Carter's on-screen partner; the pub associated with the Carter family is The Queen Victoria.\"\n    },\n    {\n      \"doc_id\": \"d3\",\n      \"quote\": \"It has the fictional address of 46 Albert Square, Walford, London E20.\",\n      \"inference\": \"The Queen Victoria public house is located at 46 Albert Square, Walford, London E20.\"\n    }\n  ],\n  \"missing\": \"No document explicitly states 'Mick Carter is the landlord of The Queen Victoria.' The connection is inferred from d6, which identifies Mick Carter as Linda's partner and notes she became landlady of The Queen Victoria. The sources do not directly name Mick Carter as landlord.\"\n}\n```",
+          "reasoning_content": "Let me analyze the results:\n\n1. **d3** - \"The Queen Victoria\" - This is a Victorian public house in EastEnders with the fictional address of 46 Albert Square, Walford, London E20.\n2. **d0** - \"Fat Cat Brewery\" - About Colin Keatley, landlord of the \"Fat Cat\" public house.\n3. **d6** - \"Linda Carter\" - This mentions Mick Carter (played by Danny Dyer) as Linda's on-screen partner. It says Linda became landlady of The Queen Victoria public house.\n\nSo from d6, we know Mick Carter is associated with The Queen Victoria public house (as Linda's partner, and she became landlady there). From d3, we know The Queen Victoria is at 46 Albert Square, Walford, London E20.\n\nHowever, the question asks specifically about Mick Carter being the \"landlord\" of a public house. The document d6 says Linda became \"landlady\" of The Queen Victoria. It doesn't explicitly say Mick Carter is the landlord. But in EastEnders, Mick Carter (Danny Dyer) is indeed the landlord of The Queen Victoria. The document mentions he's Linda's on-screen partner and she became landlady of The Queen Victoria - implying the pub is associated with the Carter family.\n\nLet me be careful here. The document d6 says \"Linda became landlady of The Queen Victoria public house\" and mentions Mick Carter as her on-screen partner. It doesn't explicitly state Mick Carter is the landlord. But the connection is clear - the pub is The Queen Victoria, and from d3, its address is 46 Albert Square, Walford, London E20.\n\nI should report what the sources actually say. The sources connect Mick Carter to The Queen Victoria pub (through Linda Carter being his partner and becoming landlady there), and The Queen Victoria is at 46 Albert Square, Walford, London E20.\n\nLet me construct the evidence report.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 24.55549217306543,
+          "first_body_seconds": 0.25657934497576207,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:21:03 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "4fc6d3586bea44989105f10f0fbaa786",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269248841681230-39bd96f1",
+        "node_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+        "stage": "query",
+        "duration": 3.4154808629537,
+        "ttft": 0.2631880429107696,
+        "usage": {
+          "prompt_tokens": 1079,
+          "total_tokens": 1167,
+          "completion_tokens": 88,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 42
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research branch 2 to find the address of a public house where Mick Carter is the landlord. I need to call bench_search exactly once with branch=2 and a relevant query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-97c817403f92ec52",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 2, \"query\": \"Mick Carter landlord public house address\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 3.4154808629537,
+          "first_body_seconds": 0.2631880429107696,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:48 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "978ee02755cc4d1f8b7677d51063eef9",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269266727742285-f53b66a2",
+        "node_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+        "stage": "evidence",
+        "duration": 13.726967500057071,
+        "ttft": 0.2715965500101447,
+        "usage": {
+          "prompt_tokens": 1676,
+          "total_tokens": 2126,
+          "completion_tokens": 450,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 226
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the retrieved sources, here is my evidence report:\n\n```json\n{\n  \"answer_fragment\": \"The Queen Victoria public house (referred to as 'The Vic')\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d2\",\n      \"quote\": \"Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as \\\"The Vic\\\"), bringing Linda, their son Johnny Carter (Sam Strike/Ted Reilly) and pet dog Lady Di with him.\",\n      \"inference\": \"Mick Carter is the landlord of The Queen Victoria public house. The source identifies the pub by name but does not provide a specific street address.\"\n    }\n  ],\n  \"missing\": \"The retrieved sources do not provide a specific street address for The Queen Victoria public house. Only the name of the pub is given. In the context of EastEnders, the pub is located in the fictional Albert Square, Walford, but this detail is not present in the retrieved documents.\"\n}\n```",
+          "reasoning_content": "The search returned three documents. The most relevant one is doc_id \"d2\" which is about Mick Carter from EastEnders. It states that \"Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as 'The Vic')\". However, it doesn't give a specific street address for The Queen Victoria public house.\n\nLet me check the other documents:\n- d5: About Square and Compass in Worth Matravers, Dorset - not related to Mick Carter\n- d8: About Adam & Eve in Birmingham - not related to Mick Carter\n\nSo the answer is that Mick Carter is the landlord of \"The Queen Victoria\" public house (also known as \"The Vic\"). The document doesn't provide a specific street address, just the name of the pub. In EastEnders, The Queen Victoria is located in the fictional location of Albert Square, Walford. But the source text only says \"The Queen Victoria public house\" without a specific address.\n\nI should report what the source says and note that a specific street address is not provided in the retrieved documents.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 13.726967500057071,
+          "first_body_seconds": 0.2715965500101447,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:21:06 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "00e154976f874e65abfcbffed8364152",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "wall_time": 1793269252.1865954,
+        "event": "bm25",
+        "task_id": "5a78f59755429970f5fffdf7",
+        "agent_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+        "branch": 0,
+        "query": "Mick Carter landlord public house address",
+        "duration_seconds": 0.00026414392050355673,
+        "result": {
+          "branch": 0,
+          "query": "Mick Carter landlord public house address",
+          "documents": [
+            {
+              "doc_id": "d3",
+              "title": "The Queen Victoria",
+              "text": "The Queen Victoria (more often referred to as The Queen Vic or The Vic) is the Victorian public house in the BBC soap opera, \"EastEnders\".  It has the fictional address of 46 Albert Square, Walford, London E20.",
+              "bm25": 2.49712107432571
+            },
+            {
+              "doc_id": "d0",
+              "title": "Fat Cat Brewery",
+              "text": "The Fat Cat Brewery is a brewery located at the \"Fat Cat Brewery Tap\", Lawson Road, Norwich in the English county of Norfolk.  The brewery is owned by Colin Keatley landlord of the \"Fat Cat\" public house twice winner of the CAMRA National Pub of the Year.",
+              "bm25": 2.3611205316998007
+            },
+            {
+              "doc_id": "d6",
+              "title": "Linda Carter",
+              "text": "Linda Bernadette Carter is a fictional character from the BBC soap opera \"EastEnders\", played by Kellie Bright.  She first appeared on 19 December 2013 and her casting was announced alongside her on-screen partner, Mick Carter (Danny Dyer).  Linda was introduced by new executive producer Dominic Treadwell-Collins as part of the Carter family.  Linda became landlady of The Queen Victoria public house and moved there with her family from her mother's pub in Watford.  Although never credited with the name, in a small number of episodes, the character is referred to as Linda Peacock.  In May 2016, Bright announced that she was pregnant with her second child and that she would be taking maternity leave.  Linda departed the series on 25 December 2016 although she made two separate guest appearances on 16 March and 30 June 2017.  She returned full-time on 7 August.",
+              "bm25": 2.1919688825942303
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+        "tool_kind": "bm25",
+        "tool_id": "a6b32726-3826-478b-ad87-aaf95aa30ada/search",
+        "actual_cpu_seconds": 0.00026414392050355673
+      },
+      {
+        "wall_time": 1793269252.1891277,
+        "event": "bm25",
+        "task_id": "5a78f59755429970f5fffdf7",
+        "agent_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+        "branch": 1,
+        "query": "Mick Carter landlord public house address",
+        "duration_seconds": 0.00023150502238422632,
+        "result": {
+          "branch": 1,
+          "query": "Mick Carter landlord public house address",
+          "documents": [
+            {
+              "doc_id": "d7",
+              "title": "Whitney Dean",
+              "text": "Whitney Carter (also Dean) is a fictional character from the BBC soap opera \"EastEnders\", played by Shona McGarty.  The character is the adoptive daughter of long-running character Bianca Jackson (Patsy Palmer), and was introduced in April when Palmer returned to the series after a six-year absence.  Whitney is described by executive producer Diederick Santer as both an equal to, and younger version of Bianca, and is the oldest of Bianca's four children.  Her storylines have revolved around her fractured family life, her sexual abuse by Bianca's partner Tony King (Chris Coghill), her sexual exploitation by Rob Grayson (Jody Latham), her marriage to Lee Carter (Danny-Boy Hatchard) and miscarrying his baby, surviving a bus crash, falling in love with her father-in-law Mick Carter (Danny Dyer) and becoming engaged to Woody Woodward (Lee Ryan).  McGarty was temporarily written out of \"EastEnders\" for four weeks in July 2012 because of her repeated lateness to work.  McGarty took an extended break from the show in 2017, with Whitney departing on 29 May, she returned on 31 July.",
+              "bm25": 2.0970530820328963
+            },
+            {
+              "doc_id": "d4",
+              "title": "Shakespeare Public House, Bristol",
+              "text": "The Shakespeare Public House (grid reference [ ST586725] ) is a historic public house situated at 66-70 Prince Street in Bristol, England.  Originally built in 1725 by the Bristol builder John Strahan as a pair of attached Georgian-style houses, it was converted into a public house in 1777 at which time it supplied refreshment to dock workers at the adjoining port.  It has been a grade II* listed building since 1959.",
+              "bm25": 1.6762726312014091
+            },
+            {
+              "doc_id": "d1",
+              "title": "The Gatehouse, Monmouth",
+              "text": "The Gatehouse, also known as The Gate House, is a public house located next to Monnow Bridge in Monmouth, Wales.  The pub was known as the Barley Mow until it changed its name in 1993.  It is the only public house in Monmouth located beside a river.  The pub has a restaurant area, seated balcony and a function room.",
+              "bm25": 1.5431384858483486
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+        "tool_kind": "bm25",
+        "tool_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350/search",
+        "actual_cpu_seconds": 0.00023150502238422632
+      },
+      {
+        "wall_time": 1793269252.2726567,
+        "event": "bm25",
+        "task_id": "5a78f59755429970f5fffdf7",
+        "agent_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+        "branch": 2,
+        "query": "Mick Carter landlord public house address",
+        "duration_seconds": 0.00020777201279997826,
+        "result": {
+          "branch": 2,
+          "query": "Mick Carter landlord public house address",
+          "documents": [
+            {
+              "doc_id": "d2",
+              "title": "Mick Carter",
+              "text": "Michael \"Mick\" Carter is a fictional character from the BBC soap opera \"EastEnders\" played by Danny Dyer, making his first appearance in the show in the episode originally broadcast in the United Kingdom on 25 December 2013.  Dyer's casting was announced on 1 October 2013 with that of his on-screen partner, Linda Carter, played by Kellie Bright.  He is the son of established character Shirley Carter (Linda Henry) and a member of the Carter family.  Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as \"The Vic\"), bringing Linda, their son Johnny Carter (Sam Strike/Ted Reilly) and pet dog Lady Di with him.  They are later joined by daughter Nancy Carter (Maddy Hill), son Lee Carter (Danny-Boy Hatchard) and other members of the extended family.",
+              "bm25": 3.7639239628667926
+            },
+            {
+              "doc_id": "d5",
+              "title": "Square and Compass, Worth Matravers",
+              "text": "The Square and Compass is a Grade II listed public house in Worth Matravers, Dorset.  Built in the 18th century as a pair of cottages before becoming a public house, the Square and Compass got its name in 1830 from a landlord who had been a stonemason.  The building includes a museum of fossils and other local artefacts and the pub is one of only nine nationally that has been included in every edition of CAMRA's good pub guide.",
+              "bm25": 0.8474174018951202
+            },
+            {
+              "doc_id": "d8",
+              "title": "Adam &amp; Eve, Birmingham",
+              "text": "The Adam & Eve is a former public house located on the corner of Bradford Street and Warner Street, in Deritend, Birmingham, England.  There had been a public house of this name in this location for at least 200 years.",
+              "bm25": 0.4288955223908349
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+        "tool_kind": "bm25",
+        "tool_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16/search",
+        "actual_cpu_seconds": 0.00020777201279997826
+      }
+    ],
+    "roots": [
+      {
+        "task_id": "5a78f59755429970f5fffdf7",
+        "question": "Mick Carter is the landlord of a public house located at what address?",
+        "answer": "46 Albert Square, Walford, London E20",
+        "gold": "46 Albert Square, Walford, London E20",
+        "em": 1.0,
+        "f1": 1.0,
+        "support_title_recall": 1.0,
+        "parse_error": null,
+        "final_text": "\n\n{\"answer\":\"46 Albert Square, Walford, London E20\",\"supporting_doc_ids\":[\"d2\",\"d3\"],\"reason\":\"Document d2 explicitly states 'Mick immediately becomes the new landlord of The Queen Victoria public house (referred to as The Vic).' Document d3 provides the address of The Queen Victoria public house as '46 Albert Square, Walford, London E20.' Together these establish that Mick Carter is the landlord of The Queen Victoria at that address.\"}",
+        "wall_time": 1793269297.8032072,
+        "event": "task_finished",
+        "exit_code": 0,
+        "duration_seconds": 59.16467571258545
+      }
+    ]
+  },
+  "source_archive": "dsh-e1-small-pressure12-raw.tar.gz"
+}

@@ -1,0 +1,1471 @@
+{
+  "framework": "official-dsh",
+  "root_id": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+  "task": {
+    "task_id": "5ae75a5a5542991bbc9761f3",
+    "split": "calibration",
+    "question": "\"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?",
+    "type": "bridge",
+    "level": "hard",
+    "context_chars": 4115,
+    "bucket": "bridge_normal",
+    "documents": [
+      {
+        "doc_id": "d0",
+        "title": "Dohchay",
+        "text": "Dochay (English: Steal ) is a 2015 Telugu action crime film written and directed by Sudheer Varma and produced by B. V. S. N. Prasad under the banner Sri Venkateswara Cine Chitra.  The project features Naga Chaitanya and Kriti Sanon in the lead roles and Brahmanandam, Ravi Babu, Pooja Ramachandran and Posani Krishna Murali in important roles.  Sunny M.R. composed the music for the film.  Richard Prasad and Karthika Srinivas handled the cinematography and editing respectively.  The film was officially launched at Film Nagar in Hyderabad on 12 June 2014 and principal photography began on 14 July 2014 at Hyderabad.  The film released on 24 April 2015.  The film was also dubbed in Hindi as \"Vidroh - Let's fight back\".  The movie is heavily inspired by the British series \"Hustle\"."
+      },
+      {
+        "doc_id": "d1",
+        "title": "Sabbir Khan",
+        "text": "Sabbir Khan is an Indian film director and screenwriter.  In 2009 he made his directorial debut with the film \"Kambakkht Ishq\" (2009) that starred Akshay Kumar and Kareena Kapoor.  The film released on 3 July 2009 worldwide.  Sabbir's second movie, Heropanti starring Tiger Shroff & Kriti Sanon, released on 23 May 2014."
+      },
+      {
+        "doc_id": "d2",
+        "title": "Raabta (film)",
+        "text": "Raabta (English: \"Connection\") is an Indian romantic thriller film directed and produced by Dinesh Vijan co-produced by Homi Adajania and Bhushan Kumar.  The film stars Sushant Singh Rajput, Kriti Sanon and Jim Sarbh in the lead roles.  It was released worldwide on 9 June 2017."
+      },
+      {
+        "doc_id": "d3",
+        "title": "Raabta (song)",
+        "text": "\"Raabta\" (English: Relation) is a romantic Hindi song from the 2012 Bollywood film, \"Agent Vinod\".  Composed by Pritam Chakraborty, the song is sung by Arijit Singh, with lyrics penned by Amitabh Bhattacharya.  The music video of the track features actors Saif Ali Khan and Kareena Kapoor Khan, and the remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta ."
+      },
+      {
+        "doc_id": "d4",
+        "title": "Raat Bhar",
+        "text": "\"Raat Bhar\" is a pop song from the 2014 Hit Bollywood film, \"Heropanti\".  Composed by Sajid-Wajid, the song is sung by Arijit Singh and Shreya Ghoshal, with lyrics penned by Kausar Munir.  The lively, peppy track, features Tiger Shroff and Kriti Sanon in the video."
+      },
+      {
+        "doc_id": "d5",
+        "title": "1: Nenokkadine",
+        "text": "1: Nenokkadine (English: \"1: I am alone\" ) is a 2014 Indian Telugu-language psychological thriller film written and directed by Sukumar.  Produced by Ram Achanta, Gopichand Achanta, and Anil Sunkara as 14 Reels Entertainment and distributed by Eros International, the film features Mahesh Babu and Kriti Sanon in the lead roles (Sanon's Telugu cinema debut).  Nassar, Pradeep Rawat, Kelly Dorji, and Anu Hasan appear in supporting roles.  Mahesh's son, Gautham Krishna, made his debut in the film as a younger version of the protagonist."
+      },
+      {
+        "doc_id": "d6",
+        "title": "Heropanti",
+        "text": "Heropanti (\"English: Heroic antics\") is an Indian Hindi action film directed by Sabbir Khan and produced by Sajid Nadiadwala.  Actors Tiger Shroff and Kriti Sanon make their Hindi film debut with the film, alongside Prakash Raj as an important supporting role.  This is a remake of the Telugu film \"Parugu\", \"Heropanti\" released on 23 May 2014.  The film received mixed reviews from critics, but managed to become a box office super hit.  The satellite rights were bagged by Sony Entertainment Television."
+      },
+      {
+        "doc_id": "d7",
+        "title": "Bareilly Ki Barfi",
+        "text": "Bareilly Ki Barfi (English: \"Bareilly's Barfi\") is a 2017 Indian romantic comedy film, directed by Ashwiny Iyer Tiwari.  The film stars Rajkumar Rao, Ayushmann Khurrana and Kriti Sanon.  It was released worldwide on 18 August, 2017.  The film was released more than 1000 theatres worldwide.The film grossed more than 30 crores declared a hit at box office india."
+      },
+      {
+        "doc_id": "d8",
+        "title": "Kriti Sanon",
+        "text": "Kriti Sanon (born 27July 1990) is an Indian model and film actress who appears in Hindi and Telugu films.  After beginning with modelling, she made her acting debut with Sukumar's Telugu psychological thriller film \"\".  Her first Bollywood film was Sabbir Khan's romantic action drama \"Heropanti\", for which she won the Filmfare Award for Best Female Debut.  In 2015, Sanon starred in the successful romantic action comedy \"Dilwale\"."
+      },
+      {
+        "doc_id": "d9",
+        "title": "Main Tera Boyfriend",
+        "text": "\"Main Tera Boyfriend\" is a dance song recorded by Meet Bros, Arijit Singh, and Neha Kakkar.  The music video of the song stars Kriti Sanon and Sushant Singh Rajput.  The song is from the Indian film \"Raabta\"."
+      }
+    ]
+  },
+  "task_id": "5ae75a5a5542991bbc9761f3",
+  "scoring": {
+    "task_id": "5ae75a5a5542991bbc9761f3",
+    "question": "\"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?",
+    "answer": "Raabta",
+    "gold": "Agent Vinod",
+    "em": 0.0,
+    "f1": 0.0,
+    "support_title_recall": 0.5,
+    "parse_error": null,
+    "final_text": "\n\n{\"answer\":\"Raabta\",\"supporting_doc_ids\":[\"d3\"],\"reason\":\"Doc d3 states: 'The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.' This directly identifies the Bollywood film as Raabta (2017), in which Kriti Sanon (the 'Heropanti' star) appears in the remix video for a song from that film.\"}",
+    "wall_time": 1793269320.3952925,
+    "event": "task_finished",
+    "exit_code": 0,
+    "duration_seconds": 81.75847268104553
+  },
+  "child_sessions": [
+    "10300543-03cc-4709-97b3-ef456a46a1e5",
+    "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+    "374bea73-011e-486a-a170-2d5cca233a30"
+  ],
+  "workflow": {
+    "name": "research_workflow",
+    "arguments": {},
+    "duration_seconds": 62.277000188827515,
+    "result": {
+      "value": [
+        "\n\nBased on the retrieved sources, here is my evidence report:\n\n```json\n{\n  \"answer_fragment\": \"Agent Vinod\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d3\",\n      \"quote\": \"The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\",\n      \"inference\": \"Kriti Sanon appears in the remix video for the song 'Raabta', which is from the 2012 Bollywood film 'Agent Vinod'.\"\n    },\n    {\n      \"doc_id\": \"d6\",\n      \"quote\": \"Actors Tiger Shroff and Kriti Sanon make their Hindi film debut with the film\",\n      \"inference\": \"Confirms Kriti Sanon is a star of the film 'Heropanti', linking her to the question's premise.\"\n    }\n  ],\n  \"missing\": \"\"\n}\n```\n\n**Answer:** Kriti Sanon, the \"Heropanti\" star, appears in the remix video for the song \"Raabta,\" which is from the Bollywood film **Agent Vinod** (2012).",
+        "\n\nBased on the retrieved sources, here is my evidence report:\n\n```json\n{\n  \"answer_fragment\": \"Heropanti\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d4\",\n      \"quote\": \"\\\"Raat Bhar\\\" is a pop song from the 2014 Hit Bollywood film, \\\"Heropanti\\\". Composed by Sajid-Wajid, the song is sung by Arijit Singh and Shreya Ghoshal, with lyrics penned by Kausar Munir. The lively, peppy track, features Tiger Shroff and Kriti Sanon in the video.\",\n      \"inference\": \"Kriti Sanon appears in the video for 'Raat Bhar', a song from the Bollywood film 'Heropanti'. This is the only source linking Kriti Sanon to a song video, and the film is Heropanti itself.\"\n    },\n    {\n      \"doc_id\": \"d1\",\n      \"quote\": \"Sabbir's second movie, Heropanti starring Tiger Shroff & Kriti Sanon, released on 23 May 2014.\",\n      \"inference\": \"Confirms Kriti Sanon is a star of the film Heropanti, consistent with the question's framing.\"\n    }\n  ],\n  \"missing\": \"None of the retrieved documents explicitly mention a 'remix video.' The sources confirm Kriti Sanon appears in the video for 'Raat Bhar' from the film 'Heropanti', but do not specify whether this is a remix version or the original music video. The answer 'Heropanti' is the best-supported inference from available sources.\"\n}\n```",
+        "\n\nBased on the retrieved documents, I can confirm Kriti Sanon is the star of \"Heropanti\" (doc d8), but none of the three returned documents mention a **remix video** she appears in. The sources cover her filmography (Heropanti, Dilwale, Raabta, 1: Nenokkadine) but do not reference any remix video.\n\n```json\n{\n  \"answer_fragment\": \"Not found in retrieved sources\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d8\",\n      \"quote\": \"Her first Bollywood film was Sabbir Khan's romantic action drama \\\"Heropanti\\\", for which she won the Filmfare Award for Best Female Debut.\",\n      \"inference\": \"Confirms Kriti Sanon is the 'Heropanti' star referenced in the question.\"\n    },\n    {\n      \"doc_id\": \"d2\",\n      \"quote\": \"The film stars Sushant Singh Rajput, Kriti Sanon and Jim Sarbh in the lead roles.\",\n      \"inference\": \"Shows Kriti Sanon in Raabta (2017), but no mention of a remix video.\"\n    },\n    {\n      \"doc_id\": \"d5\",\n      \"quote\": \"the film features Mahesh Babu and Kriti Sanon in the lead roles (Sanon's Telugu cinema debut).\",\n      \"inference\": \"Confirms her Telugu debut; not relevant to a Bollywood remix video.\"\n    }\n  ],\n  \"missing\": \"None of the retrieved documents (d8, d2, d5) contain any mention of a remix video featuring Kriti Sanon. The specific Bollywood film whose song's remix video she appears in cannot be determined from the available sources.\"\n}\n```"
+      ],
+      "stopReason": "completed",
+      "agentsStarted": 3
+    },
+    "native_tool_events": [
+      {
+        "type": "tool/call",
+        "seq": 14,
+        "time": 1793269243608,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "chatcmpl-tool-8d694af78e10dd44",
+          "name": "research_workflow",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 18,
+        "time": 1793269305905,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "chatcmpl-tool-8d694af78e10dd44"
+            },
+            "toolCallId": "chatcmpl-tool-8d694af78e10dd44",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"value\":[\"\\n\\nBased on the retrieved sources, here is my evidence report:\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Agent Vinod\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d3\\\",\\n      \\\"quote\\\": \\\"The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\\\",\\n      \\\"inference\\\": \\\"Kriti Sanon appears in the remix video for the song 'Raabta', which is from the 2012 Bollywood film 'Agent Vinod'.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d6\\\",\\n      \\\"quote\\\": \\\"Actors Tiger Shroff and Kriti Sanon make their Hindi film debut with the film\\\",\\n      \\\"inference\\\": \\\"Confirms Kriti Sanon is a star of the film 'Heropanti', linking her to the question's premise.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"\\\"\\n}\\n```\\n\\n**Answer:** Kriti Sanon, the \\\"Heropanti\\\" star, appears in the remix video for the song \\\"Raabta,\\\" which is from the Bollywood film **Agent Vinod** (2012).\",\"\\n\\nBased on the retrieved sources, here is my evidence report:\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Heropanti\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d4\\\",\\n      \\\"quote\\\": \\\"\\\\\\\"Raat Bhar\\\\\\\" is a pop song from the 2014 Hit Bollywood film, \\\\\\\"Heropanti\\\\\\\". Composed by Sajid-Wajid, the song is sung by Arijit Singh and Shreya Ghoshal, with lyrics penned by Kausar Munir. The lively, peppy track, features Tiger Shroff and Kriti Sanon in the video.\\\",\\n      \\\"inference\\\": \\\"Kriti Sanon appears in the video for 'Raat Bhar', a song from the Bollywood film 'Heropanti'. This is the only source linking Kriti Sanon to a song video, and the film is Heropanti itself.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d1\\\",\\n      \\\"quote\\\": \\\"Sabbir's second movie, Heropanti starring Tiger Shroff & Kriti Sanon, released on 23 May 2014.\\\",\\n      \\\"inference\\\": \\\"Confirms Kriti Sanon is a star of the film Heropanti, consistent with the question's framing.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"None of the retrieved documents explicitly mention a 'remix video.' The sources confirm Kriti Sanon appears in the video for 'Raat Bhar' from the film 'Heropanti', but do not specify whether this is a remix version or the original music video. The answer 'Heropanti' is the best-supported inference from available sources.\\\"\\n}\\n```\",\"\\n\\nBased on the retrieved documents, I can confirm Kriti Sanon is the star of \\\"Heropanti\\\" (doc d8), but none of the three returned documents mention a **remix video** she appears in. The sources cover her filmography (Heropanti, Dilwale, Raabta, 1: Nenokkadine) but do not reference any remix video.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Not found in retrieved sources\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d8\\\",\\n      \\\"quote\\\": \\\"Her first Bollywood film was Sabbir Khan's romantic action drama \\\\\\\"Heropanti\\\\\\\", for which she won the Filmfare Award for Best Female Debut.\\\",\\n      \\\"inference\\\": \\\"Confirms Kriti Sanon is the 'Heropanti' star referenced in the question.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d2\\\",\\n      \\\"quote\\\": \\\"The film stars Sushant Singh Rajput, Kriti Sanon and Jim Sarbh in the lead roles.\\\",\\n      \\\"inference\\\": \\\"Shows Kriti Sanon in Raabta (2017), but no mention of a remix video.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d5\\\",\\n      \\\"quote\\\": \\\"the film features Mahesh Babu and Kriti Sanon in the lead roles (Sanon's Telugu cinema debut).\\\",\\n      \\\"inference\\\": \\\"Confirms her Telugu debut; not relevant to a Bollywood remix video.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"None of the retrieved documents (d8, d2, d5) contain any mention of a remix video featuring Kriti Sanon. The specific Bollywood film whose song's remix video she appears in cannot be determined from the available sources.\\\"\\n}\\n```\"],\"stopReason\":\"completed\",\"agentsStarted\":3}"
+              }
+            ],
+            "isError": false,
+            "id": "2d3ada1a-4719-4f08-bf0c-1b6de8b082f4"
+          }
+        },
+        "sourceEventSeqs": [
+          14
+        ],
+        "surfaceOp": "append"
+      }
+    ]
+  },
+  "streams": {
+    "requests": [
+      {
+        "call_id": "1793269240636633084-daa17b35",
+        "node_id": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+        "stage": "plan",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research question: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\nCall research_workflow exactly once. It runs all three mandatory research agents. After receiving all three reports, answer using only their evidence. Do not search yourself. Your final response must be one JSON object: {\"answer\":\"short direct answer\",\"supporting_doc_ids\":[\"d0\",\"d1\"],\"reason\":\"brief evidence-based explanation\"}. Do not add markdown fences. If evidence is missing, say so honestly."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\". Some platform temporary areas may also be writable.\n\nApproval policy: ask. Operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269240.5312684,
+          "event": "admit",
+          "call_id": "512b93c5-e079-49b2-86eb-d13e97b6f7e4",
+          "task_id": "5ae75a5a5542991bbc9761f3",
+          "agent_id": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+          "stage": "plan",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269240.5305712,
+          "admitted": 1793269240.530727,
+          "frontend_wait": 0.0001556873321533203,
+          "target": 12,
+          "inflight": 3,
+          "pending": 0,
+          "engine": {
+            "running": 0.0,
+            "waiting": 0.0,
+            "kv_usage": 0.0,
+            "prefix_queries": 200095.0,
+            "prefix_hits": 53312.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269240.2729266
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269305943472849-1b26898a",
+        "node_id": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+        "stage": "synthesis",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research question: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\nCall research_workflow exactly once. It runs all three mandatory research agents. After receiving all three reports, answer using only their evidence. Do not search yourself. Your final response must be one JSON object: {\"answer\":\"short direct answer\",\"supporting_doc_ids\":[\"d0\",\"d1\"],\"reason\":\"brief evidence-based explanation\"}. Do not add markdown fences. If evidence is missing, say so honestly."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\". Some platform temporary areas may also be writable.\n\nApproval policy: ask. Operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research a question about Kriti Sanon appearing in a remix video for a song from a Bollywood film. They want me to call research_workflow exactly once, then answer based on the three reports it returns.\n\nLet me call the research_workflow tool.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-8d694af78e10dd44",
+                  "type": "function",
+                  "function": {
+                    "name": "research_workflow",
+                    "arguments": "{}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"value\":[\"\\n\\nBased on the retrieved sources, here is my evidence report:\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Agent Vinod\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d3\\\",\\n      \\\"quote\\\": \\\"The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\\\",\\n      \\\"inference\\\": \\\"Kriti Sanon appears in the remix video for the song 'Raabta', which is from the 2012 Bollywood film 'Agent Vinod'.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d6\\\",\\n      \\\"quote\\\": \\\"Actors Tiger Shroff and Kriti Sanon make their Hindi film debut with the film\\\",\\n      \\\"inference\\\": \\\"Confirms Kriti Sanon is a star of the film 'Heropanti', linking her to the question's premise.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"\\\"\\n}\\n```\\n\\n**Answer:** Kriti Sanon, the \\\"Heropanti\\\" star, appears in the remix video for the song \\\"Raabta,\\\" which is from the Bollywood film **Agent Vinod** (2012).\",\"\\n\\nBased on the retrieved sources, here is my evidence report:\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Heropanti\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d4\\\",\\n      \\\"quote\\\": \\\"\\\\\\\"Raat Bhar\\\\\\\" is a pop song from the 2014 Hit Bollywood film, \\\\\\\"Heropanti\\\\\\\". Composed by Sajid-Wajid, the song is sung by Arijit Singh and Shreya Ghoshal, with lyrics penned by Kausar Munir. The lively, peppy track, features Tiger Shroff and Kriti Sanon in the video.\\\",\\n      \\\"inference\\\": \\\"Kriti Sanon appears in the video for 'Raat Bhar', a song from the Bollywood film 'Heropanti'. This is the only source linking Kriti Sanon to a song video, and the film is Heropanti itself.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d1\\\",\\n      \\\"quote\\\": \\\"Sabbir's second movie, Heropanti starring Tiger Shroff & Kriti Sanon, released on 23 May 2014.\\\",\\n      \\\"inference\\\": \\\"Confirms Kriti Sanon is a star of the film Heropanti, consistent with the question's framing.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"None of the retrieved documents explicitly mention a 'remix video.' The sources confirm Kriti Sanon appears in the video for 'Raat Bhar' from the film 'Heropanti', but do not specify whether this is a remix version or the original music video. The answer 'Heropanti' is the best-supported inference from available sources.\\\"\\n}\\n```\",\"\\n\\nBased on the retrieved documents, I can confirm Kriti Sanon is the star of \\\"Heropanti\\\" (doc d8), but none of the three returned documents mention a **remix video** she appears in. The sources cover her filmography (Heropanti, Dilwale, Raabta, 1: Nenokkadine) but do not reference any remix video.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Not found in retrieved sources\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d8\\\",\\n      \\\"quote\\\": \\\"Her first Bollywood film was Sabbir Khan's romantic action drama \\\\\\\"Heropanti\\\\\\\", for which she won the Filmfare Award for Best Female Debut.\\\",\\n      \\\"inference\\\": \\\"Confirms Kriti Sanon is the 'Heropanti' star referenced in the question.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d2\\\",\\n      \\\"quote\\\": \\\"The film stars Sushant Singh Rajput, Kriti Sanon and Jim Sarbh in the lead roles.\\\",\\n      \\\"inference\\\": \\\"Shows Kriti Sanon in Raabta (2017), but no mention of a remix video.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d5\\\",\\n      \\\"quote\\\": \\\"the film features Mahesh Babu and Kriti Sanon in the lead roles (Sanon's Telugu cinema debut).\\\",\\n      \\\"inference\\\": \\\"Confirms her Telugu debut; not relevant to a Bollywood remix video.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"None of the retrieved documents (d8, d2, d5) contain any mention of a remix video featuring Kriti Sanon. The specific Bollywood film whose song's remix video she appears in cannot be determined from the available sources.\\\"\\n}\\n```\"],\"stopReason\":\"completed\",\"agentsStarted\":3}",
+              "tool_call_id": "chatcmpl-tool-8d694af78e10dd44"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269305.9331014,
+          "event": "admit",
+          "call_id": "0ca4b3f1-be21-4293-93a0-5b56bd8f9a98",
+          "task_id": "5ae75a5a5542991bbc9761f3",
+          "agent_id": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+          "stage": "synthesis",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269305.9328787,
+          "admitted": 1793269305.9330485,
+          "frontend_wait": 0.0001697540283203125,
+          "target": 12,
+          "inflight": 1,
+          "pending": 0,
+          "engine": {
+            "running": 1.0,
+            "waiting": 0.0,
+            "kv_usage": 0.018087855297157618,
+            "prefix_queries": 291147.0,
+            "prefix_hits": 77616.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269305.752698
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269250087576000-27fd2247",
+        "node_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 0. Question: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\nCall bench_search exactly once with branch=0 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269250.0628612,
+          "event": "admit",
+          "call_id": "1384d71e-5fc1-4786-9c5c-5a7378faefcb",
+          "task_id": "5ae75a5a5542991bbc9761f3",
+          "agent_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269244.1293275,
+          "admitted": 1793269250.0627978,
+          "frontend_wait": 5.933470249176025,
+          "target": 12,
+          "inflight": 12,
+          "pending": 11,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.15503875968992253,
+            "prefix_queries": 230903.0,
+            "prefix_hits": 53312.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269249.8674927
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269274114258478-b46ec869",
+        "node_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 0. Question: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\nCall bench_search exactly once with branch=0 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research branch 0 with a specific question about Kriti Sanon appearing in a remix video for a song from a Bollywood film. I need to call bench_search exactly once with branch=0 and a relevant query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-935751c8a3569800",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":0,\"query\":\"Kriti Sanon Heropanti remix video Bollywood film song\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":0,\"query\":\"Kriti Sanon Heropanti remix video Bollywood film song\",\"documents\":[{\"doc_id\":\"d3\",\"title\":\"Raabta (song)\",\"text\":\"\\\"Raabta\\\" (English: Relation) is a romantic Hindi song from the 2012 Bollywood film, \\\"Agent Vinod\\\".  Composed by Pritam Chakraborty, the song is sung by Arijit Singh, with lyrics penned by Amitabh Bhattacharya.  The music video of the track features actors Saif Ali Khan and Kareena Kapoor Khan, and the remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta .\",\"bm25\":5.094030095282707},{\"doc_id\":\"d9\",\"title\":\"Main Tera Boyfriend\",\"text\":\"\\\"Main Tera Boyfriend\\\" is a dance song recorded by Meet Bros, Arijit Singh, and Neha Kakkar.  The music video of the song stars Kriti Sanon and Sushant Singh Rajput.  The song is from the Indian film \\\"Raabta\\\".\",\"bm25\":2.4945343105720137},{\"doc_id\":\"d6\",\"title\":\"Heropanti\",\"text\":\"Heropanti (\\\"English: Heroic antics\\\") is an Indian Hindi action film directed by Sabbir Khan and produced by Sajid Nadiadwala.  Actors Tiger Shroff and Kriti Sanon make their Hindi film debut with the film, alongside Prakash Raj as an important supporting role.  This is a remake of the Telugu film \\\"Parugu\\\", \\\"Heropanti\\\" released on 23 May 2014.  The film received mixed reviews from critics, but managed to become a box office super hit.  The satellite rights were bagged by Sony Entertainment Television.\",\"bm25\":2.283222970442751}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-935751c8a3569800"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269274.0915945,
+          "event": "admit",
+          "call_id": "24e19d2b-1e32-45f5-80d7-0ba3504bf41a",
+          "task_id": "5ae75a5a5542991bbc9761f3",
+          "agent_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269254.3056722,
+          "admitted": 1793269274.091395,
+          "frontend_wait": 19.785722732543945,
+          "target": 12,
+          "inflight": 12,
+          "pending": 4,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.19638242894056845,
+            "prefix_queries": 269791.0,
+            "prefix_hits": 68992.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269274.012058
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269250611802009-ea91e8a8",
+        "node_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 1. Question: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\nCall bench_search exactly once with branch=1 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269250.5883317,
+          "event": "admit",
+          "call_id": "a51c0d79-a928-4542-a32a-072fa5815097",
+          "task_id": "5ae75a5a5542991bbc9761f3",
+          "agent_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269244.135955,
+          "admitted": 1793269250.5879207,
+          "frontend_wait": 6.451965570449829,
+          "target": 12,
+          "inflight": 12,
+          "pending": 11,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.15503875968992253,
+            "prefix_queries": 231991.0,
+            "prefix_hits": 53312.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269250.468766
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269275213409358-5ba22c15",
+        "node_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 1. Question: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\nCall bench_search exactly once with branch=1 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research branch 1 with a specific question about Kriti Sanon appearing in a remix video for a song from a Bollywood film. I need to call bench_search exactly once with branch=1 and a short useful query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-a42ac169ca51a66b",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":1,\"query\":\"Kriti Sanon remix video Bollywood film\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":1,\"query\":\"Kriti Sanon remix video Bollywood film\",\"documents\":[{\"doc_id\":\"d4\",\"title\":\"Raat Bhar\",\"text\":\"\\\"Raat Bhar\\\" is a pop song from the 2014 Hit Bollywood film, \\\"Heropanti\\\".  Composed by Sajid-Wajid, the song is sung by Arijit Singh and Shreya Ghoshal, with lyrics penned by Kausar Munir.  The lively, peppy track, features Tiger Shroff and Kriti Sanon in the video.\",\"bm25\":2.4920015235530903},{\"doc_id\":\"d1\",\"title\":\"Sabbir Khan\",\"text\":\"Sabbir Khan is an Indian film director and screenwriter.  In 2009 he made his directorial debut with the film \\\"Kambakkht Ishq\\\" (2009) that starred Akshay Kumar and Kareena Kapoor.  The film released on 3 July 2009 worldwide.  Sabbir's second movie, Heropanti starring Tiger Shroff & Kriti Sanon, released on 23 May 2014.\",\"bm25\":0.47971987075303807},{\"doc_id\":\"d7\",\"title\":\"Bareilly Ki Barfi\",\"text\":\"Bareilly Ki Barfi (English: \\\"Bareilly's Barfi\\\") is a 2017 Indian romantic comedy film, directed by Ashwiny Iyer Tiwari.  The film stars Rajkumar Rao, Ayushmann Khurrana and Kriti Sanon.  It was released worldwide on 18 August, 2017.  The film was released more than 1000 theatres worldwide.The film grossed more than 30 crores declared a hit at box office india.\",\"bm25\":0.4724909311933174}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-a42ac169ca51a66b"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269275.1999743,
+          "event": "admit",
+          "call_id": "7315d180-4669-4170-8da4-9b6fcb7989da",
+          "task_id": "5ae75a5a5542991bbc9761f3",
+          "agent_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269254.8589466,
+          "admitted": 1793269275.1999152,
+          "frontend_wait": 20.3409686088562,
+          "target": 12,
+          "inflight": 12,
+          "pending": 4,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.19121447028423777,
+            "prefix_queries": 273305.0,
+            "prefix_hits": 70560.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269274.9881926
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269250652104243-b813c90c",
+        "node_id": "374bea73-011e-486a-a170-2d5cca233a30",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 2. Question: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\nCall bench_search exactly once with branch=2 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269250.6258616,
+          "event": "admit",
+          "call_id": "4f23742a-66eb-49b7-962a-ffce247a5750",
+          "task_id": "5ae75a5a5542991bbc9761f3",
+          "agent_id": "374bea73-011e-486a-a170-2d5cca233a30",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269244.1366482,
+          "admitted": 1793269250.6258025,
+          "frontend_wait": 6.48915433883667,
+          "target": 12,
+          "inflight": 12,
+          "pending": 10,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.15503875968992253,
+            "prefix_queries": 231991.0,
+            "prefix_hits": 53312.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269250.468766
+          },
+          "policy": "pressure"
+        }
+      },
+      {
+        "call_id": "1793269279661915222-fc081e1f",
+        "node_id": "374bea73-011e-486a-a170-2d5cca233a30",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 2. Question: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\nCall bench_search exactly once with branch=2 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-pressure12/tasks/5ae75a5a5542991bbc9761f3\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research branch 2 with a specific question about Kriti Sanon appearing in a remix video for a song from a Bollywood film. I need to call bench_search exactly once with branch=2 and a relevant query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-9432e5b6dcc64a7b",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":2,\"query\":\"Kriti Sanon remix video Bollywood film song\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":2,\"query\":\"Kriti Sanon remix video Bollywood film song\",\"documents\":[{\"doc_id\":\"d8\",\"title\":\"Kriti Sanon\",\"text\":\"Kriti Sanon (born 27July 1990) is an Indian model and film actress who appears in Hindi and Telugu films.  After beginning with modelling, she made her acting debut with Sukumar's Telugu psychological thriller film \\\"\\\".  Her first Bollywood film was Sabbir Khan's romantic action drama \\\"Heropanti\\\", for which she won the Filmfare Award for Best Female Debut.  In 2015, Sanon starred in the successful romantic action comedy \\\"Dilwale\\\".\",\"bm25\":1.5685356781233388},{\"doc_id\":\"d2\",\"title\":\"Raabta (film)\",\"text\":\"Raabta (English: \\\"Connection\\\") is an Indian romantic thriller film directed and produced by Dinesh Vijan co-produced by Homi Adajania and Bhushan Kumar.  The film stars Sushant Singh Rajput, Kriti Sanon and Jim Sarbh in the lead roles.  It was released worldwide on 9 June 2017.\",\"bm25\":0.5295170685980427},{\"doc_id\":\"d5\",\"title\":\"1: Nenokkadine\",\"text\":\"1: Nenokkadine (English: \\\"1: I am alone\\\" ) is a 2014 Indian Telugu-language psychological thriller film written and directed by Sukumar.  Produced by Ram Achanta, Gopichand Achanta, and Anil Sunkara as 14 Reels Entertainment and distributed by Eros International, the film features Mahesh Babu and Kriti Sanon in the lead roles (Sanon's Telugu cinema debut).  Nassar, Pradeep Rawat, Kelly Dorji, and Anu Hasan appear in supporting roles.  Mahesh's son, Gautham Krishna, made his debut in the film as a younger version of the protagonist.\",\"bm25\":0.48856386949404756}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-9432e5b6dcc64a7b"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269279.642951,
+          "event": "admit",
+          "call_id": "544337ed-c96e-4749-a261-09f1df6b9ea4",
+          "task_id": "5ae75a5a5542991bbc9761f3",
+          "agent_id": "374bea73-011e-486a-a170-2d5cca233a30",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269254.960946,
+          "admitted": 1793269279.6428926,
+          "frontend_wait": 24.681946516036987,
+          "target": 12,
+          "inflight": 12,
+          "pending": 3,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.18863049095607232,
+            "prefix_queries": 274957.0,
+            "prefix_hits": 71344.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269279.1603794
+          },
+          "policy": "pressure"
+        }
+      }
+    ],
+    "responses": [
+      {
+        "call_id": "1793269240636633084-daa17b35",
+        "node_id": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+        "stage": "plan",
+        "duration": 2.944132632925175,
+        "ttft": 1.1132466779090464,
+        "usage": {
+          "prompt_tokens": 1005,
+          "total_tokens": 1078,
+          "completion_tokens": 73,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 56
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research a question about Kriti Sanon appearing in a remix video for a song from a Bollywood film. They want me to call research_workflow exactly once, then answer based on the three reports it returns.\n\nLet me call the research_workflow tool.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-8d694af78e10dd44",
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "arguments": "{}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 2.944132632925175,
+          "first_body_seconds": 1.1132466779090464,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:40 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "4fee948576ab4c65a5f50eb21413ddc5",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269305943472849-1b26898a",
+        "node_id": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+        "stage": "synthesis",
+        "duration": 14.27686929597985,
+        "ttft": 0.2876542890444398,
+        "usage": {
+          "prompt_tokens": 2173,
+          "total_tokens": 2765,
+          "completion_tokens": 592,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 487
+          }
+        },
+        "message": {
+          "content": "\n\n{\"answer\":\"Raabta\",\"supporting_doc_ids\":[\"d3\"],\"reason\":\"Doc d3 states: 'The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.' This directly identifies the Bollywood film as Raabta (2017), in which Kriti Sanon (the 'Heropanti' star) appears in the remix video for a song from that film.\"}",
+          "reasoning_content": "Let me analyze the three reports:\n\n1. **Agent 1** found doc d3 which states: \"The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\" The agent inferred this is from \"Agent Vinod\" (2012). However, this seems incorrect - \"Raabta\" is actually a 2017 film starring Sushant Singh Rajput and Kriti Sanon, not a song from \"Agent Vinod.\" The agent made an error in inference.\n\n2. **Agent 2** found doc d4 which mentions \"Raat Bhar\" from the film \"Heropanti\" featuring Tiger Shroff and Kriti Sanon. But this is the original video, not a remix video.\n\n3. **Agent 3** found no mention of a remix video in their documents.\n\nThe key evidence is from Agent 1, doc d3: \"The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\"\n\nWait, let me reconsider. The quote says \"from the film Raabta\" - so the song is from the film \"Raabta.\" The agent incorrectly inferred it was from \"Agent Vinod.\" \n\nActually, looking more carefully at the quote: \"The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\"\n\nThis is a bit ambiguous. It could mean:\n- The remix video stars these actors, and the song is from the film Raabta\n- OR the remix video stars these actors from the film Raabta (meaning they appeared in Raabta)\n\nGiven that Sushant Singh Rajput and Kriti Sanon are the leads of the 2017 film \"Raabta,\" and Deepika Padukone and Jim Sarbh are also in that film, the most logical reading is that the song is from the film \"Raabta.\"\n\nSo the answer should be \"Raabta\" - the Bollywood film from which the song's remix video features Kriti Sanon.\n\nThe supporting doc is d3.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 14.27686929597985,
+          "first_body_seconds": 0.2876542890444398,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:21:45 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "14bd0c88865a4c778f7bab9f70bf72a9",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269250087576000-27fd2247",
+        "node_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+        "stage": "query",
+        "duration": 4.153841699007899,
+        "ttft": 0.25552410795353353,
+        "usage": {
+          "prompt_tokens": 1088,
+          "total_tokens": 1189,
+          "completion_tokens": 101,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 49
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research branch 0 with a specific question about Kriti Sanon appearing in a remix video for a song from a Bollywood film. I need to call bench_search exactly once with branch=0 and a relevant query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-935751c8a3569800",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 0, \"query\": \"Kriti Sanon Heropanti remix video Bollywood film song\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 4.153841699007899,
+          "first_body_seconds": 0.25552410795353353,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:49 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "d4946729b8384b88814166c304b54b35",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269274114258478-b46ec869",
+        "node_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+        "stage": "evidence",
+        "duration": 15.128119559958577,
+        "ttft": 0.2732469820184633,
+        "usage": {
+          "prompt_tokens": 1663,
+          "total_tokens": 2164,
+          "completion_tokens": 501,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 231
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the retrieved sources, here is my evidence report:\n\n```json\n{\n  \"answer_fragment\": \"Agent Vinod\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d3\",\n      \"quote\": \"The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.\",\n      \"inference\": \"Kriti Sanon appears in the remix video for the song 'Raabta', which is from the 2012 Bollywood film 'Agent Vinod'.\"\n    },\n    {\n      \"doc_id\": \"d6\",\n      \"quote\": \"Actors Tiger Shroff and Kriti Sanon make their Hindi film debut with the film\",\n      \"inference\": \"Confirms Kriti Sanon is a star of the film 'Heropanti', linking her to the question's premise.\"\n    }\n  ],\n  \"missing\": \"\"\n}\n```\n\n**Answer:** Kriti Sanon, the \"Heropanti\" star, appears in the remix video for the song \"Raabta,\" which is from the Bollywood film **Agent Vinod** (2012).",
+          "reasoning_content": "Let me analyze the results:\n\n1. **doc d3** - \"Raabta (song)\": This is a romantic Hindi song from the 2012 Bollywood film \"Agent Vinod\". The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, **Kriti Sanon** and Jim Sarbh from the film Raabta.\n\n2. **doc d9** - \"Main Tera Boyfriend\": A dance song from the Indian film \"Raabta\" starring Kriti Sanon and Sushant Singh Rajput.\n\n3. **doc d6** - \"Heropanti\": An Indian Hindi action film with Tiger Shroff and Kriti Sanon.\n\nThe question asks: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\n\nFrom doc d3, the remix video for \"Raabta\" (a song from the Bollywood film \"Agent Vinod\") stars Kriti Sanon. So the answer is **Agent Vinod**.\n\nLet me construct the JSON evidence report.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 15.128119559958577,
+          "first_body_seconds": 0.2732469820184633,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:21:13 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "b06400d4025a4355b632efca0f47f6b9",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269250611802009-ea91e8a8",
+        "node_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+        "stage": "query",
+        "duration": 4.184887135983445,
+        "ttft": 0.3686098399339244,
+        "usage": {
+          "prompt_tokens": 1088,
+          "total_tokens": 1186,
+          "completion_tokens": 98,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 50
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research branch 1 with a specific question about Kriti Sanon appearing in a remix video for a song from a Bollywood film. I need to call bench_search exactly once with branch=1 and a short useful query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-a42ac169ca51a66b",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 1, \"query\": \"Kriti Sanon remix video Bollywood film\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 4.184887135983445,
+          "first_body_seconds": 0.3686098399339244,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:49 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "969ea55eab37402f8d39cc1c0cf04cf0",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269275213409358-5ba22c15",
+        "node_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+        "stage": "evidence",
+        "duration": 30.595076472032815,
+        "ttft": 0.2708319390658289,
+        "usage": {
+          "prompt_tokens": 1652,
+          "total_tokens": 2767,
+          "completion_tokens": 1115,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 749
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the retrieved sources, here is my evidence report:\n\n```json\n{\n  \"answer_fragment\": \"Heropanti\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d4\",\n      \"quote\": \"\\\"Raat Bhar\\\" is a pop song from the 2014 Hit Bollywood film, \\\"Heropanti\\\". Composed by Sajid-Wajid, the song is sung by Arijit Singh and Shreya Ghoshal, with lyrics penned by Kausar Munir. The lively, peppy track, features Tiger Shroff and Kriti Sanon in the video.\",\n      \"inference\": \"Kriti Sanon appears in the video for 'Raat Bhar', a song from the Bollywood film 'Heropanti'. This is the only source linking Kriti Sanon to a song video, and the film is Heropanti itself.\"\n    },\n    {\n      \"doc_id\": \"d1\",\n      \"quote\": \"Sabbir's second movie, Heropanti starring Tiger Shroff & Kriti Sanon, released on 23 May 2014.\",\n      \"inference\": \"Confirms Kriti Sanon is a star of the film Heropanti, consistent with the question's framing.\"\n    }\n  ],\n  \"missing\": \"None of the retrieved documents explicitly mention a 'remix video.' The sources confirm Kriti Sanon appears in the video for 'Raat Bhar' from the film 'Heropanti', but do not specify whether this is a remix version or the original music video. The answer 'Heropanti' is the best-supported inference from available sources.\"\n}\n```",
+          "reasoning_content": "Let me analyze the results. The question asks: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\n\nFrom doc d4: \"Raat Bhar\" is a pop song from the 2014 Hit Bollywood film, \"Heropanti\". Composed by Sajid-Wajid, the song is sung by Arijit Singh and Shreya Ghoshal, with lyrics penned by Kausar Munir. The lively, peppy track, features Tiger Shroff and Kriti Sanon in the video.\n\nWait, this says \"Raat Bhar\" is from the film \"Heropanti\" itself. But the question asks about a remix video for a song from a Bollywood film. Let me re-read the question.\n\n\"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\n\nSo the question is: Kriti Sanon (who is a star of Heropanti) appears in a remix video for a song. That song is from what Bollywood film?\n\nThe document d4 says \"Raat Bhar\" is from the film \"Heropanti\" and features Tiger Shroff and Kriti Sanon in the video. But this is the original video, not a remix video.\n\nHmm, but the documents don't explicitly mention a \"remix video.\" Let me think about this more carefully.\n\nActually, looking at this again - the question might be interpreted as: Kriti Sanon appears in a remix video. The song in that remix video is from what Bollywood film?\n\nThe only document that mentions Kriti Sanon in a video context is d4, which says \"Raat Bhar\" features Tiger Shroff and Kriti Sanon in the video, and the song is from the film \"Heropanti.\"\n\nBut wait - the question says \"remix video for a song from what Bollywood film?\" This implies the song is from a different film than Heropanti (since it says \"Heropanti star Kriti Sanon\" as a descriptor, then asks about a remix video for a song from some film).\n\nHowever, based on the retrieved sources, the only connection is that \"Raat Bhar\" is from \"Heropanti\" and features Kriti Sanon in the video. The documents don't explicitly mention a \"remix\" video.\n\nLet me be honest about what the sources say. The sources indicate that \"Raat Bhar\" is a song from the film \"Heropanti\" and features Kriti Sanon in the video. There's no explicit mention of a \"remix video\" in any of the returned documents.\n\nActually, I should reconsider. Perhaps the question is structured such that the answer IS \"Heropanti\" - i.e., the remix video is for a song from Heropanti itself. The phrasing \"Heropanti star Kriti Sanon\" is just identifying who Kriti Sanon is, and then asking about a remix video for a song from a Bollywood film (which happens to be Heropanti).\n\nGiven the sources available, the best answer I can provide is that the song \"Raat Bhar\" is from the film \"Heropanti\" and features Kriti Sanon in the video. The sources don't explicitly mention a \"remix\" version, but this is the closest match.\n\nLet me report this honestly, noting that the sources don't explicitly mention a \"remix video\" but do confirm Kriti Sanon appears in the video for \"Raat Bhar\" from the film \"Heropanti.\"\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 30.595076472032815,
+          "first_body_seconds": 0.2708319390658289,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:21:14 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "e39001fcd6ed4fd69d5c7d412693a0e2",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269250652104243-b813c90c",
+        "node_id": "374bea73-011e-486a-a170-2d5cca233a30",
+        "stage": "query",
+        "duration": 4.274859750061296,
+        "ttft": 0.39036722003947943,
+        "usage": {
+          "prompt_tokens": 1088,
+          "total_tokens": 1186,
+          "completion_tokens": 98,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 49
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research branch 2 with a specific question about Kriti Sanon appearing in a remix video for a song from a Bollywood film. I need to call bench_search exactly once with branch=2 and a relevant query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-9432e5b6dcc64a7b",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 2, \"query\": \"Kriti Sanon remix video Bollywood film song\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 4.274859750061296,
+          "first_body_seconds": 0.39036722003947943,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:49 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "899708b0d461425cb088fdf87e29b126",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269279661915222-fc081e1f",
+        "node_id": "374bea73-011e-486a-a170-2d5cca233a30",
+        "stage": "evidence",
+        "duration": 25.34335933998227,
+        "ttft": 0.2519949219422415,
+        "usage": {
+          "prompt_tokens": 1691,
+          "total_tokens": 2614,
+          "completion_tokens": 923,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 531
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the retrieved documents, I can confirm Kriti Sanon is the star of \"Heropanti\" (doc d8), but none of the three returned documents mention a **remix video** she appears in. The sources cover her filmography (Heropanti, Dilwale, Raabta, 1: Nenokkadine) but do not reference any remix video.\n\n```json\n{\n  \"answer_fragment\": \"Not found in retrieved sources\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d8\",\n      \"quote\": \"Her first Bollywood film was Sabbir Khan's romantic action drama \\\"Heropanti\\\", for which she won the Filmfare Award for Best Female Debut.\",\n      \"inference\": \"Confirms Kriti Sanon is the 'Heropanti' star referenced in the question.\"\n    },\n    {\n      \"doc_id\": \"d2\",\n      \"quote\": \"The film stars Sushant Singh Rajput, Kriti Sanon and Jim Sarbh in the lead roles.\",\n      \"inference\": \"Shows Kriti Sanon in Raabta (2017), but no mention of a remix video.\"\n    },\n    {\n      \"doc_id\": \"d5\",\n      \"quote\": \"the film features Mahesh Babu and Kriti Sanon in the lead roles (Sanon's Telugu cinema debut).\",\n      \"inference\": \"Confirms her Telugu debut; not relevant to a Bollywood remix video.\"\n    }\n  ],\n  \"missing\": \"None of the retrieved documents (d8, d2, d5) contain any mention of a remix video featuring Kriti Sanon. The specific Bollywood film whose song's remix video she appears in cannot be determined from the available sources.\"\n}\n```",
+          "reasoning_content": "The question asks: \"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?\n\nFrom the retrieved documents:\n- d8 tells us Kriti Sanon's first Bollywood film was \"Heropanti\" - this confirms she's the \"Heropanti\" star.\n- d2 tells us about \"Raabta\" which stars Kriti Sanon.\n- d5 tells us about \"1: Nenokkadine\" which is a Telugu film.\n\nHowever, none of the retrieved documents specifically mention a \"remix video\" that Kriti Sanon appears in. The question asks about a remix video for a song from a Bollywood film. The documents don't contain information about a remix video.\n\nLet me think about what I know: There was a remix of \"Tum Hi Ho\" from Aashiqui 2, or perhaps a remix of a song where Kriti Sanon appeared. Actually, I recall that there was a remix of \"Tum Hi Ho\" or another song... \n\nWait, I think the answer might be related to the song \"Tum Hi Ho\" from Aashiqui 2, but I'm not sure about a remix video featuring Kriti Sanon.\n\nActually, I recall that there was a remix of \"Tum Hi Ho\" from Aashiqui 2 that featured Kriti Sanon. But I need to be honest - the retrieved documents don't contain this information.\n\nLet me re-read the documents carefully:\n- d8: Mentions Heropanti, Dilwale, and her debut in a Telugu film. No mention of remix videos.\n- d2: Mentions Raabta. No mention of remix videos.\n- d5: Mentions 1: Nenokkadine. No mention of remix videos.\n\nNone of the retrieved documents mention a remix video. I should report this honestly as missing information.\n\nWait, let me reconsider. The question is specifically about a remix video. The documents I have don't contain this information. I need to report what I found and note the missing information.\n\nActually, thinking more carefully - I recall that there was a remix of \"Tum Hi Ho\" from Aashiqui 2, but I'm not confident about Kriti Sanon being in it. There's also the possibility it could be related to \"Dilwale\" or another film.\n\nSince the retrieved sources don't contain information about a remix video, I should report this as missing information honestly.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 25.34335933998227,
+          "first_body_seconds": 0.2519949219422415,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:21:19 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "c69eb3252b924ee3bd89a21c11039640",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "wall_time": 1793269254.2536807,
+        "event": "bm25",
+        "task_id": "5ae75a5a5542991bbc9761f3",
+        "agent_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+        "branch": 0,
+        "query": "Kriti Sanon Heropanti remix video Bollywood film song",
+        "duration_seconds": 0.00018164003267884254,
+        "result": {
+          "branch": 0,
+          "query": "Kriti Sanon Heropanti remix video Bollywood film song",
+          "documents": [
+            {
+              "doc_id": "d3",
+              "title": "Raabta (song)",
+              "text": "\"Raabta\" (English: Relation) is a romantic Hindi song from the 2012 Bollywood film, \"Agent Vinod\".  Composed by Pritam Chakraborty, the song is sung by Arijit Singh, with lyrics penned by Amitabh Bhattacharya.  The music video of the track features actors Saif Ali Khan and Kareena Kapoor Khan, and the remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta .",
+              "bm25": 5.094030095282707
+            },
+            {
+              "doc_id": "d9",
+              "title": "Main Tera Boyfriend",
+              "text": "\"Main Tera Boyfriend\" is a dance song recorded by Meet Bros, Arijit Singh, and Neha Kakkar.  The music video of the song stars Kriti Sanon and Sushant Singh Rajput.  The song is from the Indian film \"Raabta\".",
+              "bm25": 2.4945343105720137
+            },
+            {
+              "doc_id": "d6",
+              "title": "Heropanti",
+              "text": "Heropanti (\"English: Heroic antics\") is an Indian Hindi action film directed by Sabbir Khan and produced by Sajid Nadiadwala.  Actors Tiger Shroff and Kriti Sanon make their Hindi film debut with the film, alongside Prakash Raj as an important supporting role.  This is a remake of the Telugu film \"Parugu\", \"Heropanti\" released on 23 May 2014.  The film received mixed reviews from critics, but managed to become a box office super hit.  The satellite rights were bagged by Sony Entertainment Television.",
+              "bm25": 2.283222970442751
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+        "tool_kind": "bm25",
+        "tool_id": "10300543-03cc-4709-97b3-ef456a46a1e5/search",
+        "actual_cpu_seconds": 0.00018164003267884254
+      },
+      {
+        "wall_time": 1793269254.8169222,
+        "event": "bm25",
+        "task_id": "5ae75a5a5542991bbc9761f3",
+        "agent_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+        "branch": 1,
+        "query": "Kriti Sanon remix video Bollywood film",
+        "duration_seconds": 0.000390515080653131,
+        "result": {
+          "branch": 1,
+          "query": "Kriti Sanon remix video Bollywood film",
+          "documents": [
+            {
+              "doc_id": "d4",
+              "title": "Raat Bhar",
+              "text": "\"Raat Bhar\" is a pop song from the 2014 Hit Bollywood film, \"Heropanti\".  Composed by Sajid-Wajid, the song is sung by Arijit Singh and Shreya Ghoshal, with lyrics penned by Kausar Munir.  The lively, peppy track, features Tiger Shroff and Kriti Sanon in the video.",
+              "bm25": 2.4920015235530903
+            },
+            {
+              "doc_id": "d1",
+              "title": "Sabbir Khan",
+              "text": "Sabbir Khan is an Indian film director and screenwriter.  In 2009 he made his directorial debut with the film \"Kambakkht Ishq\" (2009) that starred Akshay Kumar and Kareena Kapoor.  The film released on 3 July 2009 worldwide.  Sabbir's second movie, Heropanti starring Tiger Shroff & Kriti Sanon, released on 23 May 2014.",
+              "bm25": 0.47971987075303807
+            },
+            {
+              "doc_id": "d7",
+              "title": "Bareilly Ki Barfi",
+              "text": "Bareilly Ki Barfi (English: \"Bareilly's Barfi\") is a 2017 Indian romantic comedy film, directed by Ashwiny Iyer Tiwari.  The film stars Rajkumar Rao, Ayushmann Khurrana and Kriti Sanon.  It was released worldwide on 18 August, 2017.  The film was released more than 1000 theatres worldwide.The film grossed more than 30 crores declared a hit at box office india.",
+              "bm25": 0.4724909311933174
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+        "tool_kind": "bm25",
+        "tool_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45/search",
+        "actual_cpu_seconds": 0.000390515080653131
+      },
+      {
+        "wall_time": 1793269254.9415638,
+        "event": "bm25",
+        "task_id": "5ae75a5a5542991bbc9761f3",
+        "agent_id": "374bea73-011e-486a-a170-2d5cca233a30",
+        "branch": 2,
+        "query": "Kriti Sanon remix video Bollywood film song",
+        "duration_seconds": 0.00018366507720202208,
+        "result": {
+          "branch": 2,
+          "query": "Kriti Sanon remix video Bollywood film song",
+          "documents": [
+            {
+              "doc_id": "d8",
+              "title": "Kriti Sanon",
+              "text": "Kriti Sanon (born 27July 1990) is an Indian model and film actress who appears in Hindi and Telugu films.  After beginning with modelling, she made her acting debut with Sukumar's Telugu psychological thriller film \"\".  Her first Bollywood film was Sabbir Khan's romantic action drama \"Heropanti\", for which she won the Filmfare Award for Best Female Debut.  In 2015, Sanon starred in the successful romantic action comedy \"Dilwale\".",
+              "bm25": 1.5685356781233388
+            },
+            {
+              "doc_id": "d2",
+              "title": "Raabta (film)",
+              "text": "Raabta (English: \"Connection\") is an Indian romantic thriller film directed and produced by Dinesh Vijan co-produced by Homi Adajania and Bhushan Kumar.  The film stars Sushant Singh Rajput, Kriti Sanon and Jim Sarbh in the lead roles.  It was released worldwide on 9 June 2017.",
+              "bm25": 0.5295170685980427
+            },
+            {
+              "doc_id": "d5",
+              "title": "1: Nenokkadine",
+              "text": "1: Nenokkadine (English: \"1: I am alone\" ) is a 2014 Indian Telugu-language psychological thriller film written and directed by Sukumar.  Produced by Ram Achanta, Gopichand Achanta, and Anil Sunkara as 14 Reels Entertainment and distributed by Eros International, the film features Mahesh Babu and Kriti Sanon in the lead roles (Sanon's Telugu cinema debut).  Nassar, Pradeep Rawat, Kelly Dorji, and Anu Hasan appear in supporting roles.  Mahesh's son, Gautham Krishna, made his debut in the film as a younger version of the protagonist.",
+              "bm25": 0.48856386949404756
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "374bea73-011e-486a-a170-2d5cca233a30",
+        "tool_kind": "bm25",
+        "tool_id": "374bea73-011e-486a-a170-2d5cca233a30/search",
+        "actual_cpu_seconds": 0.00018366507720202208
+      }
+    ],
+    "roots": [
+      {
+        "task_id": "5ae75a5a5542991bbc9761f3",
+        "question": "\"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?",
+        "answer": "Raabta",
+        "gold": "Agent Vinod",
+        "em": 0.0,
+        "f1": 0.0,
+        "support_title_recall": 0.5,
+        "parse_error": null,
+        "final_text": "\n\n{\"answer\":\"Raabta\",\"supporting_doc_ids\":[\"d3\"],\"reason\":\"Doc d3 states: 'The remix video of the song stars Deepika Padukone, Sushant Singh Rajput, Kriti Sanon and Jim Sarbh from the film Raabta.' This directly identifies the Bollywood film as Raabta (2017), in which Kriti Sanon (the 'Heropanti' star) appears in the remix video for a song from that film.\"}",
+        "wall_time": 1793269320.3952925,
+        "event": "task_finished",
+        "exit_code": 0,
+        "duration_seconds": 81.75847268104553
+      }
+    ]
+  },
+  "source_archive": "dsh-e1-small-pressure12-raw.tar.gz"
+}

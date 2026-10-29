@@ -6,6 +6,8 @@
 
 **随后按用户最新要求完成了最小八题对照组：直接派发、固定12、实际压力反馈12，各一轮。** 平均每题分别为48.43、60.70、60.47秒；压力策略未触发收缩，尚无反馈收益。这里只做这组小实验，不恢复原v025等大批次。详见 [完整结果及边界](notes/e1-small-20261029.md)。
 
+三轮已接入[网页实验选择器](../../LLM_Optimization_Milestone/topic1-experiments.html#dsh-e1-small-native)，默认显示官方DSH；每轮八题均可切换，流程节点可展开完整messages、API参数、模型返回和派发时的真实引擎状态。浏览器数据由 `python experiments/dsh-engine/export_results_web.py` 从已归档证据离线导出，不重跑模型；`verify_results_web.py` 检查全部24个逐题流程及旧实验切换。
+
 ## 当前安装
 
 | 项目 | 实际配置 |

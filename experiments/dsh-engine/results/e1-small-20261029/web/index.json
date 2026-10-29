@@ -1,0 +1,296 @@
+[
+  {
+    "run_id": "dsh-e1-small-native",
+    "official_dsh": true,
+    "summary": {
+      "run_id": "dsh-e1-small-native",
+      "policy": "native",
+      "cap": 12,
+      "tasks": 8,
+      "completed_tasks": 8,
+      "task_duration_seconds": {
+        "n": 8,
+        "mean": 48.426445722579956,
+        "p95": 55.594785797595975,
+        "max": 57.90883183479309
+      },
+      "round_duration_seconds": 58.28696632385254,
+      "quality": {
+        "em": 0.5,
+        "f1": 0.8145833333333333,
+        "support_title_recall": 0.875
+      },
+      "agents": 32,
+      "agent_model_calls": 64,
+      "expected_agent_model_calls": 64,
+      "wire_calls": 64,
+      "bm25_calls": 24,
+      "decoded_tokens": 20445,
+      "engine_generation_tokens_delta": 20445.0,
+      "prompt_tokens": 94294,
+      "length_finishes": 0,
+      "max_engine_waiting": 8.0,
+      "max_engine_running": 24.0,
+      "max_kv_usage": 0.42894056847545214,
+      "preemptions": 0.0,
+      "frontend_wait_seconds": {
+        "n": 64,
+        "mean": 0.0002079308032989502,
+        "p95": 0.00043340921401977537,
+        "max": 0.0006852149963378906
+      },
+      "feedback_reduced_admissions": 0,
+      "runtime_errors": [],
+      "wire_errors": [],
+      "native_workflow_audit_pass": true,
+      "all_wire_http_200": true,
+      "actual_request_configuration_consistent": true,
+      "one_independent_round_only": true,
+      "audit_pass": true
+    },
+    "paths": {
+      "config.json": "../dsh-e1-small-native/config.json",
+      "scored.json": "../dsh-e1-small-native/scored.json",
+      "native-audit.json": "../dsh-e1-small-native/native-audit.json",
+      "raw-archive": "../../../evidence/e1-small-20261029/dsh-e1-small-native-raw.tar.gz"
+    },
+    "tasks": [
+      {
+        "task_id": "5a722a6855429971e9dc9320",
+        "question": "What is the character's name for which Anna Leonidovna Kovalchuk won a prize in the legal festival \"Law and Society\"?",
+        "path": "dsh-e1-small-native/5a722a6855429971e9dc9320.json"
+      },
+      {
+        "task_id": "5a78f59755429970f5fffdf7",
+        "question": "Mick Carter is the landlord of a public house located at what address?",
+        "path": "dsh-e1-small-native/5a78f59755429970f5fffdf7.json"
+      },
+      {
+        "task_id": "5a87868c5542996e4f308828",
+        "question": "Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?",
+        "path": "dsh-e1-small-native/5a87868c5542996e4f308828.json"
+      },
+      {
+        "task_id": "5ab29624554299545a2cf9b5",
+        "question": "Who was most well-known as a radio personality and disc jockey, John Garabedian or Charles A. Agemian?",
+        "path": "dsh-e1-small-native/5ab29624554299545a2cf9b5.json"
+      },
+      {
+        "task_id": "5ab97c0255429970cfb8eb1f",
+        "question": "What football team did Mario Gomez and Javi Martinez both play for?",
+        "path": "dsh-e1-small-native/5ab97c0255429970cfb8eb1f.json"
+      },
+      {
+        "task_id": "5adf8c965542993344016cf5",
+        "question": "Which South African born singer featured the musical revue \"Sigh No More\"?",
+        "path": "dsh-e1-small-native/5adf8c965542993344016cf5.json"
+      },
+      {
+        "task_id": "5ae1316555429901ffe4adda",
+        "question": "Were Goo Goo Dolls and Echosmith formed in the same city?",
+        "path": "dsh-e1-small-native/5ae1316555429901ffe4adda.json"
+      },
+      {
+        "task_id": "5ae75a5a5542991bbc9761f3",
+        "question": "\"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?",
+        "path": "dsh-e1-small-native/5ae75a5a5542991bbc9761f3.json"
+      }
+    ]
+  },
+  {
+    "run_id": "dsh-e1-small-fixed12",
+    "official_dsh": true,
+    "summary": {
+      "run_id": "dsh-e1-small-fixed12",
+      "policy": "fixed",
+      "cap": 12,
+      "tasks": 8,
+      "completed_tasks": 8,
+      "task_duration_seconds": {
+        "n": 8,
+        "mean": 60.70276975631714,
+        "p95": 69.00576059818268,
+        "max": 70.13073778152466
+      },
+      "round_duration_seconds": 70.5191593170166,
+      "quality": {
+        "em": 0.625,
+        "f1": 0.9083333333333333,
+        "support_title_recall": 0.875
+      },
+      "agents": 32,
+      "agent_model_calls": 64,
+      "expected_agent_model_calls": 64,
+      "wire_calls": 64,
+      "bm25_calls": 24,
+      "decoded_tokens": 20707,
+      "engine_generation_tokens_delta": 20707.0,
+      "prompt_tokens": 93730,
+      "length_finishes": 0,
+      "max_engine_waiting": 0.0,
+      "max_engine_running": 12.0,
+      "max_kv_usage": 0.2093023255813954,
+      "preemptions": 0.0,
+      "frontend_wait_seconds": {
+        "n": 64,
+        "mean": 5.573817994445562,
+        "p95": 18.505277121067046,
+        "max": 22.29558825492859
+      },
+      "feedback_reduced_admissions": 0,
+      "runtime_errors": [],
+      "wire_errors": [],
+      "native_workflow_audit_pass": true,
+      "all_wire_http_200": true,
+      "actual_request_configuration_consistent": true,
+      "one_independent_round_only": true,
+      "audit_pass": true
+    },
+    "paths": {
+      "config.json": "../dsh-e1-small-fixed12/config.json",
+      "scored.json": "../dsh-e1-small-fixed12/scored.json",
+      "native-audit.json": "../dsh-e1-small-fixed12/native-audit.json",
+      "raw-archive": "../../../evidence/e1-small-20261029/dsh-e1-small-fixed12-raw.tar.gz"
+    },
+    "tasks": [
+      {
+        "task_id": "5a722a6855429971e9dc9320",
+        "question": "What is the character's name for which Anna Leonidovna Kovalchuk won a prize in the legal festival \"Law and Society\"?",
+        "path": "dsh-e1-small-fixed12/5a722a6855429971e9dc9320.json"
+      },
+      {
+        "task_id": "5a78f59755429970f5fffdf7",
+        "question": "Mick Carter is the landlord of a public house located at what address?",
+        "path": "dsh-e1-small-fixed12/5a78f59755429970f5fffdf7.json"
+      },
+      {
+        "task_id": "5a87868c5542996e4f308828",
+        "question": "Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?",
+        "path": "dsh-e1-small-fixed12/5a87868c5542996e4f308828.json"
+      },
+      {
+        "task_id": "5ab29624554299545a2cf9b5",
+        "question": "Who was most well-known as a radio personality and disc jockey, John Garabedian or Charles A. Agemian?",
+        "path": "dsh-e1-small-fixed12/5ab29624554299545a2cf9b5.json"
+      },
+      {
+        "task_id": "5ab97c0255429970cfb8eb1f",
+        "question": "What football team did Mario Gomez and Javi Martinez both play for?",
+        "path": "dsh-e1-small-fixed12/5ab97c0255429970cfb8eb1f.json"
+      },
+      {
+        "task_id": "5adf8c965542993344016cf5",
+        "question": "Which South African born singer featured the musical revue \"Sigh No More\"?",
+        "path": "dsh-e1-small-fixed12/5adf8c965542993344016cf5.json"
+      },
+      {
+        "task_id": "5ae1316555429901ffe4adda",
+        "question": "Were Goo Goo Dolls and Echosmith formed in the same city?",
+        "path": "dsh-e1-small-fixed12/5ae1316555429901ffe4adda.json"
+      },
+      {
+        "task_id": "5ae75a5a5542991bbc9761f3",
+        "question": "\"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?",
+        "path": "dsh-e1-small-fixed12/5ae75a5a5542991bbc9761f3.json"
+      }
+    ]
+  },
+  {
+    "run_id": "dsh-e1-small-pressure12",
+    "official_dsh": true,
+    "summary": {
+      "run_id": "dsh-e1-small-pressure12",
+      "policy": "pressure",
+      "cap": 12,
+      "tasks": 8,
+      "completed_tasks": 8,
+      "task_duration_seconds": {
+        "n": 8,
+        "mean": 60.47417464852333,
+        "p95": 76.23462145328521,
+        "max": 81.75847268104553
+      },
+      "round_duration_seconds": 82.1104986667633,
+      "quality": {
+        "em": 0.5,
+        "f1": 0.7833333333333333,
+        "support_title_recall": 0.875
+      },
+      "agents": 32,
+      "agent_model_calls": 64,
+      "expected_agent_model_calls": 64,
+      "wire_calls": 64,
+      "bm25_calls": 24,
+      "decoded_tokens": 20797,
+      "engine_generation_tokens_delta": 20797.0,
+      "prompt_tokens": 93225,
+      "length_finishes": 0,
+      "max_engine_waiting": 0.0,
+      "max_engine_running": 12.0,
+      "max_kv_usage": 0.24031007751937983,
+      "preemptions": 0.0,
+      "frontend_wait_seconds": {
+        "n": 64,
+        "mean": 5.415946371853352,
+        "p95": 19.244053900241845,
+        "max": 24.681946516036987
+      },
+      "feedback_reduced_admissions": 0,
+      "runtime_errors": [],
+      "wire_errors": [],
+      "native_workflow_audit_pass": true,
+      "all_wire_http_200": true,
+      "actual_request_configuration_consistent": true,
+      "one_independent_round_only": true,
+      "audit_pass": true
+    },
+    "paths": {
+      "config.json": "../dsh-e1-small-pressure12/config.json",
+      "scored.json": "../dsh-e1-small-pressure12/scored.json",
+      "native-audit.json": "../dsh-e1-small-pressure12/native-audit.json",
+      "raw-archive": "../../../evidence/e1-small-20261029/dsh-e1-small-pressure12-raw.tar.gz"
+    },
+    "tasks": [
+      {
+        "task_id": "5a722a6855429971e9dc9320",
+        "question": "What is the character's name for which Anna Leonidovna Kovalchuk won a prize in the legal festival \"Law and Society\"?",
+        "path": "dsh-e1-small-pressure12/5a722a6855429971e9dc9320.json"
+      },
+      {
+        "task_id": "5a78f59755429970f5fffdf7",
+        "question": "Mick Carter is the landlord of a public house located at what address?",
+        "path": "dsh-e1-small-pressure12/5a78f59755429970f5fffdf7.json"
+      },
+      {
+        "task_id": "5a87868c5542996e4f308828",
+        "question": "Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?",
+        "path": "dsh-e1-small-pressure12/5a87868c5542996e4f308828.json"
+      },
+      {
+        "task_id": "5ab29624554299545a2cf9b5",
+        "question": "Who was most well-known as a radio personality and disc jockey, John Garabedian or Charles A. Agemian?",
+        "path": "dsh-e1-small-pressure12/5ab29624554299545a2cf9b5.json"
+      },
+      {
+        "task_id": "5ab97c0255429970cfb8eb1f",
+        "question": "What football team did Mario Gomez and Javi Martinez both play for?",
+        "path": "dsh-e1-small-pressure12/5ab97c0255429970cfb8eb1f.json"
+      },
+      {
+        "task_id": "5adf8c965542993344016cf5",
+        "question": "Which South African born singer featured the musical revue \"Sigh No More\"?",
+        "path": "dsh-e1-small-pressure12/5adf8c965542993344016cf5.json"
+      },
+      {
+        "task_id": "5ae1316555429901ffe4adda",
+        "question": "Were Goo Goo Dolls and Echosmith formed in the same city?",
+        "path": "dsh-e1-small-pressure12/5ae1316555429901ffe4adda.json"
+      },
+      {
+        "task_id": "5ae75a5a5542991bbc9761f3",
+        "question": "\"Heropanti\" star Kriti Sanon appears in the remix video for a song from what Bollywood film?",
+        "path": "dsh-e1-small-pressure12/5ae75a5a5542991bbc9761f3.json"
+      }
+    ]
+  }
+]

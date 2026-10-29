@@ -1,0 +1,1471 @@
+{
+  "framework": "official-dsh",
+  "root_id": "session-2c0354c0-9855-4c6c-8d89-e236d43607da",
+  "task": {
+    "task_id": "5a87868c5542996e4f308828",
+    "split": "calibration",
+    "question": "Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?",
+    "type": "comparison",
+    "level": "hard",
+    "context_chars": 5201,
+    "bucket": "comparison_normal",
+    "documents": [
+      {
+        "doc_id": "d0",
+        "title": "Gino's Hamburgers",
+        "text": "Gino's Hamburgers was a fast-food restaurant chain founded in Baltimore, Maryland, by Baltimore Colts defensive end Gino Marchetti and running back Alan Ameche, along with their close friend Louis Fischer, in 1957.  A new group of restaurants under the Gino's name involving some of the principals of the original chain was started in 2010."
+      },
+      {
+        "doc_id": "d1",
+        "title": "Tudor's Biscuit World",
+        "text": "Tudor's Biscuit World is a restaurant chain based in Huntington, West Virginia, most commonly found in West Virginia.  Many West Virginia locations share a building with Gino's Pizza and Spaghetti, although the chain is more extensive than Gino's (which is exclusive to West Virginia), having locations in southern Ohio, eastern Kentucky, and southwestern Virginia.  In 2016 a franchise was opened in Panama City, Florida.  Tudor's serves biscuits, biscuit sandwiches, homestyle breakfasts and dinners, muffins, and several side dishes.  The chain was originally based in Charleston, West Virginia and many of the biscuit sandwiches are named for sports teams of interest in that area, including teams at Marshall University, West Virginia University, and The University of Charleston."
+      },
+      {
+        "doc_id": "d2",
+        "title": "Papa Murphy's Park",
+        "text": "Papa Murphy's Park (formerly known as the Cal Expo Multi-Use Sports Field Facility and Bonney Field) is a sports venue located on the grounds of Cal Expo in Sacramento, California.  The soccer-specific stadium has a capacity of 11,569 and includes a full-sized (120 x 80 yard) soccer field.  Papa Murphy's Park is the current home of Sacramento Republic FC soccer team and former home of PRO Rugby team, Sacramento Express."
+      },
+      {
+        "doc_id": "d3",
+        "title": "Gino's Pizza and Spaghetti",
+        "text": "Gino's Pizza and Spaghetti is a restaurant chain with 40 locations, most of them within the U.S. state of West Virginia.  The company was founded by Kenney Grant in 1961.  Many locations are shared with Tudor's Biscuit World although the Gino's brand is exclusive to West Virginia.  There is one located in Ohio, while there are stand alone Tudor's locations in eastern Kentucky, southern Ohio and southwest Virginia.  Gino's serves pizza, spaghetti, sandwiches, and more.  Company headquarters are located in Huntington, West Virginia and Nitro, West Virginia."
+      },
+      {
+        "doc_id": "d4",
+        "title": "Sacramento Republic FC",
+        "text": "Sacramento Republic FC is an American professional soccer team based in Sacramento, California.  It plays in the Western Conference of the United Soccer League.  Co-founded by Warren Smith and Joe Wagoner in 2012, the team started play in 2014 at Hughes Stadium, a 20,231 seat stadium.  They moved mid-season to their current home at Papa Murphy's Park.  Since then, Republic FC won the 2014 USL championship and made the playoffs three times.  With fan support and attendance, the team prepared an expansion bid for Major League Soccer, which was submitted in January 2017.  On May 15, 2017, MLS bid proponent Sac Soccer & Entertainment Holdings, led by Kevin Nagle, officially acquired Sacramento Republic FC from President and Co-Founder Warren Smith.  The team is working with the city of Sacramento to build a $226 million stadium in the large Railyards urban infill project."
+      },
+      {
+        "doc_id": "d5",
+        "title": "Papa Gino's",
+        "text": "Papa Gino's, Inc. is a restaurant chain based in Dedham, Massachusetts specializing in American-style pizza along with pasta, subs, salads, and a variety of appetizers.  There are over 150 Papa Gino's locations in Connecticut, Maine, Massachusetts, New Hampshire, and Rhode Island."
+      },
+      {
+        "doc_id": "d6",
+        "title": "Gino's East",
+        "text": "Gino's East is a Chicago-based restaurant chain, notable for its deep-dish pizza (sometimes called Chicago-style pizza), and for its interior walls, which patrons have covered in graffiti and etchings.  The restaurant features deep-dish pizza baked in cast-iron pans, as well as sandwiches, soups and salads."
+      },
+      {
+        "doc_id": "d7",
+        "title": "Papa Murphy's",
+        "text": "Papa Murphy's, a business based in Vancouver, Washington, United States, is a take-and-bake pizza company.  It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).  The company and its franchisees operate more than 1,300 outlets in the United States and Canada.  Papa Murphy's is the fifth-largest pizza chain in the United States."
+      },
+      {
+        "doc_id": "d8",
+        "title": "Spencer Park, Queensland",
+        "text": "Spencer Park (currently known as Corporate Travel Management Stadium) is a football stadium located in the suburb of Newmarket, north of Brisbane, Queensland, Australia.  It is home to National Premier Leagues Queensland team Brisbane City FC.  The stadium, while officially holding 10,000, seats only 3,000 under the grandstand, the \"Gino Merlo Stand\".  The stadium opened in 1963 on the site of an old Brisbane City Council waste disposal site, and underwent a major renovation in 1981 with the construction of the Gino Merlo Stand.  The stadium is home to La Rustica restaurant, where traditional Italian foods, including pizza, are served."
+      },
+      {
+        "doc_id": "d9",
+        "title": "Pizza 73",
+        "text": "Pizza 73 is a Canadian restaurant chain that offers a number of different styles of pizza, along with chicken wings.  It has been operated by Pizza Pizza since 2007.  Toronto-based Pizza Pizza had acquired the restaurant for a total of $CAN70.2 million.  There are 89 locations throughout Western Canada, which include the provinces of British Columbia, Alberta, and Saskatchewan.  The restaurant's name originates from its original phone number: 473–7373.  Founded by David Tougas and Guy Goodwin in 1985, Pizza 73 is headquartered in Edmonton, Alberta, Canada."
+      }
+    ]
+  },
+  "task_id": "5a87868c5542996e4f308828",
+  "scoring": {
+    "task_id": "5a87868c5542996e4f308828",
+    "question": "Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?",
+    "answer": "Gino's Pizza and Spaghetti",
+    "gold": "Gino's Pizza and Spaghetti",
+    "em": 1.0,
+    "f1": 1.0,
+    "support_title_recall": 1.0,
+    "parse_error": null,
+    "final_text": "\n\n{\"answer\":\"Gino's Pizza and Spaghetti\",\"supporting_doc_ids\":[\"d3\",\"d7\"],\"reason\":\"Gino's Pizza and Spaghetti was founded by Kenney Grant in 1961 (doc d3). Papa Murphy's began in 1995 as the merger of two companies (Papa Aldo's Pizza and Murphy's Pizza) each founded in 1981 (doc d7). Therefore Gino's Pizza and Spaghetti was founded first, in 1961, predating Papa Murphy's by at least 20 years.\"}",
+    "wall_time": 1793269222.0726845,
+    "event": "task_finished",
+    "exit_code": 0,
+    "duration_seconds": 55.92116832733154
+  },
+  "child_sessions": [
+    "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+    "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+    "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf"
+  ],
+  "workflow": {
+    "name": "research_workflow",
+    "arguments": {},
+    "duration_seconds": 29.76900005340576,
+    "result": {
+      "value": [
+        "\n\nBased on the retrieved sources, I found the founding year for Gino's Pizza and Spaghetti but no information about Papa Murphy's in this shard.\n\n```json\n{\n  \"answer_fragment\": \"Gino's Pizza and Spaghetti was founded in 1961; Papa Murphy's founding year is not available in the retrieved sources.\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d3\",\n      \"quote\": \"The company was founded by Kenney Grant in 1961.\",\n      \"inference\": \"Gino's Pizza and Spaghetti was founded in 1961.\"\n    }\n  ],\n  \"missing\": \"No document in this shard contains information about Papa Murphy's founding year, so a definitive comparison cannot be made from retrieved sources alone.\"\n}\n```",
+        "\n\nBased on the retrieved sources, here is my evidence report:\n\n```json\n{\n  \"answer_fragment\": \"Papa Murphy's began in 1995 (as a merger of two companies founded in 1981). Gino's Pizza and Spaghetti's founding year is not stated in the retrieved sources, so a definitive comparison cannot be made from these documents alone.\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d7\",\n      \"quote\": \"It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).\",\n      \"inference\": \"Papa Murphy's as a company was established in 1995; its predecessor companies date to 1981.\"\n    },\n    {\n      \"doc_id\": \"d1\",\n      \"quote\": \"Many West Virginia locations share a building with Gino's Pizza and Spaghetti, although the chain is more extensive than Gino's (which is exclusive to West Virginia)\",\n      \"inference\": \"Gino's Pizza and Spaghetti is a West Virginia–exclusive chain, but no founding year is provided in this document.\"\n    }\n  ],\n  \"missing\": \"No retrieved document states the founding year of Gino's Pizza and Spaghetti, so it is not possible to determine from these sources which restaurant was founded first.\"\n}\n```",
+        "\n\nBased on the retrieved sources, none of the three documents contain founding dates for either Papa Murphy's (the restaurant chain) or Gino's Pizza and Spaghetti. The results include a sports venue named \"Papa Murphy's Park,\" a different chain called \"Papa Gino's,\" and an unrelated stadium in Queensland.\n\n```json\n{\n  \"answer_fragment\": \"Cannot be determined from retrieved sources; no founding dates for Papa Murphy's or Gino's Pizza and Spaghetti were found in branch 2 documents.\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d2\",\n      \"quote\": \"Papa Murphy's Park (formerly known as the Cal Expo Multi-Use Sports Field Facility and Bonney Field) is a sports venue located on the grounds of Cal Expo in Sacramento, California.\",\n      \"inference\": \"This is a sports venue, not the Papa Murphy's restaurant chain. No founding date for the restaurant is provided.\"\n    },\n    {\n      \"doc_id\": \"d5\",\n      \"quote\": \"Papa Gino's, Inc. is a restaurant chain based in Dedham, Massachusetts specializing in American-style pizza along with pasta, subs, salads, and a variety of appetizers.\",\n      \"inference\": \"This is 'Papa Gino's,' a different chain from 'Gino's Pizza and Spaghetti.' No founding date is given.\"\n    },\n    {\n      \"doc_id\": \"d8\",\n      \"quote\": \"Spencer Park (currently known as Corporate Travel Management Stadium) is a football stadium located in the suburb of Newmarket, north of Brisbane, Queensland, Australia.\",\n      \"inference\": \"Unrelated to either restaurant in question.\"\n    }\n  ],\n  \"missing\": \"No document in branch 2 contains the founding year for Papa Murphy's (the take-and-bake pizza chain) or Gino's Pizza and Spaghetti. The retrieved documents do not address the question.\"\n}\n```"
+      ],
+      "stopReason": "completed",
+      "agentsStarted": 3
+    },
+    "native_tool_events": [
+      {
+        "type": "tool/call",
+        "seq": 14,
+        "time": 1793269170890,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "chatcmpl-tool-8f74369dbcb9a77c",
+          "name": "research_workflow",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 18,
+        "time": 1793269200680,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "chatcmpl-tool-8f74369dbcb9a77c"
+            },
+            "toolCallId": "chatcmpl-tool-8f74369dbcb9a77c",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"value\":[\"\\n\\nBased on the retrieved sources, I found the founding year for Gino's Pizza and Spaghetti but no information about Papa Murphy's in this shard.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Gino's Pizza and Spaghetti was founded in 1961; Papa Murphy's founding year is not available in the retrieved sources.\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d3\\\",\\n      \\\"quote\\\": \\\"The company was founded by Kenney Grant in 1961.\\\",\\n      \\\"inference\\\": \\\"Gino's Pizza and Spaghetti was founded in 1961.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No document in this shard contains information about Papa Murphy's founding year, so a definitive comparison cannot be made from retrieved sources alone.\\\"\\n}\\n```\",\"\\n\\nBased on the retrieved sources, here is my evidence report:\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Papa Murphy's began in 1995 (as a merger of two companies founded in 1981). Gino's Pizza and Spaghetti's founding year is not stated in the retrieved sources, so a definitive comparison cannot be made from these documents alone.\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d7\\\",\\n      \\\"quote\\\": \\\"It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).\\\",\\n      \\\"inference\\\": \\\"Papa Murphy's as a company was established in 1995; its predecessor companies date to 1981.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d1\\\",\\n      \\\"quote\\\": \\\"Many West Virginia locations share a building with Gino's Pizza and Spaghetti, although the chain is more extensive than Gino's (which is exclusive to West Virginia)\\\",\\n      \\\"inference\\\": \\\"Gino's Pizza and Spaghetti is a West Virginia–exclusive chain, but no founding year is provided in this document.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No retrieved document states the founding year of Gino's Pizza and Spaghetti, so it is not possible to determine from these sources which restaurant was founded first.\\\"\\n}\\n```\",\"\\n\\nBased on the retrieved sources, none of the three documents contain founding dates for either Papa Murphy's (the restaurant chain) or Gino's Pizza and Spaghetti. The results include a sports venue named \\\"Papa Murphy's Park,\\\" a different chain called \\\"Papa Gino's,\\\" and an unrelated stadium in Queensland.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Cannot be determined from retrieved sources; no founding dates for Papa Murphy's or Gino's Pizza and Spaghetti were found in branch 2 documents.\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d2\\\",\\n      \\\"quote\\\": \\\"Papa Murphy's Park (formerly known as the Cal Expo Multi-Use Sports Field Facility and Bonney Field) is a sports venue located on the grounds of Cal Expo in Sacramento, California.\\\",\\n      \\\"inference\\\": \\\"This is a sports venue, not the Papa Murphy's restaurant chain. No founding date for the restaurant is provided.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d5\\\",\\n      \\\"quote\\\": \\\"Papa Gino's, Inc. is a restaurant chain based in Dedham, Massachusetts specializing in American-style pizza along with pasta, subs, salads, and a variety of appetizers.\\\",\\n      \\\"inference\\\": \\\"This is 'Papa Gino's,' a different chain from 'Gino's Pizza and Spaghetti.' No founding date is given.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d8\\\",\\n      \\\"quote\\\": \\\"Spencer Park (currently known as Corporate Travel Management Stadium) is a football stadium located in the suburb of Newmarket, north of Brisbane, Queensland, Australia.\\\",\\n      \\\"inference\\\": \\\"Unrelated to either restaurant in question.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No document in branch 2 contains the founding year for Papa Murphy's (the take-and-bake pizza chain) or Gino's Pizza and Spaghetti. The retrieved documents do not address the question.\\\"\\n}\\n```\"],\"stopReason\":\"completed\",\"agentsStarted\":3}"
+              }
+            ],
+            "isError": false,
+            "id": "96c5565a-1aa3-45f0-b3c6-d19573083481"
+          }
+        },
+        "sourceEventSeqs": [
+          14
+        ],
+        "surfaceOp": "append"
+      }
+    ]
+  },
+  "streams": {
+    "requests": [
+      {
+        "call_id": "1793269168216753610-9d4c1a06",
+        "node_id": "session-2c0354c0-9855-4c6c-8d89-e236d43607da",
+        "stage": "plan",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research question: Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\nCall research_workflow exactly once. It runs all three mandatory research agents. After receiving all three reports, answer using only their evidence. Do not search yourself. Your final response must be one JSON object: {\"answer\":\"short direct answer\",\"supporting_doc_ids\":[\"d0\",\"d1\"],\"reason\":\"brief evidence-based explanation\"}. Do not add markdown fences. If evidence is missing, say so honestly."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\". Some platform temporary areas may also be writable.\n\nApproval policy: ask. Operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269168.10789,
+          "event": "admit",
+          "call_id": "d753e7bb-b757-4303-8b09-077f27f5fed3",
+          "task_id": "5a87868c5542996e4f308828",
+          "agent_id": "session-2c0354c0-9855-4c6c-8d89-e236d43607da",
+          "stage": "plan",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269168.1077368,
+          "admitted": 1793269168.1078448,
+          "frontend_wait": 0.00010800361633300781,
+          "target": 12,
+          "inflight": 7,
+          "pending": 0,
+          "engine": {
+            "running": 0.0,
+            "waiting": 0.0,
+            "kv_usage": 0.0,
+            "prefix_queries": 106365.0,
+            "prefix_hits": 28224.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269168.0576808
+          },
+          "policy": "fixed"
+        }
+      },
+      {
+        "call_id": "1793269211046312981-7a03c649",
+        "node_id": "session-2c0354c0-9855-4c6c-8d89-e236d43607da",
+        "stage": "synthesis",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research question: Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\nCall research_workflow exactly once. It runs all three mandatory research agents. After receiving all three reports, answer using only their evidence. Do not search yourself. Your final response must be one JSON object: {\"answer\":\"short direct answer\",\"supporting_doc_ids\":[\"d0\",\"d1\"],\"reason\":\"brief evidence-based explanation\"}. Do not add markdown fences. If evidence is missing, say so honestly."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\". Some platform temporary areas may also be writable.\n\nApproval policy: ask. Operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti. They want me to call research_workflow exactly once, then answer based on the three reports it returns.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-8f74369dbcb9a77c",
+                  "type": "function",
+                  "function": {
+                    "name": "research_workflow",
+                    "arguments": "{}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"value\":[\"\\n\\nBased on the retrieved sources, I found the founding year for Gino's Pizza and Spaghetti but no information about Papa Murphy's in this shard.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Gino's Pizza and Spaghetti was founded in 1961; Papa Murphy's founding year is not available in the retrieved sources.\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d3\\\",\\n      \\\"quote\\\": \\\"The company was founded by Kenney Grant in 1961.\\\",\\n      \\\"inference\\\": \\\"Gino's Pizza and Spaghetti was founded in 1961.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No document in this shard contains information about Papa Murphy's founding year, so a definitive comparison cannot be made from retrieved sources alone.\\\"\\n}\\n```\",\"\\n\\nBased on the retrieved sources, here is my evidence report:\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Papa Murphy's began in 1995 (as a merger of two companies founded in 1981). Gino's Pizza and Spaghetti's founding year is not stated in the retrieved sources, so a definitive comparison cannot be made from these documents alone.\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d7\\\",\\n      \\\"quote\\\": \\\"It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).\\\",\\n      \\\"inference\\\": \\\"Papa Murphy's as a company was established in 1995; its predecessor companies date to 1981.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d1\\\",\\n      \\\"quote\\\": \\\"Many West Virginia locations share a building with Gino's Pizza and Spaghetti, although the chain is more extensive than Gino's (which is exclusive to West Virginia)\\\",\\n      \\\"inference\\\": \\\"Gino's Pizza and Spaghetti is a West Virginia–exclusive chain, but no founding year is provided in this document.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No retrieved document states the founding year of Gino's Pizza and Spaghetti, so it is not possible to determine from these sources which restaurant was founded first.\\\"\\n}\\n```\",\"\\n\\nBased on the retrieved sources, none of the three documents contain founding dates for either Papa Murphy's (the restaurant chain) or Gino's Pizza and Spaghetti. The results include a sports venue named \\\"Papa Murphy's Park,\\\" a different chain called \\\"Papa Gino's,\\\" and an unrelated stadium in Queensland.\\n\\n```json\\n{\\n  \\\"answer_fragment\\\": \\\"Cannot be determined from retrieved sources; no founding dates for Papa Murphy's or Gino's Pizza and Spaghetti were found in branch 2 documents.\\\",\\n  \\\"facts\\\": [\\n    {\\n      \\\"doc_id\\\": \\\"d2\\\",\\n      \\\"quote\\\": \\\"Papa Murphy's Park (formerly known as the Cal Expo Multi-Use Sports Field Facility and Bonney Field) is a sports venue located on the grounds of Cal Expo in Sacramento, California.\\\",\\n      \\\"inference\\\": \\\"This is a sports venue, not the Papa Murphy's restaurant chain. No founding date for the restaurant is provided.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d5\\\",\\n      \\\"quote\\\": \\\"Papa Gino's, Inc. is a restaurant chain based in Dedham, Massachusetts specializing in American-style pizza along with pasta, subs, salads, and a variety of appetizers.\\\",\\n      \\\"inference\\\": \\\"This is 'Papa Gino's,' a different chain from 'Gino's Pizza and Spaghetti.' No founding date is given.\\\"\\n    },\\n    {\\n      \\\"doc_id\\\": \\\"d8\\\",\\n      \\\"quote\\\": \\\"Spencer Park (currently known as Corporate Travel Management Stadium) is a football stadium located in the suburb of Newmarket, north of Brisbane, Queensland, Australia.\\\",\\n      \\\"inference\\\": \\\"Unrelated to either restaurant in question.\\\"\\n    }\\n  ],\\n  \\\"missing\\\": \\\"No document in branch 2 contains the founding year for Papa Murphy's (the take-and-bake pizza chain) or Gino's Pizza and Spaghetti. The retrieved documents do not address the question.\\\"\\n}\\n```\"],\"stopReason\":\"completed\",\"agentsStarted\":3}",
+              "tool_call_id": "chatcmpl-tool-8f74369dbcb9a77c"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269211.038989,
+          "event": "admit",
+          "call_id": "f0b56b73-eece-4ade-b431-8f05c241c737",
+          "task_id": "5a87868c5542996e4f308828",
+          "agent_id": "session-2c0354c0-9855-4c6c-8d89-e236d43607da",
+          "stage": "synthesis",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269200.7115018,
+          "admitted": 1793269211.038933,
+          "frontend_wait": 10.327431201934814,
+          "target": 12,
+          "inflight": 12,
+          "pending": 2,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.18604651162790697,
+            "prefix_queries": 185209.0,
+            "prefix_hits": 47824.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269210.9088686
+          },
+          "policy": "fixed"
+        }
+      },
+      {
+        "call_id": "1793269171410167921-a09d8024",
+        "node_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 2. Question: Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\nCall bench_search exactly once with branch=2 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269171.3830664,
+          "event": "admit",
+          "call_id": "ddf81906-01f3-49f9-a536-e8efb36f9c7b",
+          "task_id": "5a87868c5542996e4f308828",
+          "agent_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269171.3825662,
+          "admitted": 1793269171.3830056,
+          "frontend_wait": 0.0004394054412841797,
+          "target": 12,
+          "inflight": 10,
+          "pending": 0,
+          "engine": {
+            "running": 0.0,
+            "waiting": 0.0,
+            "kv_usage": 0.0,
+            "prefix_queries": 114385.0,
+            "prefix_hits": 28224.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269171.3723402
+          },
+          "policy": "fixed"
+        }
+      },
+      {
+        "call_id": "1793269180512414535-54272068",
+        "node_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 2. Question: Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\nCall bench_search exactly once with branch=2 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research branch 2, specifically to find out which restaurant was founded first: Papa Murphy's or Gino's Pizza and Spaghetti. I need to call bench_search exactly once with branch=2 and a short useful search query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-a83b0e0aa41955f4",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":2,\"query\":\"Papa Murphy's Gino's Pizza Spaghetti founded year history\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":2,\"query\":\"Papa Murphy's Gino's Pizza Spaghetti founded year history\",\"documents\":[{\"doc_id\":\"d2\",\"title\":\"Papa Murphy's Park\",\"text\":\"Papa Murphy's Park (formerly known as the Cal Expo Multi-Use Sports Field Facility and Bonney Field) is a sports venue located on the grounds of Cal Expo in Sacramento, California.  The soccer-specific stadium has a capacity of 11,569 and includes a full-sized (120 x 80 yard) soccer field.  Papa Murphy's Park is the current home of Sacramento Republic FC soccer team and former home of PRO Rugby team, Sacramento Express.\",\"bm25\":2.9963171010734477},{\"doc_id\":\"d5\",\"title\":\"Papa Gino's\",\"text\":\"Papa Gino's, Inc. is a restaurant chain based in Dedham, Massachusetts specializing in American-style pizza along with pasta, subs, salads, and a variety of appetizers.  There are over 150 Papa Gino's locations in Connecticut, Maine, Massachusetts, New Hampshire, and Rhode Island.\",\"bm25\":2.978893629699053},{\"doc_id\":\"d8\",\"title\":\"Spencer Park, Queensland\",\"text\":\"Spencer Park (currently known as Corporate Travel Management Stadium) is a football stadium located in the suburb of Newmarket, north of Brisbane, Queensland, Australia.  It is home to National Premier Leagues Queensland team Brisbane City FC.  The stadium, while officially holding 10,000, seats only 3,000 under the grandstand, the \\\"Gino Merlo Stand\\\".  The stadium opened in 1963 on the site of an old Brisbane City Council waste disposal site, and underwent a major renovation in 1981 with the construction of the Gino Merlo Stand.  The stadium is home to La Rustica restaurant, where traditional Italian foods, including pizza, are served.\",\"bm25\":0.9971718297016253}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-a83b0e0aa41955f4"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269180.5003972,
+          "event": "admit",
+          "call_id": "99a69a97-8f48-4c1d-9f7e-93b3bfbf2a51",
+          "task_id": "5a87868c5542996e4f308828",
+          "agent_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269176.4801674,
+          "admitted": 1793269180.5003395,
+          "frontend_wait": 4.020172119140625,
+          "target": 12,
+          "inflight": 12,
+          "pending": 9,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.1757105943152455,
+            "prefix_queries": 143798.0,
+            "prefix_hits": 29792.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269180.3518467
+          },
+          "policy": "fixed"
+        }
+      },
+      {
+        "call_id": "1793269171410773845-c07d51d3",
+        "node_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 0. Question: Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\nCall bench_search exactly once with branch=0 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269171.383506,
+          "event": "admit",
+          "call_id": "75b654a7-b0e8-42ec-9c72-43e5f7459e7d",
+          "task_id": "5a87868c5542996e4f308828",
+          "agent_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269171.3831983,
+          "admitted": 1793269171.383394,
+          "frontend_wait": 0.0001957416534423828,
+          "target": 12,
+          "inflight": 11,
+          "pending": 0,
+          "engine": {
+            "running": 0.0,
+            "waiting": 0.0,
+            "kv_usage": 0.0,
+            "prefix_queries": 114385.0,
+            "prefix_hits": 28224.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269171.3723402
+          },
+          "policy": "fixed"
+        }
+      },
+      {
+        "call_id": "1793269181520618683-679c2a67",
+        "node_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 0. Question: Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\nCall bench_search exactly once with branch=0 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research branch 0, specifically to find out which restaurant was founded first: Papa Murphy's or Gino's Pizza and Spaghetti. I need to call bench_search exactly once with branch=0 and a short useful search query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-83eb0288a9397bc8",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":0,\"query\":\"Papa Murphy's Gino's Pizza Spaghetti founded year history\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":0,\"query\":\"Papa Murphy's Gino's Pizza Spaghetti founded year history\",\"documents\":[{\"doc_id\":\"d3\",\"title\":\"Gino's Pizza and Spaghetti\",\"text\":\"Gino's Pizza and Spaghetti is a restaurant chain with 40 locations, most of them within the U.S. state of West Virginia.  The company was founded by Kenney Grant in 1961.  Many locations are shared with Tudor's Biscuit World although the Gino's brand is exclusive to West Virginia.  There is one located in Ohio, while there are stand alone Tudor's locations in eastern Kentucky, southern Ohio and southwest Virginia.  Gino's serves pizza, spaghetti, sandwiches, and more.  Company headquarters are located in Huntington, West Virginia and Nitro, West Virginia.\",\"bm25\":3.394699973212573},{\"doc_id\":\"d6\",\"title\":\"Gino's East\",\"text\":\"Gino's East is a Chicago-based restaurant chain, notable for its deep-dish pizza (sometimes called Chicago-style pizza), and for its interior walls, which patrons have covered in graffiti and etchings.  The restaurant features deep-dish pizza baked in cast-iron pans, as well as sandwiches, soups and salads.\",\"bm25\":1.2891610682126893},{\"doc_id\":\"d0\",\"title\":\"Gino's Hamburgers\",\"text\":\"Gino's Hamburgers was a fast-food restaurant chain founded in Baltimore, Maryland, by Baltimore Colts defensive end Gino Marchetti and running back Alan Ameche, along with their close friend Louis Fischer, in 1957.  A new group of restaurants under the Gino's name involving some of the principals of the original chain was started in 2010.\",\"bm25\":1.1901059577986215}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-83eb0288a9397bc8"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269181.5070405,
+          "event": "admit",
+          "call_id": "b99f612e-1019-4b35-a7ed-161ead0ab4e6",
+          "task_id": "5a87868c5542996e4f308828",
+          "agent_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269176.4820096,
+          "admitted": 1793269181.5069833,
+          "frontend_wait": 5.024973630905151,
+          "target": 12,
+          "inflight": 12,
+          "pending": 11,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.1705426356589147,
+            "prefix_queries": 151069.0,
+            "prefix_hits": 32928.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269181.4626193
+          },
+          "policy": "fixed"
+        }
+      },
+      {
+        "call_id": "1793269171414564052-94a3d764",
+        "node_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+        "stage": "query",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 1. Question: Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\nCall bench_search exactly once with branch=1 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269171.3958683,
+          "event": "admit",
+          "call_id": "282f82f8-142e-48b0-ab7f-c9a426f5c7fc",
+          "task_id": "5a87868c5542996e4f308828",
+          "agent_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+          "stage": "query",
+          "turn": 1,
+          "step": 1,
+          "ready": 1793269171.3956594,
+          "admitted": 1793269171.3958116,
+          "frontend_wait": 0.00015211105346679688,
+          "target": 12,
+          "inflight": 12,
+          "pending": 0,
+          "engine": {
+            "running": 0.0,
+            "waiting": 0.0,
+            "kv_usage": 0.0,
+            "prefix_queries": 114385.0,
+            "prefix_hits": 28224.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269171.3723402
+          },
+          "policy": "fixed"
+        }
+      },
+      {
+        "call_id": "1793269180468028054-eac24c0f",
+        "node_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+        "stage": "evidence",
+        "payload": {
+          "model": "qwen27b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an AI agent powered by DeepSeek Harness.\n\nYou are a source-grounded research assistant powered by the qwen27b model.\n\nCheck the [exit code: N] marker on every bash result; investigate failures before moving on.\n\nTrack every background job id you start. You are notified in-session when a job finishes — do not busy-poll or sleep on one; keep working on independent steps and do not duplicate a running job's work. Before giving a final answer, collect every still-relevant job with job_output (set wait: true only when you are genuinely blocked on it), and job_kill jobs that stopped mattering.\n\ncreate_goal may infer goal intent from a direct human request in any language. After session resume or fork, an active goal is disarmed: when a human asks to continue or resume in any wording or language, use update_goal action resume to rearm it. Mark complete only when the objective is actually achieved. Mark blocked only after the same blocking condition persists for at least 3 consecutive goal rounds, and report that concrete condition in blocked_reason; difficulty, uncertainty, or useful remaining work is not blocked.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+            },
+            {
+              "role": "user",
+              "content": "Research branch 1. Question: Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?\nCall bench_search exactly once with branch=1 and a short useful search query. Read all returned source text. Then finish with a concise JSON evidence report: {\"answer_fragment\":\"...\",\"facts\":[{\"doc_id\":\"...\",\"quote\":\"exact source quote\",\"inference\":\"...\"}],\"missing\":\"...\"}. Use only retrieved sources. Report missing information honestly. Do not call research_workflow, delegate, send messages, or use other tools. Return the report as your final answer."
+            },
+            {
+              "role": "user",
+              "content": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\".\n\nCurrent DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: \"/home/Liangyijia_Hu/dsh-lab/runs/dsh-e1-small-fixed12/tasks/5a87868c5542996e4f308828\". Some platform temporary areas may also be writable.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning": "The user wants me to research which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti. I need to call bench_search exactly once with branch=1 and a short useful search query.\n",
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-ab2f3ba21745a603",
+                  "type": "function",
+                  "function": {
+                    "name": "bench_search",
+                    "arguments": "{\"branch\":1,\"query\":\"Papa Murphy's Gino's Pizza Spaghetti founded year history\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "content": "{\"branch\":1,\"query\":\"Papa Murphy's Gino's Pizza Spaghetti founded year history\",\"documents\":[{\"doc_id\":\"d7\",\"title\":\"Papa Murphy's\",\"text\":\"Papa Murphy's, a business based in Vancouver, Washington, United States, is a take-and-bake pizza company.  It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).  The company and its franchisees operate more than 1,300 outlets in the United States and Canada.  Papa Murphy's is the fifth-largest pizza chain in the United States.\",\"bm25\":3.521866473646091},{\"doc_id\":\"d1\",\"title\":\"Tudor's Biscuit World\",\"text\":\"Tudor's Biscuit World is a restaurant chain based in Huntington, West Virginia, most commonly found in West Virginia.  Many West Virginia locations share a building with Gino's Pizza and Spaghetti, although the chain is more extensive than Gino's (which is exclusive to West Virginia), having locations in southern Ohio, eastern Kentucky, and southwestern Virginia.  In 2016 a franchise was opened in Panama City, Florida.  Tudor's serves biscuits, biscuit sandwiches, homestyle breakfasts and dinners, muffins, and several side dishes.  The chain was originally based in Charleston, West Virginia and many of the biscuit sandwiches are named for sports teams of interest in that area, including teams at Marshall University, West Virginia University, and The University of Charleston.\",\"bm25\":2.980276357449054},{\"doc_id\":\"d4\",\"title\":\"Sacramento Republic FC\",\"text\":\"Sacramento Republic FC is an American professional soccer team based in Sacramento, California.  It plays in the Western Conference of the United Soccer League.  Co-founded by Warren Smith and Joe Wagoner in 2012, the team started play in 2014 at Hughes Stadium, a 20,231 seat stadium.  They moved mid-season to their current home at Papa Murphy's Park.  Since then, Republic FC won the 2014 USL championship and made the playoffs three times.  With fan support and attendance, the team prepared an expansion bid for Major League Soccer, which was submitted in January 2017.  On May 15, 2017, MLS bid proponent Sac Soccer & Entertainment Holdings, led by Kevin Nagle, officially acquired Sacramento Republic FC from President and Co-Founder Warren Smith.  The team is working with the city of Sacramento to build a $226 million stadium in the large Railyards urban infill project.\",\"bm25\":1.3900676147367406}],\"scope\":\"Top three full original documents in this shard, no hidden labels.\"}",
+              "tool_call_id": "chatcmpl-tool-ab2f3ba21745a603"
+            }
+          ],
+          "stream": true,
+          "stream_options": {
+            "include_usage": true
+          },
+          "store": false,
+          "max_tokens": 2048,
+          "temperature": 0,
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "description": "Search your assigned document shard with actual BM25 and return the top three full original documents.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "branch": {
+                      "type": "integer",
+                      "description": "Assigned branch number, 0, 1 or 2."
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Short query relevant to the task question."
+                    }
+                  },
+                  "required": [
+                    "branch",
+                    "query"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "description": "Execute the task's three mandatory research branches in parallel using native DSH agents. Wait for all three complete reports. Call exactly once as the parent.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          ],
+          "reasoning_effort": "low"
+        },
+        "dispatch": {
+          "wall_time": 1793269180.4481988,
+          "event": "admit",
+          "call_id": "9c4afae9-b9cc-4d40-926f-aaa5d254a200",
+          "task_id": "5a87868c5542996e4f308828",
+          "agent_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+          "stage": "evidence",
+          "turn": 1,
+          "step": 2,
+          "ready": 1793269175.6147742,
+          "admitted": 1793269180.4481454,
+          "frontend_wait": 4.833371162414551,
+          "target": 12,
+          "inflight": 12,
+          "pending": 10,
+          "engine": {
+            "running": 12.0,
+            "waiting": 0.0,
+            "kv_usage": 0.1757105943152455,
+            "prefix_queries": 143798.0,
+            "prefix_hits": 29792.0,
+            "preemptions": 0.0,
+            "observed_wall_time": 1793269180.3518467
+          },
+          "policy": "fixed"
+        }
+      }
+    ],
+    "responses": [
+      {
+        "call_id": "1793269168216753610-9d4c1a06",
+        "node_id": "session-2c0354c0-9855-4c6c-8d89-e236d43607da",
+        "stage": "plan",
+        "duration": 2.646971372072585,
+        "ttft": 1.0855855459813029,
+        "usage": {
+          "prompt_tokens": 1006,
+          "total_tokens": 1068,
+          "completion_tokens": 62,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 45
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti. They want me to call research_workflow exactly once, then answer based on the three reports it returns.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-8f74369dbcb9a77c",
+              "type": "function",
+              "function": {
+                "name": "research_workflow",
+                "arguments": "{}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 2.646971372072585,
+          "first_body_seconds": 1.0855855459813029,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:19:28 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "2c8002c357634592baa54fa58663afe9",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269211046312981-7a03c649",
+        "node_id": "session-2c0354c0-9855-4c6c-8d89-e236d43607da",
+        "stage": "synthesis",
+        "duration": 10.88241703202948,
+        "ttft": 0.3036795259686187,
+        "usage": {
+          "prompt_tokens": 2062,
+          "total_tokens": 2436,
+          "completion_tokens": 374,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 250
+          }
+        },
+        "message": {
+          "content": "\n\n{\"answer\":\"Gino's Pizza and Spaghetti\",\"supporting_doc_ids\":[\"d3\",\"d7\"],\"reason\":\"Gino's Pizza and Spaghetti was founded by Kenney Grant in 1961 (doc d3). Papa Murphy's began in 1995 as the merger of two companies (Papa Aldo's Pizza and Murphy's Pizza) each founded in 1981 (doc d7). Therefore Gino's Pizza and Spaghetti was founded first, in 1961, predating Papa Murphy's by at least 20 years.\"}",
+          "reasoning_content": "Now I have all three reports. Let me synthesize:\n\n1. Branch 1 (doc d3): Gino's Pizza and Spaghetti was founded by Kenney Grant in 1961.\n2. Branch 2 (doc d7): Papa Murphy's began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).\n3. Branch 3: No relevant founding dates found.\n\nSo:\n- Gino's Pizza and Spaghetti: founded in 1961\n- Papa Murphy's: founded in 1995 (or 1981 for predecessor companies)\n\nEither way, Gino's Pizza and Spaghetti (1961) was founded before Papa Murphy's (1981 or 1995).\n\nThe answer is Gino's Pizza and Spaghetti.\n\nSupporting doc IDs: d3 (Gino's founding in 1961) and d7 (Papa Murphy's founding in 1995/1981).\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 10.88241703202948,
+          "first_body_seconds": 0.3036795259686187,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:20:10 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "1b064b18206440eb841f44da80f3c613",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269171410167921-a09d8024",
+        "node_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf",
+        "stage": "query",
+        "duration": 4.895884779049084,
+        "ttft": 1.5903022720012814,
+        "usage": {
+          "prompt_tokens": 1089,
+          "total_tokens": 1193,
+          "completion_tokens": 104,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 52
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research branch 2, specifically to find out which restaurant was founded first: Papa Murphy's or Gino's Pizza and Spaghetti. I need to call bench_search exactly once with branch=2 and a short useful search query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-a83b0e0aa41955f4",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 2, \"query\": \"Papa Murphy's Gino's Pizza Spaghetti founded year history\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 4.895884779049084,
+          "first_body_seconds": 1.5903022720012814,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:19:31 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "b2683b139f1d40a6823e70135a9eaec8",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269180512414535-54272068",
+        "node_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf",
+        "stage": "evidence",
+        "duration": 17.725674672983587,
+        "ttft": 0.6276481859385967,
+        "usage": {
+          "prompt_tokens": 1679,
+          "total_tokens": 2257,
+          "completion_tokens": 578,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 153
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the retrieved sources, none of the three documents contain founding dates for either Papa Murphy's (the restaurant chain) or Gino's Pizza and Spaghetti. The results include a sports venue named \"Papa Murphy's Park,\" a different chain called \"Papa Gino's,\" and an unrelated stadium in Queensland.\n\n```json\n{\n  \"answer_fragment\": \"Cannot be determined from retrieved sources; no founding dates for Papa Murphy's or Gino's Pizza and Spaghetti were found in branch 2 documents.\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d2\",\n      \"quote\": \"Papa Murphy's Park (formerly known as the Cal Expo Multi-Use Sports Field Facility and Bonney Field) is a sports venue located on the grounds of Cal Expo in Sacramento, California.\",\n      \"inference\": \"This is a sports venue, not the Papa Murphy's restaurant chain. No founding date for the restaurant is provided.\"\n    },\n    {\n      \"doc_id\": \"d5\",\n      \"quote\": \"Papa Gino's, Inc. is a restaurant chain based in Dedham, Massachusetts specializing in American-style pizza along with pasta, subs, salads, and a variety of appetizers.\",\n      \"inference\": \"This is 'Papa Gino's,' a different chain from 'Gino's Pizza and Spaghetti.' No founding date is given.\"\n    },\n    {\n      \"doc_id\": \"d8\",\n      \"quote\": \"Spencer Park (currently known as Corporate Travel Management Stadium) is a football stadium located in the suburb of Newmarket, north of Brisbane, Queensland, Australia.\",\n      \"inference\": \"Unrelated to either restaurant in question.\"\n    }\n  ],\n  \"missing\": \"No document in branch 2 contains the founding year for Papa Murphy's (the take-and-bake pizza chain) or Gino's Pizza and Spaghetti. The retrieved documents do not address the question.\"\n}\n```",
+          "reasoning_content": "The search returned three documents:\n1. d2 - \"Papa Murphy's Park\" - a sports venue, not the restaurant chain\n2. d5 - \"Papa Gino's\" - a restaurant chain, but this is \"Papa Gino's\" not \"Gino's Pizza and Spaghetti\"\n3. d8 - \"Spencer Park, Queensland\" - a football stadium, not relevant\n\nNone of these documents contain information about when Papa Murphy's (the restaurant) or Gino's Pizza and Spaghetti were founded. The documents don't have founding dates for either restaurant. I need to report this honestly as missing information.\n\nLet me construct the JSON evidence report with what I found and note the missing information.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 17.725674672983587,
+          "first_body_seconds": 0.6276481859385967,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:19:40 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "c31069c0ab254e848825469fa6cc9ea7",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269171410773845-c07d51d3",
+        "node_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+        "stage": "query",
+        "duration": 4.896584010915831,
+        "ttft": 1.5900342599488795,
+        "usage": {
+          "prompt_tokens": 1089,
+          "total_tokens": 1193,
+          "completion_tokens": 104,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 52
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research branch 0, specifically to find out which restaurant was founded first: Papa Murphy's or Gino's Pizza and Spaghetti. I need to call bench_search exactly once with branch=0 and a short useful search query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-83eb0288a9397bc8",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 0, \"query\": \"Papa Murphy's Gino's Pizza Spaghetti founded year history\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 4.896584010915831,
+          "first_body_seconds": 1.5900342599488795,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:19:31 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "0fbbc40da8f94cf2a6ee9f7b0a71614c",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269181520618683-679c2a67",
+        "node_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+        "stage": "evidence",
+        "duration": 10.168349183979444,
+        "ttft": 0.2472858049441129,
+        "usage": {
+          "prompt_tokens": 1639,
+          "total_tokens": 1980,
+          "completion_tokens": 341,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 162
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the retrieved sources, I found the founding year for Gino's Pizza and Spaghetti but no information about Papa Murphy's in this shard.\n\n```json\n{\n  \"answer_fragment\": \"Gino's Pizza and Spaghetti was founded in 1961; Papa Murphy's founding year is not available in the retrieved sources.\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d3\",\n      \"quote\": \"The company was founded by Kenney Grant in 1961.\",\n      \"inference\": \"Gino's Pizza and Spaghetti was founded in 1961.\"\n    }\n  ],\n  \"missing\": \"No document in this shard contains information about Papa Murphy's founding year, so a definitive comparison cannot be made from retrieved sources alone.\"\n}\n```",
+          "reasoning_content": "The search returned three documents. Let me analyze them:\n\n1. **d3** - \"Gino's Pizza and Spaghetti\" - Founded by Kenney Grant in **1961**.\n2. **d6** - \"Gino's East\" - A Chicago-based restaurant chain, no founding year mentioned.\n3. **d0** - \"Gino's Hamburgers\" - Founded in 1957, but this is a different restaurant.\n\nI have the founding year for Gino's Pizza and Spaghetti (1961), but I don't have any information about Papa Murphy's founding year from these results. I need to report what I found and note the missing information about Papa Murphy's.\n\nLet me construct the JSON evidence report.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 10.168349183979444,
+          "first_body_seconds": 0.2472858049441129,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:19:41 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "fe6d1cba0d0d4fcf83a6c9fe840d54ec",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      },
+      {
+        "call_id": "1793269171414564052-94a3d764",
+        "node_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+        "stage": "query",
+        "duration": 4.142298082006164,
+        "ttft": 1.5870503219775856,
+        "usage": {
+          "prompt_tokens": 1089,
+          "total_tokens": 1185,
+          "completion_tokens": 96,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 44
+          }
+        },
+        "message": {
+          "content": "",
+          "reasoning_content": "The user wants me to research which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti. I need to call bench_search exactly once with branch=1 and a short useful search query.\n",
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-ab2f3ba21745a603",
+              "type": "function",
+              "function": {
+                "name": "bench_search",
+                "arguments": "{\"branch\": 1, \"query\": \"Papa Murphy's Gino's Pizza Spaghetti founded year history\"}"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 4.142298082006164,
+          "first_body_seconds": 1.5870503219775856,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:19:31 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "347e0b531e1147ff846778f77b9eb8c2",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "tool_calls"
+        ]
+      },
+      {
+        "call_id": "1793269180468028054-eac24c0f",
+        "node_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+        "stage": "evidence",
+        "duration": 20.105138505925424,
+        "ttft": 0.6069461359875277,
+        "usage": {
+          "prompt_tokens": 1843,
+          "total_tokens": 2492,
+          "completion_tokens": 649,
+          "prompt_tokens_details": {
+            "cached_tokens": 784,
+            "created_cache_tokens": 784
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 322
+          }
+        },
+        "message": {
+          "content": "\n\nBased on the retrieved sources, here is my evidence report:\n\n```json\n{\n  \"answer_fragment\": \"Papa Murphy's began in 1995 (as a merger of two companies founded in 1981). Gino's Pizza and Spaghetti's founding year is not stated in the retrieved sources, so a definitive comparison cannot be made from these documents alone.\",\n  \"facts\": [\n    {\n      \"doc_id\": \"d7\",\n      \"quote\": \"It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).\",\n      \"inference\": \"Papa Murphy's as a company was established in 1995; its predecessor companies date to 1981.\"\n    },\n    {\n      \"doc_id\": \"d1\",\n      \"quote\": \"Many West Virginia locations share a building with Gino's Pizza and Spaghetti, although the chain is more extensive than Gino's (which is exclusive to West Virginia)\",\n      \"inference\": \"Gino's Pizza and Spaghetti is a West Virginia–exclusive chain, but no founding year is provided in this document.\"\n    }\n  ],\n  \"missing\": \"No retrieved document states the founding year of Gino's Pizza and Spaghetti, so it is not possible to determine from these sources which restaurant was founded first.\"\n}\n```",
+          "reasoning_content": "Let me analyze the results:\n\n1. **doc d7 (Papa Murphy's)**: \"It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).\" So Papa Murphy's as a company began in 1995, but its predecessor companies were founded in 1981.\n\n2. **doc d1 (Tudor's Biscuit World)**: Mentions Gino's Pizza and Spaghetti is exclusive to West Virginia, but doesn't give a founding year for Gino's.\n\n3. **doc d4 (Sacramento Republic FC)**: Not relevant to the question.\n\nSo from the retrieved sources, I have:\n- Papa Murphy's: began in 1995 (merger of two companies founded in 1981)\n- Gino's Pizza and Spaghetti: no founding year mentioned in any of the returned documents\n\nI don't have enough information to definitively answer which was founded first, since I don't have Gino's founding year from the retrieved sources. I should report this honestly.\n\nWait, let me reconsider. The question asks which was \"founded first.\" Papa Murphy's as a brand began in 1995 (or its predecessors in 1981). Gino's founding year is not in the retrieved documents. I should report what I found and note the missing information.\n",
+          "tool_calls": []
+        },
+        "metadata": {
+          "status": 200,
+          "duration_seconds": 20.105138505925424,
+          "first_body_seconds": 0.6069461359875277,
+          "headers": {
+            "date": "Thu, 29 Oct 2026 10:19:40 GMT",
+            "server": "uvicorn",
+            "content-type": "text/event-stream; charset=utf-8",
+            "vary": "Origin",
+            "x-request-id": "a0e00953c94f4e2f9e53b2a521d59c94",
+            "connection": "close",
+            "transfer-encoding": "chunked"
+          }
+        },
+        "finishes": [
+          "stop"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "wall_time": 1793269175.5788581,
+        "event": "bm25",
+        "task_id": "5a87868c5542996e4f308828",
+        "agent_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+        "branch": 1,
+        "query": "Papa Murphy's Gino's Pizza Spaghetti founded year history",
+        "duration_seconds": 0.0002622390165925026,
+        "result": {
+          "branch": 1,
+          "query": "Papa Murphy's Gino's Pizza Spaghetti founded year history",
+          "documents": [
+            {
+              "doc_id": "d7",
+              "title": "Papa Murphy's",
+              "text": "Papa Murphy's, a business based in Vancouver, Washington, United States, is a take-and-bake pizza company.  It began in 1995 as the merger of two take-and-bake pizza companies: Papa Aldo's Pizza (founded in 1981) and Murphy's Pizza (founded in 1981).  The company and its franchisees operate more than 1,300 outlets in the United States and Canada.  Papa Murphy's is the fifth-largest pizza chain in the United States.",
+              "bm25": 3.521866473646091
+            },
+            {
+              "doc_id": "d1",
+              "title": "Tudor's Biscuit World",
+              "text": "Tudor's Biscuit World is a restaurant chain based in Huntington, West Virginia, most commonly found in West Virginia.  Many West Virginia locations share a building with Gino's Pizza and Spaghetti, although the chain is more extensive than Gino's (which is exclusive to West Virginia), having locations in southern Ohio, eastern Kentucky, and southwestern Virginia.  In 2016 a franchise was opened in Panama City, Florida.  Tudor's serves biscuits, biscuit sandwiches, homestyle breakfasts and dinners, muffins, and several side dishes.  The chain was originally based in Charleston, West Virginia and many of the biscuit sandwiches are named for sports teams of interest in that area, including teams at Marshall University, West Virginia University, and The University of Charleston.",
+              "bm25": 2.980276357449054
+            },
+            {
+              "doc_id": "d4",
+              "title": "Sacramento Republic FC",
+              "text": "Sacramento Republic FC is an American professional soccer team based in Sacramento, California.  It plays in the Western Conference of the United Soccer League.  Co-founded by Warren Smith and Joe Wagoner in 2012, the team started play in 2014 at Hughes Stadium, a 20,231 seat stadium.  They moved mid-season to their current home at Papa Murphy's Park.  Since then, Republic FC won the 2014 USL championship and made the playoffs three times.  With fan support and attendance, the team prepared an expansion bid for Major League Soccer, which was submitted in January 2017.  On May 15, 2017, MLS bid proponent Sac Soccer & Entertainment Holdings, led by Kevin Nagle, officially acquired Sacramento Republic FC from President and Co-Founder Warren Smith.  The team is working with the city of Sacramento to build a $226 million stadium in the large Railyards urban infill project.",
+              "bm25": 1.3900676147367406
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a",
+        "tool_kind": "bm25",
+        "tool_id": "ed527a56-09ed-4249-a850-25c7d0d60f8a/search",
+        "actual_cpu_seconds": 0.0002622390165925026
+      },
+      {
+        "wall_time": 1793269176.340461,
+        "event": "bm25",
+        "task_id": "5a87868c5542996e4f308828",
+        "agent_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf",
+        "branch": 2,
+        "query": "Papa Murphy's Gino's Pizza Spaghetti founded year history",
+        "duration_seconds": 0.00022746901959180832,
+        "result": {
+          "branch": 2,
+          "query": "Papa Murphy's Gino's Pizza Spaghetti founded year history",
+          "documents": [
+            {
+              "doc_id": "d2",
+              "title": "Papa Murphy's Park",
+              "text": "Papa Murphy's Park (formerly known as the Cal Expo Multi-Use Sports Field Facility and Bonney Field) is a sports venue located on the grounds of Cal Expo in Sacramento, California.  The soccer-specific stadium has a capacity of 11,569 and includes a full-sized (120 x 80 yard) soccer field.  Papa Murphy's Park is the current home of Sacramento Republic FC soccer team and former home of PRO Rugby team, Sacramento Express.",
+              "bm25": 2.9963171010734477
+            },
+            {
+              "doc_id": "d5",
+              "title": "Papa Gino's",
+              "text": "Papa Gino's, Inc. is a restaurant chain based in Dedham, Massachusetts specializing in American-style pizza along with pasta, subs, salads, and a variety of appetizers.  There are over 150 Papa Gino's locations in Connecticut, Maine, Massachusetts, New Hampshire, and Rhode Island.",
+              "bm25": 2.978893629699053
+            },
+            {
+              "doc_id": "d8",
+              "title": "Spencer Park, Queensland",
+              "text": "Spencer Park (currently known as Corporate Travel Management Stadium) is a football stadium located in the suburb of Newmarket, north of Brisbane, Queensland, Australia.  It is home to National Premier Leagues Queensland team Brisbane City FC.  The stadium, while officially holding 10,000, seats only 3,000 under the grandstand, the \"Gino Merlo Stand\".  The stadium opened in 1963 on the site of an old Brisbane City Council waste disposal site, and underwent a major renovation in 1981 with the construction of the Gino Merlo Stand.  The stadium is home to La Rustica restaurant, where traditional Italian foods, including pizza, are served.",
+              "bm25": 0.9971718297016253
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf",
+        "tool_kind": "bm25",
+        "tool_id": "c1ef64c7-c5a3-4696-a081-ccdfc004ffdf/search",
+        "actual_cpu_seconds": 0.00022746901959180832
+      },
+      {
+        "wall_time": 1793269176.3413773,
+        "event": "bm25",
+        "task_id": "5a87868c5542996e4f308828",
+        "agent_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+        "branch": 0,
+        "query": "Papa Murphy's Gino's Pizza Spaghetti founded year history",
+        "duration_seconds": 0.00023993104696273804,
+        "result": {
+          "branch": 0,
+          "query": "Papa Murphy's Gino's Pizza Spaghetti founded year history",
+          "documents": [
+            {
+              "doc_id": "d3",
+              "title": "Gino's Pizza and Spaghetti",
+              "text": "Gino's Pizza and Spaghetti is a restaurant chain with 40 locations, most of them within the U.S. state of West Virginia.  The company was founded by Kenney Grant in 1961.  Many locations are shared with Tudor's Biscuit World although the Gino's brand is exclusive to West Virginia.  There is one located in Ohio, while there are stand alone Tudor's locations in eastern Kentucky, southern Ohio and southwest Virginia.  Gino's serves pizza, spaghetti, sandwiches, and more.  Company headquarters are located in Huntington, West Virginia and Nitro, West Virginia.",
+              "bm25": 3.394699973212573
+            },
+            {
+              "doc_id": "d6",
+              "title": "Gino's East",
+              "text": "Gino's East is a Chicago-based restaurant chain, notable for its deep-dish pizza (sometimes called Chicago-style pizza), and for its interior walls, which patrons have covered in graffiti and etchings.  The restaurant features deep-dish pizza baked in cast-iron pans, as well as sandwiches, soups and salads.",
+              "bm25": 1.2891610682126893
+            },
+            {
+              "doc_id": "d0",
+              "title": "Gino's Hamburgers",
+              "text": "Gino's Hamburgers was a fast-food restaurant chain founded in Baltimore, Maryland, by Baltimore Colts defensive end Gino Marchetti and running back Alan Ameche, along with their close friend Louis Fischer, in 1957.  A new group of restaurants under the Gino's name involving some of the principals of the original chain was started in 2010.",
+              "bm25": 1.1901059577986215
+            }
+          ],
+          "scope": "Top three full original documents in this shard, no hidden labels."
+        },
+        "node_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2",
+        "tool_kind": "bm25",
+        "tool_id": "6f50f0cc-bb50-4ed5-8cda-5ebc8fc09ae2/search",
+        "actual_cpu_seconds": 0.00023993104696273804
+      }
+    ],
+    "roots": [
+      {
+        "task_id": "5a87868c5542996e4f308828",
+        "question": "Which restaurant was founded first, Papa Murphy's or Gino's Pizza and Spaghetti?",
+        "answer": "Gino's Pizza and Spaghetti",
+        "gold": "Gino's Pizza and Spaghetti",
+        "em": 1.0,
+        "f1": 1.0,
+        "support_title_recall": 1.0,
+        "parse_error": null,
+        "final_text": "\n\n{\"answer\":\"Gino's Pizza and Spaghetti\",\"supporting_doc_ids\":[\"d3\",\"d7\"],\"reason\":\"Gino's Pizza and Spaghetti was founded by Kenney Grant in 1961 (doc d3). Papa Murphy's began in 1995 as the merger of two companies (Papa Aldo's Pizza and Murphy's Pizza) each founded in 1981 (doc d7). Therefore Gino's Pizza and Spaghetti was founded first, in 1961, predating Papa Murphy's by at least 20 years.\"}",
+        "wall_time": 1793269222.0726845,
+        "event": "task_finished",
+        "exit_code": 0,
+        "duration_seconds": 55.92116832733154
+      }
+    ]
+  },
+  "source_archive": "dsh-e1-small-fixed12-raw.tar.gz"
+}
