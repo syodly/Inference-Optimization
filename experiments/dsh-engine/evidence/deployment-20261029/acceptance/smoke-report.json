@@ -1,0 +1,24 @@
+{
+  "basic": {
+    "session": "session-78cc1477-40a6-45a7-be6a-236a635d934c",
+    "expected": "QWEN_DSH_READY",
+    "final": "QWEN_DSH_READY",
+    "tool_calls": []
+  },
+  "shell": {
+    "session": "session-3ec0c1a5-4134-4021-8a12-93e12971cc41",
+    "expected": "DSH_SHELL_READY",
+    "final": "DSH_SHELL_READY",
+    "tool_calls": [
+      {
+        "type": "tool_call",
+        "callId": "chatcmpl-tool-b10f5f044d74df25",
+        "tool": "bash",
+        "input": {
+          "description": "Print DSH_SHELL_READY",
+          "command": "printf DSH_SHELL_READY"
+        }
+      }
+    ]
+  }
+}

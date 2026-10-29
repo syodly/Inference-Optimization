@@ -1,0 +1,58 @@
+{
+  "kind": "deployment_acceptance_only",
+  "root_session": "session-5acf0c8f-45cd-45e0-b0b8-cee09d6a7319",
+  "children": [
+    "ca81ac36-6077-4c0c-b04a-53cc15fa28e7",
+    "1c9e4ae6-a27d-4c1f-98e4-34c9196f000b",
+    "4289c593-e429-4257-8c00-ea2c7c0c70b4"
+  ],
+  "dataset_task_id": "5a7bc1bf55429927d897c033",
+  "session_reports": {
+    "session-5acf0c8f-45cd-45e0-b0b8-cee09d6a7319": {
+      "model_calls": 8,
+      "tools": {
+        "glob": 1,
+        "subagent": 3,
+        "list_agents": 1
+      },
+      "tool_errors": 0,
+      "turns": 2
+    },
+    "ca81ac36-6077-4c0c-b04a-53cc15fa28e7": {
+      "model_calls": 3,
+      "tools": {
+        "read": 1,
+        "send_message": 1
+      },
+      "tool_errors": 0,
+      "turns": 1
+    },
+    "1c9e4ae6-a27d-4c1f-98e4-34c9196f000b": {
+      "model_calls": 3,
+      "tools": {
+        "read": 1,
+        "send_message": 1
+      },
+      "tool_errors": 0,
+      "turns": 1
+    },
+    "4289c593-e429-4257-8c00-ea2c7c0c70b4": {
+      "model_calls": 3,
+      "tools": {
+        "read": 1,
+        "send_message": 1
+      },
+      "tool_errors": 0,
+      "turns": 1
+    }
+  },
+  "agent_model_calls": 17,
+  "auxiliary_title_calls": 1,
+  "total_recorded_api_requests": 18,
+  "all_recorded_requests_http_200": true,
+  "final_answer_contains_hidden_gold": true,
+  "quality_scope": "One answer matches the gold entity; not a benchmark score. The 17th-century bound is indirect and not an explicit founding date.",
+  "performance_claim": null,
+  "official_source_modified": false,
+  "final_text": "\n\nAll three research children have now finished (shard-0's closing message confirms the report already delivered). The final answer stands:\n\n**Answer: The English Water Spaniel was bred first.**\n\n- Estonian Hound: bred in **1947**, Estonia — `[S d1]` (shard-1)\n- English Water Spaniel: established by the **late 17th century** at the latest — water spaniels existed as a specialization by then, and the breed (extinct, arrow-era hunting role) predates it further; also an ancestor of the American Water Spaniel developed in the **19th century** — `[S d0]` (shard-0), `[S d5]` and `[S d8]` (shard-2)\n\n**Unresolved gap:** No shard gives an explicit first-bred year/place for the English Water Spaniel; only the late-17th-century context and 19th-century ancestor reference bound it. Both bounds precede 1947, so the answer is unaffected.\n\nDelegation acceptance criteria met: exactly three independent subagent children (one per shard), no further delegation, no network or shell use by children, parent never read the shards, all three results collected before answering, and `workflow`/`subagent_fork` were not used."
+}

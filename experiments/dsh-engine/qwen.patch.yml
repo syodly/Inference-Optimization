@@ -1,0 +1,28 @@
+- id: agent-default-model
+  config:
+    provider: local-qwen
+    model: qwen27b
+    reasoningEffort: low
+- id: llm-pi-ai
+  config:
+    providers:
+      local-qwen:
+        displayName: Qwen 27B on songprojgpu1
+        apiKeyEnv: DSH_QWEN_API_KEY
+        api: openai-completions
+        baseURL: http://127.0.0.1:18083/v1
+        reasoning: low
+        compat:
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+        retryPolicy:
+          mode: normal
+          maxRetries: 0
+        models:
+          - id: qwen27b
+            name: Qwen3.8-27B BF16
+            contextWindow: 65536
+            maxTokens: 4096
+            input: [text]
+            reasoningEfforts:
+              low: low
