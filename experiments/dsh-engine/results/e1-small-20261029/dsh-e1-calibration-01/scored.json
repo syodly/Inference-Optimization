@@ -1,0 +1,17 @@
+[
+  {
+    "task_id": "5a722a6855429971e9dc9320",
+    "question": "What is the character's name for which Anna Leonidovna Kovalchuk won a prize in the legal festival \"Law and Society\"?",
+    "answer": "Maria Shvetsova",
+    "gold": "Chief Detective Maria Shvetsova",
+    "em": 0.0,
+    "f1": 0.6666666666666666,
+    "support_title_recall": 1.0,
+    "parse_error": null,
+    "final_text": "\n\n{\"answer\":\"Maria Shvetsova\",\"supporting_doc_ids\":[\"d0\",\"d8\"],\"reason\":\"Document d8 states that Anna Leonidovna Kovalchuk won the prize for the presentation of the image of 'good character' in the international legal Festival 'Law and Society' for the title role in the television series 'Tainy Sledstviya'. Document d0 identifies that the title role in 'Tainy Sledstviya' is Chief Detective Maria Shvetsova, played by Anna Kovalchuk. Together, these establish that the character's name is Maria Shvetsova.\"}",
+    "wall_time": 1793268979.5070293,
+    "event": "task_finished",
+    "exit_code": 0,
+    "duration_seconds": 36.15657448768616
+  }
+]

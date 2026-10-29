@@ -1,0 +1,9 @@
+- id: session-title-llm
+  disabled: true
+- id: system-prompt
+  config:
+    personaPrefix: You are a source-grounded research assistant powered by the {{model}} model.
+- insert:
+    - id: e1-research-application
+      name: /home/Liangyijia_Hu/dsh-lab/e1-plugin.mjs
+      inject: [tools, workflowEngine]

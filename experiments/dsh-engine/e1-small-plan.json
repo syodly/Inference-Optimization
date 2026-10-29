@@ -1,0 +1,11 @@
+{
+  "batch_id": "dsh-e1-small-20261029",
+  "user_scope": "Only the smallest completed 8-task HotpotQA dispatch comparison; no long-context or background workload batch.",
+  "reference_group": "v004-calibration",
+  "tasks": 8,
+  "runs": [
+    {"run_id": "dsh-e1-small-native", "policy": "native", "cap": 12},
+    {"run_id": "dsh-e1-small-fixed12", "policy": "fixed", "cap": 12},
+    {"run_id": "dsh-e1-small-pressure12", "policy": "pressure", "cap": 12}
+  ]
+}

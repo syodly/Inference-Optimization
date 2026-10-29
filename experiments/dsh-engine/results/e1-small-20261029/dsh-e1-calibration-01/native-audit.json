@@ -1,0 +1,63 @@
+[
+  {
+    "task_id": "5a722a6855429971e9dc9320",
+    "root_session": "session-172a5dfc-2a46-4f85-a8c9-1ebfadf18e81",
+    "agents": [
+      {
+        "session_id": "5bac60a4-97d9-4373-8e42-5fabe4178dcf",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "session-172a5dfc-2a46-4f85-a8c9-1ebfadf18e81",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      },
+      {
+        "session_id": "6437ddff-676e-4c7e-abfb-1390d6d7acb4",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "730949ed-bc14-442b-9663-8c6ba8c22b83",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      }
+    ],
+    "valid": true
+  }
+]

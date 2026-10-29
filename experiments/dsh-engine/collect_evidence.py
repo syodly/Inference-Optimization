@@ -129,10 +129,12 @@ def main():
     for name in ['subagent.stderr', 'basic.stderr']:
         shutil.copy2(ROOT/'logs'/name, OUT/'acceptance'/name)
     smoke_reports = {}
+    smoke_intervals = []
     for name in ['basic', 'shell']:
         rows = [json.loads(line) for line in (ROOT/'artifacts'/f'{name}.jsonl').read_text().splitlines()]
         smoke_session = next(row['sessionId'] for row in rows if row['type'] == 'session')
-        native_events(smoke_session)
+        smoke_events = native_events(smoke_session)
+        smoke_intervals.append((smoke_events[0]['createdAt']/1000, smoke_events[-1]['time']/1000))
         final_smoke = next(row['text'].strip() for row in reversed(rows) if row['type'] == 'final')
         expected = 'DSH_SHELL_READY' if name == 'shell' else 'QWEN_DSH_READY'
         assert final_smoke == expected
@@ -149,10 +151,10 @@ def main():
     write(OUT/'acceptance/smoke-report.json', smoke_reports)
     for path in sorted((ROOT/'artifacts/wire').iterdir()):
         info = json.loads((path/'request.json').read_text())
-        if not start <= info['started_wall_time'] <= end:
+        if any(lo <= info['started_wall_time'] <= hi for lo, hi in smoke_intervals):
             shutil.copytree(path, OUT/'wire-smoke'/path.name, dirs_exist_ok=True)
     write(OUT/'acceptance/smoke-wire-note.json', {
-        'scope': 'The isolated endpoint had only the basic and Bash smoke checks outside the multiagent interval.',
+        'scope': 'Only requests inside the basic and Bash smoke intervals; later research requests are excluded.',
         'basic_title_request': 'DSH closed while the auxiliary title request streamed; observer records ConnectionResetError. The basic agent conversation completed successfully.',
         'multiagent_report_excludes_smoke_requests': True})
     shutil.copytree(ROOT/'workspaces/hotpot-acceptance', OUT/'task', dirs_exist_ok=True)

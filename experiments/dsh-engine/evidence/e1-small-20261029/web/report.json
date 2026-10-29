@@ -1,0 +1,48 @@
+{
+  "rows": [
+    "直接派发\t48.43\t55.59\t0.815\t20,445\t8",
+    "固定在途 12\t60.70\t69.01\t0.908\t20,707\t0",
+    "实际压力反馈 12\t60.47\t76.23\t0.783\t20,797\t0"
+  ],
+  "links": [
+    {
+      "href": "../experiments/dsh-engine/notes/e1-small-20261029.md",
+      "status": 200,
+      "bytes": 7668
+    },
+    {
+      "href": "../experiments/dsh-engine/results/e1-small-20261029/comparison.json",
+      "status": 200,
+      "bytes": 4551
+    },
+    {
+      "href": "../experiments/dsh-engine/RESEARCH_LOG.md",
+      "status": 200,
+      "bytes": 8342
+    },
+    {
+      "href": "../experiments/dsh-engine/evidence/e1-small-20261029/dsh-e1-small-native-raw.tar.gz",
+      "status": 200,
+      "bytes": 489761
+    },
+    {
+      "href": "../experiments/dsh-engine/evidence/e1-small-20261029/dsh-e1-small-fixed12-raw.tar.gz",
+      "status": 200,
+      "bytes": 482410
+    },
+    {
+      "href": "../experiments/dsh-engine/evidence/e1-small-20261029/dsh-e1-small-pressure12-raw.tar.gz",
+      "status": 200,
+      "bytes": 480159
+    }
+  ],
+  "desktop": {
+    "width": 1440,
+    "scrollWidth": 1440
+  },
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390
+  },
+  "page_errors": []
+}

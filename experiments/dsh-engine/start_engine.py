@@ -31,13 +31,16 @@ def main():
                '--scheduling-policy', 'priority', '--default-chat-template-kwargs',
                json.dumps({'enable_thinking': True, 'reasoning_effort': 'low'})]
     env = {**os.environ, 'CUDA_VISIBLE_DEVICES': '0,1', 'OMP_NUM_THREADS': '1',
+           'VLLM_SERVER_DEV_MODE': '1',
            'CUDA_HOME': '/usr/local/cuda-13.2', 'PATH': '/usr/local/cuda-13.2/bin:'+os.environ['PATH']}
     log_path = root/'logs/qwen-engine.log'
     with log_path.open('ab', buffering=0) as log:
         process = subprocess.Popen(command, cwd=root, env=env, stdin=subprocess.DEVNULL,
                                    stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
     info = {'pid': process.pid, 'started': time.time(), 'command': command, 'gpu_before': probe,
-            'log': str(log_path), 'purpose': 'Official DSH deployment acceptance; old research remains paused.',
+            'log': str(log_path), 'purpose': 'Official DSH deployment and explicitly requested small E1 comparison.',
+            'env_overrides': {'CUDA_VISIBLE_DEVICES': '0,1', 'OMP_NUM_THREADS': '1',
+                              'VLLM_SERVER_DEV_MODE': '1', 'CUDA_HOME': '/usr/local/cuda-13.2'},
             'legacy_stop_untouched': (previous/'state/STOP').exists()}
     (root/'state/engine.json').write_text(json.dumps(info, indent=2), encoding='utf-8')
     print(json.dumps(info, indent=2))

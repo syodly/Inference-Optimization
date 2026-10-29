@@ -1,0 +1,145 @@
+{
+  "scope": "Three selected conditions from the completed eight-task v004 calibration group. One independent round per condition.",
+  "interpretation": "Pressure feedback made zero reductions and thus supplied no additional action over fixed12 in this group. Generation content and quality differ; no causal speedup claim.",
+  "all_rounds_pass_audit": true,
+  "rounds": [
+    {
+      "run_id": "dsh-e1-small-native",
+      "policy": "native",
+      "cap": 12,
+      "tasks": 8,
+      "completed_tasks": 8,
+      "task_duration_seconds": {
+        "n": 8,
+        "mean": 48.426445722579956,
+        "p95": 55.594785797595975,
+        "max": 57.90883183479309
+      },
+      "round_duration_seconds": 58.28696632385254,
+      "quality": {
+        "em": 0.5,
+        "f1": 0.8145833333333333,
+        "support_title_recall": 0.875
+      },
+      "agents": 32,
+      "agent_model_calls": 64,
+      "expected_agent_model_calls": 64,
+      "wire_calls": 64,
+      "bm25_calls": 24,
+      "decoded_tokens": 20445,
+      "engine_generation_tokens_delta": 20445.0,
+      "prompt_tokens": 94294,
+      "length_finishes": 0,
+      "max_engine_waiting": 8.0,
+      "max_engine_running": 24.0,
+      "max_kv_usage": 0.42894056847545214,
+      "preemptions": 0.0,
+      "frontend_wait_seconds": {
+        "n": 64,
+        "mean": 0.0002079308032989502,
+        "p95": 0.00043340921401977537,
+        "max": 0.0006852149963378906
+      },
+      "feedback_reduced_admissions": 0,
+      "runtime_errors": [],
+      "wire_errors": [],
+      "native_workflow_audit_pass": true,
+      "all_wire_http_200": true,
+      "actual_request_configuration_consistent": true,
+      "one_independent_round_only": true,
+      "audit_pass": true
+    },
+    {
+      "run_id": "dsh-e1-small-fixed12",
+      "policy": "fixed",
+      "cap": 12,
+      "tasks": 8,
+      "completed_tasks": 8,
+      "task_duration_seconds": {
+        "n": 8,
+        "mean": 60.70276975631714,
+        "p95": 69.00576059818268,
+        "max": 70.13073778152466
+      },
+      "round_duration_seconds": 70.5191593170166,
+      "quality": {
+        "em": 0.625,
+        "f1": 0.9083333333333333,
+        "support_title_recall": 0.875
+      },
+      "agents": 32,
+      "agent_model_calls": 64,
+      "expected_agent_model_calls": 64,
+      "wire_calls": 64,
+      "bm25_calls": 24,
+      "decoded_tokens": 20707,
+      "engine_generation_tokens_delta": 20707.0,
+      "prompt_tokens": 93730,
+      "length_finishes": 0,
+      "max_engine_waiting": 0.0,
+      "max_engine_running": 12.0,
+      "max_kv_usage": 0.2093023255813954,
+      "preemptions": 0.0,
+      "frontend_wait_seconds": {
+        "n": 64,
+        "mean": 5.573817994445562,
+        "p95": 18.505277121067046,
+        "max": 22.29558825492859
+      },
+      "feedback_reduced_admissions": 0,
+      "runtime_errors": [],
+      "wire_errors": [],
+      "native_workflow_audit_pass": true,
+      "all_wire_http_200": true,
+      "actual_request_configuration_consistent": true,
+      "one_independent_round_only": true,
+      "audit_pass": true
+    },
+    {
+      "run_id": "dsh-e1-small-pressure12",
+      "policy": "pressure",
+      "cap": 12,
+      "tasks": 8,
+      "completed_tasks": 8,
+      "task_duration_seconds": {
+        "n": 8,
+        "mean": 60.47417464852333,
+        "p95": 76.23462145328521,
+        "max": 81.75847268104553
+      },
+      "round_duration_seconds": 82.1104986667633,
+      "quality": {
+        "em": 0.5,
+        "f1": 0.7833333333333333,
+        "support_title_recall": 0.875
+      },
+      "agents": 32,
+      "agent_model_calls": 64,
+      "expected_agent_model_calls": 64,
+      "wire_calls": 64,
+      "bm25_calls": 24,
+      "decoded_tokens": 20797,
+      "engine_generation_tokens_delta": 20797.0,
+      "prompt_tokens": 93225,
+      "length_finishes": 0,
+      "max_engine_waiting": 0.0,
+      "max_engine_running": 12.0,
+      "max_kv_usage": 0.24031007751937983,
+      "preemptions": 0.0,
+      "frontend_wait_seconds": {
+        "n": 64,
+        "mean": 5.415946371853352,
+        "p95": 19.244053900241845,
+        "max": 24.681946516036987
+      },
+      "feedback_reduced_admissions": 0,
+      "runtime_errors": [],
+      "wire_errors": [],
+      "native_workflow_audit_pass": true,
+      "all_wire_http_200": true,
+      "actual_request_configuration_consistent": true,
+      "one_independent_round_only": true,
+      "audit_pass": true
+    }
+  ]
+}

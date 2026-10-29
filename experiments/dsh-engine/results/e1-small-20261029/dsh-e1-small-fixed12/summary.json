@@ -1,0 +1,46 @@
+{
+  "run_id": "dsh-e1-small-fixed12",
+  "policy": "fixed",
+  "cap": 12,
+  "tasks": 8,
+  "completed_tasks": 8,
+  "task_duration_seconds": {
+    "n": 8,
+    "mean": 60.70276975631714,
+    "p95": 69.00576059818268,
+    "max": 70.13073778152466
+  },
+  "round_duration_seconds": 70.5191593170166,
+  "quality": {
+    "em": 0.625,
+    "f1": 0.9083333333333333,
+    "support_title_recall": 0.875
+  },
+  "agents": 32,
+  "agent_model_calls": 64,
+  "expected_agent_model_calls": 64,
+  "wire_calls": 64,
+  "bm25_calls": 24,
+  "decoded_tokens": 20707,
+  "engine_generation_tokens_delta": 20707.0,
+  "prompt_tokens": 93730,
+  "length_finishes": 0,
+  "max_engine_waiting": 0.0,
+  "max_engine_running": 12.0,
+  "max_kv_usage": 0.2093023255813954,
+  "preemptions": 0.0,
+  "frontend_wait_seconds": {
+    "n": 64,
+    "mean": 5.573817994445562,
+    "p95": 18.505277121067046,
+    "max": 22.29558825492859
+  },
+  "feedback_reduced_admissions": 0,
+  "runtime_errors": [],
+  "wire_errors": [],
+  "native_workflow_audit_pass": true,
+  "all_wire_http_200": true,
+  "actual_request_configuration_consistent": true,
+  "one_independent_round_only": true,
+  "audit_pass": true
+}

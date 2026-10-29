@@ -1,0 +1,490 @@
+[
+  {
+    "task_id": "5a722a6855429971e9dc9320",
+    "root_session": "session-92f856b0-2a96-4da3-a9bc-d1ce8609ac23",
+    "agents": [
+      {
+        "session_id": "49753086-7cb9-47b1-a384-43989ea27af6",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "cce796b0-d2a8-48d4-8d21-697740bf1dc6",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "22c26cb3-a9cd-4bca-a91a-cc860be0b04d",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "session-92f856b0-2a96-4da3-a9bc-d1ce8609ac23",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      }
+    ],
+    "valid": true
+  },
+  {
+    "task_id": "5a78f59755429970f5fffdf7",
+    "root_session": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+    "agents": [
+      {
+        "session_id": "124d3864-5f7d-4fef-80cd-fc4f603cbd16",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "851fbbc3-1610-4fc0-b115-5e8e23cec350",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "a6b32726-3826-478b-ad87-aaf95aa30ada",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "session-9b17f7c1-167b-4943-85f2-54cce54084fc",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      }
+    ],
+    "valid": true
+  },
+  {
+    "task_id": "5a87868c5542996e4f308828",
+    "root_session": "session-3e83a802-2e96-419d-913f-2e3e11a3ec8b",
+    "agents": [
+      {
+        "session_id": "2d602967-e311-4a57-9160-da07cb4397b5",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "b4506d82-4eb9-45de-ad35-38bf180562a4",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "session-3e83a802-2e96-419d-913f-2e3e11a3ec8b",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      },
+      {
+        "session_id": "8f865922-66a2-483b-b099-57dcef0b12d3",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      }
+    ],
+    "valid": true
+  },
+  {
+    "task_id": "5ab29624554299545a2cf9b5",
+    "root_session": "session-553456ad-0431-4ed7-a18a-3cbd79ce7e51",
+    "agents": [
+      {
+        "session_id": "session-553456ad-0431-4ed7-a18a-3cbd79ce7e51",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      },
+      {
+        "session_id": "eb777bff-dfdc-430c-aadc-1f2493acb0d9",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "5d8a00b1-288f-45f3-ab4c-31f8546663d1",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "363da3f5-3ecb-4953-8297-fa35acb28780",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      }
+    ],
+    "valid": true
+  },
+  {
+    "task_id": "5ab97c0255429970cfb8eb1f",
+    "root_session": "session-7354b204-4031-4e71-a458-948c02a1f94f",
+    "agents": [
+      {
+        "session_id": "session-7354b204-4031-4e71-a458-948c02a1f94f",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      },
+      {
+        "session_id": "a0c5a311-3341-4459-ad6c-a5ab9b06549a",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "1de7d5bb-99cf-42a5-95b1-cc49915bd57b",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "a0490278-b799-44d1-954e-f25cbe8ca0c9",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      }
+    ],
+    "valid": true
+  },
+  {
+    "task_id": "5adf8c965542993344016cf5",
+    "root_session": "session-c01a8764-b1f9-4465-843b-6486bf06d08d",
+    "agents": [
+      {
+        "session_id": "9bb7cb48-bbea-45ba-869d-690cde5741c5",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "session-c01a8764-b1f9-4465-843b-6486bf06d08d",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      },
+      {
+        "session_id": "7cbe2e5c-74ff-4038-a670-f0f315e5e1ca",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "6a536fb4-030a-47a0-b6fc-b5fb96a454c7",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      }
+    ],
+    "valid": true
+  },
+  {
+    "task_id": "5ae1316555429901ffe4adda",
+    "root_session": "session-2caae2bb-9eef-4787-bd78-1bb21d70e746",
+    "agents": [
+      {
+        "session_id": "7f97084c-46d4-4ad2-a871-120e650439ac",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "9c08c12e-ab26-4d7d-8b80-eef46192d332",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "c8edc38a-74f2-4e13-abfa-6c0f4fc9b7e7",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "session-2caae2bb-9eef-4787-bd78-1bb21d70e746",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      }
+    ],
+    "valid": true
+  },
+  {
+    "task_id": "5ae75a5a5542991bbc9761f3",
+    "root_session": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+    "agents": [
+      {
+        "session_id": "374bea73-011e-486a-a170-2d5cca233a30",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          2
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "d4b70620-30c6-4674-b5b1-438c0d6f6a45",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          1
+        ],
+        "valid": true
+      },
+      {
+        "session_id": "session-0abf2de7-c451-410b-928e-a7ba6be6e805",
+        "role": "parent",
+        "model_calls": 2,
+        "tools": {
+          "research_workflow": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [],
+        "valid": true
+      },
+      {
+        "session_id": "10300543-03cc-4709-97b3-ef456a46a1e5",
+        "role": "child",
+        "model_calls": 2,
+        "tools": {
+          "bench_search": 1
+        },
+        "tool_errors": 0,
+        "finished": true,
+        "branches": [
+          0
+        ],
+        "valid": true
+      }
+    ],
+    "valid": true
+  }
+]
