@@ -1,0 +1,47 @@
+{
+  "crag": {
+    "source_commit": "de7c2961ae624a1483a138c5798e1f6d0c4fb0e0",
+    "source_sha256": "d33a43566c59f4c6fb3e9f642426fec2d204373c0bd7068dde4f21fcbe3758ab",
+    "source_function": "def process_flag(scores, n_docs, threshold1, threshold2):\n    flags = []\n    for score in scores:\n        if score >= threshold1:\n            flags.append('2')\n        elif score >= threshold2:\n            flags.append('1')\n        else:\n            flags.append('0')\n\n    tmp_flag = []\n    identification_flag = []\n    for i, f in enumerate(flags):\n        tmp_flag.append(f)\n        if i % n_docs == n_docs - 1:\n            if '2' in tmp_flag:\n                identification_flag.append(2)\n            elif '1' in tmp_flag:\n                identification_flag.append(1)\n            else:\n                identification_flag.append(0)\n            tmp_flag = []\n    return identification_flag",
+    "cases": [
+      {
+        "name": "correct",
+        "scores": [
+          11,
+          -12,
+          -11
+        ],
+        "expected": 2,
+        "actual": 2,
+        "wall_time": 1793330545.3467062
+      },
+      {
+        "name": "ambiguous",
+        "scores": [
+          -11,
+          0,
+          -12
+        ],
+        "expected": 1,
+        "actual": 1,
+        "wall_time": 1793330545.3467162
+      },
+      {
+        "name": "incorrect",
+        "scores": [
+          -11,
+          -12,
+          -15
+        ],
+        "expected": 0,
+        "actual": 0,
+        "wall_time": 1793330545.3467193
+      }
+    ],
+    "scope": "Exact upstream route function executed on synthetic boundary scores. No trained retrieval evaluator, web search, generator, or multi-agent claim."
+  },
+  "coding": {
+    "source_commit": "28fef95ea8c9f7a547c8329f2cd3d32b92c1fa24",
+    "scope": "LiveCodeBench is a benchmark and parallel sample runner, not a named autonomous coding harness. Real DSH coding trace is separately retained (7/7 original tests passed)."
+  }
+}

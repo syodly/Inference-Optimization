@@ -1,0 +1,64 @@
+[
+  {
+    "time": 1793344179.394579,
+    "relative_seconds": 0.0,
+    "timestamp_utc": "2026-10-30T07:09:39.394+00:00",
+    "timestamp_china": "2026-10-30T15:09:39.394+08:00",
+    "kind": "node_added",
+    "node_id": "initial-task",
+    "label": "Initial user task",
+    "session_id": "session-f8c886c2-d14b-40df-bc9f-a559a3432a34"
+  },
+  {
+    "time": 1793344181.204,
+    "relative_seconds": 1.809421,
+    "timestamp_utc": "2026-10-30T07:09:41.204+00:00",
+    "timestamp_china": "2026-10-30T15:09:41.204+08:00",
+    "kind": "edge_added",
+    "source": "initial-task",
+    "target": "agent:session-f8c886c2-d14b-40df-bc9f-a559a3432a34",
+    "relation": "task creates root",
+    "revealed_at": 1793344181.204
+  },
+  {
+    "time": 1793344181.204,
+    "relative_seconds": 1.809421,
+    "timestamp_utc": "2026-10-30T07:09:41.204+00:00",
+    "timestamp_china": "2026-10-30T15:09:41.204+08:00",
+    "kind": "node_added",
+    "node_id": "agent:session-f8c886c2-d14b-40df-bc9f-a559a3432a34",
+    "label": "Root Agent",
+    "session_id": "session-f8c886c2-d14b-40df-bc9f-a559a3432a34"
+  },
+  {
+    "time": 1793344181.264,
+    "relative_seconds": 1.869421,
+    "timestamp_utc": "2026-10-30T07:09:41.264+00:00",
+    "timestamp_china": "2026-10-30T15:09:41.264+08:00",
+    "kind": "edge_added",
+    "source": "agent:session-f8c886c2-d14b-40df-bc9f-a559a3432a34",
+    "target": "model:session-f8c886c2-d14b-40df-bc9f-a559a3432a34:1:1",
+    "relation": "agent begins model work",
+    "revealed_at": 1793344181.264
+  },
+  {
+    "time": 1793344181.264,
+    "relative_seconds": 1.869421,
+    "timestamp_utc": "2026-10-30T07:09:41.264+00:00",
+    "timestamp_china": "2026-10-30T15:09:41.264+08:00",
+    "kind": "node_added",
+    "node_id": "model:session-f8c886c2-d14b-40df-bc9f-a559a3432a34:1:1",
+    "label": "Model turn 1 step 1",
+    "session_id": "session-f8c886c2-d14b-40df-bc9f-a559a3432a34"
+  },
+  {
+    "time": 1793344184.875,
+    "relative_seconds": 5.480421,
+    "timestamp_utc": "2026-10-30T07:09:44.875+00:00",
+    "timestamp_china": "2026-10-30T15:09:44.875+08:00",
+    "kind": "node_completed",
+    "node_id": "model:session-f8c886c2-d14b-40df-bc9f-a559a3432a34:1:1",
+    "label": "Model turn 1 step 1",
+    "session_id": "session-f8c886c2-d14b-40df-bc9f-a559a3432a34"
+  }
+]

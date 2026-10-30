@@ -1,6 +1,131 @@
-# Qwen27B × 官方DSH：自然在线执行图观察
+# Topic1 · 并行Agent与工具工作流：调查及实测总报告
 
-**DAG的生成与Harness有关：模型决定下一步动作，Harness定义动作接口、执行和结果交付规则，两者共同形成实际事件图。** 本组只给初始任务及工作文件，不指定Agent数量、不预写工作流、不回放。五类成功运行都没有委派子Agent；这本身是结果，不能为得到多Agent图而补发诱导指令。
+**DAG 的生成与应用和 Harness 都有关。模型生成具体动作或查询，应用可能直接创建研究实例，Harness 决定动作怎样执行、交付结果。** 10月29日的五类 DSH 基线只给初始任务，没有子 Agent；10月30日另做系统策略与推理强度消融，并实际运行原生 ODR / GPT Researcher。各组边界分开，不把后加策略的结果改写成最初自然基线。
+
+## 本轮公开原题观察 · 统一DSH入口 · 六题已结束并归档
+
+用户进一步澄清要把数据集原题交给Harness＋vLLM，观察Qwen27B的实际规划与派发，因此新批次 `public-tasks-20261030-v001` 统一使用**官方DSH→被动API记录→现有vLLM→Qwen3.8-27B**。没有另开ODR/GPT应用，没有使用自编机制核对题，没有固定Agent数、回放或额外委派建议。ODR、GPT Researcher及CRAG是工作流结构参考，不能据这批数据声称测量了它们的原生算法。
+
+仅选六题，逐题顺序执行一次：DeepResearchBench #19（Prometheus高流失率）与#93（视频编辑软件市场）；LiveCodeBench `abc387_c`（Snake Numbers，中等）与`abc387_f`（Count Arrays，难）；CRAG固定版本发布的PopQA前两题（Henry Feilden、Herlyn Espinal的职业）及其原始检索段落。两道研究题和两道代码题初始消息保持官方题面原文；PopQA只增加段落分隔格式，不人为给路由分数。选择按题型及可取得的小样本，非随机代表性抽样；不是数据集准确率实验。代码隐藏测试只放观察目录外的离线评分区，不进入任务工作目录，也不反馈给模型。
+
+保留每个根任务的准确题号、来源revision与SHA256、完整初始消息/系统规则/工具定义、模型请求响应、工具执行、原生Session与时间戳。分析时区分：模型在第几次响应提出动作、Harness何时登记并开始执行、工具何时返回、下一轮何时读取结果。工具重叠不计作子Agent；只有模型委派调用及原生子Session创建均被记录，才记子Agent。未结束的请求、截断、网络错误和超时如实保留，不用新提示强制制造并行。
+
+**CRAG边界：这批是“PopQA原题＋原始检索上下文在DSH上的轨迹”，不是原CRAG的T5评估器与条件路由复现。** 其完整算法复现仍与本轮DSH原题观察分开，不能因为加入两道PopQA题就把旧缺项改成完成。
+
+### 六题结果与能够支持的结论
+
+| 数据集 / 原题 | 耗时 / 秒 | 模型调用 | 工具调用 / 错误 | 子Agent | 工具在途峰值 | 交付与离线核对 |
+|---|---:|---:|---:|---:|---:|---|
+| DeepResearchBench #19 · Prometheus高流失率 | 174.07 | 3 | 3 / 2 | 0 | 2 | 有报告；搜索凭据缺失、网页读取不完整，未做RACE/FACT质量评分 |
+| DeepResearchBench #93 · 视频编辑软件市场 | 744.06 | 53 | 63 / 12 | 0 | 2 | 长时间网络重试后主动停止；没有研究交付 |
+| LiveCodeBench abc387_c · Snake Numbers，中等 | 144.52 | 9 | 8 / 2 | 0 | 1 | 交付snake.py；原公开测试3/3、原隐藏测试40/40 |
+| LiveCodeBench abc387_f · Count Arrays，难 | 198.81 | 1 | 0 / 0 | 0 | 0 | 单次8192 token输出耗尽，finish_reason=length；没有代码 |
+| PopQA 4382392 · Henry Feilden职业 | 9.53 | 1 | 0 / 0 | 0 | 0 | 答politician；原数据集答案别名离线匹配通过 |
+| PopQA 1223902 · Herlyn Espinal职业 | 5.63 | 1 | 0 / 0 | 0 | 0 | 答journalist；原数据集答案别名离线匹配通过 |
+
+**六题均只有一个根Session、模型请求在途峰值为1；两道研究题出现工具在途重叠，而非子Agent并行。** 首轮真实请求中均有`subagent`、`subagent_fork`与`workflow`，初始任务原文核对一致，没有模型委派调用、子Session创建或容量拒绝。此小样本仅说明这些任务在该配置与工具环境下没有选择委派，不能推出“Qwen不会派发”或“DSH不支持”。并发上限10只限制同一时刻可执行多少个安全工具，既不产生调用，也不限制整题工具总数；#93共63次工具调用仍可只有峰值2。
+
+以#19说明图怎样在线增长：+1.851秒第一轮模型请求就绪，+90.752秒返回一个`web_search`调用（参数中有4条查询）；搜索随后报缺少`DEEPSEEK_API_KEY`。模型收到该错误后，于+90.835秒开始下一轮，+94.282秒提出两个`web_fetch`。DSH在约+94.287秒实际启动这两个安全工具，至+104.948秒全部返回；一个网页内容很少，另一个访问失败。+104.986秒第三轮消费上述结果，+173.894秒结束报告生成。**Qwen决定搜什么、下一步取哪些网页；DSH按原生安全声明调度、执行并交付结果；vLLM执行推理。** 后来的网页请求在错误返回后才生成，不是开始时已有完整DAG。页面把本轮响应里的并列动作画为分叉—汇合；不是按日志顺序误画成数据依赖。
+
+代码中等题同样没有预先给解题流程：Qwen先写代码，再根据工具错误读取和修正，约+112.718秒执行样例，+123.471至130.870秒执行自建的300组随机区间暴力对拍，最后回答。公开/隐藏测试的正式离线评分发生在任务结束后，标签和结果未反馈给模型。难题仅有一段长推理，8191个reasoning token占满预算后截断，不能把这段推理画成已经执行了多个Agent或工具。PopQA两题的证据已在初始上下文内，模型一次回答；没有实际检索，答案别名匹配也不是来源忠实度评测。
+
+**研究工具仍有环境缺口。** 更换Qwen只替换模型生成接口；DSH原生`web_search`仍使用需凭据的DeepSeek搜索，本环境未配置。#93中Qwen又自行尝试`curl`等网络访问，未取得完整交付，停止原因单独保存。CLI的exit=0不被视为成功研究。这两条轨迹可以核对错误后的动作生成与工具调度，不能用于评价正常联网研究质量或通常委派概率。本轮没有扩样、补提示或换搜索重跑。
+
+### 原题、执行入口与归档对应
+
+| 来源 | 固定版本与选题方式 | 执行入口 |
+|---|---|---|
+| [DeepResearchBench](https://github.com/Ayanami0730/deep_research_bench/tree/f2735b5c3636759c22f9e936c0232de8bf545b67) | `data/prompt_data/query.jsonl`，100题中的19与93；原题一字未改 | 官方DSH；未调用ODR或GPT Researcher |
+| [LiveCodeBench code_generation_lite](https://huggingface.co/datasets/livecodebench/code_generation_lite/tree/0fe84c3912ea0c4d4a78037083943e8f0c4dd505) | `test6.jsonl`固定revision前1MiB内的完整记录，选中等abc387_c、难abc387_f；不是下载全量数据 | 官方DSH；离线运行原测试，未复现多候选coding框架 |
+| [CRAG发布的PopQA材料](https://github.com/HuskyInSalt/CRAG/blob/de7c2961ae624a1483a138c5798e1f6d0c4fb0e0/data/popqa/test_popqa.txt) | 前两题及每题10个原始段落；正式答案别名另取原PopQA.tsv，仅离线核对 | 官方DSH；未调用CRAG评估器或路由 |
+
+本批单一标识为`public-tasks-20261030-v001`，独立于旧18次诊断。可读入口为[本轮流程与时间轴](../../../LLM_Optimization_Milestone/topic1-dag-observation.html#observation)，六题结果集中在[结果索引](../results/public-tasks-20261030-v001/index.json)，原始证据集中在[包索引](../evidence/public-tasks-20261030-v001/index.json)。原包8,671,618 bytes，SHA256为`7bf494c738d92451eb84c9f0cc1059e86e6b7a0110bdc7eba91e20d7bc8828f8`；每个原始来源文件的派生哈希见[source manifest](../results/public-tasks-20261030-v001/source-manifest.json)，含LCB部分下载的明确范围。包保留六题输入、原生Session、完整API、工具事件、产物与评分；原始字节不改写。页面、派生数据与原始证据保持关联。
+
+## 此前机制诊断的来源与完成范围复核 · 2026-10-30
+
+以下统计限定于本轮六道原题之前的诊断尝试，保留当时的缺项。**本轮已新增两道LiveCodeBench原题的DSH观察，原CRAG完整算法仍未执行。** 不把两个批次混算。
+
+**用户贴出的 `Audit one narrow claim…` 是 Codex 自编的初始任务，不是数据集原题。** `odr-qwen-v006-20261030` 使用窄核对版本；`v007` 在其后追加“source_search 已有材料、无需用户补文件”的说明，完整原文见统一索引对应 `initial_task`。600英文词、最多6处引用、不要框架排名等约束也是实验编写的。题目本身就在核对编排机制，是机制诊断，不是典型研究工作负载；没有指定 Agent 数量，不代表任务、系统提示和应用预算没有人为选择。
+
+| 实验入口 | 初始任务与材料来源 | 尝试次数 / 页面选例 | 公开数据集覆盖 | 实际完成层次 |
+|---|---|---|---|---|
+| ODR | Codex自编框架机制核对题；后续通过原生MCP取固定官方源码片段 | 7次，含初始化失败；页面选v005/v006/v007 | DeepResearchBench **0题** | 原生应用诊断轨迹；不是三类数据实验 |
+| GPT Researcher | Codex自编机制研究题；最早6条自编摘要，后为4份官方源码 | 5次，含失败；页面选v005 | 公开研究数据集 **0题** | 一类诊断题的调试与重跑；不是五道独立题 |
+| DSH自主委派排查 | 6类任务，下表逐类区分材料；保留策略变化 | 18次，含参数拒绝、触顶和超时 | 仅research组复用同6道HotpotQA原题 | 子Session产生条件的局部排查，不是18个数据集 |
+| 早期DSH五类观察 | research同6题；simple/coding/analysis/incident均自编 | 5条完成轨迹＋2条失败首轮 | 只有research含公开原题 | 工具执行图观察，不等于公开编码/分析/故障基准 |
+| Coding | Codex自编Python结账服务＋7项可见测试 | DSH执行1次修复，1/7→7/7 | LiveCodeBench / SWE-bench **0题** | 仅自编服务修复；原多候选coding流程及公开基准**未完成** |
+| CRAG | 人工指定3组文档相关性分数 | 官方process_flag函数3个边界输入 | PopQA / PubQA / Bio / ARC **0题** | 仅函数路由核对；模型评估→条件检索→生成完整流程**未完成** |
+
+ODR 的页面三个标签分别为：v005宽任务最终截断；v006窄任务但误判资料缺失；v007追加可取证说明后实际创建3路研究并交付报告。它们是同类诊断的变体 / 重跑，**不是三个数据集，也不是完整完成了三类代表性场景**。GPT 页面选v005的一条完整轨迹，另四次尝试没有消失。完整运行仍有内容错误，不能当作正确率通过。
+
+DSH的18次究竟在排查什么：
+
+| 类别 / 运行标识前缀 | 次数 | 输入来源 | 对照变量与目的 |
+|---|---:|---|---|
+| research / team-research | 7 | 同6道HotpotQA原题与60篇原始context；外层合并核查、写报告任务自编 | native、allow、encourage、high拒绝、medium、xhigh、Teams；看策略、推理强度和工具面是否改变委派 |
+| runtime-audit | 3 | 自编核对任务＋官方DSH五模块资料与部分入口代码 | native、encourage、autodelegate；看真实架构资料任务是否委派 |
+| source-review | 2 | 自编审查任务＋官方DSH六类模块源码/文档 | native、autodelegate；看更重源码任务是否拆分；分别超时和上下文失败，无审查报告 |
+| multi-object | 2 | **4份虚构短资料**：Alpha Runtime、Beta Routing、Gamma Tools、Delta Workflow | native、autodelegate；看多个独立对象是否委派；不是DSH四个真实组件，也不是4个Agent |
+| simple | 2 | 自编240美元、17.5%折扣算术题 | encourage、xhigh；检查建议是否无条件制造子工作 |
+| open-research / team-open-research | 2 | 自编“为何不同系统会自主委派”调查题＋联网工具 | 普通工具面与Teams；其中输出触顶，不能算成功交付 |
+
+research使用 `hotpotqa/hotpot_qa` 的 `distractor/validation`，固定revision `1908d6afbbead072334abe2965f91bd2709910ab`。六题ID、输入文件哈希和全部逐次任务原文见[统一实验索引](../results/natural-dag-20261029/frameworks/experiment-catalogue.json)。**子问题和context来自公开数据集，合成一个根报告任务的包装由本实验编写，不是官方HotpotQA评测协议。** 7次research尝试复用同六题，不累加成42个独立题。
+
+归档只有两个当前入口：[DSH18次](../evidence/autonomy-20261030-v002/index.json)和[ODR7次＋GPT5次](../evidence/upstream-workflows-20261030-v003/index.json)；旧autonomy、upstream-workflows-v002、upstream-odr-v001为较早快照，同run_id不重复计数。此前E1八题派发对照另列于[原E1报告](e1-small-20261029.md)，其三子Agent为人为指定，不能混进本次自然委派。所有原始包不改写，仅补派生目录与来源字段。
+
+**当时来源复核的纠正：原生ODR/GPT诊断与DSH排查已有记录，但尚未执行公开Coding原题或完整CRAG。** 随后用户确认只用DSH观察六题，本报告开头记录了新增两道LiveCodeBench与两道PopQA；CRAG完整算法仍未运行。旧覆盖表描述历史范围，不能当作当前全部实验清单。
+
+## 10月30日补齐：先看明确结论
+
+同一个 `Qwen3.8-27B` 已在原生 ODR 主管的工具调用中产生 `ConductResearch`，并实际启动独立研究子图；在 GPT Researcher 中也真实创建了子研究实例。因此，“27B 无法产生子 Agent”不成立。但 DSH 的18组排查均未出现子 Session，其中包含配置拒绝、超时和上下文失败，不能把18组都叫成功任务，也不能估计通用的委派概率。
+
+| 系统 / 场景 | 谁决定新工作 | 谁创建执行 | 本次证据能支持什么 |
+|---|---|---|---|
+| 官方 DSH | 模型选择 `subagent` / `workflow`；普通 read / bash 也可完成很多任务 | 原生 SubagentManager / provider | 多组任务、通用委派建议、low / medium / xhigh、Agent Teams 下仍主要选择单 Session 工具循环；显式委派验收已证明链路可执行 |
+| 原生 ODR | 主管模型生成 `ConductResearch(research_topic)` | 原生 `supervisor_tools` 以 `researcher_subgraph.ainvoke` 创建独立状态 | 相同 Qwen 可在专门的主管工具面主动产生研究分支；未证明可以完全不受应用预算约束地选拓扑 |
+| GPT Researcher Deep Research | 模型生成查询和后续问题；程序按 breadth / depth 展开 | 原生代码构造 `GPTResearcher` 并递归 | 查询内容随发现变化；实例数量同时受程序和配置塑形，不称作模型自由决定 Agent 总数 |
+| Coding 图 | 原图是候选 / 测试 / 修复抽象，LiveCodeBench 不提供这套固定 Agent 拓扑 | 取决于选用的 coding harness | 已有真实 DSH 修复轨迹：原测试1/7→7/7；不是新增的多候选框架复现 |
+| CRAG | 检索评估分数决定条件路径 | 原脚本按 flag 选择内部 / 外部 / 合并知识 | 已执行原生 `process_flag` 三路边界核对；没有把它改造成多 Agent 框架 |
+
+这里的“动态”也要分两层：**应用模板可以有循环，真实执行历史则按每次调用展开为有时间戳的有向无环事件图。** 新查询晚于证据返回才生成，属于数据依赖的在线展开；`breadth=2` 的程序循环创建两个实例，不能单凭图上有分叉就称作模型自主发明拓扑。
+
+本次原生研究使用固定官方源码语料，经各自正式检索接口接入；不是联网搜索质量评测。没有为任务给出查询列表、分支清单或回放轨迹。ODR / GPT Researcher 自带的主管提示、查询生成提示和预算完整保存，不把“用户只给初始目标”误解成框架内部没有预先定义的规则。
+
+交互入口：[原生框架实测与时间轴](../../../LLM_Optimization_Milestone/topic1-dag-observation.html#frameworks)。默认看流程，节点展开后才查看逐次完整 messages、工具参数、输出和配置；原始字节另包保存。
+
+## 先回答：什么任务会产生并行Agent请求
+
+联网核查时间为2026-10-29。下面是官方系统用例和研究证据，不是本项目新增实测，也不是“某类任务一定自动委派”的保证。
+
+| 优先级 | 任务与具体目标示例 | 为什么值得使用独立Agent循环 | 限制及来源 |
+|---|---|---|---|
+| 1 | 多对象、跨来源的比较调查：比较几家推理服务的部署、计价、数据策略，给出逐项出处 | 每个对象需要独立检索、核验、调整搜索，再汇合；不同上下文窗口分担资料量 | Anthropic生产Research采用主Agent与并行研究Agent，但提示中明确教委派和复杂度分配；不是纯换大模型就发生。[官方说明](https://www.anthropic.com/engineering/multi-agent-research-system) |
+| 2 | 代码库只读审查：核查鉴权、重试和一致性，输出文件位置及复现依据 | 各方面能独立阅读、推理、验证；局部结果较短，易于交给主Agent | Claude Code提供自动匹配的Explore与通用子Agent。涉及共享文件修改、接口耦合时并行空间会收窄。[官方子Agent文档](https://code.claude.com/docs/en/sub-agents) |
+| 3 | 宽范围筛选与证据核验：找出满足多个条件的机构，为每项条件查证并说明排除原因 | 不同候选各自搜索，后续再去重、交叉核对，实际子任务数量可由发现决定 | Kimi公开Agent Swarm及WideSearch结果；这是对应训练与运行环境下的能力，不能当作下载权重即可复现的保证。[官方说明](https://www.kimi.com/blog/kimi-k2-5.html) |
+
+这些示例初始任务没有指定Agent数、角色或DAG，后续若测试可保留此属性。它们通常比一次读取六十个小文件更有委派动机：**每个分支本身需要多轮决策**。文件多、任务长不是充分条件；输入已经集中到一个小目录、同一Agent几轮就能读完时，开孩子可能只增加开销。相同任务多次独立求解／投票也能产生并行模型请求，但属于应用主动定义的并行，不宜冒充自由委派。[LangGraph官方说明](https://docs.langchain.com/oss/python/langgraph/workflows-agents)同时给出静态parallelization与由模型决定子任务的orchestrator-worker，`Send`只是动态执行能力，不能据代码示例声称模型自然选择了并行。
+
+## 模型大小、训练、Harness各自负责什么
+
+**没有证据支持“27B太小，所以无法多Agent”的结论，也没有通用的参数量门槛。** 多Agent请求是多个Session调用模型，可以共用同一组权重。较弱模型可以作为执行明确局部任务的worker，但作为主Agent判断何时拆分、怎样划边界、如何汇合的质量是另一个问题。
+
+本仓库此前的[官方DSH验收](../evidence/deployment-20261029/acceptance/report.json)已经用同一Qwen27B完成三次原生subagent委派、父八次模型调用、各子三次，共十七次Agent模型调用。因此“工具链和子Agent路径可用”有阳性证据；由于该验收明确要求三个孩子，不能证明自主选择了数量或拆分。本组五个自然任务未委派也不能证明没有能力。Qwen-Agent官方说明支持parallel function calls；那是多工具动作表达能力，并不等同自主子Agent编排。[Qwen-Agent](https://github.com/QwenLM/Qwen-Agent)／[Qwen函数调用说明](https://qwen.readthedocs.io/en/latest/framework/function_call.html)。本地所用[Qwen3.8-27B模型卡](https://huggingface.co/Qwen/Qwen3.8-27B)宣称改进规划、工具反馈与Harness兼容，没有提供仅据这五类任务即可判断的委派率。
+
+训练和系统策略确实重要：Anthropic把“如何划分子任务、复杂度与投入如何匹配”等写入提示；Kimi的PARL专门处理有并行容量却仍退回单Agent的`serial collapse`，并约束徒增孩子但不解决任务的虚假并行。这说明需要评价编排决策，不能把“孩子多”当作质量。官方产品效果也包含其工具、提示和运行环境，尚不能把全部差异归给权重或参数规模。
+
+| 层次 | 应检查的内容 | 当前固定DSH与Qwen的证据 | 能否自动带来孩子 |
+|---|---|---|---|
+| 动作表达 | 模型能输出合法工具调用，解析器能识别 | 实测工具成功；qwen3_xml与auto tool choice启用，实际请求没有parallel_tool_calls字段 | 否；已能输出多个read，不代表会选subagent |
+| 委派能力 | Manager、provider、模型可见工具都挂载 | subagent、subagent_fork、workflow均可见，已有显式验收 | 使调用可执行，不自动调用 |
+| 后台运行与汇合 | 工具返回孩子身份，孩子独立运行，完成通知或caller结果交付 | 官方subagent与workflow已有，不需要重新实现 | 允许生命周期重叠；是否模型请求重叠仍要量时段 |
+| Agent额度 | maxDepth、maxActiveSubagents | 默认1和8，允许直接孩子；没有容量拒绝 | 否；提高未触及的上限不应期待改变委派率 |
+| 工具调度 | AgentLoop.maxParallelToolCalls与每次调用的isConcurrencySafe | 默认上限10；read可并行；edit、write、bash、todo_write互斥 | 只决定已有工具的执行方式 |
+| 系统提示 | 何时使用委派，workflow的使用条件 | coding persona；workflow限明确请求编排；subagent没有因此被禁用 | 影响策略，需要独立对照；不能将workflow限制扩大为禁止全部委派 |
+| 钩子 | 观察、请求派发、生命周期 | 现有事件可记录，agent/request可等待许可 | 基线不需要新增钩子；钩子强制造孩子必须标成策略干预 |
+
+DSH固定版本[委派配置](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md)明确“只挂服务不启用委派”。[工具并行契约](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/.agents/notes/implemented/feature/2026-07-10-parallel-tool-call-execution.md)明确模型响应完成后才调度，互斥调用形成屏障、并行调用使用有界滚动池，结果按模型顺序提交。`parallel_tool_calls`等API字段也不能替代这些Harness执行语义，不能当成所有模型通用的“自动多Agent开关”。
+
+上述消融已在10月30日执行，记录见后文与18组归档；原始无干预基线仍保留。显式固定孩子只做功能阳性对照，不混入自然发生率。跨框架观察同时改变提示、工具面和应用流程，能提供同模型的能力阳性证据，不能独立量化某一句提示的因果贡献。
 
 ## 实际设置与边界
 
@@ -21,13 +146,15 @@
 | CSV数据分析 | 1 | 16 | 18 | 334.70 | 核心金额核对通过 |
 | 故障诊断 | 1 | 5 | 11 | 203.27 | 报告与根因匹配 |
 
+对已有完整`tools/execute`起止时段重新离线核对，工具实际在途峰值依次为 **0、10、5、4、5**。所有模型请求在途峰值仍为1。重叠是Harness wrapper进入至返回的区间相交，不证明CPU/GPU同一时刻计算；本组这些文件/命令工具也不是新的本地模型请求。源码能力与实测区间分别提供依据，不能只因卡片并排就认定并行。
+
 成功案例共41次模型调用、108次工具调用；两次未完成首轮另有7次模型调用、15次工具调用。48个接口响应与原生模型步骤和请求就绪事件一一对应，均HTTP200；成功案例无截断。代码原测试不变且离线7/7通过。CSV核心数字核对通过，但报告有一处价位排序措辞错误，不能把程序完成当作全文完全正确。
 
 ## 怎么读DAG的生成时刻
 
-一次模型请求就绪，只说明下一步推理可以提交；它未来会生成哪些工具仍未知。流式响应中首次出现工具名是意图开始可见；`tool/call`原生日志标志完整调用提交；工具执行开始、结果返回和下一模型请求分别有时间戳。模型说“接下来写报告”尚不是一个可执行写文件节点。todo列表也只是计划数据，不自动变成未来执行图。
+一次模型请求就绪，只说明下一步推理可以提交；它未来会生成哪些工具仍未知。流式响应中首次出现工具名是意图开始可见。**模型完整响应提交后，本轮完整工具列表才可知；`tool/call`原生日志是在Harness逐个准备调度时登记，并不等于整批动作最早变得可知的时刻。** 工具执行开始、结果返回和下一模型请求分别有时间戳。新版网页按模型响应完成时揭示待执行工具，并分别显示Harness登记、执行开始及完成；原始graph/timeline文件保留其原事件字段。模型说“接下来写报告”尚不是可执行写文件节点，todo列表也不自动变成未来执行图。
 
-图保留已验证的执行依赖：模型→本步工具、工具结果→下一次模型。同一步的多个工具共享前驱，不能因日志顺序把它们画成串行链；并排也不代表已经实测同时执行。Agent创建关系与模型/工具依赖分层统计。本组没有跨Session消息，因此无需猜测消息因果边。
+图保留已验证的结果依赖：模型→本步工具、工具结果→下一次模型。同一步的多个工具共享模型前驱，不能仅因日志顺序把它们画成串行链。新版另外用虚线箭头标记固定版本Harness确有的互斥顺序：连续read可以并行，edit/write/bash等形成顺序屏障；这是执行约束，不宣称不同文件之间有数据依赖。大批read默认折叠为有计数的分叉组，展开可见全部调用、箭头及结果。Agent关系、模型请求和工具在途分层统计。本组没有跨Session消息，因此无需猜测消息因果边。
 
 所有时间来自同一服务器进程和原生事件，毫秒级墙钟；同时保存进程单调经过时间。相对时间从提交CLI算起，含启动；不是GPU内核执行时刻或工具意图在模型内部形成的时刻。在线图只表示截至当时已揭示工作，不能从最终图推断模型事先已知道完整DAG。
 
@@ -145,3 +272,79 @@
 - 每包保存输入/输出文件、初始prompt、全部实际API请求/流式响应、原生压缩日志及解码事件、工具参数/结果、观察事件、引擎指标、配置与源码快照。
 - 执行入口：`natural_run.py`、`natural.patch.yml`、`natural-observer.mjs`；离线分析：`natural_analyze.py`；网页索引：`export_natural_site.py`。现有编号不覆盖。
 - 同批只提交一个根任务，场景依次执行；旧性能批次STOP保留。本组已结束，没有自动追加实验。
+
+## dsh-autonomy-v001 · 2026-10-30 · 自主委派条件排查
+
+本轮用同一组六题、多文档输入和官方 DSH 发行版做干净消融。`native` 保留原生 system prompt；`allow` 只把“workflow 仅在用户明确要求时使用”改成一般可用，未增加子 Agent 数或图；`encourage` 再加入“评估独立证据分支是否值得委派”的通用建议，仍不规定数量。三者分别耗时194.76、193.31、198.30秒，均为11次Qwen请求、65次工具调用（bash×3、read×61、write×1），原生会话文件均只有1个。模型自行把六组资料按批次读取并写报告，没有调用`subagent`或`workflow`。单独放宽该条件没有改变本组委派结果，不能排除它与其他提示、工具面的交互。
+
+`medium` 推理强度在完全相同任务上重跑，后端接受的参数为`medium`，结果为193.77秒、11次模型请求、65次工具调用、1个根Session，和 low 没有拓扑变化。一次 `high` 配置在首个请求前被 vLLM 以“只支持 xhigh、medium、low”拒绝，单独保留为后端能力边界，不计入模型行为。简单算术的 `encourage` 负向校准只用1次请求、无工具、无子 Agent，说明通用提示没有无条件制造委派。
+
+为测试任务形态，另建隔离的 `runtime-audit`：只复制 DSH 的 subagent、workflow、tool-workflow、agent-loop 文档及入口源码，要求区分模型提议、Harness 接纳、子执行和结果交付。`native` 232.27秒、8次模型请求、11次工具调用；`encourage` 211.39秒、9次模型请求、11次工具调用；两者仍只有根Session。即使独立模块天然可分，Qwen 也选择在单上下文中读完再总结。
+
+这些结果说明当前 Qwen3.8-27B、low/medium、温度0与 DSH 默认工具描述下，观察到的是“工具级并行、Session 内串行推理”。`maxDepth=1`、`maxActiveSubagents=8` 约束已经发生的委派；本组没有委派尝试或容量拒绝，所以没有证据说明增大未触及的上限能解决问题。文献方面，本轮重新联网核对了 [AFlow](https://arxiv.org/abs/2410.10762)、[ADAS](https://arxiv.org/abs/2408.08435)、[MASS](https://arxiv.org/abs/2502.02533)：分别涉及代码工作流的 MCTS 搜索、元 Agent 编程搜索、提示与拓扑的分阶段优化。它们不能直接证明普通 DSH 单次任务会自由派生子 Agent；工作流的自动设计与一次执行中的在线展开要分开。本轮来源元数据保存在 `results/natural-dag-20261029/frameworks/source-checks.json`。Anthropic 页面本次复查返回403，保留早前来源，未冒称本次重新读取成功。
+
+证据包：[autonomy-20261030摘要](../evidence/autonomy-20261030/summary.json) · [完整原始运行与API](../evidence/autonomy-20261030/raw.tar.gz) · [索引与SHA256](../evidence/autonomy-20261030/index.json)。远端归档位于本人账号 `/home/Liangyijia_Hu/dsh-lab/artifacts/autonomy-20261030-raw.tar.gz`，未修改公共环境。
+
+## dsh-autonomy-v002 · 2026-10-30 · Agent Teams profile 校准
+
+DSH 的实验性 Agent Teams profile 会禁用普通 `subagent`/`subagent_fork`，换成 `spawn_teammate`、任务板、消息和等待工具；这不是默认 profile。用同一六题任务、同一 Qwen27B、未指定成员数的干净运行中，模型先调用一次 `list_agents`，随后仍自行读取全部资料并写报告：约210.08秒、11次模型请求、66次工具调用（含`list_agents`×1），Session 文件仍为1，未调用`spawn_teammate`。因此“别人看到自主 DAG”至少需要模型主动使用这套 Team 工具，profile opt-in 本身也不保证拆分；之前固定要求创建成员的测试只能证明工具链可执行，不能当自然委派率。
+
+Agent Teams 的联网开放调查版本也先调用 `list_agents`，然后进行1次搜索、9次抓取、15次本地 bash 和9次读取；18次模型请求后因单轮输出达到上限退出，耗时425.10秒，仍无 `spawn_teammate`、仍只有根Session。它与普通 profile 的开放调查一样产生了工具级DAG，却没有跨Session委派。
+
+## dsh-autonomy-v003 · 补齐遗漏的运行与归档
+
+核对远端后补齐18组记录，新增的典型对照如下。所有这些运行的原生 Session 文件均为1，工具中没有 `subagent` / `workflow` / `spawn_teammate`。`native` 是原生策略，`autodelegate` 是额外的通用拆分评估建议，未规定工作数量。
+
+| 对照 | 秒 | 模型步 / 工具调用 | 实际结果 |
+|---|---:|---:|---|
+| 同题 xhigh | 239.10 | 12 / 68 | 完成报告；仍单 Session，wire 确认实际 xhigh |
+| 简单问答 xhigh 校准 | 7.53 | 1 / 0 | 正常计算；没有无条件制造子工作 |
+| 四份虚构短资料 native | 71.94 | 4 / 6 | `review.md` 落盘；非DSH四个真实组件 |
+| 四份虚构短资料 autodelegate | 108.52 | 4 / 6 | `review.md` 落盘；拆分建议未改变委派结果 |
+| 运行时架构核对 autodelegate | 281.76 | 9 / 12 | 完成；模型仍自行读取与总结 |
+| 大段源码审查 native | 900.17 | 47 / 49 | watchdog 停止，无审查交付；退出码0不算成功 |
+| 大段源码审查 autodelegate | 893.38 | 44 / 41 | 超过64K上下文，无审查交付 |
+
+三个额外的 **单步 API 探针** 复用归档 DSH system prompt 和工具定义：四资料选择 bash+glob，八资料选择 bash，多角度研究选择两个并列 web_search。它们只生成下一步，不执行工具，所以不当作完整 Harness 运行，也不能把“未在第一步委派”扩展为整个任务永远不会委派。全部请求与响应随新包归档。
+
+归档采用新目录，不覆盖原始包：[18组摘要](../evidence/autonomy-20261030-v002/summary.json)、[完整证据](../evidence/autonomy-20261030-v002/raw.tar.gz)、[哈希索引](../evidence/autonomy-20261030-v002/index.json)。旧11组包的索引原先与实际文件不符，现按原包内容重算大小、SHA256和运行列表，原包字节未改。`multi-object-native` 原始完成文件的 case_id 被旧脚本变量遮蔽写成文件名；原日志保留，派生摘要以目录为准并写明纠正。推理强度也以实际 wire 为准，未改写旧 spec。
+
+## 原图中四类工作的实测边界
+
+ODR 与 GPT Researcher 是可实际运行、能生成研究子工作的应用，本轮使用其原生逻辑接现有 Qwen 服务；它们不必经过 DSH 才算真实多实例执行。GPT Researcher 安装包与固定提交的8份关键源码逐文件 SHA256 一致，ODR 保存固定源码与配置。为隔离拓扑观察、避免外部检索波动，检索来自固定官方源码语料，完整语料也归档；这不评估开放网络资料覆盖或标准 benchmark 准确率。
+
+Coding 原图对应一种候选生成—测试—修复设计，没有一个唯一的官方“Coding Harness”可直接安装。核对 LiveCodeBench 固定提交 `28fef95ea8c9f7a547c8329f2cd3d32b92c1fa24`，其 runner 的多进程和 `n` 是样本执行，不能算自主创建子 Agent。已有 DSH 编程任务可展示真实的读取、测试失败、修改和复测轨迹，但不能贴成原图多 Writer 的实测结果。
+
+CRAG 固定提交 `de7c2961ae624a1483a138c5798e1f6d0c4fb0e0` 中的 `process_flag` 根据每组文档分数选 flag：任何高置信文档→Correct，否则有中间分数→Ambiguous，否则→Incorrect；主函数据此选择预备的内部、合并或外部知识。已原样执行该函数，三组人工边界分数得到2、1、0。未安装原训练评估器或冒充完整生成复现，未伪造并行 Agent。源码函数、哈希和边界记录见 [boundary-audit.json](../results/natural-dag-20261029/frameworks/boundary-audit.json)。
+
+## 原生研究结果、关键时间戳与失败边界
+
+| 运行 | 子研究单元 / 实例 | 实际模型请求 | 模型请求在途峰值 | 秒 | 交付核对 |
+|---|---:|---:|---:|---:|---|
+| ODR v007，明确资料可通过工具取得 | 3 | 18 | 3 | 323.10 | 16次实际源码检索，最终stop；完整报告4293字符，仍有事实错误需纠正 |
+| ODR v006，资料获取语义含糊 | 0 | 4 | 1 | 65.93 | 最终stop，但要求用户补材料，未完成审查 |
+| ODR v005，宽泛比较任务 | 3 | 21 | 3 | 621.93 | 子研究和压缩完成，最终报告length截断 |
+| GPT Researcher v005 | 6，另有根实例1个 | 23 | 2 | 407.99 | 23次均stop，最终报告16212字符；内容另作人工核对 |
+
+这些任务和配置有差异，耗时不是框架排名。ODR 保留原生采样默认值；GPT Researcher 请求显式temperature=0。均使用相同Qwen服务，但不能声称完整提示和采样条件相同。这里比较生成与执行机制，不做单变量性能归因。
+
+**ODR v007 的实际展开：** 第一次接口请求在+1.078秒开始。+53.135秒主管响应完成，提出三个真实 `ConductResearch` 主题；+53.172秒左右，三个独立研究子图已启动。它们分别到+230.520、+216.615、+173.394秒结束；每个单元各4次模型请求，内部包含研究循环与压缩，不计成12个Agent。主管在+230.548秒重新请求模型，最终报告到+323.055秒返回，进程到+323.102秒完成。查询与分支是在线生成的，没有复用旧图或指定三个工作者。
+
+**GPT Researcher v005 的实际展开：** 第一层查询生成在+37.229秒结束，两个实例于+37.233/+37.234秒创建；含结果提炼的两路分支分别到+104.763/+120.605秒完成。随后才生成第一棵后续子树的查询，+131.753/+131.757秒再创建两实例；该批到+198.178秒汇合。第二棵后续子树于+209.768/+209.773秒创建两实例，到+284.841秒汇合，最终报告请求从+284.864秒持续到+407.710秒。`conduct_research` 对象方法可能更早返回，图中分支区间还包含原生 `process_research_results`；原方法结束时间另存，不混淆计时口径。
+
+这6个实例不是模型自由决定的数量：本次breadth2、depth2，原生代码对第一层两条成功结果分别递归，且 `new_breadth=max(2,breadth//2)`，所以实际为 `2 + 2×2 = 6`。后续查询内容依赖researchGoal与followUpQuestions，未在任务开始时列出。程序按for-result顺序展开两棵子树，还传递累计发现和共享来源状态；不能未经语义核对就把for循环直接改成gather，声称可以无代价并行。
+
+**ODR v006 为何不委派：** 主管调用think_tool后直接ResearchComplete，最终报告称审查还在等待用户提供源码片段。资料实际已载入MCP，但工具只对研究员开放，任务里的“supplied excerpts”被主管当成缺失的用户输入。v007在同一窄任务中明确“资料已在source_search中，研究员可检索，无需用户贴文件”，未要求创建Agent或指定数量，随后真实出现三个研究单元。这提供了工具能力说明与任务语义影响委派的对照观察；单次且保留原生采样，不能估计稳定触发率。
+
+**完整流程不等于答案正确。** ODR v007报告把GPT总工作量写成 `breadth+breadth/2+…`，遗漏了每个成功父结果都继续展开及最小广度2，已按上述实测纠正。GPT v005报告把ODR超限分支称为“静默丢弃”，而原代码会回错误ToolMessage；把“实例只是递归函数、完整图初始化即确定”当作概括也过强。原文保留，页面结论依据源码与事件，不采用模型自述作真值。
+
+固定检索器会给不同查询返回同一组四份来源，48条research_sources记录不等于48个独立来源。这一设置便于审计，也放大了重复上下文：GPT v003累计313053字符并触发64K失败；v004换片段后仍报告截断；v005补齐关键代码并采用8192输出预算后完整结束。不能据此直接声称真实联网研究总有同等程度的重复或溢出。ODR宽任务同样两次最终截断，说明仅增额度不等于控制汇总范围。
+
+证据集中在 [12轮原生运行总包](../evidence/upstream-workflows-20261030-v003/raw.tar.gz)、[索引与哈希](../evidence/upstream-workflows-20261030-v003/index.json)、[网页数据索引](../results/natural-dag-20261029/frameworks/index.json)。包中含原生事件、完整API请求和响应、各次初始任务、配置、语料、产物、失败、关键源码及依赖版本。页面默认展示v007完整ODR；零委派和截断对照单独切换，不再散建HTML。
+
+## 对 Topic1 只保留的两个后续观察边界
+
+1. **已提出的研究分支怎样推进到汇合。** ODR有明确的“主管提出—子研究—压缩—汇合—报告”边界。先保持必做工作及完成标准，观察多个工作流共享引擎时，长分支、将解除汇合的请求、已就绪的主管/报告请求是否被新展开工作挤占。可能动作是挑选哪个合法请求先推进、何时启动已知分支；与只按输入长短限并发的区别，是使用依赖与汇合状态。还必须与同信息的后端策略、普通背压和固定并发对照。
+2. **下一层是否还应展开，及汇总需要多少上下文。** GPT提供真实的证据返回→后续查询边界，但展开同时改变总工作量、质量与上下文。应先验证新增证据、去重与状态依赖，再研究在引擎压力下延后扩展、压缩或结束的可行动作。减少分支本身不算创新；不能把压缩器、Session容量或原生递归重新包装成贡献。
+
+本轮完成的是自主DAG产生条件与真实轨迹观察：没有部署新的引擎压力反馈优化器，也没有证明延迟或吞吐收益。API在途峰值表示接口生命周期重叠，不等于GPU内核并行，更不代替KV、队列等后端压力测量。后续性能实验需要单独采集这些量，不能从本轮流程图倒推出收益。

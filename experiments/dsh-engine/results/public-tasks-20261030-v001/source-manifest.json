@@ -1,0 +1,42 @@
+{
+  "batch": "public-tasks-20261030-v001",
+  "raw_archive_sha256": "7bf494c738d92451eb84c9f0cc1059e86e6b7a0110bdc7eba91e20d7bc8828f8",
+  "note": "Derived checksums of immutable archived source files; LCB is a 1 MiB prefix, not the complete release.",
+  "files": [
+    {
+      "archive_member": "public-tasks-20261030-v001/source-reference/datasets/drb-original.jsonl",
+      "bytes": 38080,
+      "sha256": "62b197a264a027fd4e2e795ff322a82dd6d566f5e350596ccc7572539ec987d1"
+    },
+    {
+      "archive_member": "public-tasks-20261030-v001/source-reference/datasets/drb-source.json",
+      "bytes": 346,
+      "sha256": "18383b413f6e0b885367edfec25b7214e0619ecf49fc93329ea3f40a32b698d9"
+    },
+    {
+      "archive_member": "public-tasks-20261030-v001/source-reference/datasets/lcb-prefix.bin",
+      "bytes": 1048576,
+      "sha256": "d436792aab6087f6044c7b0cc85813f4f08e1f73f231c43d06dddc7ed0407d71"
+    },
+    {
+      "archive_member": "public-tasks-20261030-v001/source-reference/datasets/lcb-source.json",
+      "bytes": 289,
+      "sha256": "962618b4dc56c53ecb8272ff9df3ea1a41fa3d65835599c263c169b9aa77d912"
+    },
+    {
+      "archive_member": "public-tasks-20261030-v001/source-reference/datasets/popqa-original.tsv",
+      "bytes": 5205200,
+      "sha256": "9a5227f41bff0e4c331d4a774d946b12f95307892b58f860a9606ef356e6089b"
+    },
+    {
+      "archive_member": "public-tasks-20261030-v001/source-reference/dsh-tool-web.js",
+      "bytes": 34229,
+      "sha256": "a8313d4e02c751f79d0f91dceb8dfcaa29e7c7a0299ab0d7f8db65471217b0c8"
+    },
+    {
+      "archive_member": "public-tasks-20261030-v001/source-reference/manifest.json",
+      "bytes": 226,
+      "sha256": "3825fbe4e2909adc18902c1453192ac89dff27cf2bec847a4925164fce56ceba"
+    }
+  ]
+}

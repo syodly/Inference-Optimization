@@ -1,0 +1,27 @@
+
+
+All 300 random brute-force checks pass, and all three samples match. The solution is complete.
+
+## Solution
+
+**Approach:** Count snake numbers ≤ N via digit counting, then answer = `f(R) − f(L−1)`.
+
+For a number of length `d` with leading digit `a` (1–9), every other digit must be in `0..a−1`, giving `a^(d−1)` choices.
+
+`count_leq(N)`:
+1. **Shorter lengths** (`2..d−1`): sum of `a^(len−1)` for `a = 1..9`.
+2. **Same length, smaller leading digit** `a < n₁`: add `a^(d−1)` each.
+3. **Same length, equal leading digit** `a = n₁`: walk the remaining digits left to right. At position `i` with digit `nᵢ`:
+   - if `nᵢ > a−1`: all `a` choices are smaller → add `a^(d−i)` and stop;
+   - else: add `nᵢ · a^(d−1−i)` (choices `0..nᵢ−1`) and continue;
+   - if we reach the end, N itself qualifies → add 1.
+
+Complexity is O(d²) with `d ≤ 19` — instant.
+
+**Verification:**
+- Sample 1: `97 210` → **6** ✓
+- Sample 2: `1000 9999` → **2025** ✓
+- Sample 3: `252509054433933519 760713016476190692` → **221852052834757** ✓
+- 300 random ranges cross-checked against brute force: all match.
+
+The solution file is at `snake.py` in the workspace.

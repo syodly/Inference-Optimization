@@ -1,0 +1,38 @@
+{
+  "case_id": "drb-19",
+  "category": "research",
+  "dataset": "DeepResearchBench",
+  "dataset_task_id": 19,
+  "initial_task": "prometheus 的高流失率会造成什么影响，有什么系统的方案可以解决？各家云厂商有没有现有方案？",
+  "original_question": "prometheus 的高流失率会造成什么影响，有什么系统的方案可以解决？各家云厂商有没有现有方案？",
+  "task_origin": "official dataset original, unmodified",
+  "dataset_source": {
+    "dataset": "DeepResearchBench",
+    "revision": "f2735b5c3636759c22f9e936c0232de8bf545b67",
+    "url": "https://raw.githubusercontent.com/Ayanami0730/deep_research_bench/f2735b5c3636759c22f9e936c0232de8bf545b67/data/prompt_data/query.jsonl",
+    "sha256": "62b197a264a027fd4e2e795ff322a82dd6d566f5e350596ccc7572539ec987d1",
+    "count": 100
+  },
+  "selection_reason": "Two illustrative tasks: systems research and multi-product market research; not representative sampling.",
+  "workflow_reference": [
+    "ODR",
+    "GPT Researcher"
+  ],
+  "executed_harness": "official DSH",
+  "input_files": {
+    "task.json": "{\n  \"id\": 19,\n  \"topic\": \"Software Development\",\n  \"language\": \"zh\",\n  \"prompt\": \"prometheus 的高流失率会造成什么影响，有什么系统的方案可以解决？各家云厂商有没有现有方案？\"\n}"
+  },
+  "input_sha256": {
+    "task.json": "6a9d1cfd0d3e32cb86e3dd8e73b8f150a6eba5c170bd20b99a17ff883bd9028e"
+  },
+  "workspace": "/home/Liangyijia_Hu/dsh-public-task-workspaces/public-tasks-20261030-v001/drb-19",
+  "max_output_tokens": 8192,
+  "model": "Qwen3.8-27B",
+  "reasoning_effort": "low",
+  "temperature": 0,
+  "source_commit": "687f282e8625c6b8d11ff58211a90524be2e4317",
+  "agent_count_prescribed": false,
+  "graph_prescribed": false,
+  "policy": "native",
+  "watchdog_seconds": 900
+}

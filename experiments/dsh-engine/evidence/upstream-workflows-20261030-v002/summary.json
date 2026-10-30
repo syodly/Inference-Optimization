@@ -1,0 +1,3049 @@
+{
+  "runs": [
+    {
+      "case_id": "gptr-qwen-v002-20261030",
+      "completion": {
+        "run_id": "gptr-qwen-v002-20261030",
+        "started_wall_time": 1793329203.999613,
+        "started_utc": "2026-10-30T03:00:03.999613+00:00",
+        "status": "running",
+        "finished_wall_time": 1793329502.9559982,
+        "derived_status": "interrupted_embedding_404"
+      },
+      "wire_requests": 19
+    },
+    {
+      "case_id": "gptr-qwen-v003-20261030",
+      "completion": {
+        "run_id": "gptr-qwen-v003-20261030",
+        "started_wall_time": 1793329502.9559982,
+        "started_utc": "2026-10-30T03:05:02.955998+00:00",
+        "status": "success",
+        "context_chars": 313053,
+        "report_chars": 0,
+        "research_sources": 48,
+        "visited_urls": 0,
+        "finished_wall_time": 1793330037.8202338,
+        "finished_utc": "2026-10-30T03:13:57.820234+00:00",
+        "duration_seconds": 534.8642356395721,
+        "researcher_instances": 6,
+        "peak_active_researchers": 2,
+        "retriever_calls": 19,
+        "events": [
+          {
+            "event": "gather_started",
+            "wall_time": 1793329504.050467,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329530.3971076,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329530.3971868,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329530.397274,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329530.3987896,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329540.297751,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329540.2977848,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329540.2978745,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329540.2981267,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793329540.2987247,
+            "query": "Open Deep Research supervisor loop ConductResearch sequential dependency GPT Researcher recursive depth tree aggregation DeepSeek Harness maxActiveSubagents settlement semantics orchestration mechanism source code",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_f0527b2b6e4b"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793329540.298735,
+            "query": "Open Deep Research supervisor loop ConductResearch sequential dependency GPT Researcher recursive depth tree aggregation DeepSeek Harness maxActiveSubagents settlement semantics orchestration mechanism source code",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329540.2999496,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793329540.3003967,
+            "query": "dynamic agent DAG vs static pipeline vs fixed tree classification criteria LLM research agent execution graph runtime conditional edges data-dependent routing evidence from source code",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_907ab932a41c"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793329540.3004045,
+            "query": "dynamic agent DAG vs static pipeline vs fixed tree classification criteria LLM research agent execution graph runtime conditional edges data-dependent routing evidence from source code",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329540.3013935,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329555.0393698,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329555.0394397,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329555.0396464,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329555.061554,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329571.1407743,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329571.1408527,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329571.1410367,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329571.1440933,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329571.1691074,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329571.169126,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329571.2141058,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329571.21412,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329571.2152522,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793329571.2157884,
+            "query": "Open Deep Research supervisor loop ConductResearch sequential dependency GPT Researcher recursive depth tree aggregation DeepSeek Harness maxActiveSubagents settlement semantics orchestration mechanism source code",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329571.2185633,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329599.7214992,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329599.7215552,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329599.7217069,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329599.7476556,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329616.032414,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329616.0325084,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329616.0326965,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329616.0358627,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329616.064925,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329616.06494,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329616.1075885,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329616.1076024,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329616.108776,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793329616.1093035,
+            "query": "dynamic agent DAG vs static pipeline vs fixed tree classification criteria LLM research agent execution graph runtime conditional edges data-dependent routing evidence from source code",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329616.1121702,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329638.2360017,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329638.2361045,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329638.2363224,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329674.096714,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329674.0968077,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329674.0970056,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329674.1016743,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329674.1044636,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329684.1476045,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329684.1476796,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329684.1478531,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329684.1481643,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793329684.1493547,
+            "query": "LangGraph AutoGen CrewAI source code parallel execution fan-out fan-in join mechanism implementation concurrency control",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_81e8f7a8a27e"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793329684.1493723,
+            "query": "LangGraph AutoGen CrewAI source code parallel execution fan-out fan-in join mechanism implementation concurrency control",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329684.1520379,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793329684.1530607,
+            "query": "agent orchestration framework conditional edges dynamic node instantiation data-dependent routing production code vs design proposal",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_9208d247850c"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793329684.1530766,
+            "query": "agent orchestration framework conditional edges dynamic node instantiation data-dependent routing production code vs design proposal",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329684.155495,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329693.5024042,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329693.5024922,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329693.502675,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329693.5209854,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329707.7384825,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329707.7385595,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329707.7387378,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329707.74184,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329707.7636917,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329707.7637,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329707.8068023,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329707.8068154,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329707.8079655,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793329707.808795,
+            "query": "agent orchestration framework conditional edges dynamic node instantiation data-dependent routing production code vs design proposal",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329707.8116567,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329743.128486,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329743.128583,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329743.128791,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329743.1839032,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329758.9887114,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329758.9888082,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329758.9890375,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329758.9916244,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329759.0134277,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329759.013442,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329759.0573897,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329759.0574017,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329759.0584416,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793329759.0590198,
+            "query": "LangGraph AutoGen CrewAI source code parallel execution fan-out fan-in join mechanism implementation concurrency control",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329759.0618372,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329774.6574912,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329774.657558,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329774.6577137,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329816.6563087,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329816.6563947,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329816.6565921,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329816.6588426,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329816.668753,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329826.616978,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329826.6170552,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329826.617237,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329826.617598,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793329826.6187108,
+            "query": "source code structural indicators dynamic DAG vs static pipeline runtime node creation conditional edge generation agent orchestration",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_c01829c20692"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793329826.6187284,
+            "query": "source code structural indicators dynamic DAG vs static pipeline runtime node creation conditional edge generation agent orchestration",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329826.621344,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793329826.6223168,
+            "query": "empirical verification agent DAG implementation runtime graph topology mutation vs documented architecture LLM agent orchestration frameworks",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_1efc53285510"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793329826.622334,
+            "query": "empirical verification agent DAG implementation runtime graph topology mutation vs documented architecture LLM agent orchestration frameworks",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329826.6246006,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329834.9658914,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329834.9659636,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329834.966144,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329834.9860313,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329843.0174043,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329843.0174992,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329843.0176792,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329843.0349844,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329847.989016,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329847.9890897,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329847.9892821,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329847.9922402,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329848.0149794,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329848.0149925,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329848.0594854,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329848.0594995,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329848.0608091,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793329848.0618002,
+            "query": "source code structural indicators dynamic DAG vs static pipeline runtime node creation conditional edge generation agent orchestration",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329848.064871,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329862.5944173,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329862.594496,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329862.5946512,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329862.5968416,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329862.6308935,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329862.6309056,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329862.6746864,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329862.6746984,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329862.6755393,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793329862.675781,
+            "query": "empirical verification agent DAG implementation runtime graph topology mutation vs documented architecture LLM agent orchestration frameworks",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329862.6785514,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329912.140979,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329912.141048,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329912.1412125,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329921.8010507,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793329921.8011248,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329921.8012948,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793329921.8038137,
+            "awaitable_count": 2
+          }
+        ],
+        "retrievals": [
+          {
+            "wall_time": 1793329502.9748228,
+            "query": "Compare the actual orchestration mechanisms in Open Deep Research, GPT Researcher, and DeepSeek Harness. Explain how a request becomes independent research work, which layer creates each child execution, how parallel work is bounded and joined, how later work depends on earlier findings, and what evidence is needed to call the result a dynamic agent DAG. Cite the supplied source paths and keep framework facts separate from design proposals.",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329555.052163,
+            "query": "Open Deep Research supervisor loop ConductResearch sequential dependency GPT Researcher recursive depth tree aggregation DeepSeek Harness maxActiveSubagents settlement semantics orchestration mechanism source code",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793329571.1569278,
+            "query": "Open Deep Research supervisor loop ConductResearch sequential dependency GPT Researcher recursive depth tree aggregation DeepSeek Harness maxActiveSubagents settlement semantics orchestration mechanism source code",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793329571.163828,
+            "query": "multi-agent deep research orchestration supervisor delegation recursive depth tree aggregation subagent capacity and settlement semantics",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329599.739688,
+            "query": "dynamic agent DAG vs static pipeline vs fixed tree classification criteria LLM research agent execution graph runtime conditional edges data-dependent routing evidence from source code",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329616.0470824,
+            "query": "LLM agent orchestration architecture classification dynamic graph vs static pipeline vs fixed tree runtime data-dependent routing LangGraph",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py"
+            ]
+          },
+          {
+            "wall_time": 1793329616.056724,
+            "query": "dynamic agent DAG vs static pipeline vs fixed tree classification criteria LLM research agent execution graph runtime conditional edges data-dependent routing evidence from source code",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329693.5114992,
+            "query": "agent orchestration framework conditional edges dynamic node instantiation data-dependent routing production code vs design proposal",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py"
+            ]
+          },
+          {
+            "wall_time": 1793329707.7522953,
+            "query": "agent orchestration framework conditional edges dynamic node instantiation data-dependent routing production code vs design proposal",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py"
+            ]
+          },
+          {
+            "wall_time": 1793329707.7589445,
+            "query": "agent orchestration framework conditional edges dynamic node instantiation data-dependent routing production implementation",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py"
+            ]
+          },
+          {
+            "wall_time": 1793329743.1755207,
+            "query": "LangGraph AutoGen CrewAI source code parallel execution fan-out fan-in join mechanism implementation concurrency control",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329759.003528,
+            "query": "LangGraph AutoGen CrewAI how parallel tasks are executed with asyncio gather and semaphore concurrency control in source code",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329759.0112758,
+            "query": "LangGraph AutoGen CrewAI source code parallel execution fan-out fan-in join mechanism implementation concurrency control",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329834.976922,
+            "query": "source code structural indicators dynamic DAG vs static pipeline runtime node creation conditional edge generation agent orchestration",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329843.0261524,
+            "query": "empirical verification agent DAG implementation runtime graph topology mutation vs documented architecture LLM agent orchestration frameworks",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py"
+            ]
+          },
+          {
+            "wall_time": 1793329848.004601,
+            "query": "how to identify dynamic DAG construction versus static pipeline patterns in agent orchestration source code with runtime node creation and conditional edge routing",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329848.010859,
+            "query": "source code structural indicators dynamic DAG vs static pipeline runtime node creation conditional edge generation agent orchestration",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329862.6192577,
+            "query": "empirical comparison of runtime execution graph topology versus documented static architecture in LLM multi-agent orchestration frameworks",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793329862.6265574,
+            "query": "empirical verification agent DAG implementation runtime graph topology mutation vs documented architecture LLM agent orchestration frameworks",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py"
+            ]
+          }
+        ]
+      },
+      "wire_requests": 42
+    },
+    {
+      "case_id": "gptr-qwen-v004-20261030",
+      "completion": {
+        "run_id": "gptr-qwen-v004-20261030",
+        "started_wall_time": 1793330152.5335913,
+        "started_utc": "2026-10-30T03:15:52.533591+00:00",
+        "status": "success",
+        "context_chars": 144506,
+        "report_chars": 7859,
+        "research_sources": 48,
+        "visited_urls": 0,
+        "finished_wall_time": 1793330646.2829084,
+        "finished_utc": "2026-10-30T03:24:06.282908+00:00",
+        "duration_seconds": 493.74931716918945,
+        "researcher_instances": 6,
+        "peak_active_researchers": 2,
+        "retriever_calls": 19,
+        "events": [
+          {
+            "event": "gather_started",
+            "wall_time": 1793330153.6122837,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330176.8200722,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330176.820307,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330176.8204882,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330176.8222127,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330187.515797,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330187.5160434,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330187.5162537,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330187.5166564,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793330187.5175295,
+            "query": "Open Deep Research max_researcher_iterations supervisor loop conditional ConductResearch tool-call generation based on compressed_research results dynamic DAG vs static fan-out code evidence",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_10826626fc9f"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793330187.517661,
+            "query": "Open Deep Research max_researcher_iterations supervisor loop conditional ConductResearch tool-call generation based on compressed_research results dynamic DAG vs static fan-out code evidence",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330187.5192215,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793330187.519886,
+            "query": "GPT Researcher serp_queries upfront generation single-pass breadth-then-depth model vs DeepSeek Harness maxDepth maxActiveSubagents activation tree concurrency boundary interaction DAG topology",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_3236dee36d1e"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793330187.519999,
+            "query": "GPT Researcher serp_queries upfront generation single-pass breadth-then-depth model vs DeepSeek Harness maxDepth maxActiveSubagents activation tree concurrency boundary interaction DAG topology",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330187.5212264,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330257.753847,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330257.7543101,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330257.754772,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330257.77984,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330266.28001,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330266.2804878,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330266.2809165,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330266.2820423,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330266.2957256,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330266.2960083,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330266.3401773,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330266.3404007,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330266.341286,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793330266.341652,
+            "query": "GPT Researcher serp_queries upfront generation single-pass breadth-then-depth model vs DeepSeek Harness maxDepth maxActiveSubagents activation tree concurrency boundary interaction DAG topology",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330266.3440735,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330288.5512965,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330288.5517805,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330288.5522106,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330288.6210203,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330301.653091,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330301.6533847,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330301.6537168,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330301.654522,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330301.6641502,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330301.665747,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330301.6985188,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330301.6987126,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330301.6994634,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793330301.699823,
+            "query": "Open Deep Research max_researcher_iterations supervisor loop conditional ConductResearch tool-call generation based on compressed_research results dynamic DAG vs static fan-out code evidence",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330301.702213,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330317.4141424,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330317.4145973,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330317.4150083,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330346.0672836,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330346.0677612,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330346.0681899,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330346.069854,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330346.0729892,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330357.3112752,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330357.3117352,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330357.3121378,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330357.3126493,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793330357.3140073,
+            "query": "Open Deep Research supervisor compressed_research output schema termination condition max_researcher_iterations early exit",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_ac578e326f47"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793330357.3142433,
+            "query": "Open Deep Research supervisor compressed_research output schema termination condition max_researcher_iterations early exit",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330357.3171618,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793330357.3184144,
+            "query": "Open Deep Research supervisor iterative reflection loop drill-down re-query sub-researcher results conditional re-entry dynamic DAG",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_9adc32a1fe22"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793330357.3186514,
+            "query": "Open Deep Research supervisor iterative reflection loop drill-down re-query sub-researcher results conditional re-entry dynamic DAG",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330357.3210793,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330368.7481542,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330368.7485607,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330368.7489498,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330368.761251,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330368.840793,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330368.8411396,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330368.8415368,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330368.8508518,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330377.798145,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330377.7985377,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330377.7989256,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330377.7999172,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330377.81294,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330377.813786,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330377.8569818,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330377.8571877,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330377.8579679,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793330377.8582904,
+            "query": "Open Deep Research supervisor compressed_research output schema termination condition max_researcher_iterations early exit",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330377.8605084,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330381.6300073,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330381.6303394,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330381.6306963,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330381.631573,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330381.6468904,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330381.6471066,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330381.6901197,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330381.690324,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330381.6910715,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793330381.6913757,
+            "query": "Open Deep Research supervisor iterative reflection loop drill-down re-query sub-researcher results conditional re-entry dynamic DAG",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330381.6934996,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330420.83393,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330420.8342805,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330420.8346393,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330439.86881,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330439.8691933,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330439.869586,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330439.8711622,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330439.8751404,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330451.784991,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330451.7853713,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330451.785901,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330451.7865686,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793330451.7879333,
+            "query": "GPT Researcher single-pass breadth-then-depth architecture limitations recursive exploration quality degradation vs multi-depth recursive research trees maxDepth",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_714b58f05c2c"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793330451.7881668,
+            "query": "GPT Researcher single-pass breadth-then-depth architecture limitations recursive exploration quality degradation vs multi-depth recursive research trees maxDepth",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330451.7908776,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793330451.7920628,
+            "query": "reservation-before-execution slot allocation vs semaphore concurrency control tail latency throughput high contention agent orchestration DAG persistent sub-agent multi-turn dialogue",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_35867090321e"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793330451.7922676,
+            "query": "reservation-before-execution slot allocation vs semaphore concurrency control tail latency throughput high contention agent orchestration DAG persistent sub-agent multi-turn dialogue",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330451.7947087,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330461.7938752,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330461.7942595,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330461.7946417,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330461.8058536,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330466.390346,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330466.3907325,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330466.391108,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330466.4018903,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330472.7371666,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330472.737615,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330472.738022,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330472.7390764,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330472.7512357,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330472.7521574,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330472.795259,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330472.7954812,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330472.7962391,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793330472.79657,
+            "query": "GPT Researcher single-pass breadth-then-depth architecture limitations recursive exploration quality degradation vs multi-depth recursive research trees maxDepth",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330472.7987375,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330479.075857,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330479.0762901,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330479.0767102,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330479.0777311,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330479.107586,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330479.1078463,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330479.1502979,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330479.150522,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330479.1512456,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793330479.1515467,
+            "query": "reservation-before-execution slot allocation vs semaphore concurrency control tail latency throughput high contention agent orchestration DAG persistent sub-agent multi-turn dialogue",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330479.1537695,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330532.2119706,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330532.2123234,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330532.2126756,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330534.6293707,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793330534.629751,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330534.6301143,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793330534.6316712,
+            "awaitable_count": 2
+          }
+        ],
+        "retrievals": [
+          {
+            "wall_time": 1793330152.5394633,
+            "query": "Compare the actual orchestration mechanisms in Open Deep Research, GPT Researcher, and DeepSeek Harness. Explain how a request becomes independent research work, which layer creates each child execution, how parallel work is bounded and joined, how later work depends on earlier findings, and what evidence is needed to call the result a dynamic agent DAG. Cite the supplied source paths and keep framework facts separate from design proposals.",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793330257.774066,
+            "query": "GPT Researcher serp_queries upfront generation single-pass breadth-then-depth model vs DeepSeek Harness maxDepth maxActiveSubagents activation tree concurrency boundary interaction DAG topology",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py"
+            ]
+          },
+          {
+            "wall_time": 1793330266.289645,
+            "query": "comparison of flat upfront query generation versus hierarchical subagent activation tree architecture in AI deep research agents with concurrency and depth limits",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793330266.2925036,
+            "query": "GPT Researcher serp_queries upfront generation single-pass breadth-then-depth model vs DeepSeek Harness maxDepth maxActiveSubagents activation tree concurrency boundary interaction DAG topology",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py"
+            ]
+          },
+          {
+            "wall_time": 1793330288.6166344,
+            "query": "Open Deep Research max_researcher_iterations supervisor loop conditional ConductResearch tool-call generation based on compressed_research results dynamic DAG vs static fan-out code evidence",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330301.660688,
+            "query": "open_deep_research langchain supervisor loop ConductResearch tool calls parallel execution dynamic dependency between iterations compressed_research",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py"
+            ]
+          },
+          {
+            "wall_time": 1793330301.662783,
+            "query": "Open Deep Research max_researcher_iterations supervisor loop conditional ConductResearch tool-call generation based on compressed_research results dynamic DAG vs static fan-out code evidence",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330368.7552598,
+            "query": "Open Deep Research supervisor iterative reflection loop drill-down re-query sub-researcher results conditional re-entry dynamic DAG",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330368.8460197,
+            "query": "Open Deep Research supervisor compressed_research output schema termination condition max_researcher_iterations early exit",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330377.8077598,
+            "query": "Open Deep Research supervisor compressed_research output schema termination condition max_researcher_iterations early exit",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330377.8104384,
+            "query": "langchain open_deep_research supervisor loop termination max_researcher_iterations compressed_research output schema early exit condition",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330381.6399372,
+            "query": "how does the Open Deep Research supervisor iterative reflection loop conditionally re-enter and drill down into sub-researcher results to form a dynamic DAG",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330381.6437314,
+            "query": "Open Deep Research supervisor iterative reflection loop drill-down re-query sub-researcher results conditional re-entry dynamic DAG",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330461.800805,
+            "query": "GPT Researcher single-pass breadth-then-depth architecture limitations recursive exploration quality degradation vs multi-depth recursive research trees maxDepth",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330466.3966293,
+            "query": "reservation-before-execution slot allocation vs semaphore concurrency control tail latency throughput high contention agent orchestration DAG persistent sub-agent multi-turn dialogue",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py"
+            ]
+          },
+          {
+            "wall_time": 1793330472.7468178,
+            "query": "recursive research agent architecture depth limit quality degradation single pass breadth first vs multi level recursive tree maxDepth",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793330472.7490442,
+            "query": "GPT Researcher single-pass breadth-then-depth architecture limitations recursive exploration quality degradation vs multi-depth recursive research trees maxDepth",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330479.0972278,
+            "query": "comparing reservation-based slot allocation and semaphore concurrency control for tail latency and throughput in high-contention multi-agent orchestration with persistent sub-agents",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md"
+            ]
+          },
+          {
+            "wall_time": 1793330479.0990965,
+            "query": "reservation-before-execution slot allocation vs semaphore concurrency control tail latency throughput high contention agent orchestration DAG persistent sub-agent multi-turn dialogue",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py"
+            ]
+          }
+        ]
+      },
+      "wire_requests": 23
+    },
+    {
+      "case_id": "gptr-qwen-v005-20261030",
+      "completion": {
+        "run_id": "gptr-qwen-v005-20261030",
+        "started_wall_time": 1793331329.634313,
+        "started_utc": "2026-10-30T03:35:29.634313+00:00",
+        "status": "success",
+        "context_chars": 107336,
+        "report_chars": 16212,
+        "research_sources": 48,
+        "visited_urls": 0,
+        "finished_wall_time": 1793331737.6229503,
+        "finished_utc": "2026-10-30T03:42:17.622950+00:00",
+        "duration_seconds": 407.9886372089386,
+        "researcher_instances": 6,
+        "peak_active_researchers": 2,
+        "retriever_calls": 19,
+        "events": [
+          {
+            "event": "gather_started",
+            "wall_time": 1793331330.7116077,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331355.2533116,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331355.2535245,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331355.253686,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331355.2552075,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331366.8655176,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331366.8657093,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331366.8658834,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331366.8662047,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793331366.8668902,
+            "query": "GPT Researcher deep_research.py recursive followUpQuestions data-dependent fan-out vs static tree breadth halving dynamic DAG evidence",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_02a1652e6324"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793331366.8669968,
+            "query": "GPT Researcher deep_research.py recursive followUpQuestions data-dependent fan-out vs static tree breadth halving dynamic DAG evidence",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331366.868251,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793331366.8687956,
+            "query": "Open Deep Research Research Supervisor max_researcher_iterations tool_call dynamic fan-out vs DeepSeek Harness maxActiveSubagents capacity reservation bounded parallel join DAG scheduler semantics",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_3c16d71dd643"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793331366.8688905,
+            "query": "Open Deep Research Research Supervisor max_researcher_iterations tool_call dynamic fan-out vs DeepSeek Harness maxActiveSubagents capacity reservation bounded parallel join DAG scheduler semantics",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331366.8699446,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331375.6914768,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331375.6918619,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331375.692234,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331375.7037187,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331376.6282883,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331376.6286666,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331376.6290405,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331376.6378932,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331385.069901,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331385.0702875,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331385.070682,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331385.0716436,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331385.0841203,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331385.0849564,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331385.128714,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331385.1289313,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331385.1297574,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793331385.1301124,
+            "query": "Open Deep Research Research Supervisor max_researcher_iterations tool_call dynamic fan-out vs DeepSeek Harness maxActiveSubagents capacity reservation bounded parallel join DAG scheduler semantics",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331385.1322901,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331387.650141,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331387.6505008,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331387.6508355,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331387.6516988,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331387.6631334,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331387.6633425,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331387.7029302,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331387.7031455,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331387.7039585,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793331387.7042882,
+            "query": "GPT Researcher deep_research.py recursive followUpQuestions data-dependent fan-out vs static tree breadth halving dynamic DAG evidence",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331387.7064314,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331434.401306,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331434.4016447,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331434.4019558,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331450.243146,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331450.2435405,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331450.2439258,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331450.2456558,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331450.2485666,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331461.3849344,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331461.3853195,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331461.3857067,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331461.3861823,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793331461.3874688,
+            "query": "GPT Researcher followUpQuestions mechanism dynamic adaptation vs static breadth halving API call efficiency ambiguous queries",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_a0e939390b37"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793331461.3876822,
+            "query": "GPT Researcher followUpQuestions mechanism dynamic adaptation vs static breadth halving API call efficiency ambiguous queries",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331461.3904648,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793331461.391743,
+            "query": "hierarchical LLM research agent node deduplication overlapping sub-topic detection dynamic DAG conversion static tree",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_ab1026b28f2d"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793331461.391964,
+            "query": "hierarchical LLM research agent node deduplication overlapping sub-topic detection dynamic DAG conversion static tree",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331461.3944273,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331470.1796515,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331470.1800368,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331470.1804032,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331470.1902263,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331471.1506004,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331471.1509705,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331471.1513474,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331471.1617625,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331480.494947,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331480.4953346,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331480.4957414,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331480.4966443,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331480.509462,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331480.5097125,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331480.5530317,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331480.5532472,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331480.5540347,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793331480.5543435,
+            "query": "GPT Researcher followUpQuestions mechanism dynamic adaptation vs static breadth halving API call efficiency ambiguous queries",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331480.556524,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331484.2525213,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331484.2528653,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331484.253207,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331484.254025,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331484.2675004,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331484.2678251,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331484.3113112,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331484.3115435,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331484.3123338,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793331484.31267,
+            "query": "hierarchical LLM research agent node deduplication overlapping sub-topic detection dynamic DAG conversion static tree",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331484.3150043,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331521.6501796,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331521.6505127,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331521.6508248,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331527.8166244,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331527.8170753,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331527.8175192,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331527.818951,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331527.8229263,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331539.4001043,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331539.400516,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331539.4009123,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331539.4013884,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793331539.402692,
+            "query": "Open Deep Research asyncio.gather partial failure handling overflow tool calls truncated retry supervisor iteration",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_05c562ed4954"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793331539.402912,
+            "query": "Open Deep Research asyncio.gather partial failure handling overflow tool calls truncated retry supervisor iteration",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331539.4057202,
+            "awaitable_count": 1
+          },
+          {
+            "event": "researcher_created",
+            "wall_time": 1793331539.40692,
+            "query": "DeepSeek Harness activation tree diamond dependency subagent crash slot release reservation pool bounded parallel join DAG scheduler",
+            "parent_query": "",
+            "report_type": "research_report",
+            "id": "research_b6f9bbc3db38"
+          },
+          {
+            "event": "researcher_started",
+            "wall_time": 1793331539.4071226,
+            "query": "DeepSeek Harness activation tree diamond dependency subagent crash slot release reservation pool bounded parallel join DAG scheduler",
+            "active": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331539.4095833,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331548.755609,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331548.7560532,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331548.7564955,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331548.7648215,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331548.8502584,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331548.8506117,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331548.8509784,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331548.8610454,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331558.97512,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331558.9755194,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331558.975894,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331558.9767766,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331558.998787,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331558.9990482,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331559.0400074,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331559.040222,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331559.0409834,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793331559.041284,
+            "query": "DeepSeek Harness activation tree diamond dependency subagent crash slot release reservation pool bounded parallel join DAG scheduler",
+            "active": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331559.043381,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331562.4163215,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331562.416647,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331562.4169502,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331562.417684,
+            "awaitable_count": 2
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331562.428823,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331562.4295523,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331562.4635665,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331562.463778,
+            "awaitable_count": 0
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331562.4645245,
+            "awaitable_count": 2
+          },
+          {
+            "event": "researcher_finished",
+            "wall_time": 1793331562.4648201,
+            "query": "Open Deep Research asyncio.gather partial failure handling overflow tool calls truncated retry supervisor iteration",
+            "active": 0
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331562.4669173,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331606.1351147,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331606.13552,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331606.1359,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331614.479109,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_started",
+            "wall_time": 1793331614.4794939,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331614.4798584,
+            "awaitable_count": 1
+          },
+          {
+            "event": "gather_finished",
+            "wall_time": 1793331614.4813578,
+            "awaitable_count": 2
+          }
+        ],
+        "retrievals": [
+          {
+            "wall_time": 1793331329.6387038,
+            "query": "Compare the actual orchestration mechanisms in Open Deep Research, GPT Researcher, and DeepSeek Harness. Explain how a request becomes independent research work, which layer creates each child execution, how parallel work is bounded and joined, how later work depends on earlier findings, and what evidence is needed to call the result a dynamic agent DAG. Cite the supplied source paths and keep framework facts separate from design proposals.",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331375.6982615,
+            "query": "GPT Researcher deep_research.py recursive followUpQuestions data-dependent fan-out vs static tree breadth halving dynamic DAG evidence",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331376.6337779,
+            "query": "Open Deep Research Research Supervisor max_researcher_iterations tool_call dynamic fan-out vs DeepSeek Harness maxActiveSubagents capacity reservation bounded parallel join DAG scheduler semantics",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331385.0784912,
+            "query": "comparison of dynamic fan-out subagent orchestration with asyncio.gather versus capacity-reserved bounded parallel join scheduling in LLM multi-agent frameworks like Open Deep Research and DeepSeek Harness",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331385.0816026,
+            "query": "Open Deep Research Research Supervisor max_researcher_iterations tool_call dynamic fan-out vs DeepSeek Harness maxActiveSubagents capacity reservation bounded parallel join DAG scheduler semantics",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331387.6585526,
+            "query": "GPT Researcher deep_research.py recursive followUpQuestions data-dependent fan-out vs static tree breadth halving dynamic DAG evidence",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331387.659566,
+            "query": "deep research agent recursive breadth halving versus data-dependent fan-out dynamic DAG evidence-based branching architecture",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331470.1853516,
+            "query": "hierarchical LLM research agent node deduplication overlapping sub-topic detection dynamic DAG conversion static tree",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331471.1569037,
+            "query": "GPT Researcher followUpQuestions mechanism dynamic adaptation vs static breadth halving API call efficiency ambiguous queries",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331480.50427,
+            "query": "GPT Researcher followUpQuestions mechanism dynamic adaptation vs static breadth halving API call efficiency ambiguous queries",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331480.506549,
+            "query": "GPT Researcher deep research breadth halving follow-up questions dynamic query generation API efficiency",
+            "returned": [
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331484.2607358,
+            "query": "deduplicating overlapping subtopics in hierarchical LLM agent research tree structure",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331484.2639873,
+            "query": "hierarchical LLM research agent node deduplication overlapping sub-topic detection dynamic DAG conversion static tree",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331548.760524,
+            "query": "DeepSeek Harness activation tree diamond dependency subagent crash slot release reservation pool bounded parallel join DAG scheduler",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793331548.8561108,
+            "query": "Open Deep Research asyncio.gather partial failure handling overflow tool calls truncated retry supervisor iteration",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331558.989704,
+            "query": "DeepSeek Harness subagent activation tree slot reservation release crash recovery diamond dependency DAG scheduler",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793331558.990562,
+            "query": "DeepSeek Harness activation tree diamond dependency subagent crash slot release reservation pool bounded parallel join DAG scheduler",
+            "returned": [
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py"
+            ]
+          },
+          {
+            "wall_time": 1793331562.4247408,
+            "query": "how does open deep research handle overflow research calls that exceed max concurrent units across supervisor iterations",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          },
+          {
+            "wall_time": 1793331562.426714,
+            "query": "Open Deep Research asyncio.gather partial failure handling overflow tool calls truncated retry supervisor iteration",
+            "returned": [
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+              "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+              "https://github.com/assafelovic/gpt-researcher/blob/3582a6841fe7dc801e2a34e34ee408641aea9bce/gpt_researcher/skills/deep_research.py",
+              "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/subagent/subagent/README.zh.md"
+            ]
+          }
+        ]
+      },
+      "wire_requests": 23
+    },
+    {
+      "case_id": "gptr-v001",
+      "completion": {
+        "started_wall_time": 1793294486.908682,
+        "finished_wall_time": 1793295054.1083622,
+        "duration_seconds": 567.1996800899506,
+        "reported_status": "success",
+        "window_source": "legacy trace file mtime minus duration; approximate"
+      },
+      "wire_requests": 33
+    },
+    {
+      "case_id": "odr-qwen-v003-20261030",
+      "completion": {
+        "started_wall_time": 0,
+        "finished_wall_time": 0,
+        "derived_status": "initialization_failed_before_model_request",
+        "window_source": "No launch event; no inference window. See retained spec and incident notes."
+      },
+      "wire_requests": 0
+    },
+    {
+      "case_id": "odr-qwen-v004-20261030",
+      "completion": {
+        "started_wall_time": 1793330899.7305312,
+        "started_utc": "2026-10-30T03:28:19.730531+00:00",
+        "status": "success",
+        "report_chars": 16563,
+        "finished_wall_time": 1793331303.381833,
+        "duration_seconds": 403.6513023376465
+      },
+      "wire_requests": 21
+    },
+    {
+      "case_id": "odr-qwen-v005-20261030",
+      "completion": {
+        "started_wall_time": 1793331801.7168393,
+        "started_utc": "2026-10-30T03:43:21.716839+00:00",
+        "status": "success",
+        "report_chars": 34028,
+        "finished_wall_time": 1793332423.6477652,
+        "duration_seconds": 621.9309260845184
+      },
+      "wire_requests": 21
+    },
+    {
+      "case_id": "odr-qwen-v006-20261030",
+      "completion": {
+        "started_wall_time": 1793332587.4873319,
+        "started_utc": "2026-10-30T03:56:27.487332+00:00",
+        "status": "success",
+        "report_chars": 3011,
+        "finished_wall_time": 1793332653.4180217,
+        "duration_seconds": 65.93069052696228
+      },
+      "wire_requests": 4
+    },
+    {
+      "case_id": "odr-v001",
+      "completion": {
+        "started_wall_time": 1793290917.4993737,
+        "finished_wall_time": 1793290918.050073,
+        "duration_seconds": 0.5506992340087891,
+        "reported_status": "error",
+        "window_source": "legacy trace file mtime minus duration; approximate"
+      },
+      "wire_requests": 0
+    },
+    {
+      "case_id": "odr-v002",
+      "completion": {
+        "started_wall_time": 1793290962.939016,
+        "finished_wall_time": 1793291078.9270508,
+        "duration_seconds": 115.98803472518921,
+        "reported_status": "success",
+        "window_source": "legacy trace file mtime minus duration; approximate"
+      },
+      "wire_requests": 12
+    }
+  ],
+  "raw_logs_immutable": true,
+  "source": "/home/Liangyijia_Hu/dsh-lab/upstream-runs"
+}

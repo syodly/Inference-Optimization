@@ -1,5 +1,9 @@
 # Inference-Optimization
 
+当前研究入口：[Milestone 主页面](LLM_Optimization_Milestone/LLM_Optimization_Milestone.html)。Topic1 的并行 Agent 调查、工具工作流与实测时间轴集中在[同一个观察页](LLM_Optimization_Milestone/topic1-dag-observation.html#observation)，当前默认是官方DSH接Qwen27B执行的六道公开原题：DeepResearchBench两题、LiveCodeBench两题、PopQA两题。逐题结果与工具环境限制集中在[调查及实测总报告](experiments/dsh-engine/notes/natural-dag-20261029.md)，版本记录集中在[DSH 总日志](experiments/dsh-engine/RESEARCH_LOG.md)。本批不是ODR/GPT/CRAG算法复现。旧自建 Harness 的材料从[实验目录](experiments/harness-engine/README.md)进入。
+
+文档约定：后续复用上述入口和总报告，不新建游离的 HTML 或逐次总结 Markdown；新增内容必须从主页面可达。HTML 及网站更新仅在用户明确要求后推送，本地修改不自动发布。原始实验数据、评分依据与技术说明按复现需要保留，不把它们冒充新的阅读入口。
+
 Investigation on LLM inference scheduling optimization for complex multi-agent tasks with multi-dimensional optimizations: request, token, GPU memory, prefill-decode interleaving and speculative decoding.
 
 ## Request-level Scheduling

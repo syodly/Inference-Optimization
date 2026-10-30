@@ -37,7 +37,7 @@ def wire_response(path):
             finish = choice.get('finish_reason') or finish
             delta = choice.get('delta', {})
             content += delta.get('content') or ''
-            reasoning += delta.get('reasoning_content') or ''
+            reasoning += delta.get('reasoning_content') or delta.get('reasoning') or ''
             for call in delta.get('tool_calls', []):
                 target = calls.setdefault(call['index'], {'id': '', 'name': '', 'arguments': ''})
                 target['id'] += call.get('id') or ''

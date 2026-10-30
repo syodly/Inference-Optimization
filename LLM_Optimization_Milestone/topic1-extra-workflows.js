@@ -8,7 +8,7 @@
       sub:'主题 → 搜索查询 → 子研究 → 发现与后续问题 → 递归或收束 → 报告',
       overview:'这里关注 GPT Researcher 的 Deep Research，而不是把它画成另一个 ODR。已保存的 deep_research.py 暴露 breadth、depth 与 concurrency_limit；子研究产生 learnings、来源和后续问题，并在剩余深度允许时继续递归。图中的两个子研究只表示同类分支，递归回边表示进入下一层，不表示把整个流程从头重跑。函数模块不等于独立 Agent。',
       intro:{purpose:'面向需要多轮检索的开放问题：系统先生成一组搜索查询，研究结果提炼出发现与后续问题，再按剩余深度递归展开，最终汇总跨层证据和来源。',flow:'主题 → 本层查询 → 并发子研究 → 新发现 / 后续问题 → 递归下一层或返回报告',designSpace:'可研究：一层结果返回后，结合新增证据、后续问题价值与后端压力，为尚未展开的子树重分配广度、剩余深度与并发额度，或停止低收益分支。三者分别影响总工作量、路径长度与同时占用，不能只用一个 Agent 数替代。'},
-      meta:[['结构类型','递归研究 / 逐层展开'],['对比 ODR','批次宽度之外，还有递归层级'],['证据','固定 commit 的 deep_research.py'],['执行状态','结构核对；未采集真实 trace']],
+      meta:[['结构类型','递归研究 / 逐层展开'],['对比 ODR','批次宽度之外，还有递归层级'],['证据','固定 commit 的 deep_research.py'],['执行状态','已采集 Qwen 原生 trace；见实测入口']],
       designs:[['搜索广度','每层生成多少查询；与运行中并发数分开记录','deep_research_breadth'],['递归深度','后续问题最多向下探索多少层','deep_research_depth'],['并发上限','限制同时研究的分支，不等于减少总分支','deep_research_concurrency'],['增量停止 · 建议','下一层启动前结合新增信息、预算与截止时间判断','Topic1 proposed: expand / stop']],
       calls:['主题进入 DeepResearch；读取 breadth、depth 和 concurrency 配置','generate_search_queries：生成本层搜索查询','对查询执行子研究，受并发上限约束','process_research_results：提取 learnings 与 follow-up questions，积累来源','剩余深度允许时，使用后续问题递归调用 deep_research','递归结果向上合并，交给报告生成阶段'],
       actions:['已有机制：广度、深度与并发上限分别控制，不把三者混为 Agent 数','Topic1 建议：只在尚未启动的下一层或查询上做 release / skip','Topic1 建议：新增信息有限时停止继续扩展，但保留已获得来源','必须记录 planned queries、started queries、实际层级和重复来源'],

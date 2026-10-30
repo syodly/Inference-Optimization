@@ -1,0 +1,215 @@
+{
+  "generated_from": "/home/Liangyijia_Hu/dsh-lab/runs/autonomy-20261030",
+  "runs": [
+    {
+      "case_id": "open-research-encourage",
+      "policy": "encourage",
+      "scenario": "open-research",
+      "qwen_patch": "qwen.patch.yml",
+      "duration_seconds": 428.0446186065674,
+      "exit_code": 1,
+      "model_requests": 15,
+      "tool_calls": 39,
+      "tools": {
+        "todo_write": 1,
+        "bash": 5,
+        "web_search": 2,
+        "web_fetch": 31
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 16,
+      "root_only": true
+    },
+    {
+      "case_id": "research-allow",
+      "policy": "allow",
+      "scenario": "research",
+      "qwen_patch": null,
+      "duration_seconds": 193.3112621307373,
+      "exit_code": 0,
+      "model_requests": 11,
+      "tool_calls": 65,
+      "tools": {
+        "bash": 3,
+        "read": 61,
+        "write": 1
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 11,
+      "root_only": true
+    },
+    {
+      "case_id": "research-encourage",
+      "policy": "encourage",
+      "scenario": "research",
+      "qwen_patch": null,
+      "duration_seconds": 198.30077981948853,
+      "exit_code": 0,
+      "model_requests": 11,
+      "tool_calls": 65,
+      "tools": {
+        "bash": 3,
+        "read": 61,
+        "write": 1
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 11,
+      "root_only": true
+    },
+    {
+      "case_id": "research-high",
+      "policy": "native",
+      "scenario": "research",
+      "qwen_patch": "qwen-high.patch.yml",
+      "duration_seconds": 2.1828253269195557,
+      "exit_code": 1,
+      "model_requests": 1,
+      "tool_calls": 0,
+      "tools": {},
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 1,
+      "root_only": true
+    },
+    {
+      "case_id": "research-medium",
+      "policy": "native",
+      "scenario": "research",
+      "qwen_patch": "qwen-medium.patch.yml",
+      "duration_seconds": 193.77445077896118,
+      "exit_code": 0,
+      "model_requests": 11,
+      "tool_calls": 65,
+      "tools": {
+        "bash": 3,
+        "read": 61,
+        "write": 1
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 11,
+      "root_only": true
+    },
+    {
+      "case_id": "research-native",
+      "policy": "native",
+      "scenario": "research",
+      "qwen_patch": null,
+      "duration_seconds": 194.75713658332825,
+      "exit_code": 0,
+      "model_requests": 11,
+      "tool_calls": 65,
+      "tools": {
+        "bash": 3,
+        "read": 61,
+        "write": 1
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 11,
+      "root_only": true
+    },
+    {
+      "case_id": "runtime-audit-encourage",
+      "policy": "encourage",
+      "scenario": "runtime-audit",
+      "qwen_patch": "qwen.patch.yml",
+      "duration_seconds": 211.390615940094,
+      "exit_code": 0,
+      "model_requests": 9,
+      "tool_calls": 11,
+      "tools": {
+        "bash": 3,
+        "read": 8
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 9,
+      "root_only": true
+    },
+    {
+      "case_id": "runtime-audit-native",
+      "policy": "native",
+      "scenario": "runtime-audit",
+      "qwen_patch": "qwen.patch.yml",
+      "duration_seconds": 232.2657778263092,
+      "exit_code": 0,
+      "model_requests": 8,
+      "tool_calls": 11,
+      "tools": {
+        "bash": 3,
+        "read": 8
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 8,
+      "root_only": true
+    },
+    {
+      "case_id": "simple-encourage",
+      "policy": "encourage",
+      "scenario": "simple",
+      "qwen_patch": "qwen.patch.yml",
+      "duration_seconds": 5.074651002883911,
+      "exit_code": 0,
+      "model_requests": 1,
+      "tool_calls": 0,
+      "tools": {},
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 1,
+      "root_only": true
+    },
+    {
+      "case_id": "team-open-research",
+      "policy": "native",
+      "scenario": "open-research",
+      "qwen_patch": "qwen.patch.yml",
+      "duration_seconds": 425.0953252315521,
+      "exit_code": 1,
+      "model_requests": 18,
+      "tool_calls": 36,
+      "tools": {
+        "list_agents": 1,
+        "web_search": 1,
+        "web_fetch": 9,
+        "bash": 15,
+        "read": 9,
+        "todo_write": 1
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 18,
+      "root_only": true
+    },
+    {
+      "case_id": "team-research",
+      "policy": "native",
+      "scenario": "research",
+      "qwen_patch": "qwen.patch.yml",
+      "duration_seconds": 210.08222579956055,
+      "exit_code": 0,
+      "model_requests": 11,
+      "tool_calls": 66,
+      "tools": {
+        "bash": 3,
+        "list_agents": 1,
+        "read": 61,
+        "write": 1
+      },
+      "session_files": 1,
+      "agent_created_events": 1,
+      "wire_requests": 11,
+      "root_only": true
+    }
+  ],
+  "interpretation": {
+    "child_agent_count_rule": "A child Agent requires a new session.v4 file or an agent_created event after startup; multiple tool calls in one root Session are not counted as child Agents.",
+    "native_allow_encourage_scope": "same HotpotQA-style six-question source-grounded report; allow only relaxes workflow wording; encourage adds generic delegation advice without worker count or graph.",
+    "medium_scope": "same native task with Qwen reasoning effort medium; backend supports low/medium/xhigh, high was rejected before model execution.",
+    "runtime_audit_scope": "same official DSH package files copied into isolated workspace; no source edits."
+  }
+}

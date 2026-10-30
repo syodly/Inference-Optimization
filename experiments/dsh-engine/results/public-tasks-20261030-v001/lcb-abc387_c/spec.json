@@ -1,0 +1,41 @@
+{
+  "case_id": "lcb-abc387_c",
+  "category": "coding",
+  "dataset": "LiveCodeBench code_generation_lite / test6 (release_v6)",
+  "dataset_task_id": "abc387_c",
+  "initial_task": "A positive integer not less than 10 whose top digit (the most significant digit) in decimal representation is strictly larger than every other digit in that number is called a Snake number.\nFor example, 31 and 201 are Snake numbers, but 35 and 202 are not.\nFind how many Snake numbers exist between L and R, inclusive.\n\nInput\n\nThe input is given from Standard Input in the following format:\nL R\n\nOutput\n\nPrint the answer.\n\nConstraints\n\n\n- 10 \\leq L \\leq R \\leq 10^{18}\n- All input values are integers.\n\nSample Input 1\n\n97 210\n\nSample Output 1\n\n6\n\nThe Snake numbers between 97 and 210, inclusive, are 97, 98, 100, 200, 201, and 210: there are six.\n\nSample Input 2\n\n1000 9999\n\nSample Output 2\n\n2025\n\nSample Input 3\n\n252509054433933519 760713016476190692\n\nSample Output 3\n\n221852052834757",
+  "original_question": "A positive integer not less than 10 whose top digit (the most significant digit) in decimal representation is strictly larger than every other digit in that number is called a Snake number.\nFor example, 31 and 201 are Snake numbers, but 35 and 202 are not.\nFind how many Snake numbers exist between L and R, inclusive.\n\nInput\n\nThe input is given from Standard Input in the following format:\nL R\n\nOutput\n\nPrint the answer.\n\nConstraints\n\n\n- 10 \\leq L \\leq R \\leq 10^{18}\n- All input values are integers.\n\nSample Input 1\n\n97 210\n\nSample Output 1\n\n6\n\nThe Snake numbers between 97 and 210, inclusive, are 97, 98, 100, 200, 201, and 210: there are six.\n\nSample Input 2\n\n1000 9999\n\nSample Output 2\n\n2025\n\nSample Input 3\n\n252509054433933519 760713016476190692\n\nSample Output 3\n\n221852052834757",
+  "task_origin": "official dataset original, unmodified",
+  "dataset_source": {
+    "dataset": "livecodebench/code_generation_lite",
+    "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+    "url": "https://hf-mirror.com/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test6.jsonl",
+    "range_status": 206,
+    "partial_bytes": 1048576
+  },
+  "selection_reason": "One medium and one hard problem from the first complete download-prefix rows; no outcome-based selection.",
+  "workflow_reference": [
+    "coding generation/test/repair"
+  ],
+  "executed_harness": "official DSH",
+  "input_files": {
+    "statement.md": "A positive integer not less than 10 whose top digit (the most significant digit) in decimal representation is strictly larger than every other digit in that number is called a Snake number.\nFor example, 31 and 201 are Snake numbers, but 35 and 202 are not.\nFind how many Snake numbers exist between L and R, inclusive.\n\nInput\n\nThe input is given from Standard Input in the following format:\nL R\n\nOutput\n\nPrint the answer.\n\nConstraints\n\n\n- 10 \\leq L \\leq R \\leq 10^{18}\n- All input values are integers.\n\nSample Input 1\n\n97 210\n\nSample Output 1\n\n6\n\nThe Snake numbers between 97 and 210, inclusive, are 97, 98, 100, 200, 201, and 210: there are six.\n\nSample Input 2\n\n1000 9999\n\nSample Output 2\n\n2025\n\nSample Input 3\n\n252509054433933519 760713016476190692\n\nSample Output 3\n\n221852052834757",
+    "task.json": "{\n  \"question_title\": \"Snake Numbers\",\n  \"question_content\": \"A positive integer not less than 10 whose top digit (the most significant digit) in decimal representation is strictly larger than every other digit in that number is called a Snake number.\\nFor example, 31 and 201 are Snake numbers, but 35 and 202 are not.\\nFind how many Snake numbers exist between L and R, inclusive.\\n\\nInput\\n\\nThe input is given from Standard Input in the following format:\\nL R\\n\\nOutput\\n\\nPrint the answer.\\n\\nConstraints\\n\\n\\n- 10 \\\\leq L \\\\leq R \\\\leq 10^{18}\\n- All input values are integers.\\n\\nSample Input 1\\n\\n97 210\\n\\nSample Output 1\\n\\n6\\n\\nThe Snake numbers between 97 and 210, inclusive, are 97, 98, 100, 200, 201, and 210: there are six.\\n\\nSample Input 2\\n\\n1000 9999\\n\\nSample Output 2\\n\\n2025\\n\\nSample Input 3\\n\\n252509054433933519 760713016476190692\\n\\nSample Output 3\\n\\n221852052834757\",\n  \"platform\": \"atcoder\",\n  \"question_id\": \"abc387_c\",\n  \"contest_id\": \"abc387\",\n  \"contest_date\": \"2025-01-04T00:00:00\",\n  \"starter_code\": \"\",\n  \"difficulty\": \"medium\",\n  \"public_test_cases\": \"[{\\\"input\\\": \\\"97 210\\\", \\\"output\\\": \\\"6\\\", \\\"testtype\\\": \\\"stdin\\\"}, {\\\"input\\\": \\\"1000 9999\\\", \\\"output\\\": \\\"2025\\\", \\\"testtype\\\": \\\"stdin\\\"}, {\\\"input\\\": \\\"252509054433933519 760713016476190692\\\", \\\"output\\\": \\\"221852052834757\\\", \\\"testtype\\\": \\\"stdin\\\"}]\",\n  \"metadata\": \"{}\"\n}",
+    "public-tests.json": "[{\"input\": \"97 210\", \"output\": \"6\", \"testtype\": \"stdin\"}, {\"input\": \"1000 9999\", \"output\": \"2025\", \"testtype\": \"stdin\"}, {\"input\": \"252509054433933519 760713016476190692\", \"output\": \"221852052834757\", \"testtype\": \"stdin\"}]"
+  },
+  "input_sha256": {
+    "statement.md": "850e24d0abe6f6aae62960fc0fe89684b5a8635ee85affdea07af9de57fec17b",
+    "task.json": "14800484e9641c76565457448ee55c49979d71957c8d3e2c8ba5c9857a5d223d",
+    "public-tests.json": "e583f28bc7e925e26822dc19e9cc1e807831f91aaf785fb819744ad05cdcf6f0"
+  },
+  "workspace": "/home/Liangyijia_Hu/dsh-public-task-workspaces/public-tasks-20261030-v001/lcb-abc387_c",
+  "max_output_tokens": 8192,
+  "model": "Qwen3.8-27B",
+  "reasoning_effort": "low",
+  "temperature": 0,
+  "source_commit": "687f282e8625c6b8d11ff58211a90524be2e4317",
+  "agent_count_prescribed": false,
+  "graph_prescribed": false,
+  "policy": "native",
+  "watchdog_seconds": 900
+}

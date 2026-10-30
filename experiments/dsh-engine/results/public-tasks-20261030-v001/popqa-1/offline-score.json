@@ -1,0 +1,17 @@
+{
+  "dataset": "PopQA original",
+  "id": "1223902",
+  "expected_aliases": [
+    "journalist",
+    "journo",
+    "journalists"
+  ],
+  "matched_aliases": [
+    "journalist"
+  ],
+  "alias_match": true,
+  "scope": "offline answer-alias check only; not a grounding metric",
+  "labels_visible_at_runtime": false,
+  "gold_source_url": "https://raw.githubusercontent.com/AlexTMallen/adaptive-retrieval/main/data/popQA.tsv",
+  "gold_source_sha256": "9a5227f41bff0e4c331d4a774d946b12f95307892b58f860a9606ef356e6089b"
+}

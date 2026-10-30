@@ -1,5 +1,11 @@
 # 官方 DSH × Qwen 部署与原生轨迹
 
+**当前批次：按用户确认，只观察官方DSH执行的六道公开原题，已结束并归档。** 统一DSH→vLLM→Qwen3.8-27B，没有运行ODR/GPT/CRAG算法。研究题为DeepResearchBench #19/#93，代码题为LiveCodeBench abc387_c/f，检索问答为CRAG材料中的两道PopQA原题及原始段落。六题均未自主委派子Agent；两道研究题工具在途峰值2。代码中等题公开3/3、隐藏40/40，难题8192输出预算截断、无代码；PopQA两题答案别名匹配通过。研究工具缺搜索凭据，#19输出未验证，#93重试后停止，不能称作六题成功或正常联网研究质量评测。
+
+先看[本轮原题与可播放流程](../../LLM_Optimization_Milestone/topic1-dag-observation.html#observation)，完整结论在[总报告开头](notes/natural-dag-20261029.md)，数据在[六题结果索引](results/public-tasks-20261030-v001/index.json)、[来源哈希](results/public-tasks-20261030-v001/source-manifest.json)与[单一原始包入口](evidence/public-tasks-20261030-v001/index.json)。逐次Prompt、参数、工具结果和中国时间可在图中展开。`python -X utf8 experiments/dsh-engine/dataset_observation.py export`仅从已收取原包离线生成视图，不请求模型；`verify_natural_web.py`核对新六题与旧视图。未扩样。
+
+以下保留部署与此前各批次的历史进展；旧覆盖统计只针对当时批次。
+
 **2026-10-29 已在 `songprojgpu1` 部署官方 DeepSeek Harness，接现有 Qwen3.8-27B。官方源码未修改。** 普通对话、原生 Bash 工具、三个原生子 Agent 的资料读取与父汇总均已通过验收；Web 页面经浏览器验证为 HTTP 200、无页面脚本错误。这是部署验收，不是调度性能实验。
 
 旧 `harness-engine` 是自行实现的受控 Harness，不是官方 DSH。它的实验批次继续暂停，原 STOP 保留；新部署独立使用 `/home/Liangyijia_Hu/dsh-lab`，当前 GPU 0/1 用于 Qwen 服务。之前“拿不到 DSH 完整源码”的表述已纠正：官方仓库提供 MIT 源码。
@@ -9,6 +15,10 @@
 三轮已接入[网页实验选择器](../../LLM_Optimization_Milestone/topic1-experiments.html#dsh-e1-small-native)，默认显示官方DSH；每轮八题均可切换，流程节点可展开完整messages、API参数、模型返回和派发时的真实引擎状态。浏览器数据由 `python experiments/dsh-engine/export_results_web.py` 从已归档证据离线导出，不重跑模型；`verify_results_web.py` 检查全部24个逐题流程及旧实验切换。
 
 **最新：完成五类只给初始任务的自然DAG观察。** 简单问答、多文档调查、代码修复、CSV分析、故障诊断没有指定Agent数量或未来步骤。五类均自然选择一个根Agent，模型调用数为1、13、6、16、5；工具依赖图随执行增长。保留两次4096输出触顶的首轮，再以更大输出上限从头执行两类。详见[观察报告与时间点](notes/natural-dag-20261029.md)及[时间轴页面](../../LLM_Optimization_Milestone/topic1-dag-observation.html)。全部原始调用与事件均归档，没有恢复旧性能批次。
+
+**10月30日来源复核：** ODR 的7次、GPT Researcher的5次是Codex自编编排核对题的诊断尝试，包含失败和重跑；均未做公开研究数据集。页面ODR三个标签是v005/v006/v007变体，不是三类数据。DSH18次分为HotpotQA六题合并调查7次、架构核对3次、源码审查2次、四份虚构资料2次、算术2次、开放调查2次。只有第一类含公开原题，外层报告任务自编。“四组件”不是DSH真实四组件。**CRAG完整LLM流程、公开Coding基准尚未完成**；既有函数核对和自编小服务修复仅为局部验证。
+
+所有逐次来源、原始任务、变量和归档位置集中在[统一实验索引](results/natural-dag-20261029/frameworks/experiment-catalogue.json)，可读说明集中在[总报告](notes/natural-dag-20261029.md)，交互展示复用原[观察页](../../LLM_Optimization_Milestone/topic1-dag-observation.html#frameworks)。只有两个当前原始包入口：[DSH18次](evidence/autonomy-20261030-v002/index.json)、[原生ODR/GPT12次](evidence/upstream-workflows-20261030-v003/index.json)；旧快照按run_id去重，不重复计数。原工作流结构图保持互通。`export_natural_site.py`导出旧DSH数据，`export_framework_observation.py`导出原生框架与来源索引；均为离线导出，不请求模型。未改公共环境，未恢复旧批次，本轮未推送。
 
 ## 当前安装
 

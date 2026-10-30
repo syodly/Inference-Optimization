@@ -1,0 +1,232 @@
+{
+  "case_id": "lcb-abc387_c",
+  "title": "LiveCodeBench code_generation_lite / test6 (release_v6) / abc387_c",
+  "exit_code": 0,
+  "watchdog_triggered": false,
+  "started_wall_time": 1793343826.458974,
+  "finished_wall_time": 1793343970.980816,
+  "duration_seconds": 144.52184200286865,
+  "model_requests": 9,
+  "tool_calls": 8,
+  "session_files": 1,
+  "final_characters": 1128,
+  "root_session": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+  "agent_sessions": 1,
+  "child_sessions": 0,
+  "model_calls": 9,
+  "tool_counts": {
+    "bash": 4,
+    "edit": 3,
+    "read": 1
+  },
+  "tool_errors": 2,
+  "peak_outstanding_model_steps": 1,
+  "generated_tokens": 5475,
+  "output_truncations": 0,
+  "first_child_seconds": null,
+  "last_new_tool_seconds": 123.47102618217468,
+  "dag_nodes": 19,
+  "dag_edges": 18,
+  "initial_task": "A positive integer not less than 10 whose top digit (the most significant digit) in decimal representation is strictly larger than every other digit in that number is called a Snake number.\nFor example, 31 and 201 are Snake numbers, but 35 and 202 are not.\nFind how many Snake numbers exist between L and R, inclusive.\n\nInput\n\nThe input is given from Standard Input in the following format:\nL R\n\nOutput\n\nPrint the answer.\n\nConstraints\n\n\n- 10 \\leq L \\leq R \\leq 10^{18}\n- All input values are integers.\n\nSample Input 1\n\n97 210\n\nSample Output 1\n\n6\n\nThe Snake numbers between 97 and 210, inclusive, are 97, 98, 100, 200, 201, and 210: there are six.\n\nSample Input 2\n\n1000 9999\n\nSample Output 2\n\n2025\n\nSample Input 3\n\n252509054433933519 760713016476190692\n\nSample Output 3\n\n221852052834757",
+  "max_output_tokens": 8192,
+  "provenance": "official dataset original, unmodified; official DSH",
+  "final_text": "\n\nAll 300 random brute-force checks pass, and all three samples match. The solution is complete.\n\n## Solution\n\n**Approach:** Count snake numbers ≤ N via digit counting, then answer = `f(R) − f(L−1)`.\n\nFor a number of length `d` with leading digit `a` (1–9), every other digit must be in `0..a−1`, giving `a^(d−1)` choices.\n\n`count_leq(N)`:\n1. **Shorter lengths** (`2..d−1`): sum of `a^(len−1)` for `a = 1..9`.\n2. **Same length, smaller leading digit** `a < n₁`: add `a^(d−1)` each.\n3. **Same length, equal leading digit** `a = n₁`: walk the remaining digits left to right. At position `i` with digit `nᵢ`:\n   - if `nᵢ > a−1`: all `a` choices are smaller → add `a^(d−i)` and stop;\n   - else: add `nᵢ · a^(d−1−i)` (choices `0..nᵢ−1`) and continue;\n   - if we reach the end, N itself qualifies → add 1.\n\nComplexity is O(d²) with `d ≤ 19` — instant.\n\n**Verification:**\n- Sample 1: `97 210` → **6** ✓\n- Sample 2: `1000 9999` → **2025** ✓\n- Sample 3: `252509054433933519 760713016476190692` → **221852052834757** ✓\n- 300 random ranges cross-checked against brute force: all match.\n\nThe solution file is at `snake.py` in the workspace.",
+  "audit": {
+    "native_sessions": 1,
+    "native_model_steps": 9,
+    "wire_responses": 9,
+    "ready_events": 9,
+    "unmapped_tool_starts": [],
+    "graph_is_acyclic": true,
+    "wire_configuration_valid": true,
+    "all_http_200": true,
+    "watchdog_triggered": false,
+    "first_request_available_tools": [
+      "bash",
+      "create_goal",
+      "edit",
+      "exit_plan_mode",
+      "get_goal",
+      "glob",
+      "grep",
+      "interrupt_agent",
+      "job_kill",
+      "job_list",
+      "job_output",
+      "list_agents",
+      "read",
+      "read_image",
+      "send_message",
+      "skill",
+      "subagent",
+      "subagent_fork",
+      "todo_write",
+      "update_goal",
+      "web_fetch",
+      "web_search",
+      "workflow",
+      "working_directory",
+      "write"
+    ],
+    "delegation_tools_available": true,
+    "initial_task_present_unchanged": true
+  },
+  "steps": [
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:1",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 1,
+      "ready_seconds": 1.926,
+      "response_seconds": 81.932,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 81.94402623176575,
+      "last_tool_end_seconds": 82.27902603149414,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:2",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 2,
+      "ready_seconds": 82.327,
+      "response_seconds": 91.164,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 91.16702604293823,
+      "last_tool_end_seconds": 91.3680260181427,
+      "model_text": "\n\nAll three samples pass. Let me verify against a brute force on small ranges to be safe:\n\n",
+      "bash_exit_codes": [
+        1
+      ]
+    },
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:3",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 3,
+      "ready_seconds": 91.399,
+      "response_seconds": 95.042,
+      "tools": {
+        "edit": 1
+      },
+      "first_tool_seconds": 95.04502606391907,
+      "last_tool_end_seconds": 95.07402610778809,
+      "model_text": "\n\nThe import triggered `main()`. Let me guard it:\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:4",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 4,
+      "ready_seconds": 95.108,
+      "response_seconds": 97.222,
+      "tools": {
+        "read": 1
+      },
+      "first_tool_seconds": 97.23202610015869,
+      "last_tool_end_seconds": 97.26702618598938,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:5",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 5,
+      "ready_seconds": 97.324,
+      "response_seconds": 100.837,
+      "tools": {
+        "edit": 1
+      },
+      "first_tool_seconds": 100.83902621269226,
+      "last_tool_end_seconds": 100.85602617263794,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:6",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 6,
+      "ready_seconds": 100.887,
+      "response_seconds": 105.938,
+      "tools": {
+        "edit": 1
+      },
+      "first_tool_seconds": 105.94002604484558,
+      "last_tool_end_seconds": 105.96102619171143,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:7",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 7,
+      "ready_seconds": 105.997,
+      "response_seconds": 112.715,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 112.71802616119385,
+      "last_tool_end_seconds": 112.97402620315552,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:8",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 8,
+      "ready_seconds": 113.007,
+      "response_seconds": 123.468,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 123.47102618217468,
+      "last_tool_end_seconds": 130.87002611160278,
+      "model_text": "\n\n/tmp isn't accessible; let me put the brute-force script in the workspace:\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:9",
+      "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "turn": 1,
+      "step": 9,
+      "ready_seconds": 130.902,
+      "response_seconds": 144.352,
+      "tools": {},
+      "first_tool_seconds": null,
+      "last_tool_end_seconds": null,
+      "model_text": "\n\nAll 300 random brute-force checks pass, and all three samples match. The solution is complete.\n\n## Solution\n\n**Approach:** Count snake numbers ≤ N via digit counting, then answer = `f(R) − f(L−1)`.\n\nFor a number of length `d` with leading digit `a` (1–9), every other digit must be in `0..a−1`, giving `a^(d−1)` choices.\n\n`count_leq(N)`:\n1. **Shorter lengths** (`2..d−1`): sum of `a^(len−1)` for `a = 1..9`.\n2. **Same length, smaller leading digit** `a < n₁`: add `a^(d−1)` each.\n3. **Same length, equal leading digit** `a = n₁`: walk the remaining digits left to right. At position `i` with digit `nᵢ`:\n   - if `nᵢ > a−1`: all `a` choices are smaller → add `a^(d−i)` and stop;\n   - else: add `nᵢ · a^(d−1−i)` (choices `0..nᵢ−1`) and continue;\n   - if we reach the end, N itself qualifies → add 1.\n\nComplexity is O(d²) with `d ≤ 19` — instant.\n\n**Verification:**\n- Sample 1: `97 210` → **6** ✓\n- Sample 2: `1000 9999` → **2025** ✓\n- Sample 3: `252509054433933519 760713016476190692` → **221852052834757** ✓\n- 300 random ranges cross-checked against brute force: all match.\n\nThe solution file is at `snake.py` in the workspace.",
+      "bash_exit_codes": []
+    }
+  ],
+  "max_tools_proposed_in_one_response": 1,
+  "bash_nonzero_exits": 1,
+  "quality_checks": {
+    "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+  },
+  "dataset": "LiveCodeBench code_generation_lite / test6 (release_v6)",
+  "dataset_task_id": "abc387_c",
+  "dataset_source": {
+    "dataset": "livecodebench/code_generation_lite",
+    "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+    "url": "https://hf-mirror.com/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test6.jsonl",
+    "range_status": 206,
+    "partial_bytes": 1048576
+  },
+  "executed_harness": "official DSH"
+}

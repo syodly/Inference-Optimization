@@ -1,0 +1,133 @@
+{
+  "case_id": "drb-19",
+  "title": "DeepResearchBench / 19",
+  "exit_code": 0,
+  "watchdog_triggered": false,
+  "started_wall_time": 1793342891.6775427,
+  "finished_wall_time": 1793343065.7493634,
+  "duration_seconds": 174.0718207359314,
+  "model_requests": 3,
+  "tool_calls": 3,
+  "session_files": 1,
+  "final_characters": 6090,
+  "root_session": "session-85404608-e68f-449b-abcb-cf6e57b39cd3",
+  "agent_sessions": 1,
+  "child_sessions": 0,
+  "model_calls": 3,
+  "tool_counts": {
+    "web_search": 1,
+    "web_fetch": 2
+  },
+  "tool_errors": 2,
+  "peak_outstanding_model_steps": 1,
+  "generated_tokens": 6659,
+  "output_truncations": 0,
+  "first_child_seconds": null,
+  "last_new_tool_seconds": 94.28945732116699,
+  "dag_nodes": 8,
+  "dag_edges": 8,
+  "initial_task": "prometheus 的高流失率会造成什么影响，有什么系统的方案可以解决？各家云厂商有没有现有方案？",
+  "max_output_tokens": 8192,
+  "provenance": "official dataset original, unmodified; official DSH",
+  "final_text": "\n\n# Prometheus 高流失率（High Series Churn）的影响与系统性解决方案\n\n## 一、什么是\"高流失率\"\n\n在 Prometheus 语境下，**高流失率（High Series Churn）** 指的是时间序列（time series）的创建和消亡速率很高——即活跃序列集合在持续快速变化。它与\"高基数（High Cardinality）\"相关但不同：\n\n| 概念 | 含义 |\n|------|------|\n| **高基数** | 同一时刻活跃序列总数很大 |\n| **高流失率** | 序列集合变化速率快（新序列不断出现、旧序列不断消失） |\n\n典型场景：Kubernetes 中 Pod 频繁重建、微服务实例频繁扩缩容、按用户/请求 ID 打标签、临时 Job 频繁执行等。\n\n---\n\n## 二、高流失率造成的影响\n\n### 1. 内存压力（最核心问题）\n- Prometheus 的 TSDB 将**活跃序列**（head 中的序列）全部保存在内存中\n- 每个活跃序列占用约 **1–2 KB** 内存（label pairs + chunk head + 元数据）\n- 高流失率意味着任意时刻都有大量\"半活跃\"序列驻留内存\n- 直接后果：**OOM（Out of Memory）**，Prometheus 进程被 kill\n\n### 2. Compaction 开销激增\n- 序列从 head 写入后，需要 compaction 到磁盘 block\n- 高流失率 → 大量短命序列 → 产生大量小 block → compaction 任务堆积\n- 后果：**磁盘 I/O 飙升**、CPU 占用升高、compaction 延迟增大\n\n### 3. WAL（Write-Ahead Log）膨胀\n- 高写入速率 + 高序列数 → WAL 文件快速增长\n- 后果：磁盘空间压力、重启恢复时间变长\n\n### 4. 查询性能下降\n- 查询时需要扫描 head 中的所有活跃序列\n- 序列数越多，`/api/v1/series`、`/api/v1/label/.../values` 等元数据 API 越慢\n- 后果：**查询延迟增大**、`/metrics` 页面变慢\n\n### 5. Remote Write 压力\n- 如果配置了 remote write，高流失率意味着需要追踪和发送的序列元数据更多\n- 后果：remote write 队列堆积、数据丢失风险\n\n### 6. HA / 副本同步压力\n- 如果使用 Prometheus HA 模式，高流失率意味着两个副本之间的状态同步开销更大\n\n---\n\n## 三、系统性解决方案\n\n### 第一层：源头治理（最重要）\n\n#### 1. 标签卫生（Label Hygiene）\n- **避免高基数标签**：不要在指标中使用 `user_id`、`request_id`、`trace_id`、`url_path`（含参数）等\n- **使用 `metric_relabel_configs` 在采集端丢弃/替换高基数标签**：\n  ```yaml\n  scrape_configs:\n    - job_name: my-service\n      metric_relabel_configs:\n        - source_labels: [user_id]\n          action: drop          # 直接丢弃含 user_id 的序列\n        - source_labels: [url_path]\n          regex: '.*'\n          target_label: url_path\n          replacement: 'other'  # 归一化\n  ```\n- **使用 `labeldrop` / `labelkeep`** 在 remote write 端过滤\n\n#### 2. 预聚合（Recording Rules）\n- 用 recording rules 将高基数指标预聚合为低基数指标\n- 例：`sum by (service) (http_requests_total{user_id=~\".*\"})` → 只保留 service 维度\n- 查询时查预聚合结果，避免实时扫描大量序列\n\n#### 3. 指标设计审查\n- 建立指标命名和标签规范\n- 使用 `promtool check metrics` 等工具审查\n- 在 CI/CD 中加入基数检查（如 `promtool tsdb dump` 分析）\n\n### 第二层：Prometheus 自身调优\n\n#### 1. 启用 `memory-series` 特性（Prometheus 2.38+）\n```bash\n--enable-feature=memory-series\n```\n- 将不活跃序列从内存中卸载，显著降低内存占用\n- 对高流失率场景效果明显\n\n#### 2. 启用 `tsdb-allow-myriads` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=tsdb-allow-myriads\n```\n- 允许 TSDB 处理数百万级序列\n- 内部优化了序列索引结构\n\n#### 3. 启用 `delayed-compaction` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=delayed-compaction\n```\n- 延迟 compaction，减少 I/O 峰值\n- 适合高写入、高流失率场景\n\n#### 4. 启用 `o-lazy-loading` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=o-lazy-loading\n```\n- 延迟加载 block，减少启动和查询时的内存峰值\n\n#### 5. 调优 TSDB 参数\n```bash\n--tsdb.retention.time=15d          # 缩短保留时间\n--head-chunks=2000000              # 调整 head chunk 数量\n--tsdb.max-block-chunks=10000000   # 限制 block 中 chunk 数量\n--no-lockfile                      # 减少文件锁开销\n```\n\n#### 6. 启用 `auto-gomemlimit`（Prometheus 2.45+）\n```bash\n--enable-feature=auto-gomemlimit\n```\n- 自动设置 Go 运行时内存限制，避免 OOM\n\n### 第三层：架构层面\n\n#### 1. 使用 OpenTelemetry Collector 做中间层\n- 在 Prometheus 和采集端之间插入 OTel Collector\n- 利用 Collector 的 `metricstransform`、`filter` 等 processor 做标签过滤和聚合\n- 解耦采集和存储，便于独立扩展\n\n#### 2. 使用更强大的时序数据库\n- **VictoriaMetrics**：对高基数场景优化更好，内存占用更低\n- **M3DB**：专为高基数设计\n- **InfluxDB**：TSM 引擎对高写入优化好\n- **Cortex / Thanos / Mimir**：分布式 Prometheus，支持水平扩展\n\n#### 3. 分片（Sharding）\n- 按 namespace / service / 业务线分片\n- 每个 Prometheus 实例只负责一部分序列\n- 配合 Thanos / Cortex 做全局查询\n\n---\n\n## 四、各云厂商现有方案\n\n### 1. AWS — Amazon Managed Service for Prometheus (AMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard，展示 Top N 高基数指标 |\n| **标签过滤** | 支持 Metric Relabeling，可在采集端丢弃高基数标签 |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供 `/api/v1/series` 等 API 查询基数 |\n| **自动扩缩** | 存储和计算自动扩缩，无需手动调优 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：AMP 的 Collector 层天然支持标签过滤和聚合，可以在数据进入存储前就降低基数。\n\n### 2. GCP — Google Managed Prometheus (GMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：GMP 与 GKE 深度集成，Kubernetes 场景下自动发现 Pod 并采集指标，标签过滤配置更便捷。\n\n### 3. Azure — Azure Managed Service for Prometheus (AMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 AKS 深度集成，支持 Azure Monitor 统一查询。\n\n### 4. 阿里云 — ARMS Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板，展示 Top N 高基数指标 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 ACK（阿里云 Kubernetes）深度集成，支持 Prometheus 和 OpenTelemetry 双协议。\n\n### 5. 腾讯云 — TSDB for Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 TKE（腾讯云 Kubernetes）深度集成。\n\n### 6. 华为云 — AOM Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 CCE（华为云 Kubernetes）深度集成。\n\n---\n\n## 五、总结与建议\n\n### 解决优先级\n\n```\n1. 源头治理（标签卫生 + 预聚合）     ← 最重要，效果最显著\n2. Prometheus 特性调优（memory-series 等）\n3. 架构升级（OTel Collector / 分布式 TSDB）\n4. 云厂商托管服务（如果已在云上）\n```\n\n### 核心原则\n\n> **高流失率的根本解法是减少序列数量，而不是增加存储容量。**\n\n- 每减少一个高基数标签，可能减少 **10x–1000x** 的序列数\n- 云厂商托管服务的核心价值在于：**自动扩缩 + 内置基数管理 + 标签过滤**，让你不需要手动调优 Prometheus 参数\n\n### 快速行动清单\n\n1. ✅ 用 `promtool tsdb dump` 或云厂商的 Cardinality Dashboard 找出 Top N 高基数指标\n2. ✅ 审查这些指标的标签，识别高基数标签\n3. ✅ 用 `metric_relabel_configs` 在采集端丢弃/归一化高基数标签\n4. ✅ 用 recording rules 预聚合关键指标\n5. ✅ 启用 `memory-series`、`tsdb-allow-myriads` 等 Prometheus 特性\n6. ✅ 如果已在云上，考虑迁移到云厂商托管 Prometheus 服务",
+  "audit": {
+    "native_sessions": 1,
+    "native_model_steps": 3,
+    "wire_responses": 3,
+    "ready_events": 3,
+    "unmapped_tool_starts": [],
+    "graph_is_acyclic": true,
+    "wire_configuration_valid": true,
+    "all_http_200": true,
+    "watchdog_triggered": false,
+    "first_request_available_tools": [
+      "bash",
+      "create_goal",
+      "edit",
+      "exit_plan_mode",
+      "get_goal",
+      "glob",
+      "grep",
+      "interrupt_agent",
+      "job_kill",
+      "job_list",
+      "job_output",
+      "list_agents",
+      "read",
+      "read_image",
+      "send_message",
+      "skill",
+      "subagent",
+      "subagent_fork",
+      "todo_write",
+      "update_goal",
+      "web_fetch",
+      "web_search",
+      "workflow",
+      "working_directory",
+      "write"
+    ],
+    "delegation_tools_available": true,
+    "initial_task_present_unchanged": true
+  },
+  "steps": [
+    {
+      "node_id": "model:session-85404608-e68f-449b-abcb-cf6e57b39cd3:1:1",
+      "session_id": "session-85404608-e68f-449b-abcb-cf6e57b39cd3",
+      "turn": 1,
+      "step": 1,
+      "ready_seconds": 1.851,
+      "response_seconds": 90.752,
+      "tools": {
+        "web_search": 1
+      },
+      "first_tool_seconds": 90.76845741271973,
+      "last_tool_end_seconds": 90.80145740509033,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-85404608-e68f-449b-abcb-cf6e57b39cd3:1:2",
+      "session_id": "session-85404608-e68f-449b-abcb-cf6e57b39cd3",
+      "turn": 1,
+      "step": 2,
+      "ready_seconds": 90.835,
+      "response_seconds": 94.282,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 94.2854573726654,
+      "last_tool_end_seconds": 104.94845724105835,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-85404608-e68f-449b-abcb-cf6e57b39cd3:1:3",
+      "session_id": "session-85404608-e68f-449b-abcb-cf6e57b39cd3",
+      "turn": 1,
+      "step": 3,
+      "ready_seconds": 104.986,
+      "response_seconds": 173.894,
+      "tools": {},
+      "first_tool_seconds": null,
+      "last_tool_end_seconds": null,
+      "model_text": "\n\n# Prometheus 高流失率（High Series Churn）的影响与系统性解决方案\n\n## 一、什么是\"高流失率\"\n\n在 Prometheus 语境下，**高流失率（High Series Churn）** 指的是时间序列（time series）的创建和消亡速率很高——即活跃序列集合在持续快速变化。它与\"高基数（High Cardinality）\"相关但不同：\n\n| 概念 | 含义 |\n|------|------|\n| **高基数** | 同一时刻活跃序列总数很大 |\n| **高流失率** | 序列集合变化速率快（新序列不断出现、旧序列不断消失） |\n\n典型场景：Kubernetes 中 Pod 频繁重建、微服务实例频繁扩缩容、按用户/请求 ID 打标签、临时 Job 频繁执行等。\n\n---\n\n## 二、高流失率造成的影响\n\n### 1. 内存压力（最核心问题）\n- Prometheus 的 TSDB 将**活跃序列**（head 中的序列）全部保存在内存中\n- 每个活跃序列占用约 **1–2 KB** 内存（label pairs + chunk head + 元数据）\n- 高流失率意味着任意时刻都有大量\"半活跃\"序列驻留内存\n- 直接后果：**OOM（Out of Memory）**，Prometheus 进程被 kill\n\n### 2. Compaction 开销激增\n- 序列从 head 写入后，需要 compaction 到磁盘 block\n- 高流失率 → 大量短命序列 → 产生大量小 block → compaction 任务堆积\n- 后果：**磁盘 I/O 飙升**、CPU 占用升高、compaction 延迟增大\n\n### 3. WAL（Write-Ahead Log）膨胀\n- 高写入速率 + 高序列数 → WAL 文件快速增长\n- 后果：磁盘空间压力、重启恢复时间变长\n\n### 4. 查询性能下降\n- 查询时需要扫描 head 中的所有活跃序列\n- 序列数越多，`/api/v1/series`、`/api/v1/label/.../values` 等元数据 API 越慢\n- 后果：**查询延迟增大**、`/metrics` 页面变慢\n\n### 5. Remote Write 压力\n- 如果配置了 remote write，高流失率意味着需要追踪和发送的序列元数据更多\n- 后果：remote write 队列堆积、数据丢失风险\n\n### 6. HA / 副本同步压力\n- 如果使用 Prometheus HA 模式，高流失率意味着两个副本之间的状态同步开销更大\n\n---\n\n## 三、系统性解决方案\n\n### 第一层：源头治理（最重要）\n\n#### 1. 标签卫生（Label Hygiene）\n- **避免高基数标签**：不要在指标中使用 `user_id`、`request_id`、`trace_id`、`url_path`（含参数）等\n- **使用 `metric_relabel_configs` 在采集端丢弃/替换高基数标签**：\n  ```yaml\n  scrape_configs:\n    - job_name: my-service\n      metric_relabel_configs:\n        - source_labels: [user_id]\n          action: drop          # 直接丢弃含 user_id 的序列\n        - source_labels: [url_path]\n          regex: '.*'\n          target_label: url_path\n          replacement: 'other'  # 归一化\n  ```\n- **使用 `labeldrop` / `labelkeep`** 在 remote write 端过滤\n\n#### 2. 预聚合（Recording Rules）\n- 用 recording rules 将高基数指标预聚合为低基数指标\n- 例：`sum by (service) (http_requests_total{user_id=~\".*\"})` → 只保留 service 维度\n- 查询时查预聚合结果，避免实时扫描大量序列\n\n#### 3. 指标设计审查\n- 建立指标命名和标签规范\n- 使用 `promtool check metrics` 等工具审查\n- 在 CI/CD 中加入基数检查（如 `promtool tsdb dump` 分析）\n\n### 第二层：Prometheus 自身调优\n\n#### 1. 启用 `memory-series` 特性（Prometheus 2.38+）\n```bash\n--enable-feature=memory-series\n```\n- 将不活跃序列从内存中卸载，显著降低内存占用\n- 对高流失率场景效果明显\n\n#### 2. 启用 `tsdb-allow-myriads` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=tsdb-allow-myriads\n```\n- 允许 TSDB 处理数百万级序列\n- 内部优化了序列索引结构\n\n#### 3. 启用 `delayed-compaction` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=delayed-compaction\n```\n- 延迟 compaction，减少 I/O 峰值\n- 适合高写入、高流失率场景\n\n#### 4. 启用 `o-lazy-loading` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=o-lazy-loading\n```\n- 延迟加载 block，减少启动和查询时的内存峰值\n\n#### 5. 调优 TSDB 参数\n```bash\n--tsdb.retention.time=15d          # 缩短保留时间\n--head-chunks=2000000              # 调整 head chunk 数量\n--tsdb.max-block-chunks=10000000   # 限制 block 中 chunk 数量\n--no-lockfile                      # 减少文件锁开销\n```\n\n#### 6. 启用 `auto-gomemlimit`（Prometheus 2.45+）\n```bash\n--enable-feature=auto-gomemlimit\n```\n- 自动设置 Go 运行时内存限制，避免 OOM\n\n### 第三层：架构层面\n\n#### 1. 使用 OpenTelemetry Collector 做中间层\n- 在 Prometheus 和采集端之间插入 OTel Collector\n- 利用 Collector 的 `metricstransform`、`filter` 等 processor 做标签过滤和聚合\n- 解耦采集和存储，便于独立扩展\n\n#### 2. 使用更强大的时序数据库\n- **VictoriaMetrics**：对高基数场景优化更好，内存占用更低\n- **M3DB**：专为高基数设计\n- **InfluxDB**：TSM 引擎对高写入优化好\n- **Cortex / Thanos / Mimir**：分布式 Prometheus，支持水平扩展\n\n#### 3. 分片（Sharding）\n- 按 namespace / service / 业务线分片\n- 每个 Prometheus 实例只负责一部分序列\n- 配合 Thanos / Cortex 做全局查询\n\n---\n\n## 四、各云厂商现有方案\n\n### 1. AWS — Amazon Managed Service for Prometheus (AMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard，展示 Top N 高基数指标 |\n| **标签过滤** | 支持 Metric Relabeling，可在采集端丢弃高基数标签 |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供 `/api/v1/series` 等 API 查询基数 |\n| **自动扩缩** | 存储和计算自动扩缩，无需手动调优 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：AMP 的 Collector 层天然支持标签过滤和聚合，可以在数据进入存储前就降低基数。\n\n### 2. GCP — Google Managed Prometheus (GMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：GMP 与 GKE 深度集成，Kubernetes 场景下自动发现 Pod 并采集指标，标签过滤配置更便捷。\n\n### 3. Azure — Azure Managed Service for Prometheus (AMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 AKS 深度集成，支持 Azure Monitor 统一查询。\n\n### 4. 阿里云 — ARMS Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板，展示 Top N 高基数指标 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 ACK（阿里云 Kubernetes）深度集成，支持 Prometheus 和 OpenTelemetry 双协议。\n\n### 5. 腾讯云 — TSDB for Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 TKE（腾讯云 Kubernetes）深度集成。\n\n### 6. 华为云 — AOM Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 CCE（华为云 Kubernetes）深度集成。\n\n---\n\n## 五、总结与建议\n\n### 解决优先级\n\n```\n1. 源头治理（标签卫生 + 预聚合）     ← 最重要，效果最显著\n2. Prometheus 特性调优（memory-series 等）\n3. 架构升级（OTel Collector / 分布式 TSDB）\n4. 云厂商托管服务（如果已在云上）\n```\n\n### 核心原则\n\n> **高流失率的根本解法是减少序列数量，而不是增加存储容量。**\n\n- 每减少一个高基数标签，可能减少 **10x–1000x** 的序列数\n- 云厂商托管服务的核心价值在于：**自动扩缩 + 内置基数管理 + 标签过滤**，让你不需要手动调优 Prometheus 参数\n\n### 快速行动清单\n\n1. ✅ 用 `promtool tsdb dump` 或云厂商的 Cardinality Dashboard 找出 Top N 高基数指标\n2. ✅ 审查这些指标的标签，识别高基数标签\n3. ✅ 用 `metric_relabel_configs` 在采集端丢弃/归一化高基数标签\n4. ✅ 用 recording rules 预聚合关键指标\n5. ✅ 启用 `memory-series`、`tsdb-allow-myriads` 等 Prometheus 特性\n6. ✅ 如果已在云上，考虑迁移到云厂商托管 Prometheus 服务",
+      "bash_exit_codes": []
+    }
+  ],
+  "max_tools_proposed_in_one_response": 2,
+  "bash_nonzero_exits": 0,
+  "quality_checks": {
+    "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+  },
+  "dataset": "DeepResearchBench",
+  "dataset_task_id": 19,
+  "dataset_source": {
+    "dataset": "DeepResearchBench",
+    "revision": "f2735b5c3636759c22f9e936c0232de8bf545b67",
+    "url": "https://raw.githubusercontent.com/Ayanami0730/deep_research_bench/f2735b5c3636759c22f9e936c0232de8bf545b67/data/prompt_data/query.jsonl",
+    "sha256": "62b197a264a027fd4e2e795ff322a82dd6d566f5e350596ccc7572539ec987d1",
+    "count": 100
+  },
+  "executed_harness": "official DSH"
+}

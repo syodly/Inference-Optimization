@@ -1,0 +1,498 @@
+{
+  "id": "odr-focused",
+  "title": "Open Deep Research · 误判资料缺失",
+  "case_id": "odr-qwen-v006-20261030",
+  "started_wall_time": 1793332587.4873319,
+  "duration_seconds": 65.93069052696228,
+  "finding": "主管误把工具中已加载的资料当成用户尚未提供的输入，未委派便结束。工具可用不等于模型正确理解资料获取方式。",
+  "scope": "原生 ODR 图、主管提示与工具选择逻辑保留；原生 MCP 提供固定官方源码检索。并发上限3、主管轮数3、研究轮数3是配置预算。相对宽问题同时改变任务、片段和轮数；实际零委派的原因以模型响应为准。",
+  "stats": [
+    [
+      "独立子研究单元",
+      0
+    ],
+    [
+      "实际模型请求",
+      4
+    ],
+    [
+      "模型请求在途峰值",
+      1
+    ],
+    [
+      "总耗时",
+      "65.93 s"
+    ]
+  ],
+  "query": "Audit one narrow claim using the supplied official source excerpts: when are new child executions actually created in Open Deep Research and GPT Researcher, and how does that differ from optional delegation in DeepSeek Harness? Explain who creates the work, whether later queries depend on earlier results, and the difference between a concurrency cap and the total amount of work. Keep the FINAL report under 600 English words with at most six source citations. Do not write framework rankings or broad design recommendations. State evidence gaps briefly instead of speculating.",
+  "quality": "最终 API finish_reason=stop；报告 3011 字符；真实 source_search 调用 0 次。流程正常结束，但报告要求用户补材料；未获取新证据，不算完成源码审查。",
+  "design_implication": "这轮没有可供派发优化的子研究前沿。原因是主管把工具可取证误判为缺少用户输入；这是任务说明与工具能力的接口问题，不能归因于引擎排队，也不能用强制 Agent 数掩盖。",
+  "spec": {
+    "framework": "Open Deep Research",
+    "source_commit": "1b7d2e80db9faa586165c60e09096dbbfd483a64",
+    "query": "Audit one narrow claim using the supplied official source excerpts: when are new child executions actually created in Open Deep Research and GPT Researcher, and how does that differ from optional delegation in DeepSeek Harness? Explain who creates the work, whether later queries depend on earlier results, and the difference between a concurrency cap and the total amount of work. Keep the FINAL report under 600 English words with at most six source citations. Do not write framework rankings or broad design recommendations. State evidence gaps briefly instead of speculating.",
+    "config": {
+      "configurable": {
+        "allow_clarification": false,
+        "search_api": "none",
+        "max_concurrent_research_units": 3,
+        "max_researcher_iterations": 3,
+        "max_react_tool_calls": 3,
+        "max_structured_output_retries": 1,
+        "research_model": "openai:qwen27b",
+        "compression_model": "openai:qwen27b",
+        "final_report_model": "openai:qwen27b",
+        "summarization_model": "openai:qwen27b",
+        "research_model_max_tokens": 4096,
+        "compression_model_max_tokens": 8192,
+        "final_report_model_max_tokens": 8192,
+        "summarization_model_max_tokens": 4096,
+        "mcp_config": {
+          "url": "http://127.0.0.1:47153",
+          "tools": [
+            "source_search"
+          ],
+          "auth_required": false
+        },
+        "mcp_prompt": "source_search searches a fixed local corpus of exact official source excerpts. Use it to verify code facts; this is not live web search."
+      },
+      "recursion_limit": 80
+    },
+    "model": "Qwen3.8-27B",
+    "retrieval_mode": "native MCP integration; fixed exact source excerpts; no live web",
+    "corpus_sha256": {
+      "01.json": "8bc323a2baea6113e3f9fe335fa032fd43dcb1351ec9edf3731b391320a0beb4",
+      "04.json": "c36a12c30f5743e3ce1428d3824dfaa955f4965270e2a95f908221950c0bc65f",
+      "03.json": "b57ca3ffea3df929cf0c941dabf1291cb4b78ffb54e47c980b2fc24523e2720e",
+      "02.json": "5acd67965aebc9cba3cd7be7aec9d6376099fa8c8fb1bc7a6c8b01cbf206593e"
+    },
+    "worker_count_prescribed": false,
+    "graph_prescribed": false,
+    "source_hashes": {
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "state.py": "7a03f4a1d5132573ed306d403fd3478fe8916d955f3caa44a8d365877ac35d0e",
+      "configuration.py": "61e1a62ada20d16cb7b876c10b15a3ddb71f61248a53a05d7511ca6930af98da",
+      "deep_researcher.py": "af128d5d8773008d021b6ef7562e9fb90a45f7eb5e886483d1e6e835223275e0",
+      "utils.py": "1536ea25de5210d7b37f8c81ade3348a000f43a814d4e853e1e12b3ae1de0812",
+      "prompts.py": "239774f8444860deab0ac0d86067002ef360068ad4c1f0b698373335e6b59579"
+    }
+  },
+  "nodes": [
+    {
+      "id": "task",
+      "title": "初始研究任务",
+      "start": 0,
+      "end": 0,
+      "row": 0,
+      "lane": 0,
+      "kind": "",
+      "query": "Audit one narrow claim using the supplied official source excerpts: when are new child executions actually created in Open Deep Research and GPT Researcher, and how does that differ from optional delegation in DeepSeek Harness? Explain who creates the work, whether later queries depend on earlier results, and the difference between a concurrency cap and the total amount of work. Keep the FINAL report under 600 English words with at most six source citations. Do not write framework rankings or broad design recommendations. State evidence gaps briefly instead of speculating.",
+      "role": "只给初始研究目标，不给分支列表或 Agent 数。",
+      "relation": "进入官方 ODR 简报与主管流程。",
+      "request_ids": [],
+      "caption": ""
+    },
+    {
+      "id": "supervisor",
+      "title": "主管思考 → 直接收束",
+      "start": 1.0985832214355469,
+      "end": 46.76768869557418,
+      "row": 1,
+      "lane": 0,
+      "kind": "",
+      "query": "",
+      "role": "主管只调用 think_tool 与 ResearchComplete，没有提出 ConductResearch。",
+      "relation": "接研究简报，选择结束研究阶段，没有创建研究子图。",
+      "request_ids": [
+        "1793332588585638541-907ee93f",
+        "1793332600272697036-c6b017eb",
+        "1793332621955191487-c009ab62"
+      ],
+      "caption": "没有生成研究员；点击查看真实响应"
+    },
+    {
+      "id": "report",
+      "title": "主管收束 → 最终报告",
+      "start": 46.836552143096924,
+      "end": 65.9116155251395,
+      "row": 2,
+      "lane": 0,
+      "kind": "",
+      "query": "",
+      "role": "主管收束后进入最终报告；是否有新检索证据须依据实际工具记录。",
+      "relation": "主管收束后进入原生最终报告阶段。",
+      "request_ids": [
+        "1793332634323469043-5f205d8f"
+      ],
+      "caption": "点击检查收束响应与最终输出"
+    }
+  ],
+  "edges": [
+    {
+      "from": "task",
+      "to": "supervisor"
+    },
+    {
+      "from": "supervisor",
+      "to": "report"
+    }
+  ],
+  "requests": [
+    {
+      "id": "1793332588585638541-907ee93f",
+      "ordinal": 1,
+      "start": 1.0985832214355469,
+      "end": 12.701633524382487,
+      "http_status": 200,
+      "finish_reason": "stop",
+      "request": {
+        "model": "qwen27b",
+        "stream": true,
+        "messages": [
+          {
+            "content": "You will be given a set of messages that have been exchanged so far between yourself and the user. \nYour job is to translate these messages into a more detailed and concrete research question that will be used to guide the research.\n\nThe messages that have been exchanged so far between yourself and the user are:\n<Messages>\nHuman: Audit one narrow claim using the supplied official source excerpts: when are new child executions actually created in Open Deep Research and GPT Researcher, and how does that differ from optional delegation in DeepSeek Harness? Explain who creates the work, whether later queries depend on earlier results, and the difference between a concurrency cap and the total amount of work. Keep the FINAL report under 600 English words with at most six source citations. Do not write framework rankings or broad design recommendations. State evidence gaps briefly instead of speculating.\n</Messages>\n\nToday's date is Fri Oct 30, 2026.\n\nYou will return a single research question that will be used to guide the research.\n\nGuidelines:\n1. Maximize Specificity and Detail\n- Include all known user preferences and explicitly list key attributes or dimensions to consider.\n- It is important that all details from the user are included in the instructions.\n\n2. Fill in Unstated But Necessary Dimensions as Open-Ended\n- If certain attributes are essential for a meaningful output but the user has not provided them, explicitly state that they are open-ended or default to no specific constraint.\n\n3. Avoid Unwarranted Assumptions\n- If the user has not provided a particular detail, do not invent one.\n- Instead, state the lack of specification and guide the researcher to treat it as flexible or accept all possible options.\n\n4. Use the First Person\n- Phrase the request from the perspective of the user.\n\n5. Sources\n- If specific sources should be prioritized, specify them in the research question.\n- For product and travel research, prefer linking directly to official or primary websites (e.g., official brand sites, manufacturer pages, or reputable e-commerce platforms like Amazon for user reviews) rather than aggregator sites or SEO-heavy blogs.\n- For academic or scientific queries, prefer linking directly to the original paper or official journal publication rather than survey papers or secondary summaries.\n- For people, try linking directly to their LinkedIn profile, or their personal website if they have one.\n- If the query is in a specific language, prioritize sources published in that language.\n",
+            "role": "user"
+          }
+        ],
+        "max_completion_tokens": 4096,
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "schema": {
+              "description": "Research question and brief for guiding research.",
+              "properties": {
+                "research_brief": {
+                  "description": "A research question that will be used to guide the research.",
+                  "title": "Research Brief",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "research_brief"
+              ],
+              "title": "ResearchQuestion",
+              "type": "object",
+              "additionalProperties": false
+            },
+            "name": "ResearchQuestion",
+            "strict": true
+          }
+        }
+      },
+      "response": {
+        "content": "{\n  \"research_brief\": \"Audit one narrow claim using the supplied official source excerpts: In Open Deep Research, GPT Researcher, and DeepSeek Harness, precisely when and under what conditions are new child executions (subtasks, sub-queries, or delegated work units) created? Compare the three systems on these specific dimensions: (1) the trigger or mechanism that causes a child execution to be spawned (automatic, conditional, or user-initiated), (2) who or what creates the work (the orchestrator, a model call, a user action, or a config flag), (3) whether later child executions depend on the results of earlier ones (sequential dependency vs. independent parallelism), and (4) the distinction between a concurrency cap (how many can run simultaneously) and the total amount of work (how many will ultimately be created). The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating. The final report must be under 600 English words, cite at most six sources, avoid framework rankings or broad design recommendations, and briefly note any evidence gaps instead of filling them with inference.\"\n}",
+        "reasoning": "The user wants me to translate their message into a detailed research question. Let me analyze what they're asking:\n\n1. They want to audit a specific narrow claim about how child executions/work are created in three systems:\n   - Open Deep Research\n   - GPT Researcher\n   - DeepSeek Harness (specifically its \"optional delegation\")\n\n2. Key dimensions to compare:\n   - When new child executions are actually created\n   - Who creates the work\n   - Whether later queries depend on earlier results\n   - The difference between a concurrency cap and total amount of work\n\n3. Constraints:\n   - Use supplied official source excerpts (they mention \"supplied\" but haven't actually supplied them yet - I should note this)\n   - Final report under 600 English words\n   - At most six source citations\n   - No framework rankings or broad design recommendations\n   - State evidence gaps briefly instead of speculating\n\nLet me formulate a research question that captures all of this precisely.\n",
+        "tool_calls": []
+      },
+      "measurement": {
+        "status": 200,
+        "duration_seconds": 11.60305030294694,
+        "first_body_seconds": 0.17717011296190321,
+        "headers": {
+          "date": "Fri, 30 Oct 2026 03:56:28 GMT",
+          "server": "uvicorn",
+          "content-type": "text/event-stream; charset=utf-8",
+          "vary": "Origin",
+          "x-request-id": "9ddacf2ea56e466294d066021372e6d7",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "usage": {}
+      },
+      "stage": "研究简报 / 主管规划"
+    },
+    {
+      "id": "1793332600272697036-c6b017eb",
+      "ordinal": 2,
+      "start": 12.785651922225952,
+      "end": 34.401084477081895,
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "request": {
+        "model": "qwen27b",
+        "stream": true,
+        "messages": [
+          {
+            "content": "You are a research supervisor. Your job is to conduct research by calling the \"ConductResearch\" tool. For context, today's date is Fri Oct 30, 2026.\n\n<Task>\nYour focus is to call the \"ConductResearch\" tool to conduct research against the overall research question passed in by the user. \nWhen you are completely satisfied with the research findings returned from the tool calls, then you should call the \"ResearchComplete\" tool to indicate that you are done with your research.\n</Task>\n\n<Available Tools>\nYou have access to three main tools:\n1. **ConductResearch**: Delegate research tasks to specialized sub-agents\n2. **ResearchComplete**: Indicate that research is complete\n3. **think_tool**: For reflection and strategic planning during research\n\n**CRITICAL: Use think_tool before calling ConductResearch to plan your approach, and after each ConductResearch to assess progress. Do not call think_tool with any other tools in parallel.**\n</Available Tools>\n\n<Instructions>\nThink like a research manager with limited time and resources. Follow these steps:\n\n1. **Read the question carefully** - What specific information does the user need?\n2. **Decide how to delegate the research** - Carefully consider the question and decide how to delegate the research. Are there multiple independent directions that can be explored simultaneously?\n3. **After each call to ConductResearch, pause and assess** - Do I have enough to answer? What's still missing?\n</Instructions>\n\n<Hard Limits>\n**Task Delegation Budgets** (Prevent excessive delegation):\n- **Bias towards single agent** - Use single agent for simplicity unless the user request has clear opportunity for parallelization\n- **Stop when you can answer confidently** - Don't keep delegating research for perfection\n- **Limit tool calls** - Always stop after 3 tool calls to ConductResearch and think_tool if you cannot find the right sources\n\n**Maximum 3 parallel agents per iteration**\n</Hard Limits>\n\n<Show Your Thinking>\nBefore you call ConductResearch tool call, use think_tool to plan your approach:\n- Can the task be broken down into smaller sub-tasks?\n\nAfter each ConductResearch tool call, use think_tool to analyze the results:\n- What key information did I find?\n- What's missing?\n- Do I have enough to answer the question comprehensively?\n- Should I delegate more research or call ResearchComplete?\n</Show Your Thinking>\n\n<Scaling Rules>\n**Simple fact-finding, lists, and rankings** can use a single sub-agent:\n- *Example*: List the top 10 coffee shops in San Francisco → Use 1 sub-agent\n\n**Comparisons presented in the user request** can use a sub-agent for each element of the comparison:\n- *Example*: Compare OpenAI vs. Anthropic vs. DeepMind approaches to AI safety → Use 3 sub-agents\n- Delegate clear, distinct, non-overlapping subtopics\n\n**Important Reminders:**\n- Each ConductResearch call spawns a dedicated research agent for that specific topic\n- A separate agent will write the final report - you just need to gather information\n- When calling ConductResearch, provide complete standalone instructions - sub-agents can't see other agents' work\n- Do NOT use acronyms or abbreviations in your research questions, be very clear and specific\n</Scaling Rules>",
+            "role": "system"
+          },
+          {
+            "content": "Audit one narrow claim using the supplied official source excerpts: In Open Deep Research, GPT Researcher, and DeepSeek Harness, precisely when and under what conditions are new child executions (subtasks, sub-queries, or delegated work units) created? Compare the three systems on these specific dimensions: (1) the trigger or mechanism that causes a child execution to be spawned (automatic, conditional, or user-initiated), (2) who or what creates the work (the orchestrator, a model call, a user action, or a config flag), (3) whether later child executions depend on the results of earlier ones (sequential dependency vs. independent parallelism), and (4) the distinction between a concurrency cap (how many can run simultaneously) and the total amount of work (how many will ultimately be created). The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating. The final report must be under 600 English words, cite at most six sources, avoid framework rankings or broad design recommendations, and briefly note any evidence gaps instead of filling them with inference.",
+            "role": "user"
+          }
+        ],
+        "max_completion_tokens": 4096,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ConductResearch",
+              "description": "Call this tool to conduct research on a specific topic.",
+              "parameters": {
+                "properties": {
+                  "research_topic": {
+                    "description": "The topic to research. Should be a single topic, and should be described in high detail (at least a paragraph).",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "research_topic"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "ResearchComplete",
+              "description": "Call this tool to indicate that the research is complete.",
+              "parameters": {
+                "properties": {},
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "think_tool",
+              "description": "Strategic reflection tool for research planning",
+              "parameters": {
+                "properties": {
+                  "reflection": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reflection"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        ]
+      },
+      "response": {
+        "content": "",
+        "reasoning": "The user is asking me to audit a narrow claim about three specific systems (Open Deep Research, GPT Researcher, and DeepSeek Harness) regarding how child executions are spawned. However, the key constraint here is that the user has explicitly stated they have NOT yet supplied the official source excerpts. The instruction says: \"If excerpts are not available, state the evidence gap explicitly rather than speculating.\"\n\nSo the correct approach here is:\n1. I should NOT conduct research that speculates about these systems' internals\n2. I should NOT fabricate or infer details about how these systems work\n3. I should explicitly note that the official source excerpts have not been provided\n4. The final report should state this evidence gap\n\nLet me think about whether there's any legitimate research I could conduct here. The user says \"Audit one narrow claim using the supplied official source excerpts\" - but no excerpts have been supplied. The instruction is clear: \"If excerpts are not available, state the evidence gap explicitly rather than speculating.\"\n\nI could potentially research publicly available documentation for these three systems to see if there's official documentation that describes their child execution mechanisms. However, the user's framing is specifically about auditing using \"supplied official source excerpts\" - meaning they want to use specific excerpts they'll provide. Since they haven't provided them yet, I should note this gap.\n\nBut wait - let me reconsider. The user might be testing whether I'll speculate or whether I'll properly identify the evidence gap. The instruction says \"treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them.\"\n\nI think the right approach is:\n1. Use think_tool to plan\n2. Conduct a brief research to see if there's any publicly available official documentation I can reference\n3. Then in my assessment, note clearly that the specific excerpts have not been provided, and what the evidence gap is\n\nActually, re-reading more carefully: \"The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating.\"\n\nThis is very clear. I should NOT speculate. I should note the evidence gap. Let me use think_tool to plan this, and then I can do a minimal research to see if there's official documentation available, but the key finding will be that the specific excerpts haven't been provided.\n\nActually, I think the most honest and correct approach is:\n1. Think about the approach\n2. Perhaps do one research call to see if official documentation exists for these systems that could serve as the basis\n3. Note the gap clearly\n\nBut actually, even that might be overstepping. The user said to use \"the supplied official source excerpts\" - they will supply them. I should just note the gap and call ResearchComplete, since the research task is specifically to audit using those excerpts, which don't exist yet.\n\nLet me use think_tool first to plan, then make my decision.\n",
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-ac5d5e49c74b91d3",
+            "type": "function",
+            "function": {
+              "name": "think_tool",
+              "arguments": "{\"reflection\": \"The user asks me to audit a narrow claim about child execution spawning in three systems (Open Deep Research, GPT Researcher, DeepSeek Harness) using \\\"supplied official source excerpts.\\\" However, the user explicitly states: \\\"The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating.\\\"\\n\\nThis is a clear instruction: do NOT speculate about internal architecture. The correct response is to identify the evidence gap and note that the audit cannot proceed without the supplied excerpts. I should not conduct research that would fill the gap with inference from public documentation, because the user's framing is specifically about auditing against their supplied excerpts.\\n\\nThe right course of action:\\n1. Note the evidence gap explicitly\\n2. Specify exactly what would be needed to proceed (the excerpts)\\n3. Call ResearchComplete with this finding\\n\\nI will NOT conduct speculative research about these systems' internals, as that would violate the explicit instruction to \\\"state the evidence gap explicitly rather than speculating.\\\"\"}"
+            }
+          }
+        ]
+      },
+      "measurement": {
+        "status": 200,
+        "duration_seconds": 21.615432554855943,
+        "first_body_seconds": 0.13161468994803727,
+        "headers": {
+          "date": "Fri, 30 Oct 2026 03:56:39 GMT",
+          "server": "uvicorn",
+          "content-type": "text/event-stream; charset=utf-8",
+          "vary": "Origin",
+          "x-request-id": "eee676fd71fe4683a821933b85699cbb",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "usage": {}
+      },
+      "stage": "研究简报 / 主管规划"
+    },
+    {
+      "id": "1793332621955191487-c009ab62",
+      "ordinal": 3,
+      "start": 34.46815276145935,
+      "end": 46.76768869557418,
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "request": {
+        "model": "qwen27b",
+        "stream": true,
+        "messages": [
+          {
+            "content": "You are a research supervisor. Your job is to conduct research by calling the \"ConductResearch\" tool. For context, today's date is Fri Oct 30, 2026.\n\n<Task>\nYour focus is to call the \"ConductResearch\" tool to conduct research against the overall research question passed in by the user. \nWhen you are completely satisfied with the research findings returned from the tool calls, then you should call the \"ResearchComplete\" tool to indicate that you are done with your research.\n</Task>\n\n<Available Tools>\nYou have access to three main tools:\n1. **ConductResearch**: Delegate research tasks to specialized sub-agents\n2. **ResearchComplete**: Indicate that research is complete\n3. **think_tool**: For reflection and strategic planning during research\n\n**CRITICAL: Use think_tool before calling ConductResearch to plan your approach, and after each ConductResearch to assess progress. Do not call think_tool with any other tools in parallel.**\n</Available Tools>\n\n<Instructions>\nThink like a research manager with limited time and resources. Follow these steps:\n\n1. **Read the question carefully** - What specific information does the user need?\n2. **Decide how to delegate the research** - Carefully consider the question and decide how to delegate the research. Are there multiple independent directions that can be explored simultaneously?\n3. **After each call to ConductResearch, pause and assess** - Do I have enough to answer? What's still missing?\n</Instructions>\n\n<Hard Limits>\n**Task Delegation Budgets** (Prevent excessive delegation):\n- **Bias towards single agent** - Use single agent for simplicity unless the user request has clear opportunity for parallelization\n- **Stop when you can answer confidently** - Don't keep delegating research for perfection\n- **Limit tool calls** - Always stop after 3 tool calls to ConductResearch and think_tool if you cannot find the right sources\n\n**Maximum 3 parallel agents per iteration**\n</Hard Limits>\n\n<Show Your Thinking>\nBefore you call ConductResearch tool call, use think_tool to plan your approach:\n- Can the task be broken down into smaller sub-tasks?\n\nAfter each ConductResearch tool call, use think_tool to analyze the results:\n- What key information did I find?\n- What's missing?\n- Do I have enough to answer the question comprehensively?\n- Should I delegate more research or call ResearchComplete?\n</Show Your Thinking>\n\n<Scaling Rules>\n**Simple fact-finding, lists, and rankings** can use a single sub-agent:\n- *Example*: List the top 10 coffee shops in San Francisco → Use 1 sub-agent\n\n**Comparisons presented in the user request** can use a sub-agent for each element of the comparison:\n- *Example*: Compare OpenAI vs. Anthropic vs. DeepMind approaches to AI safety → Use 3 sub-agents\n- Delegate clear, distinct, non-overlapping subtopics\n\n**Important Reminders:**\n- Each ConductResearch call spawns a dedicated research agent for that specific topic\n- A separate agent will write the final report - you just need to gather information\n- When calling ConductResearch, provide complete standalone instructions - sub-agents can't see other agents' work\n- Do NOT use acronyms or abbreviations in your research questions, be very clear and specific\n</Scaling Rules>",
+            "role": "system"
+          },
+          {
+            "content": "Audit one narrow claim using the supplied official source excerpts: In Open Deep Research, GPT Researcher, and DeepSeek Harness, precisely when and under what conditions are new child executions (subtasks, sub-queries, or delegated work units) created? Compare the three systems on these specific dimensions: (1) the trigger or mechanism that causes a child execution to be spawned (automatic, conditional, or user-initiated), (2) who or what creates the work (the orchestrator, a model call, a user action, or a config flag), (3) whether later child executions depend on the results of earlier ones (sequential dependency vs. independent parallelism), and (4) the distinction between a concurrency cap (how many can run simultaneously) and the total amount of work (how many will ultimately be created). The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating. The final report must be under 600 English words, cite at most six sources, avoid framework rankings or broad design recommendations, and briefly note any evidence gaps instead of filling them with inference.",
+            "role": "user"
+          },
+          {
+            "content": null,
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "type": "function",
+                "id": "chatcmpl-tool-ac5d5e49c74b91d3",
+                "function": {
+                  "name": "think_tool",
+                  "arguments": "{\"reflection\": \"The user asks me to audit a narrow claim about child execution spawning in three systems (Open Deep Research, GPT Researcher, DeepSeek Harness) using \\\"supplied official source excerpts.\\\" However, the user explicitly states: \\\"The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating.\\\"\\n\\nThis is a clear instruction: do NOT speculate about internal architecture. The correct response is to identify the evidence gap and note that the audit cannot proceed without the supplied excerpts. I should not conduct research that would fill the gap with inference from public documentation, because the user's framing is specifically about auditing against their supplied excerpts.\\n\\nThe right course of action:\\n1. Note the evidence gap explicitly\\n2. Specify exactly what would be needed to proceed (the excerpts)\\n3. Call ResearchComplete with this finding\\n\\nI will NOT conduct speculative research about these systems' internals, as that would violate the explicit instruction to \\\"state the evidence gap explicitly rather than speculating.\\\"\"}"
+                }
+              }
+            ]
+          },
+          {
+            "content": "Reflection recorded: The user asks me to audit a narrow claim about child execution spawning in three systems (Open Deep Research, GPT Researcher, DeepSeek Harness) using \"supplied official source excerpts.\" However, the user explicitly states: \"The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating.\"\n\nThis is a clear instruction: do NOT speculate about internal architecture. The correct response is to identify the evidence gap and note that the audit cannot proceed without the supplied excerpts. I should not conduct research that would fill the gap with inference from public documentation, because the user's framing is specifically about auditing against their supplied excerpts.\n\nThe right course of action:\n1. Note the evidence gap explicitly\n2. Specify exactly what would be needed to proceed (the excerpts)\n3. Call ResearchComplete with this finding\n\nI will NOT conduct speculative research about these systems' internals, as that would violate the explicit instruction to \"state the evidence gap explicitly rather than speculating.\"",
+            "role": "tool",
+            "tool_call_id": "chatcmpl-tool-ac5d5e49c74b91d3"
+          }
+        ],
+        "max_completion_tokens": 4096,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ConductResearch",
+              "description": "Call this tool to conduct research on a specific topic.",
+              "parameters": {
+                "properties": {
+                  "research_topic": {
+                    "description": "The topic to research. Should be a single topic, and should be described in high detail (at least a paragraph).",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "research_topic"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "ResearchComplete",
+              "description": "Call this tool to indicate that the research is complete.",
+              "parameters": {
+                "properties": {},
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "think_tool",
+              "description": "Strategic reflection tool for research planning",
+              "parameters": {
+                "properties": {
+                  "reflection": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reflection"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        ]
+      },
+      "response": {
+        "content": "\n\nThe audit cannot be completed as specified. Below is the evidence-gap statement that the final report must carry.\n\n---\n\n**Evidence Gap — Audit Incomplete**\n\nThe task requires auditing claims about child-execution spawning in three systems (Open Deep Research, GPT Researcher, and DeepSeek Harness) against **supplied official source excerpts**. Those excerpts have not been provided.\n\n**What is missing:**\n- The specific official source excerpts (code, documentation, or spec text) for each of the three systems that would serve as the evidentiary basis for the audit.\n\n**What would be needed to proceed:**\nFor each system, at minimum one of the following:\n1. Source code (or a relevant excerpt) showing the function/logic that decides *when* and *how many* child executions are created.\n2. Official documentation or design notes that explicitly describe the spawning trigger, the entity responsible for creation, dependency semantics between siblings, and the distinction between concurrency limits and total work count.\n\n**What will NOT be done (per instructions):**\n- No speculation from public blogs, READMEs of secondary forks, or inferred behavior.\n- No ranking of the three frameworks against each other.\n- No broad design recommendations.\n\n**Dimensions that remain unaudited (pending excerpts):**\n| Dimension | Status |\n|---|---|\n| Trigger / mechanism (automatic, conditional, user-initiated) | Unverified |\n| Creator (orchestrator, model call, user, config flag) | Unverified |\n| Dependency between siblings (sequential vs. parallel) | Unverified |\n| Concurrency cap vs. total work amount | Unverified |\n\n**Next step:** Provide the official source excerpts for Open Deep Research, GPT Researcher, and DeepSeek Harness. Once supplied, the four dimensions above can be audited within the 600-word, ≤ 6-source constraint.\n\n",
+        "reasoning": "The user's instruction is clear: they have NOT supplied the official source excerpts, and the researcher should request or await them. The instruction says \"If excerpts are not available, state the evidence gap explicitly rather than speculating.\"\n\nThis means I should NOT conduct research to fill in what I don't have. The correct action is to complete the research by stating the evidence gap clearly.\n\nLet me call ResearchComplete with a clear statement of the evidence gap.\n",
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b7c31d23f5006eef",
+            "type": "function",
+            "function": {
+              "name": "ResearchComplete",
+              "arguments": "{}"
+            }
+          }
+        ]
+      },
+      "measurement": {
+        "status": 200,
+        "duration_seconds": 12.299535934114829,
+        "first_body_seconds": 0.2266189989168197,
+        "headers": {
+          "date": "Fri, 30 Oct 2026 03:57:01 GMT",
+          "server": "uvicorn",
+          "content-type": "text/event-stream; charset=utf-8",
+          "vary": "Origin",
+          "x-request-id": "16ae39e61b7848dc9ca581292af4cd8c",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "usage": {}
+      },
+      "stage": "研究简报 / 主管规划"
+    },
+    {
+      "id": "1793332634323469043-5f205d8f",
+      "ordinal": 4,
+      "start": 46.836552143096924,
+      "end": 65.9116155251395,
+      "http_status": 200,
+      "finish_reason": "stop",
+      "request": {
+        "model": "qwen27b",
+        "stream": true,
+        "messages": [
+          {
+            "content": "Based on all the research conducted, create a comprehensive, well-structured answer to the overall research brief:\n<Research Brief>\nAudit one narrow claim using the supplied official source excerpts: In Open Deep Research, GPT Researcher, and DeepSeek Harness, precisely when and under what conditions are new child executions (subtasks, sub-queries, or delegated work units) created? Compare the three systems on these specific dimensions: (1) the trigger or mechanism that causes a child execution to be spawned (automatic, conditional, or user-initiated), (2) who or what creates the work (the orchestrator, a model call, a user action, or a config flag), (3) whether later child executions depend on the results of earlier ones (sequential dependency vs. independent parallelism), and (4) the distinction between a concurrency cap (how many can run simultaneously) and the total amount of work (how many will ultimately be created). The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating. The final report must be under 600 English words, cite at most six sources, avoid framework rankings or broad design recommendations, and briefly note any evidence gaps instead of filling them with inference.\n</Research Brief>\n\nFor more context, here is all of the messages so far. Focus on the research brief above, but consider these messages as well for more context.\n<Messages>\nHuman: Audit one narrow claim using the supplied official source excerpts: when are new child executions actually created in Open Deep Research and GPT Researcher, and how does that differ from optional delegation in DeepSeek Harness? Explain who creates the work, whether later queries depend on earlier results, and the difference between a concurrency cap and the total amount of work. Keep the FINAL report under 600 English words with at most six source citations. Do not write framework rankings or broad design recommendations. State evidence gaps briefly instead of speculating.\n</Messages>\nCRITICAL: Make sure the answer is written in the same language as the human messages!\nFor example, if the user's messages are in English, then MAKE SURE you write your response in English. If the user's messages are in Chinese, then MAKE SURE you write your entire response in Chinese.\nThis is critical. The user will only understand the answer if it is written in the same language as their input message.\n\nToday's date is Fri Oct 30, 2026.\n\nHere are the findings from the research that you conducted:\n<Findings>\nReflection recorded: The user asks me to audit a narrow claim about child execution spawning in three systems (Open Deep Research, GPT Researcher, DeepSeek Harness) using \"supplied official source excerpts.\" However, the user explicitly states: \"The user has not yet supplied the official source excerpts, so treat the specific excerpts as an open input to be provided by the user; the researcher should request or await them. If excerpts are not available, state the evidence gap explicitly rather than speculating.\"\n\nThis is a clear instruction: do NOT speculate about internal architecture. The correct response is to identify the evidence gap and note that the audit cannot proceed without the supplied excerpts. I should not conduct research that would fill the gap with inference from public documentation, because the user's framing is specifically about auditing against their supplied excerpts.\n\nThe right course of action:\n1. Note the evidence gap explicitly\n2. Specify exactly what would be needed to proceed (the excerpts)\n3. Call ResearchComplete with this finding\n\nI will NOT conduct speculative research about these systems' internals, as that would violate the explicit instruction to \"state the evidence gap explicitly rather than speculating.\"\n</Findings>\n\nPlease create a detailed answer to the overall research brief that:\n1. Is well-organized with proper headings (# for title, ## for sections, ### for subsections)\n2. Includes specific facts and insights from the research\n3. References relevant sources using [Title](URL) format\n4. Provides a balanced, thorough analysis. Be as comprehensive as possible, and include all information that is relevant to the overall research question. People are using you for deep research and will expect detailed, comprehensive answers.\n5. Includes a \"Sources\" section at the end with all referenced links\n\nYou can structure your report in a number of different ways. Here are some examples:\n\nTo answer a question that asks you to compare two things, you might structure your report like this:\n1/ intro\n2/ overview of topic A\n3/ overview of topic B\n4/ comparison between A and B\n5/ conclusion\n\nTo answer a question that asks you to return a list of things, you might only need a single section which is the entire list.\n1/ list of things or table of things\nOr, you could choose to make each item in the list a separate section in the report. When asked for lists, you don't need an introduction or conclusion.\n1/ item 1\n2/ item 2\n3/ item 3\n\nTo answer a question that asks you to summarize a topic, give a report, or give an overview, you might structure your report like this:\n1/ overview of topic\n2/ concept 1\n3/ concept 2\n4/ concept 3\n5/ conclusion\n\nIf you think you can answer the question with a single section, you can do that too!\n1/ answer\n\nREMEMBER: Section is a VERY fluid and loose concept. You can structure your report however you think is best, including in ways that are not listed above!\nMake sure that your sections are cohesive, and make sense for the reader.\n\nFor each section of the report, do the following:\n- Use simple, clear language\n- Use ## for section title (Markdown format) for each section of the report\n- Do NOT ever refer to yourself as the writer of the report. This should be a professional report without any self-referential language. \n- Do not say what you are doing in the report. Just write the report without any commentary from yourself.\n- Each section should be as long as necessary to deeply answer the question with the information you have gathered. It is expected that sections will be fairly long and verbose. You are writing a deep research report, and users will expect a thorough answer.\n- Use bullet points to list out information when appropriate, but by default, write in paragraph form.\n\nREMEMBER:\nThe brief and research may be in English, but you need to translate this information to the right language when writing the final answer.\nMake sure the final answer report is in the SAME language as the human messages in the message history.\n\nFormat the report in clear markdown with proper structure and include source references where appropriate.\n\n<Citation Rules>\n- Assign each unique URL a single citation number in your text\n- End with ### Sources that lists each source with corresponding numbers\n- IMPORTANT: Number sources sequentially without gaps (1,2,3,4...) in the final list regardless of which sources you choose\n- Each source should be a separate line item in a list, so that in markdown it is rendered as a list.\n- Example format:\n  [1] Source Title: URL\n  [2] Source Title: URL\n- Citations are extremely important. Make sure to include these, and pay a lot of attention to getting these right. Users will often use these citations to look into more information.\n</Citation Rules>\n",
+            "role": "user"
+          }
+        ],
+        "max_completion_tokens": 8192
+      },
+      "response": {
+        "content": "\n\n# Audit: Child Execution Spawning in Open Deep Research, GPT Researcher, and DeepSeek Harness\n\n## Status: Awaiting Source Excerpts\n\nThis audit cannot be completed with the evidence currently available. The research brief requires auditing a specific claim about child execution creation in three systems using **supplied official source excerpts**. No such excerpts have been provided at this time.\n\nPer the brief's explicit instruction, this report states the evidence gap rather than filling it with inference from public documentation or general knowledge.\n\n## What Is Required to Proceed\n\nTo complete the audit across the four specified dimensions, the following excerpts are needed:\n\n### 1. Trigger or Mechanism for Child Execution Spawning\n\nSource material (code, documentation, or API reference) showing:\n\n- **Open Deep Research:** The logic or prompt that determines when a new subtask or sub-query is generated during a research run.\n- **GPT Researcher:** The mechanism that spawns sub-queries from a parent task (e.g., the planning phase, a decomposition step, or a conditional branch).\n- **DeepSeek Harness:** The delegation logic showing when and how a parent execution spawns child work units, and under what conditions delegation is optional versus mandatory.\n\n### 2. Creator of the Work\n\nExcerpts identifying whether child executions are created by:\n\n- An orchestrator loop (deterministic code),\n- A model call (the LLM decides to decompose),\n- A user action (manual splitting), or\n- A configuration flag (e.g., a parameter that enables or disables sub-task generation).\n\n### 3. Sequential Dependency vs. Independent Parallelism\n\nMaterial showing whether:\n\n- Later child executions consume the outputs of earlier ones (indicating sequential dependency), or\n- All child executions are generated upfront and run independently (indicating parallelism with no inter-child data flow).\n\n### 4. Concurrency Cap vs. Total Work Volume\n\nDocumentation or code that distinguishes:\n\n- A **concurrency cap** (maximum number of child executions running simultaneously at any given moment), from\n- The **total work volume** (the aggregate number of child executions that will ultimately be created over the lifetime of a run).\n\n## Evidence Gap Statement\n\nNo official source excerpts have been supplied. Without them, no factual claims can be made about the internal spawning logic of any of the three systems. Any description of their behavior based solely on public READMEs, blog posts, or general knowledge would constitute the kind of speculation the brief explicitly prohibits.\n\n## Next Step\n\nProvide the official source excerpts (code files, configuration schemas, API documentation, or architectural notes) for each of the three systems. Once supplied, the audit will map each excerpt to the four dimensions above and produce a structured comparison with direct citations.\n\n### Sources\n\nNo sources are cited in this report. The audit is pending the user-supplied excerpts specified in the research brief.",
+        "reasoning": "The user's research brief explicitly states that the official source excerpts have not yet been supplied, and the researcher should request or await them rather than speculate. The findings confirm this: the correct action is to state the evidence gap explicitly and specify what is needed to proceed.\n\nI need to write a report that:\n1. Is in English (matching the user's language)\n2. Is under 600 words\n3. Cites at most six sources (but since there are no excerpts, I'll cite zero or minimal)\n4. Does not speculate about the internal architectures\n5. Clearly states the evidence gap\n6. Specifies exactly what is needed to proceed\n7. Is well-structured with proper headings\n8. Avoids framework rankings or broad design recommendations\n\nLet me write a concise, professional report that acknowledges the evidence gap and outlines what would be needed to complete the audit.\n",
+        "tool_calls": []
+      },
+      "measurement": {
+        "status": 200,
+        "duration_seconds": 19.075063382042572,
+        "first_body_seconds": 0.29046630510129035,
+        "headers": {
+          "date": "Fri, 30 Oct 2026 03:57:13 GMT",
+          "server": "uvicorn",
+          "content-type": "text/event-stream; charset=utf-8",
+          "vary": "Origin",
+          "x-request-id": "1229d71bbb1c49c0b195188b1ad95886",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "usage": {}
+      },
+      "stage": "主管汇合 / 最终报告"
+    }
+  ],
+  "native_tools": {},
+  "report_finish_reason": "stop",
+  "links": [
+    [
+      "完整原始证据包",
+      "../experiments/dsh-engine/evidence/upstream-workflows-20261030-v003/raw.tar.gz"
+    ],
+    [
+      "本次报告",
+      "../experiments/dsh-engine/results/natural-dag-20261029/frameworks/odr-focused-report.md"
+    ],
+    [
+      "官方主管执行",
+      "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py#L282"
+    ]
+  ],
+  "data_url": "../experiments/dsh-engine/results/natural-dag-20261029/frameworks/odr-focused.json",
+  "status_label": "正常结束；误判输入，未完成审查",
+  "provenance": {
+    "label": "自编编排机制核对题",
+    "kind": "authored_diagnostic",
+    "dataset": null,
+    "task_origin": "Codex为排查编排机制编写的初始任务；不是公开数据集原题",
+    "input_origin": "固定的4份官方源码／文档片段；不是实时网络检索",
+    "official_benchmark_protocol": false,
+    "unit": "同类诊断任务的配置修正或提示变体；每次只提交1个根任务"
+  },
+  "experiment_change": "改为窄核对任务，要求600英文词；补全语料，研究循环4→3"
+}

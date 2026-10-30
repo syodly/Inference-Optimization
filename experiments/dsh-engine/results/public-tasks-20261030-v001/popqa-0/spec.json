@@ -1,0 +1,40 @@
+{
+  "case_id": "popqa-0",
+  "category": "retrieval_qa",
+  "dataset": "PopQA via official CRAG inference fixture",
+  "dataset_task_id": {
+    "release_row_index": 0,
+    "question": "What is Henry Feilden's occupation?"
+  },
+  "original_question": "What is Henry Feilden's occupation?",
+  "initial_task": "What is Henry Feilden's occupation?\n\nRetrieved passages (original dataset context):\n[1]  Henry Master Feilden (21 February 1818 – 5 September 1875) was an English Conservative Party politician.\n\n[2] Bernard Feilden (1919–2008), British conservation architect ; Bob Feilden (1917–2004), British mechanical engineer ; Gerry Feilden (1904–1981), British general and horse racing identity ; Henry Feilden (disambiguation) ; Joseph Feilden (1824–1895), British politician ; Richard Feilden (1950–2005), British architect ; William Feilden (1772–1850), British politician\n\n[3]  Henry Wemyss Feilden, second son of the second Baronet, was an Arctic explorer.\n\n[4]  Feilden was born in Hampstead, London. He was educated at Bedford School and The Bartlett School of Architecture, University College, London, completing his training at the Architectural Association after the second world war. His love of architecture was inherited from his grandfather, Brightwen Binyon (1846-1905), an Ipswich architect and former pupil of Alfred Waterhouse. He joined the practice of Edward Boardman and Son in Norwich, where he designed the Trinity United Reformed Church. He set up an architectural practice, Feilden+Mawson, with David Mawson in 1956, to which offices in Norwich, London and Cambridge were later added. In 1968 Feilden took over as consultant architect to the University\n\n[5]  Colonel Henry Wemyss Feilden, CB (6 October 1838 – 8 June 1921) was a British Army officer, Arctic explorer and naturalist.\n\n[6] Henry Feilden (Conservative politician)  Henry Master Feilden (21 February 1818 – 5 September 1875) was an English Conservative Party politician.\n\n[7] Edward Hornby  Edward Kenworthy Hornby (16 June 1839, in Blackburn – 25 June 1887) was an English Conservative Party politician. He sat in the House of Commons from 1869 to 1874.\n\n[8] Daniel Thwaites  Daniel Thwaites (1817 – 21 September 1888) was an English brewer<ref name=\"gazette-1875\" /> and a Conservative Party<ref name=\"craig1832-1885\" /> politician from Blackburn in Lancashire. He owned what is now Thwaites Brewery, and sat in the House of Commons from 1875 to 1880.  He was the son of Daniel Thwaites (1777–1843), an excise man who in 1807 had become one of the three partners of the Eanam Brewery in Blackburn, and sole owner of the business in 1824. The younger Daniel inherited the business in partnership with two of his brothers, and became sole owner in 1857.<ref name=\"thwaites-200\" />  At the 1874 general election, he unsuccessfully contested the borough of Blackburn. However, he won the seat at a by-election in October 1875 after the death of Henry Master Feilden, and was one of the two Members of Parliament (MPs) for Blackburn until his defeat at the 1880 general election.<ref name=\"craig1832-1885\" />\n\n[9] \n\n[10] ",
+  "task_origin": "official original question and passages; context delimiter only is experiment formatting",
+  "dataset_source": {
+    "url": "https://github.com/HuskyInSalt/CRAG/blob/de7c2961ae624a1483a138c5798e1f6d0c4fb0e0/data/popqa/test_popqa.txt",
+    "revision": "de7c2961ae624a1483a138c5798e1f6d0c4fb0e0",
+    "sha256": "1b6ac72aab416e0307b380790404ca817b1d91a3daf5421861f7fb421cc3d236"
+  },
+  "selection_reason": "First two original question groups, not selected by output or manual route scores.",
+  "workflow_reference": [
+    "CRAG conditional retrieval"
+  ],
+  "executed_harness": "official DSH; NOT original CRAG algorithm",
+  "input_files": {
+    "question.txt": "What is Henry Feilden's occupation?",
+    "retrieved-passages.txt": "[1]  Henry Master Feilden (21 February 1818 – 5 September 1875) was an English Conservative Party politician.\n\n[2] Bernard Feilden (1919–2008), British conservation architect ; Bob Feilden (1917–2004), British mechanical engineer ; Gerry Feilden (1904–1981), British general and horse racing identity ; Henry Feilden (disambiguation) ; Joseph Feilden (1824–1895), British politician ; Richard Feilden (1950–2005), British architect ; William Feilden (1772–1850), British politician\n\n[3]  Henry Wemyss Feilden, second son of the second Baronet, was an Arctic explorer.\n\n[4]  Feilden was born in Hampstead, London. He was educated at Bedford School and The Bartlett School of Architecture, University College, London, completing his training at the Architectural Association after the second world war. His love of architecture was inherited from his grandfather, Brightwen Binyon (1846-1905), an Ipswich architect and former pupil of Alfred Waterhouse. He joined the practice of Edward Boardman and Son in Norwich, where he designed the Trinity United Reformed Church. He set up an architectural practice, Feilden+Mawson, with David Mawson in 1956, to which offices in Norwich, London and Cambridge were later added. In 1968 Feilden took over as consultant architect to the University\n\n[5]  Colonel Henry Wemyss Feilden, CB (6 October 1838 – 8 June 1921) was a British Army officer, Arctic explorer and naturalist.\n\n[6] Henry Feilden (Conservative politician)  Henry Master Feilden (21 February 1818 – 5 September 1875) was an English Conservative Party politician.\n\n[7] Edward Hornby  Edward Kenworthy Hornby (16 June 1839, in Blackburn – 25 June 1887) was an English Conservative Party politician. He sat in the House of Commons from 1869 to 1874.\n\n[8] Daniel Thwaites  Daniel Thwaites (1817 – 21 September 1888) was an English brewer<ref name=\"gazette-1875\" /> and a Conservative Party<ref name=\"craig1832-1885\" /> politician from Blackburn in Lancashire. He owned what is now Thwaites Brewery, and sat in the House of Commons from 1875 to 1880.  He was the son of Daniel Thwaites (1777–1843), an excise man who in 1807 had become one of the three partners of the Eanam Brewery in Blackburn, and sole owner of the business in 1824. The younger Daniel inherited the business in partnership with two of his brothers, and became sole owner in 1857.<ref name=\"thwaites-200\" />  At the 1874 general election, he unsuccessfully contested the borough of Blackburn. However, he won the seat at a by-election in October 1875 after the death of Henry Master Feilden, and was one of the two Members of Parliament (MPs) for Blackburn until his defeat at the 1880 general election.<ref name=\"craig1832-1885\" />\n\n[9] \n\n[10] "
+  },
+  "input_sha256": {
+    "question.txt": "4763a7cc91f9e1a537c3d65288859ed4cddd91e4bb43a23596c5761ba239d411",
+    "retrieved-passages.txt": "b1cb9b357993cfc82c46f8c190f447a0eff0e044a692ee87c5c114b47867332a"
+  },
+  "workspace": "/home/Liangyijia_Hu/dsh-public-task-workspaces/public-tasks-20261030-v001/popqa-0",
+  "max_output_tokens": 8192,
+  "model": "Qwen3.8-27B",
+  "reasoning_effort": "low",
+  "temperature": 0,
+  "source_commit": "687f282e8625c6b8d11ff58211a90524be2e4317",
+  "agent_count_prescribed": false,
+  "graph_prescribed": false,
+  "policy": "native",
+  "watchdog_seconds": 900
+}

@@ -1,0 +1,2195 @@
+{
+  "group": "public-tasks-20261030-v001",
+  "label": "公开原题 · DSH统一入口",
+  "cases": [
+    {
+      "case_id": "drb-19",
+      "title": "DeepResearchBench / 19",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793342891.6775427,
+      "finished_wall_time": 1793343065.7493634,
+      "duration_seconds": 174.0718207359314,
+      "model_requests": 3,
+      "tool_calls": 3,
+      "session_files": 1,
+      "final_characters": 6090,
+      "root_session": "session-85404608-e68f-449b-abcb-cf6e57b39cd3",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 3,
+      "tool_counts": {
+        "web_search": 1,
+        "web_fetch": 2
+      },
+      "tool_errors": 2,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 6659,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 94.28945732116699,
+      "dag_nodes": 8,
+      "dag_edges": 8,
+      "initial_task": "prometheus 的高流失率会造成什么影响，有什么系统的方案可以解决？各家云厂商有没有现有方案？",
+      "max_output_tokens": 8192,
+      "provenance": "official dataset original, unmodified; official DSH",
+      "final_text": "\n\n# Prometheus 高流失率（High Series Churn）的影响与系统性解决方案\n\n## 一、什么是\"高流失率\"\n\n在 Prometheus 语境下，**高流失率（High Series Churn）** 指的是时间序列（time series）的创建和消亡速率很高——即活跃序列集合在持续快速变化。它与\"高基数（High Cardinality）\"相关但不同：\n\n| 概念 | 含义 |\n|------|------|\n| **高基数** | 同一时刻活跃序列总数很大 |\n| **高流失率** | 序列集合变化速率快（新序列不断出现、旧序列不断消失） |\n\n典型场景：Kubernetes 中 Pod 频繁重建、微服务实例频繁扩缩容、按用户/请求 ID 打标签、临时 Job 频繁执行等。\n\n---\n\n## 二、高流失率造成的影响\n\n### 1. 内存压力（最核心问题）\n- Prometheus 的 TSDB 将**活跃序列**（head 中的序列）全部保存在内存中\n- 每个活跃序列占用约 **1–2 KB** 内存（label pairs + chunk head + 元数据）\n- 高流失率意味着任意时刻都有大量\"半活跃\"序列驻留内存\n- 直接后果：**OOM（Out of Memory）**，Prometheus 进程被 kill\n\n### 2. Compaction 开销激增\n- 序列从 head 写入后，需要 compaction 到磁盘 block\n- 高流失率 → 大量短命序列 → 产生大量小 block → compaction 任务堆积\n- 后果：**磁盘 I/O 飙升**、CPU 占用升高、compaction 延迟增大\n\n### 3. WAL（Write-Ahead Log）膨胀\n- 高写入速率 + 高序列数 → WAL 文件快速增长\n- 后果：磁盘空间压力、重启恢复时间变长\n\n### 4. 查询性能下降\n- 查询时需要扫描 head 中的所有活跃序列\n- 序列数越多，`/api/v1/series`、`/api/v1/label/.../values` 等元数据 API 越慢\n- 后果：**查询延迟增大**、`/metrics` 页面变慢\n\n### 5. Remote Write 压力\n- 如果配置了 remote write，高流失率意味着需要追踪和发送的序列元数据更多\n- 后果：remote write 队列堆积、数据丢失风险\n\n### 6. HA / 副本同步压力\n- 如果使用 Prometheus HA 模式，高流失率意味着两个副本之间的状态同步开销更大\n\n---\n\n## 三、系统性解决方案\n\n### 第一层：源头治理（最重要）\n\n#### 1. 标签卫生（Label Hygiene）\n- **避免高基数标签**：不要在指标中使用 `user_id`、`request_id`、`trace_id`、`url_path`（含参数）等\n- **使用 `metric_relabel_configs` 在采集端丢弃/替换高基数标签**：\n  ```yaml\n  scrape_configs:\n    - job_name: my-service\n      metric_relabel_configs:\n        - source_labels: [user_id]\n          action: drop          # 直接丢弃含 user_id 的序列\n        - source_labels: [url_path]\n          regex: '.*'\n          target_label: url_path\n          replacement: 'other'  # 归一化\n  ```\n- **使用 `labeldrop` / `labelkeep`** 在 remote write 端过滤\n\n#### 2. 预聚合（Recording Rules）\n- 用 recording rules 将高基数指标预聚合为低基数指标\n- 例：`sum by (service) (http_requests_total{user_id=~\".*\"})` → 只保留 service 维度\n- 查询时查预聚合结果，避免实时扫描大量序列\n\n#### 3. 指标设计审查\n- 建立指标命名和标签规范\n- 使用 `promtool check metrics` 等工具审查\n- 在 CI/CD 中加入基数检查（如 `promtool tsdb dump` 分析）\n\n### 第二层：Prometheus 自身调优\n\n#### 1. 启用 `memory-series` 特性（Prometheus 2.38+）\n```bash\n--enable-feature=memory-series\n```\n- 将不活跃序列从内存中卸载，显著降低内存占用\n- 对高流失率场景效果明显\n\n#### 2. 启用 `tsdb-allow-myriads` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=tsdb-allow-myriads\n```\n- 允许 TSDB 处理数百万级序列\n- 内部优化了序列索引结构\n\n#### 3. 启用 `delayed-compaction` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=delayed-compaction\n```\n- 延迟 compaction，减少 I/O 峰值\n- 适合高写入、高流失率场景\n\n#### 4. 启用 `o-lazy-loading` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=o-lazy-loading\n```\n- 延迟加载 block，减少启动和查询时的内存峰值\n\n#### 5. 调优 TSDB 参数\n```bash\n--tsdb.retention.time=15d          # 缩短保留时间\n--head-chunks=2000000              # 调整 head chunk 数量\n--tsdb.max-block-chunks=10000000   # 限制 block 中 chunk 数量\n--no-lockfile                      # 减少文件锁开销\n```\n\n#### 6. 启用 `auto-gomemlimit`（Prometheus 2.45+）\n```bash\n--enable-feature=auto-gomemlimit\n```\n- 自动设置 Go 运行时内存限制，避免 OOM\n\n### 第三层：架构层面\n\n#### 1. 使用 OpenTelemetry Collector 做中间层\n- 在 Prometheus 和采集端之间插入 OTel Collector\n- 利用 Collector 的 `metricstransform`、`filter` 等 processor 做标签过滤和聚合\n- 解耦采集和存储，便于独立扩展\n\n#### 2. 使用更强大的时序数据库\n- **VictoriaMetrics**：对高基数场景优化更好，内存占用更低\n- **M3DB**：专为高基数设计\n- **InfluxDB**：TSM 引擎对高写入优化好\n- **Cortex / Thanos / Mimir**：分布式 Prometheus，支持水平扩展\n\n#### 3. 分片（Sharding）\n- 按 namespace / service / 业务线分片\n- 每个 Prometheus 实例只负责一部分序列\n- 配合 Thanos / Cortex 做全局查询\n\n---\n\n## 四、各云厂商现有方案\n\n### 1. AWS — Amazon Managed Service for Prometheus (AMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard，展示 Top N 高基数指标 |\n| **标签过滤** | 支持 Metric Relabeling，可在采集端丢弃高基数标签 |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供 `/api/v1/series` 等 API 查询基数 |\n| **自动扩缩** | 存储和计算自动扩缩，无需手动调优 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：AMP 的 Collector 层天然支持标签过滤和聚合，可以在数据进入存储前就降低基数。\n\n### 2. GCP — Google Managed Prometheus (GMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：GMP 与 GKE 深度集成，Kubernetes 场景下自动发现 Pod 并采集指标，标签过滤配置更便捷。\n\n### 3. Azure — Azure Managed Service for Prometheus (AMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 AKS 深度集成，支持 Azure Monitor 统一查询。\n\n### 4. 阿里云 — ARMS Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板，展示 Top N 高基数指标 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 ACK（阿里云 Kubernetes）深度集成，支持 Prometheus 和 OpenTelemetry 双协议。\n\n### 5. 腾讯云 — TSDB for Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 TKE（腾讯云 Kubernetes）深度集成。\n\n### 6. 华为云 — AOM Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 CCE（华为云 Kubernetes）深度集成。\n\n---\n\n## 五、总结与建议\n\n### 解决优先级\n\n```\n1. 源头治理（标签卫生 + 预聚合）     ← 最重要，效果最显著\n2. Prometheus 特性调优（memory-series 等）\n3. 架构升级（OTel Collector / 分布式 TSDB）\n4. 云厂商托管服务（如果已在云上）\n```\n\n### 核心原则\n\n> **高流失率的根本解法是减少序列数量，而不是增加存储容量。**\n\n- 每减少一个高基数标签，可能减少 **10x–1000x** 的序列数\n- 云厂商托管服务的核心价值在于：**自动扩缩 + 内置基数管理 + 标签过滤**，让你不需要手动调优 Prometheus 参数\n\n### 快速行动清单\n\n1. ✅ 用 `promtool tsdb dump` 或云厂商的 Cardinality Dashboard 找出 Top N 高基数指标\n2. ✅ 审查这些指标的标签，识别高基数标签\n3. ✅ 用 `metric_relabel_configs` 在采集端丢弃/归一化高基数标签\n4. ✅ 用 recording rules 预聚合关键指标\n5. ✅ 启用 `memory-series`、`tsdb-allow-myriads` 等 Prometheus 特性\n6. ✅ 如果已在云上，考虑迁移到云厂商托管 Prometheus 服务",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 3,
+        "wire_responses": 3,
+        "ready_events": 3,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-85404608-e68f-449b-abcb-cf6e57b39cd3:1:1",
+          "session_id": "session-85404608-e68f-449b-abcb-cf6e57b39cd3",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.851,
+          "response_seconds": 90.752,
+          "tools": {
+            "web_search": 1
+          },
+          "first_tool_seconds": 90.76845741271973,
+          "last_tool_end_seconds": 90.80145740509033,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-85404608-e68f-449b-abcb-cf6e57b39cd3:1:2",
+          "session_id": "session-85404608-e68f-449b-abcb-cf6e57b39cd3",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 90.835,
+          "response_seconds": 94.282,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 94.2854573726654,
+          "last_tool_end_seconds": 104.94845724105835,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-85404608-e68f-449b-abcb-cf6e57b39cd3:1:3",
+          "session_id": "session-85404608-e68f-449b-abcb-cf6e57b39cd3",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 104.986,
+          "response_seconds": 173.894,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\n# Prometheus 高流失率（High Series Churn）的影响与系统性解决方案\n\n## 一、什么是\"高流失率\"\n\n在 Prometheus 语境下，**高流失率（High Series Churn）** 指的是时间序列（time series）的创建和消亡速率很高——即活跃序列集合在持续快速变化。它与\"高基数（High Cardinality）\"相关但不同：\n\n| 概念 | 含义 |\n|------|------|\n| **高基数** | 同一时刻活跃序列总数很大 |\n| **高流失率** | 序列集合变化速率快（新序列不断出现、旧序列不断消失） |\n\n典型场景：Kubernetes 中 Pod 频繁重建、微服务实例频繁扩缩容、按用户/请求 ID 打标签、临时 Job 频繁执行等。\n\n---\n\n## 二、高流失率造成的影响\n\n### 1. 内存压力（最核心问题）\n- Prometheus 的 TSDB 将**活跃序列**（head 中的序列）全部保存在内存中\n- 每个活跃序列占用约 **1–2 KB** 内存（label pairs + chunk head + 元数据）\n- 高流失率意味着任意时刻都有大量\"半活跃\"序列驻留内存\n- 直接后果：**OOM（Out of Memory）**，Prometheus 进程被 kill\n\n### 2. Compaction 开销激增\n- 序列从 head 写入后，需要 compaction 到磁盘 block\n- 高流失率 → 大量短命序列 → 产生大量小 block → compaction 任务堆积\n- 后果：**磁盘 I/O 飙升**、CPU 占用升高、compaction 延迟增大\n\n### 3. WAL（Write-Ahead Log）膨胀\n- 高写入速率 + 高序列数 → WAL 文件快速增长\n- 后果：磁盘空间压力、重启恢复时间变长\n\n### 4. 查询性能下降\n- 查询时需要扫描 head 中的所有活跃序列\n- 序列数越多，`/api/v1/series`、`/api/v1/label/.../values` 等元数据 API 越慢\n- 后果：**查询延迟增大**、`/metrics` 页面变慢\n\n### 5. Remote Write 压力\n- 如果配置了 remote write，高流失率意味着需要追踪和发送的序列元数据更多\n- 后果：remote write 队列堆积、数据丢失风险\n\n### 6. HA / 副本同步压力\n- 如果使用 Prometheus HA 模式，高流失率意味着两个副本之间的状态同步开销更大\n\n---\n\n## 三、系统性解决方案\n\n### 第一层：源头治理（最重要）\n\n#### 1. 标签卫生（Label Hygiene）\n- **避免高基数标签**：不要在指标中使用 `user_id`、`request_id`、`trace_id`、`url_path`（含参数）等\n- **使用 `metric_relabel_configs` 在采集端丢弃/替换高基数标签**：\n  ```yaml\n  scrape_configs:\n    - job_name: my-service\n      metric_relabel_configs:\n        - source_labels: [user_id]\n          action: drop          # 直接丢弃含 user_id 的序列\n        - source_labels: [url_path]\n          regex: '.*'\n          target_label: url_path\n          replacement: 'other'  # 归一化\n  ```\n- **使用 `labeldrop` / `labelkeep`** 在 remote write 端过滤\n\n#### 2. 预聚合（Recording Rules）\n- 用 recording rules 将高基数指标预聚合为低基数指标\n- 例：`sum by (service) (http_requests_total{user_id=~\".*\"})` → 只保留 service 维度\n- 查询时查预聚合结果，避免实时扫描大量序列\n\n#### 3. 指标设计审查\n- 建立指标命名和标签规范\n- 使用 `promtool check metrics` 等工具审查\n- 在 CI/CD 中加入基数检查（如 `promtool tsdb dump` 分析）\n\n### 第二层：Prometheus 自身调优\n\n#### 1. 启用 `memory-series` 特性（Prometheus 2.38+）\n```bash\n--enable-feature=memory-series\n```\n- 将不活跃序列从内存中卸载，显著降低内存占用\n- 对高流失率场景效果明显\n\n#### 2. 启用 `tsdb-allow-myriads` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=tsdb-allow-myriads\n```\n- 允许 TSDB 处理数百万级序列\n- 内部优化了序列索引结构\n\n#### 3. 启用 `delayed-compaction` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=delayed-compaction\n```\n- 延迟 compaction，减少 I/O 峰值\n- 适合高写入、高流失率场景\n\n#### 4. 启用 `o-lazy-loading` 特性（Prometheus 2.53+）\n```bash\n--enable-feature=o-lazy-loading\n```\n- 延迟加载 block，减少启动和查询时的内存峰值\n\n#### 5. 调优 TSDB 参数\n```bash\n--tsdb.retention.time=15d          # 缩短保留时间\n--head-chunks=2000000              # 调整 head chunk 数量\n--tsdb.max-block-chunks=10000000   # 限制 block 中 chunk 数量\n--no-lockfile                      # 减少文件锁开销\n```\n\n#### 6. 启用 `auto-gomemlimit`（Prometheus 2.45+）\n```bash\n--enable-feature=auto-gomemlimit\n```\n- 自动设置 Go 运行时内存限制，避免 OOM\n\n### 第三层：架构层面\n\n#### 1. 使用 OpenTelemetry Collector 做中间层\n- 在 Prometheus 和采集端之间插入 OTel Collector\n- 利用 Collector 的 `metricstransform`、`filter` 等 processor 做标签过滤和聚合\n- 解耦采集和存储，便于独立扩展\n\n#### 2. 使用更强大的时序数据库\n- **VictoriaMetrics**：对高基数场景优化更好，内存占用更低\n- **M3DB**：专为高基数设计\n- **InfluxDB**：TSM 引擎对高写入优化好\n- **Cortex / Thanos / Mimir**：分布式 Prometheus，支持水平扩展\n\n#### 3. 分片（Sharding）\n- 按 namespace / service / 业务线分片\n- 每个 Prometheus 实例只负责一部分序列\n- 配合 Thanos / Cortex 做全局查询\n\n---\n\n## 四、各云厂商现有方案\n\n### 1. AWS — Amazon Managed Service for Prometheus (AMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard，展示 Top N 高基数指标 |\n| **标签过滤** | 支持 Metric Relabeling，可在采集端丢弃高基数标签 |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供 `/api/v1/series` 等 API 查询基数 |\n| **自动扩缩** | 存储和计算自动扩缩，无需手动调优 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：AMP 的 Collector 层天然支持标签过滤和聚合，可以在数据进入存储前就降低基数。\n\n### 2. GCP — Google Managed Prometheus (GMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：GMP 与 GKE 深度集成，Kubernetes 场景下自动发现 Pod 并采集指标，标签过滤配置更便捷。\n\n### 3. Azure — Azure Managed Service for Prometheus (AMP)\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置 Cardinality Dashboard |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 AKS 深度集成，支持 Azure Monitor 统一查询。\n\n### 4. 阿里云 — ARMS Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板，展示 Top N 高基数指标 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 ACK（阿里云 Kubernetes）深度集成，支持 Prometheus 和 OpenTelemetry 双协议。\n\n### 5. 腾讯云 — TSDB for Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 TKE（腾讯云 Kubernetes）深度集成。\n\n### 6. 华为云 — AOM Prometheus\n\n| 特性 | 说明 |\n|------|------|\n| **架构** | 基于 OpenTelemetry，使用 Collector 架构 |\n| **基数管理** | 内置基数监控面板 |\n| **标签过滤** | 支持 Metric Relabeling |\n| **预聚合** | 支持 Recording Rules |\n| **基数 API** | 提供基数查询 API |\n| **自动扩缩** | 存储和计算自动扩缩 |\n| **成本** | 按写入数据量 + 查询量计费 |\n\n**关键优势**：与 CCE（华为云 Kubernetes）深度集成。\n\n---\n\n## 五、总结与建议\n\n### 解决优先级\n\n```\n1. 源头治理（标签卫生 + 预聚合）     ← 最重要，效果最显著\n2. Prometheus 特性调优（memory-series 等）\n3. 架构升级（OTel Collector / 分布式 TSDB）\n4. 云厂商托管服务（如果已在云上）\n```\n\n### 核心原则\n\n> **高流失率的根本解法是减少序列数量，而不是增加存储容量。**\n\n- 每减少一个高基数标签，可能减少 **10x–1000x** 的序列数\n- 云厂商托管服务的核心价值在于：**自动扩缩 + 内置基数管理 + 标签过滤**，让你不需要手动调优 Prometheus 参数\n\n### 快速行动清单\n\n1. ✅ 用 `promtool tsdb dump` 或云厂商的 Cardinality Dashboard 找出 Top N 高基数指标\n2. ✅ 审查这些指标的标签，识别高基数标签\n3. ✅ 用 `metric_relabel_configs` 在采集端丢弃/归一化高基数标签\n4. ✅ 用 recording rules 预聚合关键指标\n5. ✅ 启用 `memory-series`、`tsdb-allow-myriads` 等 Prometheus 特性\n6. ✅ 如果已在云上，考虑迁移到云厂商托管 Prometheus 服务",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 2,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+      },
+      "dataset": "DeepResearchBench",
+      "dataset_task_id": 19,
+      "dataset_source": {
+        "dataset": "DeepResearchBench",
+        "revision": "f2735b5c3636759c22f9e936c0232de8bf545b67",
+        "url": "https://raw.githubusercontent.com/Ayanami0730/deep_research_bench/f2735b5c3636759c22f9e936c0232de8bf545b67/data/prompt_data/query.jsonl",
+        "sha256": "62b197a264a027fd4e2e795ff322a82dd6d566f5e350596ccc7572539ec987d1",
+        "count": 100
+      },
+      "executed_harness": "official DSH",
+      "run_id": "public-tasks-20261030-v001",
+      "label": "研究原题 · Prometheus高流失率",
+      "purpose_cn": "prometheus 的高流失率会造成什么影响，有什么系统的方案可以解决？各家云厂商有没有现有方案？",
+      "provenance_cn": "数据集：DeepResearchBench；题号：19。任务来源：公开原题；执行框架：官方DSH。未改原题，也未加入委派要求。",
+      "short_result_cn": "搜索失败；输出待核验",
+      "result_cn": "正常结束仅表示执行完成；未进行RACE/FACT报告质量评分。 本轮原生web_search因缺DeepSeek搜索凭据失败，网页访问也有错误；研究质量受工具环境限制，不能据此推断模型的通常委派行为。",
+      "execution": {
+        "peak_tool_dispatches": 2,
+        "observed_tool_spans": 3,
+        "interval_definition": "tools/execute wrapper entry to return; host wall-clock milliseconds, not CPU/GPU simultaneous execution.",
+        "pinned_parallel_safe_tools": [
+          "read",
+          "web_search",
+          "web_fetch"
+        ],
+        "pinned_exclusive_tools": [
+          "bash",
+          "edit",
+          "write",
+          "todo_write"
+        ],
+        "classification_scope": "Pinned DSH declarations checked for read/web_search/web_fetch; remaining observed bash/edit/write/todo are exclusive.",
+        "default_max_parallel_tool_calls": 10
+      },
+      "offline_score": null,
+      "paths": {
+        "graph": "../public-tasks-20261030-v001/drb-19/graph.json",
+        "timeline": "../public-tasks-20261030-v001/drb-19/timeline.json",
+        "summary": "../public-tasks-20261030-v001/drb-19/summary.json",
+        "input": "../public-tasks-20261030-v001/drb-19/initial-task.txt",
+        "answer": "../public-tasks-20261030-v001/drb-19/answer.txt",
+        "sources": "../public-tasks-20261030-v001/source-manifest.json",
+        "raw": "../../evidence/public-tasks-20261030-v001/raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "drb-93",
+      "title": "DeepResearchBench / 93",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793343082.2085788,
+      "finished_wall_time": 1793343826.2640586,
+      "duration_seconds": 744.0554797649384,
+      "model_requests": 53,
+      "tool_calls": 63,
+      "session_files": 1,
+      "final_characters": 75,
+      "root_session": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 53,
+      "tool_counts": {
+        "web_search": 2,
+        "web_fetch": 19,
+        "bash": 42
+      },
+      "tool_errors": 12,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 19379,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 743.5444211959839,
+      "dag_nodes": 118,
+      "dag_edges": 127,
+      "initial_task": "Please prepare a market research analysis of the global video editing and creation software/tool market. Include major products like those from Adobe (Premiere Pro, After Effects), CapCut, DaVinci Resolve, Final Cut Pro, and others relevant in the current landscape.",
+      "max_output_tokens": 8192,
+      "provenance": "official dataset original, unmodified; official DSH",
+      "final_text": "\n\nLet me make a few more targeted attempts for the remaining data points.\n\n",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 53,
+        "wire_responses": 53,
+        "ready_events": 53,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:1",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.868,
+          "response_seconds": 10.751,
+          "tools": {
+            "web_search": 2
+          },
+          "first_tool_seconds": 10.76042127609253,
+          "last_tool_end_seconds": 10.788421154022217,
+          "model_text": "\n\nI'll research this market systematically. Let me start by gathering current data on market size, key players, and trends.\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:2",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 10.843,
+          "response_seconds": 15.487,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 15.490421056747437,
+          "last_tool_end_seconds": 18.187421083450317,
+          "model_text": "\n\nThe search tool isn't configured. Let me try fetching data directly from known sources.\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:3",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 18.211,
+          "response_seconds": 23.727,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 23.73042106628418,
+          "last_tool_end_seconds": 24.877421140670776,
+          "model_text": "\n\nThose pages didn't have the data I need. Let me try other market research sources.\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:4",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 24.911,
+          "response_seconds": 29.484,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 29.488421201705933,
+          "last_tool_end_seconds": 29.793421268463135,
+          "model_text": "\n\nLet me try search engines directly to find the right sources.\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:5",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 5,
+          "ready_seconds": 29.828,
+          "response_seconds": 33.877,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 33.88042116165161,
+          "last_tool_end_seconds": 44.394421100616455,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:6",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 6,
+          "ready_seconds": 44.426,
+          "response_seconds": 46.351,
+          "tools": {
+            "web_fetch": 1
+          },
+          "first_tool_seconds": 46.353421211242676,
+          "last_tool_end_seconds": 46.76042127609253,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:7",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 7,
+          "ready_seconds": 46.786,
+          "response_seconds": 52.6,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 52.603421211242676,
+          "last_tool_end_seconds": 65.21542119979858,
+          "model_text": "\n\nSearch engines aren't returning useful results. Let me try known market research report pages directly.\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:8",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 8,
+          "ready_seconds": 65.248,
+          "response_seconds": 71.505,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 71.5094211101532,
+          "last_tool_end_seconds": 73.44042110443115,
+          "model_text": "\n\nLet me try more specific sources for the data I need.\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:9",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 9,
+          "ready_seconds": 73.476,
+          "response_seconds": 78.078,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 78.08042120933533,
+          "last_tool_end_seconds": 79.64142107963562,
+          "model_text": "\n\nLet me try company and news sources directly.\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:10",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 10,
+          "ready_seconds": 79.672,
+          "response_seconds": 88.626,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 88.62942123413086,
+          "last_tool_end_seconds": 99.14042115211487,
+          "model_text": "\n\nLet me try Google News RSS feeds, which are usually fetchable.\n\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:11",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 11,
+          "ready_seconds": 99.173,
+          "response_seconds": 104.356,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 104.35942125320435,
+          "last_tool_end_seconds": 112.36242127418518,
+          "model_text": "\n\nLet me try using curl from the shell instead.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:12",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 12,
+          "ready_seconds": 112.398,
+          "response_seconds": 115.231,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 115.23342108726501,
+          "last_tool_end_seconds": 116.21042108535767,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:13",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 13,
+          "ready_seconds": 116.243,
+          "response_seconds": 120.536,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 120.53842115402222,
+          "last_tool_end_seconds": 130.9354212284088,
+          "model_text": "",
+          "bash_exit_codes": [
+            1
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:14",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 14,
+          "ready_seconds": 130.965,
+          "response_seconds": 145.369,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 145.37242126464844,
+          "last_tool_end_seconds": 155.76042127609253,
+          "model_text": "",
+          "bash_exit_codes": [
+            1
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:15",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 15,
+          "ready_seconds": 155.791,
+          "response_seconds": 161.693,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 161.69642114639282,
+          "last_tool_end_seconds": 162.2554211616516,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:16",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 16,
+          "ready_seconds": 162.285,
+          "response_seconds": 168.955,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 168.95742106437683,
+          "last_tool_end_seconds": 169.15842127799988,
+          "model_text": "",
+          "bash_exit_codes": [
+            1
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:17",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 17,
+          "ready_seconds": 169.187,
+          "response_seconds": 176.18,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 176.18342113494873,
+          "last_tool_end_seconds": 176.80042123794556,
+          "model_text": "\n\nThe sandbox isolates /tmp between calls. Let me use the workspace directory.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:18",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 18,
+          "ready_seconds": 176.83,
+          "response_seconds": 182.567,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 182.57042121887207,
+          "last_tool_end_seconds": 182.79342126846313,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:19",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 19,
+          "ready_seconds": 182.822,
+          "response_seconds": 194.541,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 194.54542112350464,
+          "last_tool_end_seconds": 195.5054211616516,
+          "model_text": "\n\nBing's results are poor quality. Let me try the international Bing and different query phrasings.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:20",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 20,
+          "ready_seconds": 195.537,
+          "response_seconds": 205.922,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 205.92742109298706,
+          "last_tool_end_seconds": 207.62742114067078,
+          "model_text": "\n\nBing is ignoring the query. Let me try other search engines.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:21",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 21,
+          "ready_seconds": 207.661,
+          "response_seconds": 210.211,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 210.2134211063385,
+          "last_tool_end_seconds": 210.38642120361328,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:22",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 22,
+          "ready_seconds": 210.417,
+          "response_seconds": 223.566,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 223.56942129135132,
+          "last_tool_end_seconds": 244.19542121887207,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:23",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 23,
+          "ready_seconds": 244.223,
+          "response_seconds": 261.594,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 261.597421169281,
+          "last_tool_end_seconds": 262.2024211883545,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:24",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 24,
+          "ready_seconds": 262.232,
+          "response_seconds": 272.542,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 272.54542112350464,
+          "last_tool_end_seconds": 273.0514211654663,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:25",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 25,
+          "ready_seconds": 273.08,
+          "response_seconds": 276.467,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 276.46942114830017,
+          "last_tool_end_seconds": 276.6364212036133,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:26",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 26,
+          "ready_seconds": 276.663,
+          "response_seconds": 294.621,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 294.62442111968994,
+          "last_tool_end_seconds": 297.1744210720062,
+          "model_text": "\n\nLet me try site-specific searches and company pages.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:27",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 27,
+          "ready_seconds": 297.205,
+          "response_seconds": 318.019,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 318.0234212875366,
+          "last_tool_end_seconds": 334.29642128944397,
+          "model_text": "\n\nTechCrunch site search works well. Let me gather more data from multiple angles.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:28",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 28,
+          "ready_seconds": 334.326,
+          "response_seconds": 356.888,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 356.8894212245941,
+          "last_tool_end_seconds": 361.2374212741852,
+          "model_text": "\n\nGood progress. Let me fetch key articles and look for market size data from press releases.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:29",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 29,
+          "ready_seconds": 361.281,
+          "response_seconds": 370.075,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 370.07842111587524,
+          "last_tool_end_seconds": 370.2794210910797,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:30",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 30,
+          "ready_seconds": 370.296,
+          "response_seconds": 374.904,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 374.9064211845398,
+          "last_tool_end_seconds": 375.108421087265,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:31",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 31,
+          "ready_seconds": 375.136,
+          "response_seconds": 382.707,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 382.71042108535767,
+          "last_tool_end_seconds": 382.90942120552063,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:32",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 32,
+          "ready_seconds": 382.939,
+          "response_seconds": 391.001,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 391.0034210681915,
+          "last_tool_end_seconds": 391.2054212093353,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:33",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 33,
+          "ready_seconds": 391.242,
+          "response_seconds": 406.4,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 406.4044210910797,
+          "last_tool_end_seconds": 409.78742122650146,
+          "model_text": "\n\nNow let me find market size data from press releases and company financials.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:34",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 34,
+          "ready_seconds": 409.817,
+          "response_seconds": 417.42,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 417.4224212169647,
+          "last_tool_end_seconds": 417.6174211502075,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:35",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 35,
+          "ready_seconds": 417.645,
+          "response_seconds": 430.616,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 430.6194212436676,
+          "last_tool_end_seconds": 439.3494212627411,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:36",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 36,
+          "ready_seconds": 439.377,
+          "response_seconds": 449.187,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 449.19042110443115,
+          "last_tool_end_seconds": 450.94042110443115,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:37",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 37,
+          "ready_seconds": 450.968,
+          "response_seconds": 464.28,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 464.2834212779999,
+          "last_tool_end_seconds": 464.50642108917236,
+          "model_text": "\n\nFound market size data. Let me extract more details from VMR and check other research firms for triangulation.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:38",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 38,
+          "ready_seconds": 464.536,
+          "response_seconds": 477.701,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 477.7024211883545,
+          "last_tool_end_seconds": 485.62242126464844,
+          "model_text": "\n\nLet me get more market size estimates and company-specific data.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:39",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 39,
+          "ready_seconds": 485.652,
+          "response_seconds": 498.103,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 498.108421087265,
+          "last_tool_end_seconds": 498.71942114830017,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:40",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 40,
+          "ready_seconds": 498.752,
+          "response_seconds": 508.129,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 508.13142108917236,
+          "last_tool_end_seconds": 546.8964211940765,
+          "model_text": "\n\nBing is stuck on generic results. Let me try company sites and Wikipedia directly.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:41",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 41,
+          "ready_seconds": 546.927,
+          "response_seconds": 550.084,
+          "tools": {
+            "web_fetch": 2
+          },
+          "first_tool_seconds": 550.086421251297,
+          "last_tool_end_seconds": 550.1054210662842,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:42",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 42,
+          "ready_seconds": 550.13,
+          "response_seconds": 563.819,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 563.8224210739136,
+          "last_tool_end_seconds": 575.3944211006165,
+          "model_text": "\n\nWikipedia is blocked. Let me try company newsrooms and other sources.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:43",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 43,
+          "ready_seconds": 575.421,
+          "response_seconds": 591.089,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 591.0934212207794,
+          "last_tool_end_seconds": 601.4064211845398,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:44",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 44,
+          "ready_seconds": 601.441,
+          "response_seconds": 615.227,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 615.2304210662842,
+          "last_tool_end_seconds": 622.2884211540222,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:45",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 45,
+          "ready_seconds": 622.318,
+          "response_seconds": 629.27,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 629.2724211215973,
+          "last_tool_end_seconds": 629.2794210910797,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:46",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 46,
+          "ready_seconds": 629.304,
+          "response_seconds": 636.538,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 636.541421175003,
+          "last_tool_end_seconds": 636.733421087265,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:47",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 47,
+          "ready_seconds": 636.764,
+          "response_seconds": 652.967,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 652.9714212417603,
+          "last_tool_end_seconds": 656.1974210739136,
+          "model_text": "\n\nLet me get CapCut user data and Adobe financials from other sources.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:48",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 48,
+          "ready_seconds": 656.226,
+          "response_seconds": 665.875,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 665.8784210681915,
+          "last_tool_end_seconds": 666.0914211273193,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:49",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 49,
+          "ready_seconds": 666.119,
+          "response_seconds": 689.795,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 689.7994210720062,
+          "last_tool_end_seconds": 702.0354211330414,
+          "model_text": "\n\nLet me try to find CapCut MAU and Adobe revenue data from additional sources.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:50",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 50,
+          "ready_seconds": 702.065,
+          "response_seconds": 707.872,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 707.8744211196899,
+          "last_tool_end_seconds": 708.0754210948944,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:51",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 51,
+          "ready_seconds": 708.103,
+          "response_seconds": 721.441,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 721.4454212188721,
+          "last_tool_end_seconds": 728.5544211864471,
+          "model_text": "\n\nLet me make a few more targeted attempts for the remaining data points.\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:52",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 52,
+          "ready_seconds": 728.586,
+          "response_seconds": 735.077,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 735.0814211368561,
+          "last_tool_end_seconds": 736.9114210605621,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:53",
+          "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+          "turn": 1,
+          "step": 53,
+          "ready_seconds": 736.93,
+          "response_seconds": 743.541,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 743.5444211959839,
+          "last_tool_end_seconds": 743.8564212322235,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        }
+      ],
+      "max_tools_proposed_in_one_response": 2,
+      "bash_nonzero_exits": 3,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+      },
+      "dataset": "DeepResearchBench",
+      "dataset_task_id": 93,
+      "dataset_source": {
+        "dataset": "DeepResearchBench",
+        "revision": "f2735b5c3636759c22f9e936c0232de8bf545b67",
+        "url": "https://raw.githubusercontent.com/Ayanami0730/deep_research_bench/f2735b5c3636759c22f9e936c0232de8bf545b67/data/prompt_data/query.jsonl",
+        "sha256": "62b197a264a027fd4e2e795ff322a82dd6d566f5e350596ccc7572539ec987d1",
+        "count": 100
+      },
+      "executed_harness": "official DSH",
+      "run_id": "public-tasks-20261030-v001",
+      "label": "研究原题 · 视频编辑软件市场",
+      "purpose_cn": "Please prepare a market research analysis of the global video editing and creation software/tool market. Include major products like those from Adobe (Premiere Pro, After Effects), CapCut, DaVinci Resolve, Final Cut Pro, and others relevant in the current landscape.",
+      "provenance_cn": "数据集：DeepResearchBench；题号：93。任务来源：公开原题；执行框架：官方DSH。未改原题，也未加入委派要求。",
+      "short_result_cn": "已停止；搜索环境受限",
+      "result_cn": "正常结束仅表示执行完成；未进行RACE/FACT报告质量评分。 本轮原生web_search因缺DeepSeek搜索凭据失败，网页访问也有错误；研究质量受工具环境限制，不能据此推断模型的通常委派行为。 已主动停止这道反复网络重试的任务，保留完整轨迹；不是成功研究。",
+      "execution": {
+        "peak_tool_dispatches": 2,
+        "observed_tool_spans": 63,
+        "interval_definition": "tools/execute wrapper entry to return; host wall-clock milliseconds, not CPU/GPU simultaneous execution.",
+        "pinned_parallel_safe_tools": [
+          "read",
+          "web_search",
+          "web_fetch"
+        ],
+        "pinned_exclusive_tools": [
+          "bash",
+          "edit",
+          "write",
+          "todo_write"
+        ],
+        "classification_scope": "Pinned DSH declarations checked for read/web_search/web_fetch; remaining observed bash/edit/write/todo are exclusive.",
+        "default_max_parallel_tool_calls": 10
+      },
+      "offline_score": null,
+      "paths": {
+        "graph": "../public-tasks-20261030-v001/drb-93/graph.json",
+        "timeline": "../public-tasks-20261030-v001/drb-93/timeline.json",
+        "summary": "../public-tasks-20261030-v001/drb-93/summary.json",
+        "input": "../public-tasks-20261030-v001/drb-93/initial-task.txt",
+        "answer": "../public-tasks-20261030-v001/drb-93/answer.txt",
+        "sources": "../public-tasks-20261030-v001/source-manifest.json",
+        "raw": "../../evidence/public-tasks-20261030-v001/raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "lcb-abc387_c",
+      "title": "LiveCodeBench code_generation_lite / test6 (release_v6) / abc387_c",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793343826.458974,
+      "finished_wall_time": 1793343970.980816,
+      "duration_seconds": 144.52184200286865,
+      "model_requests": 9,
+      "tool_calls": 8,
+      "session_files": 1,
+      "final_characters": 1128,
+      "root_session": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 9,
+      "tool_counts": {
+        "bash": 4,
+        "edit": 3,
+        "read": 1
+      },
+      "tool_errors": 2,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 5475,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": 123.47102618217468,
+      "dag_nodes": 19,
+      "dag_edges": 18,
+      "initial_task": "A positive integer not less than 10 whose top digit (the most significant digit) in decimal representation is strictly larger than every other digit in that number is called a Snake number.\nFor example, 31 and 201 are Snake numbers, but 35 and 202 are not.\nFind how many Snake numbers exist between L and R, inclusive.\n\nInput\n\nThe input is given from Standard Input in the following format:\nL R\n\nOutput\n\nPrint the answer.\n\nConstraints\n\n\n- 10 \\leq L \\leq R \\leq 10^{18}\n- All input values are integers.\n\nSample Input 1\n\n97 210\n\nSample Output 1\n\n6\n\nThe Snake numbers between 97 and 210, inclusive, are 97, 98, 100, 200, 201, and 210: there are six.\n\nSample Input 2\n\n1000 9999\n\nSample Output 2\n\n2025\n\nSample Input 3\n\n252509054433933519 760713016476190692\n\nSample Output 3\n\n221852052834757",
+      "max_output_tokens": 8192,
+      "provenance": "official dataset original, unmodified; official DSH",
+      "final_text": "\n\nAll 300 random brute-force checks pass, and all three samples match. The solution is complete.\n\n## Solution\n\n**Approach:** Count snake numbers ≤ N via digit counting, then answer = `f(R) − f(L−1)`.\n\nFor a number of length `d` with leading digit `a` (1–9), every other digit must be in `0..a−1`, giving `a^(d−1)` choices.\n\n`count_leq(N)`:\n1. **Shorter lengths** (`2..d−1`): sum of `a^(len−1)` for `a = 1..9`.\n2. **Same length, smaller leading digit** `a < n₁`: add `a^(d−1)` each.\n3. **Same length, equal leading digit** `a = n₁`: walk the remaining digits left to right. At position `i` with digit `nᵢ`:\n   - if `nᵢ > a−1`: all `a` choices are smaller → add `a^(d−i)` and stop;\n   - else: add `nᵢ · a^(d−1−i)` (choices `0..nᵢ−1`) and continue;\n   - if we reach the end, N itself qualifies → add 1.\n\nComplexity is O(d²) with `d ≤ 19` — instant.\n\n**Verification:**\n- Sample 1: `97 210` → **6** ✓\n- Sample 2: `1000 9999` → **2025** ✓\n- Sample 3: `252509054433933519 760713016476190692` → **221852052834757** ✓\n- 300 random ranges cross-checked against brute force: all match.\n\nThe solution file is at `snake.py` in the workspace.",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 9,
+        "wire_responses": 9,
+        "ready_events": 9,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:1",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.926,
+          "response_seconds": 81.932,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 81.94402623176575,
+          "last_tool_end_seconds": 82.27902603149414,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:2",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 2,
+          "ready_seconds": 82.327,
+          "response_seconds": 91.164,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 91.16702604293823,
+          "last_tool_end_seconds": 91.3680260181427,
+          "model_text": "\n\nAll three samples pass. Let me verify against a brute force on small ranges to be safe:\n\n",
+          "bash_exit_codes": [
+            1
+          ]
+        },
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:3",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 3,
+          "ready_seconds": 91.399,
+          "response_seconds": 95.042,
+          "tools": {
+            "edit": 1
+          },
+          "first_tool_seconds": 95.04502606391907,
+          "last_tool_end_seconds": 95.07402610778809,
+          "model_text": "\n\nThe import triggered `main()`. Let me guard it:\n\n",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:4",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 4,
+          "ready_seconds": 95.108,
+          "response_seconds": 97.222,
+          "tools": {
+            "read": 1
+          },
+          "first_tool_seconds": 97.23202610015869,
+          "last_tool_end_seconds": 97.26702618598938,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:5",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 5,
+          "ready_seconds": 97.324,
+          "response_seconds": 100.837,
+          "tools": {
+            "edit": 1
+          },
+          "first_tool_seconds": 100.83902621269226,
+          "last_tool_end_seconds": 100.85602617263794,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:6",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 6,
+          "ready_seconds": 100.887,
+          "response_seconds": 105.938,
+          "tools": {
+            "edit": 1
+          },
+          "first_tool_seconds": 105.94002604484558,
+          "last_tool_end_seconds": 105.96102619171143,
+          "model_text": "",
+          "bash_exit_codes": []
+        },
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:7",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 7,
+          "ready_seconds": 105.997,
+          "response_seconds": 112.715,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 112.71802616119385,
+          "last_tool_end_seconds": 112.97402620315552,
+          "model_text": "",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:8",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 8,
+          "ready_seconds": 113.007,
+          "response_seconds": 123.468,
+          "tools": {
+            "bash": 1
+          },
+          "first_tool_seconds": 123.47102618217468,
+          "last_tool_end_seconds": 130.87002611160278,
+          "model_text": "\n\n/tmp isn't accessible; let me put the brute-force script in the workspace:\n\n",
+          "bash_exit_codes": [
+            0
+          ]
+        },
+        {
+          "node_id": "model:session-792c3456-748d-4ae6-b6a3-42eeeb401de3:1:9",
+          "session_id": "session-792c3456-748d-4ae6-b6a3-42eeeb401de3",
+          "turn": 1,
+          "step": 9,
+          "ready_seconds": 130.902,
+          "response_seconds": 144.352,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nAll 300 random brute-force checks pass, and all three samples match. The solution is complete.\n\n## Solution\n\n**Approach:** Count snake numbers ≤ N via digit counting, then answer = `f(R) − f(L−1)`.\n\nFor a number of length `d` with leading digit `a` (1–9), every other digit must be in `0..a−1`, giving `a^(d−1)` choices.\n\n`count_leq(N)`:\n1. **Shorter lengths** (`2..d−1`): sum of `a^(len−1)` for `a = 1..9`.\n2. **Same length, smaller leading digit** `a < n₁`: add `a^(d−1)` each.\n3. **Same length, equal leading digit** `a = n₁`: walk the remaining digits left to right. At position `i` with digit `nᵢ`:\n   - if `nᵢ > a−1`: all `a` choices are smaller → add `a^(d−i)` and stop;\n   - else: add `nᵢ · a^(d−1−i)` (choices `0..nᵢ−1`) and continue;\n   - if we reach the end, N itself qualifies → add 1.\n\nComplexity is O(d²) with `d ≤ 19` — instant.\n\n**Verification:**\n- Sample 1: `97 210` → **6** ✓\n- Sample 2: `1000 9999` → **2025** ✓\n- Sample 3: `252509054433933519 760713016476190692` → **221852052834757** ✓\n- 300 random ranges cross-checked against brute force: all match.\n\nThe solution file is at `snake.py` in the workspace.",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 1,
+      "bash_nonzero_exits": 1,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+      },
+      "dataset": "LiveCodeBench code_generation_lite / test6 (release_v6)",
+      "dataset_task_id": "abc387_c",
+      "dataset_source": {
+        "dataset": "livecodebench/code_generation_lite",
+        "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+        "url": "https://hf-mirror.com/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test6.jsonl",
+        "range_status": 206,
+        "partial_bytes": 1048576
+      },
+      "executed_harness": "official DSH",
+      "run_id": "public-tasks-20261030-v001",
+      "label": "代码原题 · Snake Numbers（中等）",
+      "purpose_cn": "A positive integer not less than 10 whose top digit (the most significant digit) in decimal representation is strictly larger than every other digit in that number is called a Snake number.\nFor example, 31 and 201 are Snake numbers, but 35 and 202 are not.\nFind how many Snake numbers exist between L and R, inclusive.\n\nInput\n\nThe input is given from Standard Input in the following format:\nL R\n\nOutput\n\nPrint the answer.\n\nConstraints\n\n\n- 10 \\leq L \\leq R \\leq 10^{18}\n- All input values are integers.\n\nSample Input 1\n\n97 210\n\nSample Output 1\n\n6\n\nThe Snake numbers between 97 and 210, inclusive, are 97, 98, 100, 200, 201, and 210: there are six.\n\nSample Input 2\n\n1000 9999\n\nSample Output 2\n\n2025\n\nSample Input 3\n\n252509054433933519 760713016476190692\n\nSample Output 3\n\n221852052834757",
+      "provenance_cn": "数据集：LiveCodeBench code_generation_lite / test6 (release_v6)；题号：abc387_c。任务来源：公开原题；执行框架：官方DSH。未改原题，也未加入委派要求。",
+      "short_result_cn": "公开3/3；隐藏40/40",
+      "result_cn": "模型自主作答；测试在运行结束后离线执行，没有把隐藏测试反馈给模型。 原测试：公开3/3，隐藏40/40。",
+      "execution": {
+        "peak_tool_dispatches": 1,
+        "observed_tool_spans": 8,
+        "interval_definition": "tools/execute wrapper entry to return; host wall-clock milliseconds, not CPU/GPU simultaneous execution.",
+        "pinned_parallel_safe_tools": [
+          "read",
+          "web_search",
+          "web_fetch"
+        ],
+        "pinned_exclusive_tools": [
+          "bash",
+          "edit",
+          "write",
+          "todo_write"
+        ],
+        "classification_scope": "Pinned DSH declarations checked for read/web_search/web_fetch; remaining observed bash/edit/write/todo are exclusive.",
+        "default_max_parallel_tool_calls": 10
+      },
+      "offline_score": {
+        "status": "scored",
+        "candidate_origin": "output/snake.py",
+        "scope": "offline original tests only; no hidden inputs or verdicts supplied to Qwen",
+        "public_passed": 3,
+        "public_total": 3,
+        "private_passed": 40,
+        "private_total": 40,
+        "tests": [
+          {
+            "kind": "public",
+            "index": 0,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.016539573669433594
+          },
+          {
+            "kind": "public",
+            "index": 1,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.016806364059448242
+          },
+          {
+            "kind": "public",
+            "index": 2,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01689004898071289
+          },
+          {
+            "kind": "private",
+            "index": 0,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01696610450744629
+          },
+          {
+            "kind": "private",
+            "index": 1,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01754927635192871
+          },
+          {
+            "kind": "private",
+            "index": 2,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.016471147537231445
+          },
+          {
+            "kind": "private",
+            "index": 3,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.015473604202270508
+          },
+          {
+            "kind": "private",
+            "index": 4,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013664960861206055
+          },
+          {
+            "kind": "private",
+            "index": 5,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013646125793457031
+          },
+          {
+            "kind": "private",
+            "index": 6,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013781070709228516
+          },
+          {
+            "kind": "private",
+            "index": 7,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.015741348266601562
+          },
+          {
+            "kind": "private",
+            "index": 8,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.017410993576049805
+          },
+          {
+            "kind": "private",
+            "index": 9,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01634383201599121
+          },
+          {
+            "kind": "private",
+            "index": 10,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.016858339309692383
+          },
+          {
+            "kind": "private",
+            "index": 11,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.0160825252532959
+          },
+          {
+            "kind": "private",
+            "index": 12,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.014214038848876953
+          },
+          {
+            "kind": "private",
+            "index": 13,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.014617681503295898
+          },
+          {
+            "kind": "private",
+            "index": 14,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.015407085418701172
+          },
+          {
+            "kind": "private",
+            "index": 15,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.018131017684936523
+          },
+          {
+            "kind": "private",
+            "index": 16,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013300895690917969
+          },
+          {
+            "kind": "private",
+            "index": 17,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01540231704711914
+          },
+          {
+            "kind": "private",
+            "index": 18,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01642751693725586
+          },
+          {
+            "kind": "private",
+            "index": 19,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013869762420654297
+          },
+          {
+            "kind": "private",
+            "index": 20,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01691126823425293
+          },
+          {
+            "kind": "private",
+            "index": 21,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.017737865447998047
+          },
+          {
+            "kind": "private",
+            "index": 22,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.014438629150390625
+          },
+          {
+            "kind": "private",
+            "index": 23,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.016537904739379883
+          },
+          {
+            "kind": "private",
+            "index": 24,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.015243768692016602
+          },
+          {
+            "kind": "private",
+            "index": 25,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01695847511291504
+          },
+          {
+            "kind": "private",
+            "index": 26,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.01391148567199707
+          },
+          {
+            "kind": "private",
+            "index": 27,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.014313459396362305
+          },
+          {
+            "kind": "private",
+            "index": 28,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013813972473144531
+          },
+          {
+            "kind": "private",
+            "index": 29,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013826131820678711
+          },
+          {
+            "kind": "private",
+            "index": 30,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.014435768127441406
+          },
+          {
+            "kind": "private",
+            "index": 31,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013812780380249023
+          },
+          {
+            "kind": "private",
+            "index": 32,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013307571411132812
+          },
+          {
+            "kind": "private",
+            "index": 33,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.012934207916259766
+          },
+          {
+            "kind": "private",
+            "index": 34,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.016251564025878906
+          },
+          {
+            "kind": "private",
+            "index": 35,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013766765594482422
+          },
+          {
+            "kind": "private",
+            "index": 36,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.014282464981079102
+          },
+          {
+            "kind": "private",
+            "index": 37,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013719320297241211
+          },
+          {
+            "kind": "private",
+            "index": 38,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013421773910522461
+          },
+          {
+            "kind": "private",
+            "index": 39,
+            "passed": true,
+            "exit_code": 0,
+            "seconds": 0.013458013534545898
+          }
+        ]
+      },
+      "paths": {
+        "graph": "../public-tasks-20261030-v001/lcb-abc387_c/graph.json",
+        "timeline": "../public-tasks-20261030-v001/lcb-abc387_c/timeline.json",
+        "summary": "../public-tasks-20261030-v001/lcb-abc387_c/summary.json",
+        "input": "../public-tasks-20261030-v001/lcb-abc387_c/initial-task.txt",
+        "answer": "../public-tasks-20261030-v001/lcb-abc387_c/answer.txt",
+        "sources": "../public-tasks-20261030-v001/source-manifest.json",
+        "raw": "../../evidence/public-tasks-20261030-v001/raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "lcb-abc387_f",
+      "title": "LiveCodeBench code_generation_lite / test6 (release_v6) / abc387_f",
+      "exit_code": 1,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793343971.032665,
+      "finished_wall_time": 1793344169.8390257,
+      "duration_seconds": 198.80636072158813,
+      "model_requests": 1,
+      "tool_calls": 0,
+      "session_files": 1,
+      "final_characters": 0,
+      "root_session": "session-7f48bf0c-5102-4049-b239-044ca0aa00c8",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 1,
+      "tool_counts": {},
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 8192,
+      "output_truncations": 1,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": null,
+      "dag_nodes": 3,
+      "dag_edges": 2,
+      "initial_task": "You are given positive integers N, M, and a sequence A = (A_1, A_2, \\dots, A_N) of length N, each element being an integer between 1 and N, inclusive.\nFind the number, modulo 998244353, of sequences x = (x_1, x_2, \\dots, x_N) of length N, each element being an integer between 1 and M, inclusive, that satisfy the following condition:\n\n- x_i \\leq x_{A_i} for every i (1 \\leq i \\leq N).\n\nInput\n\nThe input is given from Standard Input in the following format:\nN M\r\nA_1 A_2 \\dots A_N\n\nOutput\n\nPrint the answer.\n\nConstraints\n\n\n- 1 \\leq N, M \\leq 2025\n- 1 \\leq A_i \\leq N\n- All input values are integers.\n\nSample Input 1\n\n3 3\r\n2 1 1\n\nSample Output 1\n\n6\r\n\nThe sequences x=(1,1,1),(2,2,1),(2,2,2),(3,3,1),(3,3,2),(3,3,3) satisfy the condition.\n\nSample Input 2\n\n4 9\r\n1 1 1 1\n\nSample Output 2\n\n2025\n\nSample Input 3\n\n10 5\r\n9 4 5 5 4 2 1 5 7 2\n\nSample Output 3\n\n10010",
+      "max_output_tokens": 8192,
+      "provenance": "official dataset original, unmodified; official DSH",
+      "final_text": "",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 1,
+        "wire_responses": 1,
+        "ready_events": 1,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-7f48bf0c-5102-4049-b239-044ca0aa00c8:1:1",
+          "session_id": "session-7f48bf0c-5102-4049-b239-044ca0aa00c8",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.883,
+          "response_seconds": 198.587,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 0,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+      },
+      "dataset": "LiveCodeBench code_generation_lite / test6 (release_v6)",
+      "dataset_task_id": "abc387_f",
+      "dataset_source": {
+        "dataset": "livecodebench/code_generation_lite",
+        "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+        "url": "https://hf-mirror.com/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test6.jsonl",
+        "range_status": 206,
+        "partial_bytes": 1048576
+      },
+      "executed_harness": "official DSH",
+      "run_id": "public-tasks-20261030-v001",
+      "label": "代码原题 · Count Arrays（难）",
+      "purpose_cn": "You are given positive integers N, M, and a sequence A = (A_1, A_2, \\dots, A_N) of length N, each element being an integer between 1 and N, inclusive.\nFind the number, modulo 998244353, of sequences x = (x_1, x_2, \\dots, x_N) of length N, each element being an integer between 1 and M, inclusive, that satisfy the following condition:\n\n- x_i \\leq x_{A_i} for every i (1 \\leq i \\leq N).\n\nInput\n\nThe input is given from Standard Input in the following format:\nN M\r\nA_1 A_2 \\dots A_N\n\nOutput\n\nPrint the answer.\n\nConstraints\n\n\n- 1 \\leq N, M \\leq 2025\n- 1 \\leq A_i \\leq N\n- All input values are integers.\n\nSample Input 1\n\n3 3\r\n2 1 1\n\nSample Output 1\n\n6\r\n\nThe sequences x=(1,1,1),(2,2,1),(2,2,2),(3,3,1),(3,3,2),(3,3,3) satisfy the condition.\n\nSample Input 2\n\n4 9\r\n1 1 1 1\n\nSample Output 2\n\n2025\n\nSample Input 3\n\n10 5\r\n9 4 5 5 4 2 1 5 7 2\n\nSample Output 3\n\n10010",
+      "provenance_cn": "数据集：LiveCodeBench code_generation_lite / test6 (release_v6)；题号：abc387_f。任务来源：公开原题；执行框架：官方DSH。未改原题，也未加入委派要求。",
+      "short_result_cn": "输出截断；未交付代码",
+      "result_cn": "模型自主作答；测试在运行结束后离线执行，没有把隐藏测试反馈给模型。",
+      "execution": {
+        "peak_tool_dispatches": 0,
+        "observed_tool_spans": 0,
+        "interval_definition": "tools/execute wrapper entry to return; host wall-clock milliseconds, not CPU/GPU simultaneous execution.",
+        "pinned_parallel_safe_tools": [
+          "read",
+          "web_search",
+          "web_fetch"
+        ],
+        "pinned_exclusive_tools": [
+          "bash",
+          "edit",
+          "write",
+          "todo_write"
+        ],
+        "classification_scope": "Pinned DSH declarations checked for read/web_search/web_fetch; remaining observed bash/edit/write/todo are exclusive.",
+        "default_max_parallel_tool_calls": 10
+      },
+      "offline_score": {
+        "status": "no_python_candidate",
+        "scope": "offline only; no feedback to model"
+      },
+      "paths": {
+        "graph": "../public-tasks-20261030-v001/lcb-abc387_f/graph.json",
+        "timeline": "../public-tasks-20261030-v001/lcb-abc387_f/timeline.json",
+        "summary": "../public-tasks-20261030-v001/lcb-abc387_f/summary.json",
+        "input": "../public-tasks-20261030-v001/lcb-abc387_f/initial-task.txt",
+        "answer": "../public-tasks-20261030-v001/lcb-abc387_f/answer.txt",
+        "sources": "../public-tasks-20261030-v001/source-manifest.json",
+        "raw": "../../evidence/public-tasks-20261030-v001/raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "popqa-0",
+      "title": "PopQA via official CRAG inference fixture / {'release_row_index': 0, 'question': \"What is Henry Feilden's occupation?\"}",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793344169.853201,
+      "finished_wall_time": 1793344179.3850265,
+      "duration_seconds": 9.531825542449951,
+      "model_requests": 1,
+      "tool_calls": 0,
+      "session_files": 1,
+      "final_characters": 334,
+      "root_session": "session-dd1138b5-0dbf-44e9-bf87-4c83971d0b09",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 1,
+      "tool_counts": {},
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 293,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": null,
+      "dag_nodes": 3,
+      "dag_edges": 2,
+      "initial_task": "What is Henry Feilden's occupation?\n\nRetrieved passages (original dataset context):\n[1]  Henry Master Feilden (21 February 1818 – 5 September 1875) was an English Conservative Party politician.\n\n[2] Bernard Feilden (1919–2008), British conservation architect ; Bob Feilden (1917–2004), British mechanical engineer ; Gerry Feilden (1904–1981), British general and horse racing identity ; Henry Feilden (disambiguation) ; Joseph Feilden (1824–1895), British politician ; Richard Feilden (1950–2005), British architect ; William Feilden (1772–1850), British politician\n\n[3]  Henry Wemyss Feilden, second son of the second Baronet, was an Arctic explorer.\n\n[4]  Feilden was born in Hampstead, London. He was educated at Bedford School and The Bartlett School of Architecture, University College, London, completing his training at the Architectural Association after the second world war. His love of architecture was inherited from his grandfather, Brightwen Binyon (1846-1905), an Ipswich architect and former pupil of Alfred Waterhouse. He joined the practice of Edward Boardman and Son in Norwich, where he designed the Trinity United Reformed Church. He set up an architectural practice, Feilden+Mawson, with David Mawson in 1956, to which offices in Norwich, London and Cambridge were later added. In 1968 Feilden took over as consultant architect to the University\n\n[5]  Colonel Henry Wemyss Feilden, CB (6 October 1838 – 8 June 1921) was a British Army officer, Arctic explorer and naturalist.\n\n[6] Henry Feilden (Conservative politician)  Henry Master Feilden (21 February 1818 – 5 September 1875) was an English Conservative Party politician.\n\n[7] Edward Hornby  Edward Kenworthy Hornby (16 June 1839, in Blackburn – 25 June 1887) was an English Conservative Party politician. He sat in the House of Commons from 1869 to 1874.\n\n[8] Daniel Thwaites  Daniel Thwaites (1817 – 21 September 1888) was an English brewer<ref name=\"gazette-1875\" /> and a Conservative Party<ref name=\"craig1832-1885\" /> politician from Blackburn in Lancashire. He owned what is now Thwaites Brewery, and sat in the House of Commons from 1875 to 1880.  He was the son of Daniel Thwaites (1777–1843), an excise man who in 1807 had become one of the three partners of the Eanam Brewery in Blackburn, and sole owner of the business in 1824. The younger Daniel inherited the business in partnership with two of his brothers, and became sole owner in 1857.<ref name=\"thwaites-200\" />  At the 1874 general election, he unsuccessfully contested the borough of Blackburn. However, he won the seat at a by-election in October 1875 after the death of Henry Master Feilden, and was one of the two Members of Parliament (MPs) for Blackburn until his defeat at the 1880 general election.<ref name=\"craig1832-1885\" />\n\n[9] \n\n[10] ",
+      "max_output_tokens": 8192,
+      "provenance": "official original question and passages; context delimiter only is experiment formatting; official DSH; NOT original CRAG algorithm",
+      "final_text": "\n\nBased on the retrieved passages, **Henry Feilden** (Henry Master Feilden, 1818–1875) was an **English Conservative Party politician**.\n\n(Note: There is also a Henry Wemyss Feilden, who was a British Army officer, Arctic explorer, and naturalist, but the most commonly referenced \"Henry Feilden\" in these passages is the politician.)",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 1,
+        "wire_responses": 1,
+        "ready_events": 1,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-dd1138b5-0dbf-44e9-bf87-4c83971d0b09:1:1",
+          "session_id": "session-dd1138b5-0dbf-44e9-bf87-4c83971d0b09",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.895,
+          "response_seconds": 9.339,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nBased on the retrieved passages, **Henry Feilden** (Henry Master Feilden, 1818–1875) was an **English Conservative Party politician**.\n\n(Note: There is also a Henry Wemyss Feilden, who was a British Army officer, Arctic explorer, and naturalist, but the most commonly referenced \"Henry Feilden\" in these passages is the politician.)",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 0,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+      },
+      "dataset": "PopQA via official CRAG inference fixture",
+      "dataset_task_id": {
+        "release_row_index": 0,
+        "question": "What is Henry Feilden's occupation?"
+      },
+      "dataset_source": {
+        "url": "https://github.com/HuskyInSalt/CRAG/blob/de7c2961ae624a1483a138c5798e1f6d0c4fb0e0/data/popqa/test_popqa.txt",
+        "revision": "de7c2961ae624a1483a138c5798e1f6d0c4fb0e0",
+        "sha256": "1b6ac72aab416e0307b380790404ca817b1d91a3daf5421861f7fb421cc3d236"
+      },
+      "executed_harness": "official DSH; NOT original CRAG algorithm",
+      "run_id": "public-tasks-20261030-v001",
+      "label": "检索问答 · Henry Feilden职业",
+      "purpose_cn": "What is Henry Feilden's occupation?",
+      "provenance_cn": "数据集：PopQA via official CRAG inference fixture；题号：发布文件题组 0。任务来源：公开原题；执行框架：官方DSH。原题和原始检索段落同时输入；不是CRAG算法复现。",
+      "short_result_cn": "答案别名匹配通过",
+      "result_cn": "只记录DSH在给定原题与检索上下文上的行为；没有运行CRAG评估器或路由算法。 原始PopQA答案别名离线匹配：通过。",
+      "execution": {
+        "peak_tool_dispatches": 0,
+        "observed_tool_spans": 0,
+        "interval_definition": "tools/execute wrapper entry to return; host wall-clock milliseconds, not CPU/GPU simultaneous execution.",
+        "pinned_parallel_safe_tools": [
+          "read",
+          "web_search",
+          "web_fetch"
+        ],
+        "pinned_exclusive_tools": [
+          "bash",
+          "edit",
+          "write",
+          "todo_write"
+        ],
+        "classification_scope": "Pinned DSH declarations checked for read/web_search/web_fetch; remaining observed bash/edit/write/todo are exclusive.",
+        "default_max_parallel_tool_calls": 10
+      },
+      "offline_score": {
+        "dataset": "PopQA original",
+        "id": "4382392",
+        "expected_aliases": [
+          "politician",
+          "political leader",
+          "political figure",
+          "polit.",
+          "pol"
+        ],
+        "matched_aliases": [
+          "politician"
+        ],
+        "alias_match": true,
+        "scope": "offline answer-alias check only; not a grounding metric",
+        "labels_visible_at_runtime": false,
+        "gold_source_url": "https://raw.githubusercontent.com/AlexTMallen/adaptive-retrieval/main/data/popQA.tsv",
+        "gold_source_sha256": "9a5227f41bff0e4c331d4a774d946b12f95307892b58f860a9606ef356e6089b"
+      },
+      "paths": {
+        "graph": "../public-tasks-20261030-v001/popqa-0/graph.json",
+        "timeline": "../public-tasks-20261030-v001/popqa-0/timeline.json",
+        "summary": "../public-tasks-20261030-v001/popqa-0/summary.json",
+        "input": "../public-tasks-20261030-v001/popqa-0/initial-task.txt",
+        "answer": "../public-tasks-20261030-v001/popqa-0/answer.txt",
+        "sources": "../public-tasks-20261030-v001/source-manifest.json",
+        "raw": "../../evidence/public-tasks-20261030-v001/raw.tar.gz"
+      }
+    },
+    {
+      "case_id": "popqa-1",
+      "title": "PopQA via official CRAG inference fixture / {'release_row_index': 1, 'question': \"What is Herlyn Espinal's occupation?\"}",
+      "exit_code": 0,
+      "watchdog_triggered": false,
+      "started_wall_time": 1793344179.394579,
+      "finished_wall_time": 1793344185.0201867,
+      "duration_seconds": 5.62560772895813,
+      "model_requests": 1,
+      "tool_calls": 0,
+      "session_files": 1,
+      "final_characters": 171,
+      "root_session": "session-f8c886c2-d14b-40df-bc9f-a559a3432a34",
+      "agent_sessions": 1,
+      "child_sessions": 0,
+      "model_calls": 1,
+      "tool_counts": {},
+      "tool_errors": 0,
+      "peak_outstanding_model_steps": 1,
+      "generated_tokens": 132,
+      "output_truncations": 0,
+      "first_child_seconds": null,
+      "last_new_tool_seconds": null,
+      "dag_nodes": 3,
+      "dag_edges": 2,
+      "initial_task": "What is Herlyn Espinal's occupation?\n\nRetrieved passages (original dataset context):\n[1]  Espinal was born and raised in the Santa Rita district of Yoro. In a 2009 interview he said that from an early age he had aspirations of becoming a journalist. In his youth, Espinal was active in the La Fragua theater company in El Progreso, Yoro.\n\n[2]  Herlyn Iván Espinal Martínez (14 September 1982 – 20 July 2014) was a Honduran journalist and television reporter who worked as chief correspondent in San Pedro Sula, the second largest city in Honduras, for Televicentro's daily newscast Hoy Mismo. Espinal was abducted in the vicinity of Santa Rita, in the department of Yoro, early on the morning of 20 July 2014. He was found dead, a victim of multiple gunshot wounds, in a nearby location on the morning of 21 July. He was the forty-third journalist killed in Honduras since 2013.\n\n[3]  Espinal was found dead on 21 July 2014. He was 31 at the time of his murder. In the aftermath of his murder, contradictory information circulated regarding the last hours of his life and the circumstances of his death. Some sources claimed he was shot two times, others that he had been shot up to five times. One report of his death stated that the city in which he worked, San Pedro Sula, is \"considered the most violent city in the most violent country on the planet\". Espinal's mother stated that he had been at her home in Santa Rita watching television around 9\n\n[4]  His first job as a journalist was with a local television channel in Agua Blanca Sur, Yoro, as a reporter and a presenter. He did both his own field work and presented it later on camera. He told an interviewer that journalists should always be \"objective, impartial, and honest\", and that journalists who take bribes will ultimately be exposed, adding, \"Truth is mighty and will prevail\". He also worked as a correspondent for Radio Progreso. Both the La Frague theater company and Radio Progreso were founded by the Jesuit order in El Progreso, Yoro. As chief correspondent for Hoy Mismo, which aired in San Pedro\n\n[5]  on July 19 when an unidentified man phoned and arranged a meeting, which Espinal agree to. Later that evening, according to multiple accounts, Espinal met with friends at a restaurant in Santa Rita, and also left with friends very early on the morning of July 20, 2014. He reportedly arrived back at his mother's home around 3 a.m., parked his car in front of the house, and then voluntarily entered a white panel truck in which three other persons were seated. Some sources added further details, some of which appeared to conflict with others for timeline reasons. It was stated, for example, that\n\n[6] Herlyn Espinal  Herlyn Iván Espinal Martínez (14 September 1982 20 July 2014) was a Honduran journalist and television reporter who worked as chief correspondent in San Pedro Sula, the second largest city in Honduras, for Televicentro's daily newscast \"Hoy Mismo\".  Espinal was abducted in the vicinity of Santa Rita, in the department of Yoro, early on the morning of 20 July 2014. He was found dead, a victim of multiple gunshot wounds, in a nearby location on the morning of 21 July. He was the forty-third journalist killed in Honduras since 2013.\n\n[7] \n\n[8] \n\n[9] \n\n[10] 2014. He reportedly arrived back at his mother's home around 3 a.m., parked his car in front of the house, and then voluntarily entered a white panel truck in which three other persons were seated. Some sources added further details, some of which appeared to conflict with others for timeline reasons. It was stated, for example, that Espinal, after leaving Las Tejas at around 2 a.m., had soon after joined up with friends with whom he proceeded to socialize at various other places in Santa Rita. Another detail that was mentioned in some reports but not others had Espinal arriving",
+      "max_output_tokens": 8192,
+      "provenance": "official original question and passages; context delimiter only is experiment formatting; official DSH; NOT original CRAG algorithm",
+      "final_text": "\n\nHerlyn Espinal was a **journalist and television reporter**. He worked as chief correspondent in San Pedro Sula, Honduras, for Televicentro's daily newscast *Hoy Mismo*.",
+      "audit": {
+        "native_sessions": 1,
+        "native_model_steps": 1,
+        "wire_responses": 1,
+        "ready_events": 1,
+        "unmapped_tool_starts": [],
+        "graph_is_acyclic": true,
+        "wire_configuration_valid": true,
+        "all_http_200": true,
+        "watchdog_triggered": false,
+        "first_request_available_tools": [
+          "bash",
+          "create_goal",
+          "edit",
+          "exit_plan_mode",
+          "get_goal",
+          "glob",
+          "grep",
+          "interrupt_agent",
+          "job_kill",
+          "job_list",
+          "job_output",
+          "list_agents",
+          "read",
+          "read_image",
+          "send_message",
+          "skill",
+          "subagent",
+          "subagent_fork",
+          "todo_write",
+          "update_goal",
+          "web_fetch",
+          "web_search",
+          "workflow",
+          "working_directory",
+          "write"
+        ],
+        "delegation_tools_available": true,
+        "initial_task_present_unchanged": true
+      },
+      "steps": [
+        {
+          "node_id": "model:session-f8c886c2-d14b-40df-bc9f-a559a3432a34:1:1",
+          "session_id": "session-f8c886c2-d14b-40df-bc9f-a559a3432a34",
+          "turn": 1,
+          "step": 1,
+          "ready_seconds": 1.869,
+          "response_seconds": 5.48,
+          "tools": {},
+          "first_tool_seconds": null,
+          "last_tool_end_seconds": null,
+          "model_text": "\n\nHerlyn Espinal was a **journalist and television reporter**. He worked as chief correspondent in San Pedro Sula, Honduras, for Televicentro's daily newscast *Hoy Mismo*.",
+          "bash_exit_codes": []
+        }
+      ],
+      "max_tools_proposed_in_one_response": 0,
+      "bash_nonzero_exits": 0,
+      "quality_checks": {
+        "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+      },
+      "dataset": "PopQA via official CRAG inference fixture",
+      "dataset_task_id": {
+        "release_row_index": 1,
+        "question": "What is Herlyn Espinal's occupation?"
+      },
+      "dataset_source": {
+        "url": "https://github.com/HuskyInSalt/CRAG/blob/de7c2961ae624a1483a138c5798e1f6d0c4fb0e0/data/popqa/test_popqa.txt",
+        "revision": "de7c2961ae624a1483a138c5798e1f6d0c4fb0e0",
+        "sha256": "1b6ac72aab416e0307b380790404ca817b1d91a3daf5421861f7fb421cc3d236"
+      },
+      "executed_harness": "official DSH; NOT original CRAG algorithm",
+      "run_id": "public-tasks-20261030-v001",
+      "label": "检索问答 · Herlyn Espinal职业",
+      "purpose_cn": "What is Herlyn Espinal's occupation?",
+      "provenance_cn": "数据集：PopQA via official CRAG inference fixture；题号：发布文件题组 1。任务来源：公开原题；执行框架：官方DSH。原题和原始检索段落同时输入；不是CRAG算法复现。",
+      "short_result_cn": "答案别名匹配通过",
+      "result_cn": "只记录DSH在给定原题与检索上下文上的行为；没有运行CRAG评估器或路由算法。 原始PopQA答案别名离线匹配：通过。",
+      "execution": {
+        "peak_tool_dispatches": 0,
+        "observed_tool_spans": 0,
+        "interval_definition": "tools/execute wrapper entry to return; host wall-clock milliseconds, not CPU/GPU simultaneous execution.",
+        "pinned_parallel_safe_tools": [
+          "read",
+          "web_search",
+          "web_fetch"
+        ],
+        "pinned_exclusive_tools": [
+          "bash",
+          "edit",
+          "write",
+          "todo_write"
+        ],
+        "classification_scope": "Pinned DSH declarations checked for read/web_search/web_fetch; remaining observed bash/edit/write/todo are exclusive.",
+        "default_max_parallel_tool_calls": 10
+      },
+      "offline_score": {
+        "dataset": "PopQA original",
+        "id": "1223902",
+        "expected_aliases": [
+          "journalist",
+          "journo",
+          "journalists"
+        ],
+        "matched_aliases": [
+          "journalist"
+        ],
+        "alias_match": true,
+        "scope": "offline answer-alias check only; not a grounding metric",
+        "labels_visible_at_runtime": false,
+        "gold_source_url": "https://raw.githubusercontent.com/AlexTMallen/adaptive-retrieval/main/data/popQA.tsv",
+        "gold_source_sha256": "9a5227f41bff0e4c331d4a774d946b12f95307892b58f860a9606ef356e6089b"
+      },
+      "paths": {
+        "graph": "../public-tasks-20261030-v001/popqa-1/graph.json",
+        "timeline": "../public-tasks-20261030-v001/popqa-1/timeline.json",
+        "summary": "../public-tasks-20261030-v001/popqa-1/summary.json",
+        "input": "../public-tasks-20261030-v001/popqa-1/initial-task.txt",
+        "answer": "../public-tasks-20261030-v001/popqa-1/answer.txt",
+        "sources": "../public-tasks-20261030-v001/source-manifest.json",
+        "raw": "../../evidence/public-tasks-20261030-v001/raw.tar.gz"
+      }
+    }
+  ],
+  "task_count": 6,
+  "scope": "6 illustrative tasks only; no framework comparisons, routing reproduction or benchmark aggregate score"
+}

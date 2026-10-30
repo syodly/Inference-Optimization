@@ -1,0 +1,968 @@
+{
+  "case_id": "drb-93",
+  "title": "DeepResearchBench / 93",
+  "exit_code": 0,
+  "watchdog_triggered": false,
+  "started_wall_time": 1793343082.2085788,
+  "finished_wall_time": 1793343826.2640586,
+  "duration_seconds": 744.0554797649384,
+  "model_requests": 53,
+  "tool_calls": 63,
+  "session_files": 1,
+  "final_characters": 75,
+  "root_session": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+  "agent_sessions": 1,
+  "child_sessions": 0,
+  "model_calls": 53,
+  "tool_counts": {
+    "web_search": 2,
+    "web_fetch": 19,
+    "bash": 42
+  },
+  "tool_errors": 12,
+  "peak_outstanding_model_steps": 1,
+  "generated_tokens": 19379,
+  "output_truncations": 0,
+  "first_child_seconds": null,
+  "last_new_tool_seconds": 743.5444211959839,
+  "dag_nodes": 118,
+  "dag_edges": 127,
+  "initial_task": "Please prepare a market research analysis of the global video editing and creation software/tool market. Include major products like those from Adobe (Premiere Pro, After Effects), CapCut, DaVinci Resolve, Final Cut Pro, and others relevant in the current landscape.",
+  "max_output_tokens": 8192,
+  "provenance": "official dataset original, unmodified; official DSH",
+  "final_text": "\n\nLet me make a few more targeted attempts for the remaining data points.\n\n",
+  "audit": {
+    "native_sessions": 1,
+    "native_model_steps": 53,
+    "wire_responses": 53,
+    "ready_events": 53,
+    "unmapped_tool_starts": [],
+    "graph_is_acyclic": true,
+    "wire_configuration_valid": true,
+    "all_http_200": true,
+    "watchdog_triggered": false,
+    "first_request_available_tools": [
+      "bash",
+      "create_goal",
+      "edit",
+      "exit_plan_mode",
+      "get_goal",
+      "glob",
+      "grep",
+      "interrupt_agent",
+      "job_kill",
+      "job_list",
+      "job_output",
+      "list_agents",
+      "read",
+      "read_image",
+      "send_message",
+      "skill",
+      "subagent",
+      "subagent_fork",
+      "todo_write",
+      "update_goal",
+      "web_fetch",
+      "web_search",
+      "workflow",
+      "working_directory",
+      "write"
+    ],
+    "delegation_tools_available": true,
+    "initial_task_present_unchanged": true
+  },
+  "steps": [
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:1",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 1,
+      "ready_seconds": 1.868,
+      "response_seconds": 10.751,
+      "tools": {
+        "web_search": 2
+      },
+      "first_tool_seconds": 10.76042127609253,
+      "last_tool_end_seconds": 10.788421154022217,
+      "model_text": "\n\nI'll research this market systematically. Let me start by gathering current data on market size, key players, and trends.\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:2",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 2,
+      "ready_seconds": 10.843,
+      "response_seconds": 15.487,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 15.490421056747437,
+      "last_tool_end_seconds": 18.187421083450317,
+      "model_text": "\n\nThe search tool isn't configured. Let me try fetching data directly from known sources.\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:3",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 3,
+      "ready_seconds": 18.211,
+      "response_seconds": 23.727,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 23.73042106628418,
+      "last_tool_end_seconds": 24.877421140670776,
+      "model_text": "\n\nThose pages didn't have the data I need. Let me try other market research sources.\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:4",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 4,
+      "ready_seconds": 24.911,
+      "response_seconds": 29.484,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 29.488421201705933,
+      "last_tool_end_seconds": 29.793421268463135,
+      "model_text": "\n\nLet me try search engines directly to find the right sources.\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:5",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 5,
+      "ready_seconds": 29.828,
+      "response_seconds": 33.877,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 33.88042116165161,
+      "last_tool_end_seconds": 44.394421100616455,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:6",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 6,
+      "ready_seconds": 44.426,
+      "response_seconds": 46.351,
+      "tools": {
+        "web_fetch": 1
+      },
+      "first_tool_seconds": 46.353421211242676,
+      "last_tool_end_seconds": 46.76042127609253,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:7",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 7,
+      "ready_seconds": 46.786,
+      "response_seconds": 52.6,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 52.603421211242676,
+      "last_tool_end_seconds": 65.21542119979858,
+      "model_text": "\n\nSearch engines aren't returning useful results. Let me try known market research report pages directly.\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:8",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 8,
+      "ready_seconds": 65.248,
+      "response_seconds": 71.505,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 71.5094211101532,
+      "last_tool_end_seconds": 73.44042110443115,
+      "model_text": "\n\nLet me try more specific sources for the data I need.\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:9",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 9,
+      "ready_seconds": 73.476,
+      "response_seconds": 78.078,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 78.08042120933533,
+      "last_tool_end_seconds": 79.64142107963562,
+      "model_text": "\n\nLet me try company and news sources directly.\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:10",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 10,
+      "ready_seconds": 79.672,
+      "response_seconds": 88.626,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 88.62942123413086,
+      "last_tool_end_seconds": 99.14042115211487,
+      "model_text": "\n\nLet me try Google News RSS feeds, which are usually fetchable.\n\n\n",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:11",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 11,
+      "ready_seconds": 99.173,
+      "response_seconds": 104.356,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 104.35942125320435,
+      "last_tool_end_seconds": 112.36242127418518,
+      "model_text": "\n\nLet me try using curl from the shell instead.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:12",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 12,
+      "ready_seconds": 112.398,
+      "response_seconds": 115.231,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 115.23342108726501,
+      "last_tool_end_seconds": 116.21042108535767,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:13",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 13,
+      "ready_seconds": 116.243,
+      "response_seconds": 120.536,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 120.53842115402222,
+      "last_tool_end_seconds": 130.9354212284088,
+      "model_text": "",
+      "bash_exit_codes": [
+        1
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:14",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 14,
+      "ready_seconds": 130.965,
+      "response_seconds": 145.369,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 145.37242126464844,
+      "last_tool_end_seconds": 155.76042127609253,
+      "model_text": "",
+      "bash_exit_codes": [
+        1
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:15",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 15,
+      "ready_seconds": 155.791,
+      "response_seconds": 161.693,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 161.69642114639282,
+      "last_tool_end_seconds": 162.2554211616516,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:16",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 16,
+      "ready_seconds": 162.285,
+      "response_seconds": 168.955,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 168.95742106437683,
+      "last_tool_end_seconds": 169.15842127799988,
+      "model_text": "",
+      "bash_exit_codes": [
+        1
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:17",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 17,
+      "ready_seconds": 169.187,
+      "response_seconds": 176.18,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 176.18342113494873,
+      "last_tool_end_seconds": 176.80042123794556,
+      "model_text": "\n\nThe sandbox isolates /tmp between calls. Let me use the workspace directory.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:18",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 18,
+      "ready_seconds": 176.83,
+      "response_seconds": 182.567,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 182.57042121887207,
+      "last_tool_end_seconds": 182.79342126846313,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:19",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 19,
+      "ready_seconds": 182.822,
+      "response_seconds": 194.541,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 194.54542112350464,
+      "last_tool_end_seconds": 195.5054211616516,
+      "model_text": "\n\nBing's results are poor quality. Let me try the international Bing and different query phrasings.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:20",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 20,
+      "ready_seconds": 195.537,
+      "response_seconds": 205.922,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 205.92742109298706,
+      "last_tool_end_seconds": 207.62742114067078,
+      "model_text": "\n\nBing is ignoring the query. Let me try other search engines.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:21",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 21,
+      "ready_seconds": 207.661,
+      "response_seconds": 210.211,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 210.2134211063385,
+      "last_tool_end_seconds": 210.38642120361328,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:22",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 22,
+      "ready_seconds": 210.417,
+      "response_seconds": 223.566,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 223.56942129135132,
+      "last_tool_end_seconds": 244.19542121887207,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:23",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 23,
+      "ready_seconds": 244.223,
+      "response_seconds": 261.594,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 261.597421169281,
+      "last_tool_end_seconds": 262.2024211883545,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:24",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 24,
+      "ready_seconds": 262.232,
+      "response_seconds": 272.542,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 272.54542112350464,
+      "last_tool_end_seconds": 273.0514211654663,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:25",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 25,
+      "ready_seconds": 273.08,
+      "response_seconds": 276.467,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 276.46942114830017,
+      "last_tool_end_seconds": 276.6364212036133,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:26",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 26,
+      "ready_seconds": 276.663,
+      "response_seconds": 294.621,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 294.62442111968994,
+      "last_tool_end_seconds": 297.1744210720062,
+      "model_text": "\n\nLet me try site-specific searches and company pages.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:27",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 27,
+      "ready_seconds": 297.205,
+      "response_seconds": 318.019,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 318.0234212875366,
+      "last_tool_end_seconds": 334.29642128944397,
+      "model_text": "\n\nTechCrunch site search works well. Let me gather more data from multiple angles.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:28",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 28,
+      "ready_seconds": 334.326,
+      "response_seconds": 356.888,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 356.8894212245941,
+      "last_tool_end_seconds": 361.2374212741852,
+      "model_text": "\n\nGood progress. Let me fetch key articles and look for market size data from press releases.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:29",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 29,
+      "ready_seconds": 361.281,
+      "response_seconds": 370.075,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 370.07842111587524,
+      "last_tool_end_seconds": 370.2794210910797,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:30",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 30,
+      "ready_seconds": 370.296,
+      "response_seconds": 374.904,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 374.9064211845398,
+      "last_tool_end_seconds": 375.108421087265,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:31",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 31,
+      "ready_seconds": 375.136,
+      "response_seconds": 382.707,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 382.71042108535767,
+      "last_tool_end_seconds": 382.90942120552063,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:32",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 32,
+      "ready_seconds": 382.939,
+      "response_seconds": 391.001,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 391.0034210681915,
+      "last_tool_end_seconds": 391.2054212093353,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:33",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 33,
+      "ready_seconds": 391.242,
+      "response_seconds": 406.4,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 406.4044210910797,
+      "last_tool_end_seconds": 409.78742122650146,
+      "model_text": "\n\nNow let me find market size data from press releases and company financials.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:34",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 34,
+      "ready_seconds": 409.817,
+      "response_seconds": 417.42,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 417.4224212169647,
+      "last_tool_end_seconds": 417.6174211502075,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:35",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 35,
+      "ready_seconds": 417.645,
+      "response_seconds": 430.616,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 430.6194212436676,
+      "last_tool_end_seconds": 439.3494212627411,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:36",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 36,
+      "ready_seconds": 439.377,
+      "response_seconds": 449.187,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 449.19042110443115,
+      "last_tool_end_seconds": 450.94042110443115,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:37",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 37,
+      "ready_seconds": 450.968,
+      "response_seconds": 464.28,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 464.2834212779999,
+      "last_tool_end_seconds": 464.50642108917236,
+      "model_text": "\n\nFound market size data. Let me extract more details from VMR and check other research firms for triangulation.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:38",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 38,
+      "ready_seconds": 464.536,
+      "response_seconds": 477.701,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 477.7024211883545,
+      "last_tool_end_seconds": 485.62242126464844,
+      "model_text": "\n\nLet me get more market size estimates and company-specific data.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:39",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 39,
+      "ready_seconds": 485.652,
+      "response_seconds": 498.103,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 498.108421087265,
+      "last_tool_end_seconds": 498.71942114830017,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:40",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 40,
+      "ready_seconds": 498.752,
+      "response_seconds": 508.129,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 508.13142108917236,
+      "last_tool_end_seconds": 546.8964211940765,
+      "model_text": "\n\nBing is stuck on generic results. Let me try company sites and Wikipedia directly.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:41",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 41,
+      "ready_seconds": 546.927,
+      "response_seconds": 550.084,
+      "tools": {
+        "web_fetch": 2
+      },
+      "first_tool_seconds": 550.086421251297,
+      "last_tool_end_seconds": 550.1054210662842,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:42",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 42,
+      "ready_seconds": 550.13,
+      "response_seconds": 563.819,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 563.8224210739136,
+      "last_tool_end_seconds": 575.3944211006165,
+      "model_text": "\n\nWikipedia is blocked. Let me try company newsrooms and other sources.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:43",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 43,
+      "ready_seconds": 575.421,
+      "response_seconds": 591.089,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 591.0934212207794,
+      "last_tool_end_seconds": 601.4064211845398,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:44",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 44,
+      "ready_seconds": 601.441,
+      "response_seconds": 615.227,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 615.2304210662842,
+      "last_tool_end_seconds": 622.2884211540222,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:45",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 45,
+      "ready_seconds": 622.318,
+      "response_seconds": 629.27,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 629.2724211215973,
+      "last_tool_end_seconds": 629.2794210910797,
+      "model_text": "",
+      "bash_exit_codes": []
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:46",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 46,
+      "ready_seconds": 629.304,
+      "response_seconds": 636.538,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 636.541421175003,
+      "last_tool_end_seconds": 636.733421087265,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:47",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 47,
+      "ready_seconds": 636.764,
+      "response_seconds": 652.967,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 652.9714212417603,
+      "last_tool_end_seconds": 656.1974210739136,
+      "model_text": "\n\nLet me get CapCut user data and Adobe financials from other sources.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:48",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 48,
+      "ready_seconds": 656.226,
+      "response_seconds": 665.875,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 665.8784210681915,
+      "last_tool_end_seconds": 666.0914211273193,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:49",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 49,
+      "ready_seconds": 666.119,
+      "response_seconds": 689.795,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 689.7994210720062,
+      "last_tool_end_seconds": 702.0354211330414,
+      "model_text": "\n\nLet me try to find CapCut MAU and Adobe revenue data from additional sources.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:50",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 50,
+      "ready_seconds": 702.065,
+      "response_seconds": 707.872,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 707.8744211196899,
+      "last_tool_end_seconds": 708.0754210948944,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:51",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 51,
+      "ready_seconds": 708.103,
+      "response_seconds": 721.441,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 721.4454212188721,
+      "last_tool_end_seconds": 728.5544211864471,
+      "model_text": "\n\nLet me make a few more targeted attempts for the remaining data points.\n\n",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:52",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 52,
+      "ready_seconds": 728.586,
+      "response_seconds": 735.077,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 735.0814211368561,
+      "last_tool_end_seconds": 736.9114210605621,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    },
+    {
+      "node_id": "model:session-7fd2ed1b-1314-4245-b948-f2fab2093bf6:1:53",
+      "session_id": "session-7fd2ed1b-1314-4245-b948-f2fab2093bf6",
+      "turn": 1,
+      "step": 53,
+      "ready_seconds": 736.93,
+      "response_seconds": 743.541,
+      "tools": {
+        "bash": 1
+      },
+      "first_tool_seconds": 743.5444211959839,
+      "last_tool_end_seconds": 743.8564212322235,
+      "model_text": "",
+      "bash_exit_codes": [
+        0
+      ]
+    }
+  ],
+  "max_tools_proposed_in_one_response": 2,
+  "bash_nonzero_exits": 3,
+  "quality_checks": {
+    "scope": "Offline output checks only; one curated task per scenario is not benchmark accuracy."
+  },
+  "dataset": "DeepResearchBench",
+  "dataset_task_id": 93,
+  "dataset_source": {
+    "dataset": "DeepResearchBench",
+    "revision": "f2735b5c3636759c22f9e936c0232de8bf545b67",
+    "url": "https://raw.githubusercontent.com/Ayanami0730/deep_research_bench/f2735b5c3636759c22f9e936c0232de8bf545b67/data/prompt_data/query.jsonl",
+    "sha256": "62b197a264a027fd4e2e795ff322a82dd6d566f5e350596ccc7572539ec987d1",
+    "count": 100
+  },
+  "executed_harness": "official DSH"
+}

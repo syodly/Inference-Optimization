@@ -1,0 +1,38 @@
+{
+  "case_id": "drb-93",
+  "category": "research",
+  "dataset": "DeepResearchBench",
+  "dataset_task_id": 93,
+  "initial_task": "Please prepare a market research analysis of the global video editing and creation software/tool market. Include major products like those from Adobe (Premiere Pro, After Effects), CapCut, DaVinci Resolve, Final Cut Pro, and others relevant in the current landscape.",
+  "original_question": "Please prepare a market research analysis of the global video editing and creation software/tool market. Include major products like those from Adobe (Premiere Pro, After Effects), CapCut, DaVinci Resolve, Final Cut Pro, and others relevant in the current landscape.",
+  "task_origin": "official dataset original, unmodified",
+  "dataset_source": {
+    "dataset": "DeepResearchBench",
+    "revision": "f2735b5c3636759c22f9e936c0232de8bf545b67",
+    "url": "https://raw.githubusercontent.com/Ayanami0730/deep_research_bench/f2735b5c3636759c22f9e936c0232de8bf545b67/data/prompt_data/query.jsonl",
+    "sha256": "62b197a264a027fd4e2e795ff322a82dd6d566f5e350596ccc7572539ec987d1",
+    "count": 100
+  },
+  "selection_reason": "Two illustrative tasks: systems research and multi-product market research; not representative sampling.",
+  "workflow_reference": [
+    "ODR",
+    "GPT Researcher"
+  ],
+  "executed_harness": "official DSH",
+  "input_files": {
+    "task.json": "{\n  \"id\": 93,\n  \"topic\": \"Software\",\n  \"language\": \"en\",\n  \"prompt\": \"Please prepare a market research analysis of the global video editing and creation software/tool market. Include major products like those from Adobe (Premiere Pro, After Effects), CapCut, DaVinci Resolve, Final Cut Pro, and others relevant in the current landscape.\"\n}"
+  },
+  "input_sha256": {
+    "task.json": "1d9a66125690853340cbb166017238f20f878017219a4aa12209945578d2bc80"
+  },
+  "workspace": "/home/Liangyijia_Hu/dsh-public-task-workspaces/public-tasks-20261030-v001/drb-93",
+  "max_output_tokens": 8192,
+  "model": "Qwen3.8-27B",
+  "reasoning_effort": "low",
+  "temperature": 0,
+  "source_commit": "687f282e8625c6b8d11ff58211a90524be2e4317",
+  "agent_count_prescribed": false,
+  "graph_prescribed": false,
+  "policy": "native",
+  "watchdog_seconds": 900
+}

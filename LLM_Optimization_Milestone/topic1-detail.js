@@ -4,7 +4,7 @@
   var json=function(v){return esc(JSON.stringify(v,null,2))};
   var data={
     research:{
-      title:'ODR Research · DeepResearchBench',
+      title:'ODR Research · 机制示意，未跑DeepResearchBench',
       overview:'Open Deep Research（ODR）把研究简报交给 Supervisor，由它拆分并派发并行 Researcher。每个 Researcher 在搜索与反思循环后压缩自己的证据，再把结果交回 Supervisor 决定继续研究或生成报告。图中合并展示压缩环节，橙色的覆盖与资源判断表示 Topic1 建议接入的位置。',
       intro:{purpose:'面向开放式研究问题，主管 Agent 将任务拆成子问题，研究员并行搜索、反思并压缩带来源的证据，再交回主管决定追加研究或生成报告。',flow:'研究问题 → 主管拆分 → 并行研究 → 单元内压缩 → 主管判断 → 报告',designSpace:'可研究：每批结果返回后，结合证据缺口、后端队列 / KV 压力与剩余预算，决定下一批释放多少研究单元、哪些子问题继续深挖，以及何时进入报告。分别控制总研究单元数与同时运行数，不把降低并发等同于减少总调用。'},
       sub:'研究问题 → 主管规划 → 并行研究 → 证据压缩 → 质量判断 → 报告',
@@ -18,8 +18,8 @@
       note:'ODR 源码中，Supervisor 绑定 ConductResearch、ResearchComplete、think_tool；researcher 的工具调用可并行执行；当前批次按 max_concurrent_research_units 截取。'
     },
     coding:{
-      title:'Coding Harness · LiveCodeBench',
-      overview:'LiveCodeBench 提供代码题和离线评测协议，不规定 Agent 拓扑。Coding harness 在题目之后组织 Planner、并行 Writer、测试执行、可选 Reviewer、Repair 和 Selector。Topic1 的设计重点是候选宽度、测试时机、审查开关和修复深度。',
+      title:'Coding Harness · 候选与修复结构示意',
+      overview:'LiveCodeBench 提供代码题和离线评测协议，不规定 Agent 拓扑。此图展示一种可选的候选、测试、审查和修复编排。此前只用 DSH 修复了自编结账服务，7项原测试通过、一个 Session；LiveCodeBench / SWE-bench 均0题，图中完整多候选流程尚未实测。',
       intro:{purpose:'把编程题转换为多个候选程序，通过编译和测试发现失败，再由审查或修复流程筛选结果。LiveCodeBench 提供题目与离线质量评测，具体 Agent 流程由 harness 组织。',flow:'代码题 → 规划 → 候选生成 → 测试与执行 → 审查 / 修复 → 输出',designSpace:'可研究：每批可见测试 / 审查结果返回后，结合实时后端负载，选择追加新候选、继续修复还是结束，并调整下一批并发量。候选总数、并发数、修复轮次分开计量；隐藏测试只作离线评测。反馈迭代本身已见于 Murakkab，待验证的是资源状态参与决策的增量收益。'},
       sub:'代码题 → 规划 → 并行候选 → 测试执行 → 审查 / 修复 → 离线评测',
       meta:[['任务输入','LiveCodeBench release_v6'],['工作流','harness 层候选流程示意'],['采样与并发','n = 10 是采样数；并发宽度另设'],['评测','pass@1 / pass@5 · 隐藏测试离线']],
@@ -158,11 +158,20 @@
     return selectedNative?background+current:current+background;
   }
   var graphs={research:graphResearch,coding:graphCoding,dsh:graphDsh};
+  function traceLink(name){
+    var ids={research:'odr',gptr:'gptr'};
+    if(ids[name])return '<p class="provenance"><strong>已有 Qwen27B 原生运行：</strong><a href="topic1-dag-observation.html?framework='+ids[name]+'#frameworks">查看实际分支、时间戳、完整 Prompt 和原始证据 →</a>。本结构图仍为源码概览；下方公开题目与真实运行分别标注。</p>';
+    if(name==='coding')return '<p class="provenance"><a href="topic1-dag-observation.html#coding">查看已有 DSH 代码修复实测 →</a>（人工小型服务，非 LiveCodeBench 题目）。</p>';
+    if(name==='crag')return '<p class="provenance"><a href="topic1-dag-observation.html#frameworks">查看官方条件路由核对与三组边界记录 →</a>。未复现训练评估器及完整 CRAG 生成。</p>';
+    return '';
+  }
   function renderWorkflowOverview(name){
     var d=data[name],info=d&&d.intro,el=document.getElementById('workflow-overview');
     if(!el||!info)return;
     el.innerHTML='<div><span class="overview-kicker">'+(name==='dsh'?'HARNESS × ENGINE · PROPOSED INTEGRATION':'WORKFLOW PURPOSE')+'</span><h3>'+esc(d.title)+'</h3><p>'+esc(info.purpose)+'</p>'+ (name==='dsh'?'<p><a href="topic1-harness-engine.html">查看当前痛点、已有覆盖与实验方案 →</a></p>':'')+'</div><div><h3>一次任务流程</h3><p class="overview-flow">'+esc(info.flow)+'</p></div><div><h3>Topic1 可能有的 Design 空间</h3><span class="overview-hypothesis">待验证设想 · 不等同于论文已有结论</span><p>'+esc(info.designSpace)+'</p><details class="overview-paper-boundary"><summary>与 INFRAMIND / Murakkab 的区别</summary><p><strong>INFRAMIND：</strong>任务开始时选择拓扑、Agent 数与角色；执行中调整模型路由、推理深度与队列调度。论文已将运行中按负载 / 部分结果修改拓扑列为未来工作。</p><p><strong>Murakkab：</strong>周期级联合优化模型、资源与工作流配置，支持按请求结合任务难度与系统条件选择配置；动态 coding 流程也支持测试 / 审查反馈驱动的继续或早停。</p><p><strong>Topic1 待验证：</strong>'+esc(name==='dsh'?'先固定必做工作，验证工具中工作、已知后继需求与引擎状态能否共同指导分波展开和请求提交。TOPAS / SAGA / Coda / Nalar、简单背压和同信息后端策略均是近邻或强基线；前端位置、动态并发与可选探索本身不作为独有创新。':'在具体工作流的执行边界，将实时后端状态与中间结果联动，重分配尚未启动的后续工作量。动态配置、增减调用或早停本身不作为独有创新；控制策略、适用边界与相对两篇论文基线的增量收益仍需验证。')+'</p><p>论文依据：<a href="https://arxiv.org/html/2606.11440v1#S6">INFRAMIND §6</a> · <a href="https://www.usenix.org/conference/osdi26/presentation/chaudhry">Murakkab §3 / §4.4</a></p></details></div>';
   }
+  var overviewRenderer=renderWorkflowOverview;
+  renderWorkflowOverview=function(name){overviewRenderer(name);var first=document.querySelector('#workflow-overview>div');if(first)first.insertAdjacentHTML('beforeend',traceLink(name));};
   Object.keys(window.Topic1WorkflowExtras||{}).forEach(function(name){
     var spec=window.Topic1WorkflowExtras[name];
     data[name]=spec.data;nodeInfo[name]=spec.nodes;
@@ -197,10 +206,12 @@
   function renderDrawer(name,nodeId){
     var d=data[name],info=nodeInfo[name][nodeId];
     titleEl.textContent=d.title;subtitleEl.textContent=d.sub;
-    var intro='<section class="drawer-overview"><h3>工作流总览</h3><p>'+esc(d.overview)+'</p></section>';
+    var intro='<section class="drawer-overview"><h3>工作流总览</h3><p>'+esc(d.overview)+'</p>'+traceLink(name)+'</section>';
     panes.calls.innerHTML=intro+'<h3>模块角色卡片 / Agent & module roles</h3><p class="module-help">展开任意模块查看它在前后 workflow 中承担的角色。当前点击的节点已自动展开。</p>'+moduleCards(name,nodeId)+'<h3>'+(name==='dsh'?'抽象推进序列 / Proposed integration':'完整调用序列 / Calls')+'</h3><ol class="call-list">'+d.calls.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ol><div class="drawer-box drawer-actions"><h4>Topic1 可设计动作</h4><ul class="param-list">'+d.actions.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div><div class="provenance">'+esc(d.note)+'</div>';
     panes.params.innerHTML='<h3>参数与 Prompt</h3><div class="drawer-grid"><div class="drawer-box"><h4>'+(name==='dsh'?'拟接入参数与实验约束':'公开参数 / 配置')+'</h4><ul class="param-list">'+d.params.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div><div class="drawer-box"><h4>Prompt 原文或明确标注的占位</h4><pre class="prompt-block">'+esc(d.prompt.replace(/\\n/g,'\n'))+'</pre></div></div><div class="provenance">官方 prompt、harness placeholder 与 Topic1 proposed prompt 分开标注。</div>';
     panes.raw.innerHTML='<h3>'+(name==='dsh'?'拟埋点 Schema · 非真实运行数据':'Raw data / trace schema')+'</h3><pre class="raw-block">'+json(d.raw)+'</pre><div class="provenance">'+(name==='dsh'?'以下是待实现的埋点与控制契约，不是 DSH 原生完整 API，也不是已采集的 raw trace。':'字段来自公开 query、README、源码或 API schema。标注未测量的 trace 不代表一次真实运行记录。')+'</div>';
+    panes.raw.insertAdjacentHTML('afterbegin',traceLink(name));
+    panes.params.insertAdjacentHTML('afterbegin','<p class="provenance">本结构图中的 Prompt 为摘要或占位；逐次实际 messages、工具定义和参数请打开实测入口。</p>'+traceLink(name));
     document.querySelectorAll('.drawer-tab').forEach(function(tab){tab.setAttribute('aria-selected',String(tab.dataset.drawerTab==='calls'))});Object.keys(panes).forEach(function(key){panes[key].hidden=key!=='calls'});drawer.classList.add('is-open');backdrop.classList.add('is-open');drawer.setAttribute('aria-hidden','false');document.querySelector('.drawer-body').scrollTop=0
   }
   function closeDrawer(){drawer.classList.remove('is-open');backdrop.classList.remove('is-open');drawer.setAttribute('aria-hidden','true')}

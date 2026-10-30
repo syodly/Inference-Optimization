@@ -1,0 +1,312 @@
+{
+  "status": "scored",
+  "candidate_origin": "output/snake.py",
+  "scope": "offline original tests only; no hidden inputs or verdicts supplied to Qwen",
+  "public_passed": 3,
+  "public_total": 3,
+  "private_passed": 40,
+  "private_total": 40,
+  "tests": [
+    {
+      "kind": "public",
+      "index": 0,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.016539573669433594
+    },
+    {
+      "kind": "public",
+      "index": 1,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.016806364059448242
+    },
+    {
+      "kind": "public",
+      "index": 2,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01689004898071289
+    },
+    {
+      "kind": "private",
+      "index": 0,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01696610450744629
+    },
+    {
+      "kind": "private",
+      "index": 1,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01754927635192871
+    },
+    {
+      "kind": "private",
+      "index": 2,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.016471147537231445
+    },
+    {
+      "kind": "private",
+      "index": 3,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.015473604202270508
+    },
+    {
+      "kind": "private",
+      "index": 4,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013664960861206055
+    },
+    {
+      "kind": "private",
+      "index": 5,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013646125793457031
+    },
+    {
+      "kind": "private",
+      "index": 6,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013781070709228516
+    },
+    {
+      "kind": "private",
+      "index": 7,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.015741348266601562
+    },
+    {
+      "kind": "private",
+      "index": 8,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.017410993576049805
+    },
+    {
+      "kind": "private",
+      "index": 9,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01634383201599121
+    },
+    {
+      "kind": "private",
+      "index": 10,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.016858339309692383
+    },
+    {
+      "kind": "private",
+      "index": 11,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.0160825252532959
+    },
+    {
+      "kind": "private",
+      "index": 12,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.014214038848876953
+    },
+    {
+      "kind": "private",
+      "index": 13,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.014617681503295898
+    },
+    {
+      "kind": "private",
+      "index": 14,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.015407085418701172
+    },
+    {
+      "kind": "private",
+      "index": 15,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.018131017684936523
+    },
+    {
+      "kind": "private",
+      "index": 16,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013300895690917969
+    },
+    {
+      "kind": "private",
+      "index": 17,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01540231704711914
+    },
+    {
+      "kind": "private",
+      "index": 18,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01642751693725586
+    },
+    {
+      "kind": "private",
+      "index": 19,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013869762420654297
+    },
+    {
+      "kind": "private",
+      "index": 20,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01691126823425293
+    },
+    {
+      "kind": "private",
+      "index": 21,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.017737865447998047
+    },
+    {
+      "kind": "private",
+      "index": 22,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.014438629150390625
+    },
+    {
+      "kind": "private",
+      "index": 23,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.016537904739379883
+    },
+    {
+      "kind": "private",
+      "index": 24,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.015243768692016602
+    },
+    {
+      "kind": "private",
+      "index": 25,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01695847511291504
+    },
+    {
+      "kind": "private",
+      "index": 26,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.01391148567199707
+    },
+    {
+      "kind": "private",
+      "index": 27,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.014313459396362305
+    },
+    {
+      "kind": "private",
+      "index": 28,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013813972473144531
+    },
+    {
+      "kind": "private",
+      "index": 29,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013826131820678711
+    },
+    {
+      "kind": "private",
+      "index": 30,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.014435768127441406
+    },
+    {
+      "kind": "private",
+      "index": 31,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013812780380249023
+    },
+    {
+      "kind": "private",
+      "index": 32,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013307571411132812
+    },
+    {
+      "kind": "private",
+      "index": 33,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.012934207916259766
+    },
+    {
+      "kind": "private",
+      "index": 34,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.016251564025878906
+    },
+    {
+      "kind": "private",
+      "index": 35,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013766765594482422
+    },
+    {
+      "kind": "private",
+      "index": 36,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.014282464981079102
+    },
+    {
+      "kind": "private",
+      "index": 37,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013719320297241211
+    },
+    {
+      "kind": "private",
+      "index": 38,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013421773910522461
+    },
+    {
+      "kind": "private",
+      "index": 39,
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.013458013534545898
+    }
+  ]
+}
