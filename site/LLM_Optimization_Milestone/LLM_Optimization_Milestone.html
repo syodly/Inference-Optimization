@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM Optimization Milestone</title>
+  <link rel="stylesheet" href="milestone.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">L</div>
+        <div><strong>LLM OPTIMIZATION</strong><span>Research milestones · Paper archive</span></div>
+      </div>
+      <nav class="toplinks" aria-label="页面导航">
+        <a href="#phases" aria-current="page">Milestone</a>
+        <a href="#index">Paper Index</a>
+        <a href="architecture-3d.html">系统剖面</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">Research milestones / 2022—2026</p>
+          <h1>LLM 推理优化 <span class="title-word">Milestones</span></h1>
+          <p class="lede">研究问题的演化线：Serving → Workflow → KV 复用 → 状态与上下文协同</p>
+          <p class="date-note">日期优先采用 arXiv 首次公开日，只有正式会议版本时标注会议月份。</p>
+          <div class="focus-lines">
+            <div class="focus-line"><b>动态图推理优化</b><span>应用 DAG → 动态 Agent → 双向契约与执行配置 → 工作流 / KV 协同</span></div>
+            <div class="focus-line"><b>Agentic KV</b><span>前缀与块级复用 → 生命周期竞争 → 上下文编辑 → 版本与安全边界</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="论文归档统计">
+        <div class="stat"><span class="value" id="paper-total">77</span><span class="label">去重后的论文索引</span></div>
+        <div class="stat"><span class="value" id="phase-total">5</span><span class="label">Research phases</span></div>
+        <div class="stat"><span class="value" id="lane-total">14</span><span class="label">Research lines</span></div>
+        <div class="stat"><span class="value">2</span><span class="label">主题分类视图</span></div>
+      </section>
+
+<section id="phases">
+        <div class="section-head">
+          <div><h2>Research Milestone Map</h2><p></p></div>
+          <div class="progress-line">论文归属：77 / 77<div class="progress"><i style="width:100%"></i></div></div>
+        </div>
+        <p class="timeline-intro">前三个阶段展示 Serving、应用 DAG 与动态 Agent 的演化，后两个专题整理复用机制、跨层协同及上下文生命周期。专题按研究问题组织，不代表论文严格按时间继承。</p>
+        <div class="phase-board" id="phase-board"></div>
+      </section>
+
+      <section id="index" class="secondary-section">
+        <div class="section-head">
+          <div><h2>Paper Index</h2><p>全部 77 篇论文的检索入口；论文已经在上方 Phase 和 Research Line 中完成归属。</p></div>
+          <span class="secondary-label">Full collection · 77 papers</span>
+        </div>
+        <div class="controls" aria-label="论文筛选器">
+          <label class="control"><input id="search" type="search" placeholder="搜索论文、内容或方向" aria-label="搜索论文"></label>
+          <label class="control"><select id="category" aria-label="按方向筛选"><option value="all">全部方向</option><option value="foundation">基础推理 / 解码</option><option value="serving">Serving / 调度</option><option value="workflow">DAG / Agent workflow</option><option value="kv">Agentic KV Cache</option></select></label>
+          <label class="control"><select id="status" aria-label="按整理状态筛选"><option value="all">全部状态</option><option value="done">已整理</option><option value="partial">已提及，待补全</option><option value="todo">待整理</option></select></label>
+          <label class="control"><select id="priority" aria-label="按优先级筛选"><option value="all">全部优先级</option><option value="P1">P1 直接相关</option><option value="P2">P2 支撑能力</option><option value="P3">P3 延伸阅读</option></select></label>
+        </div>
+        <div id="result-count" class="result-count" aria-live="polite"></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>论文</th><th>方向</th><th>首次公开</th><th>正式会议</th><th>整理状态</th><th>优先级</th></tr></thead>
+            <tbody id="paper-rows"></tbody>
+          </table>
+          <div id="empty" class="empty">没有匹配的论文，请调整筛选条件。</div>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="panel">
+          <h2>What Changed Across Phases</h2>
+          <p>每个阶段的核心变化，是系统能够利用的信息和做决策的时间点不断前移。</p>
+          <div class="milestones">
+            <div class="milestone"><b>PHASE 01</b><div><strong>从整条请求到 token / phase</strong><span>Serving engine 开始理解迭代级执行、输出长度和 Prefill / Decode 干扰。</span></div></div>
+            <div class="milestone"><b>PHASE 02</b><div><strong>从单请求到静态 application DAG</strong><span>服务端看见跨请求依赖、数据流、应用目标和已知 workflow 的 KV 复用。</span></div></div>
+            <div class="milestone"><b>PHASE 03</b><div><strong>动态 Agent 推理优化的展开</strong><span>同一方向内部从运行时程序状态和工具等待出发，逐步扩展到 workflow 预测、主动资源管理以及 token/block 级 KV 控制。</span></div></div>
+          <div class="milestone"><b>PHASE 04</b><div><strong>复用机制与完整执行成本</strong><span>独立块、跨模型状态与 coding 负载；命中不等于节省计算。</span></div></div><div class="milestone"><b>PHASE 05</b><div><strong>上下文变化与状态契约</strong><span>生命周期、版本、编辑意图与引擎反馈共同参与决策。</span></div></div></div>
+        </div>
+        <div class="panel">
+          <h2>Data Notes</h2>
+          <p>日期用于定位研究演化，不直接代表 Markdown 的写作时间。</p>
+          <ul class="rules">
+            <li>Teola → Ayo、Autellix → Agentix：分别是同一工作的预印本名和正式名称。</li>
+            <li>Sarathi 与 Sarathi-Serve：相关演化，但按两篇论文统计。</li>
+            <li>日期精度以可核验公开时间为准；没有可靠日级日期时保留月份或年份。</li>
+            <li>当前 77 篇索引按 5 个 Phase、14 条 Research Line 归档；“已整理”与“调研摘要／待精读”分别标注。新增发表状态沿用已核查来源，未确认者标注 arXiv。</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <footer>LLM inference optimization · 77 papers · modular source: milestone-data.js + milestone-app.js + milestone.css</footer>
+  </div>
+
+  <script src="milestone-data.js"></script>
+  <script src="milestone-app.js"></script>
+</body>
+</html>
